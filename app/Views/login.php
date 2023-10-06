@@ -8,39 +8,36 @@
 <div class="col-md-12 mt-5" id="wrap">
   <div class="login-box">
     <div class="login-logo">
-      <a href="../../index2.html"><b>Magic</b>Service</a>
+      <a href="#">
+        <img src="<?= base_url(); ?>public/images/logo-magic-small.png" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+        <b>Magic</b>Service
+      </a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">Ingreso al sistema</p>
 
-        <form action="../../index3.html" method="post" class="form">
+        <form action="<?= base_url(); ?>validate_login" method="post" class="form">
           <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Email">
+            <input type="text" class="form-control" name="user" placeholder="usuario" value="wolf">
             <div class="input-group-append">
               <div class="input-group-text">
-                <span class="fas fa-envelope"></span>
+                <span class="fas fa-user"></span>
               </div>
             </div>
           </div>
+          <p id="error-message"><?= session('errors.user');?> </p>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" class="form-control" name="password" placeholder="Password" value="wolfabadon">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
               </div>
             </div>
           </div>
+          <p id="error-message"><?= session('errors.password');?> </p>
           <div class="row">
-            <div class="col-8">
-              <div class="icheck-primary">
-                <input type="checkbox" id="remember">
-                <label for="remember">
-                  Recordarme
-                </label>
-              </div>
-            </div>
             <!-- /.col -->
             <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
@@ -49,7 +46,7 @@
           </div>
         </form>
 
-        <div class="social-auth-links text-center mb-3">
+        <!-- <div class="social-auth-links text-center mb-3">
           <p> o tal vés...</p>
           <a href="#" class="btn btn-block btn-primary">
             <i class="fab fa-facebook mr-2"></i> Ingresar usando Facebook
@@ -57,15 +54,12 @@
           <a href="#" class="btn btn-block btn-danger">
             <i class="fab fa-google-plus mr-2"></i> Ingresar usando Google+
           </a>
-        </div>
+        </div> -->
         <!-- /.social-auth-links -->
 
-        <p class="mb-1">
+        <!-- <p class="mb-1">
           <a href="forgot-password.html">Olvidé mi password</a>
-        </p>
-        <p class="mb-0">
-          <a href="register.html" class="text-center">Registrar un nuevo miembro</a>
-        </p>
+        </p> -->
       </div>
       <!-- /.login-card-body -->
     </div>

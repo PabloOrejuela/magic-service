@@ -9,6 +9,11 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
+use App\Models\UsuarioModel;
+use App\Models\FormaPagoModel;
+use App\Models\ClienteModel;
+use App\Models\ProductoModel;
+
 /**
  * Class BaseController
  *
@@ -19,8 +24,8 @@ use Psr\Log\LoggerInterface;
  *
  * For security be sure to declare any new methods as protected or private.
  */
-abstract class BaseController extends Controller
-{
+abstract class BaseController extends Controller {
+
     /**
      * Instance of the main Request object.
      *
@@ -35,7 +40,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['form', 'url', 'html'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -46,13 +51,22 @@ abstract class BaseController extends Controller
     /**
      * Constructor.
      */
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger) {
+
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
         // Preload any models, libraries, etc, here.
+        $this->db = \Config\Database::connect();
+        $this->usuarioModel = new UsuarioModel($this->db);
+        $this->clienteModel = new ClienteModel($this->db);
+        $this->formaPagoModel = new FormaPagoModel($this->db);
+        $this->productoModel = new ProductoModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
+        $this->session = \Config\Services::session();
+        $this->request = \Config\Services::request();
+        $this->validation = \Config\Services::validation();
+        $this->image = \Config\Services::image();
     }
 }

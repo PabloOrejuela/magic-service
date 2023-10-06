@@ -8,8 +8,8 @@ use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
 
-class Validation extends BaseConfig
-{
+class Validation extends BaseConfig {
+
     // --------------------------------------------------------------------
     // Setup
     // --------------------------------------------------------------------
@@ -41,4 +41,18 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+
+    public $login = [
+        'user'  => 'required',
+        'password'   => 'required',
+    ];
+
+    public $login_errors = [
+        'user' => [
+            'required' => 'El campo "Usuario" es obligatorio',
+        ],
+        'password' => [
+            'required' => 'El campo "Contraseña" es obligatorio',
+        ]
+    ];
 }
