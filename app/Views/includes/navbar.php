@@ -17,7 +17,7 @@
         <a href="#" class="nav-link">Reportes</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Administración</a>
+        <a href="<?= base_url(); ?>administracion" class="nav-link">Administración</a>
       </li>
     </ul>
 
