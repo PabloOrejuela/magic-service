@@ -19,7 +19,13 @@ class Ventas extends BaseController {
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
-            // echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+
+            // $valor = $this->get_valor_producto(1);
+
+            // foreach ($valor as $key => $value) {
+            //     echo $value;
+            // }
+            // echo '<pre>'.var_export($valor, true).'</pre>';exit;
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
             $data['main_content']='ventas/form-pedido';
@@ -37,6 +43,14 @@ class Ventas extends BaseController {
         echo view('clientes_select', $data);
     }
 
+    function get_valor_producto(){
+        $producto = $this->request->getPostGet('producto');
+        $data['producto'] = $this->productoModel->_getProducto($producto);
+        //$data['clientes'] = $this->clienteModel->_getCliente('1705520227');
+        echo view('precio_producto', $data);
+        //return $data;
+    }
+
     public function logout(){
         //destruyo la session  y salgo
         
@@ -50,4 +64,6 @@ class Ventas extends BaseController {
         $this->session->destroy();
         return redirect()->to('/');
     }
+
+    
 }

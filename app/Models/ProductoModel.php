@@ -38,4 +38,34 @@ class ProductoModel extends Model {
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function _getProducto($id){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*')->where('id', $id);
+        //$builder->join('items_productos', $this->table.'.id = items_productos.idproducto');
+        //$builder->join('items', 'items_productos.item = items.id');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getCliente($documento){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*')->where('documento', $documento);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
 }

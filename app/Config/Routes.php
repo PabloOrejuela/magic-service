@@ -34,6 +34,7 @@ $routes->post('validate_login', 'Home::validate_login');
 $routes->get('inicio', 'Home::index');
 $routes->get('ventas', 'Ventas::index');
 $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
+$routes->post('ventas/get-valor-producto', 'Ventas::get_valor_producto');
 
 /*
  * --------------------------------------------------------------------
