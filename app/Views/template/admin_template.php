@@ -61,6 +61,7 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+
 <script src="<?= site_url(); ?>public/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -95,10 +96,20 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<?= site_url(); ?>public/dist/js/pages/dashboard.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-  crossorigin="anonymous"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="<?= site_url(); ?>public/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/jszip/jszip.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="<?= site_url(); ?>public/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <script>
     $(document).ready(function(){
 

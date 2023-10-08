@@ -38,6 +38,7 @@ $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
 $routes->post('ventas/get-valor-producto', 'Ventas::get_valor_producto');
 
 $routes->get('administracion', 'Administracion::index');
+$routes->get('productos', 'Administracion::productos');
 
 /*
  * --------------------------------------------------------------------

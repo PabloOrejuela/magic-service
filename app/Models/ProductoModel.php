@@ -68,4 +68,19 @@ class ProductoModel extends Model {
         //echo $this->db->getLastQuery();
         return $result;
     }
+
+    function _getProductos(){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->join('categorias', $this->table.'.idcategoria = categorias.id');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
 }

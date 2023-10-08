@@ -17,7 +17,7 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="'.base_url().'ventas" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Pedidos</p>
             </a>
@@ -43,7 +43,7 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="'.base_url().'productos" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Productos</p>
             </a>
