@@ -48,7 +48,7 @@ class Home extends BaseController {
             
             if (isset($usuario) && $usuario != NULL) {
                 //valido el login y pongo el id en sesion  && $usuario->id != 1 
-                //echo '<pre>'.var_export($usuario, true).'</pre>';
+                echo '<pre>'.var_export($usuario, true).'</pre>';
                 if ($usuario->logged == 1 ) {
                     //Está logueado así que lo deslogueo
                     $user = [
@@ -70,6 +70,8 @@ class Home extends BaseController {
                     'rol' => $usuario->rol,
                     'admin' => $usuario->admin,
                     'ventas' => $usuario->ventas,
+                    'proveedores' => $usuario->proveedores,
+                    'reportes' => $usuario->reportes,
                 ];
         
                 $user = [
@@ -97,7 +99,8 @@ class Home extends BaseController {
         
         $user = [
             'id' => $this->session->idusuario,
-            'logged' => 0
+            'logged' => 0,
+            'ip' => 0
         ];
         //echo '<pre>'.var_export($user, true).'</pre>';exit;
         $this->usuarioModel->_updateLoggin($user);

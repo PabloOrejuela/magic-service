@@ -19,6 +19,9 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="<?= base_url(); ?>administracion" class="nav-link">Administración</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="<?= base_url(); ?>logout" class="nav-link">Salir</a>
+      </li>
     </ul>
 
     <!-- Right navbar links -->

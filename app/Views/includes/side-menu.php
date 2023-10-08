@@ -3,28 +3,115 @@
     <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library -->
     
-    <li class="nav-item">
-      <a href="#" class="nav-link">
-        <i class="ion ion-bag"></i>
-        <p>
-          Ventas
-          <i class="right fas fa-angle-left"></i>
-        </p>
-      </a>
-      <ul class="nav nav-treeview">
+  <?php
+
+    if ($session->ventas == 1) {
+      echo '
         <li class="nav-item">
-          <a href="pages/charts/chartjs.html" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Pedidos</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="pages/charts/flot.html" class="nav-link">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Productos</p>
-          </a>
-        </li>
-      </ul>
-    </li>
+        <a href="#" class="nav-link">
+          <i class="ion ion-bag"></i>
+          <p>
+            Ventas
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Pedidos</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Productos</p>
+            </a>
+          </li>
+        </ul>
+      </li>';
+    }
+    if ($session->admin == 1) {
+      echo '
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="ion ion-bag"></i>
+          <p>
+            Administración
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Productos</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Items</p>
+            </a>
+          </li>
+        </ul>
+      </li>';
+    }
+
+    if ($session->proveedores == 1) {
+      echo '
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="ion ion-bag"></i>
+          <p>
+            Proveedores
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Proveedores</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Gastos</p>
+            </a>
+          </li>
+        </ul>
+      </li>';
+    }
+
+    if ($session->reportes == 1) {
+      echo '
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <i class="ion ion-bag"></i>
+          <p>
+            Reportes
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Proveedores</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Gastos</p>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>';
+    }
+  ?>
   </ul>
 </nav>
