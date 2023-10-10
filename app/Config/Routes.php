@@ -43,6 +43,10 @@ $routes->get('items', 'Administracion::items');
 $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
 $routes->post('item-update', 'Administracion::item_update');
 $routes->get('item-delete/(:num)/(:num)', 'Administracion::item_delete/$1/$2');
+$routes->get('formas-pago', 'Administracion::formas_pago');
+$routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
+$routes->get('usuarios', 'Administracion::usuarios');
+$routes->get('roles', 'Administracion::roles');
 
 /*
  * --------------------------------------------------------------------

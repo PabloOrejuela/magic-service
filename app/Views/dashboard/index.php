@@ -1,4 +1,4 @@
-<?= $this->extend('template/admin_template'); ?>
+<?= $this->extend('template/template'); ?>
 <?= $this->section('content'); ?>
     <!-- Content Header (Page header) -->
     <div class="content-header">

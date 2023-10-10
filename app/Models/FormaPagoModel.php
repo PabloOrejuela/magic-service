@@ -12,8 +12,8 @@ class FormaPagoModel extends Model {
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
-    protected $protectFields    = false;
-    protected $allowedFields    = [];
+    protected $protectFields    = true;
+    protected $allowedFields    = ['forma_pago', 'estado'];
 
     // Dates
     protected $useTimestamps = false;
@@ -38,4 +38,17 @@ class FormaPagoModel extends Model {
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function _updateEstado($data) {
+        $builder = $this->db->table($this->table);
+
+        if ($data['estado'] == 1) {
+            $builder->set('estado', 0);
+        }elseif ($data['estado'] == 0) {
+            $builder->set('estado', 1);
+        }
+
+        $builder->where('id', $data['id']);
+        $builder->update();
+    }
 }

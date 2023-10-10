@@ -173,6 +173,72 @@ class Administracion extends BaseController {
 
             $this->logout();
         }
-        
+    }
+
+    /*
+    * undocumented function summary
+    *
+    * @param Type var Description
+    * @return object
+    * @throws conditon
+    * @date fecha
+    */
+    public function formas_pago() {
+    
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['formas_pago'] = $this->formaPagoModel->findAll();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Formas de pago';
+            $data['main_content']='administracion/grid_formas_pago';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    
+    }
+
+    /*
+    * Recibe info del form y cambia el estado
+    *
+    * @param Type var post
+    * @return void
+    * @throws conditon
+    * @date 10-10-2023
+    */
+    public function forma_pago_delete($id, $estado) {
+    
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $dato = [
+                'id' => $id,
+                'estado' => $estado,
+            ];
+            //echo '<pre>'.var_export($item, true).'</pre>';exit;
+            $this->formaPagoModel->_updateEstado($dato);
+            //echo $this->db->getLastQuery();exit;
+
+            return redirect()->to('formas-pago');
+        }else{
+
+            $this->logout();
+        }
     }
 }

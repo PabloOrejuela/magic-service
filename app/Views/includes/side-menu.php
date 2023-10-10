@@ -49,19 +49,19 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="'.base_url().'items" class="nav-link">
+            <a href="'.base_url().'formas-pago" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Formas de pago</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="'.base_url().'items" class="nav-link">
+            <a href="'.base_url().'usuarios" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Usuarios</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="'.base_url().'items" class="nav-link">
+            <a href="'.base_url().'roles" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Roles</p>
             </a>
