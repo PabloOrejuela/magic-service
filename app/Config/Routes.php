@@ -39,6 +39,10 @@ $routes->post('ventas/get-valor-producto', 'Ventas::get_valor_producto');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
+$routes->get('items', 'Administracion::items');
+$routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
+$routes->post('item-update', 'Administracion::item_update');
+$routes->get('item-delete/(:num)/(:num)', 'Administracion::item_delete/$1/$2');
 
 /*
  * --------------------------------------------------------------------

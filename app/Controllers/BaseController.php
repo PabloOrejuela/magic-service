@@ -13,6 +13,8 @@ use App\Models\UsuarioModel;
 use App\Models\FormaPagoModel;
 use App\Models\ClienteModel;
 use App\Models\ProductoModel;
+use App\Models\ItemModel;
+use App\Models\PedidoModel;
 
 /**
  * Class BaseController
@@ -62,6 +64,8 @@ abstract class BaseController extends Controller {
         $this->clienteModel = new ClienteModel($this->db);
         $this->formaPagoModel = new FormaPagoModel($this->db);
         $this->productoModel = new ProductoModel($this->db);
+        $this->itemModel = new ItemModel($this->db);
+        $this->pedidoModel = new PedidoModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

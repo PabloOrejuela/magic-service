@@ -19,13 +19,7 @@
           <li class="nav-item">
             <a href="'.base_url().'ventas" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Pedidos</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Productos</p>
+              <p>Registrar pedido</p>
             </a>
           </li>
         </ul>
@@ -49,9 +43,27 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="'.base_url().'items" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Items</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="'.base_url().'items" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Formas de pago</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="'.base_url().'items" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Usuarios</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="'.base_url().'items" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Roles</p>
             </a>
           </li>
         </ul>

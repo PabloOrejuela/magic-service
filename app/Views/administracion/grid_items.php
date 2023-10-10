@@ -33,28 +33,29 @@
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             
                             <thead>
-                                <th>No.</th>
-                                <th>Pedido</th>
-                                <th>Cliente</th>
-                                <th>Fecha</th>
+                                <th>Codigo</th>
+                                <th>Item</th>
+                                <th>Precio</th>
                                 <th>Estado</th>
+                                <th>Borrar</th>
                             </thead>
                             <tbody>
                                 <?php
-                                    if (isset($pedidos) && $pedidos != NULL) {
-                                        foreach ($pedidos as $key => $value) {
+                                    if (isset($items) && $items != NULL) {
+                                        foreach ($items as $key => $value) {
                                             echo '<tr>
                                                 <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'prod_4_edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>
-                                                <td>'.$value->idcliente.'</td>';
+                                                <td><a href="'.site_url().'item-edit/'.$value->id.'" id="link-editar">'.$value->item.'</a></td>
+                                                <td>'.$value->precio.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){
                                                     echo '<td>Inactivo</td>';
                                                 }
-                                            echo '<td>
+                                            echo '
+                                                <td>
                                                     <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
+                                                        <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'/'.$value->estado.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>

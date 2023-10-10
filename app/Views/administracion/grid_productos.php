@@ -37,8 +37,7 @@
                                 <th>Producto</th>
                                 <th>Categoria</th>
                                 <th>Estado</th>
-                                <th></th>
-                                <th></th>
+                                <th>Borrar</th>
                             </thead>
                             <tbody>
                                 <?php
@@ -50,20 +49,13 @@
                                                 <td>'.$value->categoria.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
-                                                }else if($value->estado == 2){
+                                                }else if($value->estado == 0){
                                                     echo '<td>Inactivo</td>';
                                                 }
                                             echo '<td>
                                                     <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'prod-edit/'.$value->id.'" class="edit">
-                                                            <img src="'.site_url().'public/images/test.png" width="30">
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="contenedor">
                                                         <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
-                                                            <img src="'.site_url().'public/images/eval-mate.png" width="30" >
+                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>
                                                 </td>

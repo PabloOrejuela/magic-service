@@ -50,4 +50,129 @@ class Administracion extends BaseController {
             return redirect()->to('/');
         }
     }
+
+    public function items() {
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['items'] = $this->itemModel->findAll();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Items';
+            $data['main_content']='administracion/grid_items';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    /**
+     * Formulario para editar información de los items que conforman los productos
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function form_item_edit($id) {
+
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['item'] = $this->itemModel->find($id);
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Editar Item';
+            $data['main_content']='administracion/form-item-edit';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+    
+    /*
+    * Recibe info del form de edit Item y actualiza
+    *
+    * @param Type var post
+    * @return void
+    * @throws conditon
+    * @date 10-10-2023
+    */
+    public function item_update() {
+    
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $item = [
+                'id' => $this->request->getPostGet('id'),
+                'item' => strtoupper($this->request->getPostGet('item')),
+                'precio' => strtoupper($this->request->getPostGet('precio')),
+
+            ];
+            //echo '<pre>'.var_export($item, true).'</pre>';exit;
+            $this->itemModel->_update($item);
+            //echo $this->db->getLastQuery();exit;
+
+            return redirect()->to('items');
+        }else{
+
+            $this->logout();
+        }
+        
+    }
+
+    /*
+    * Recibe info del form y cambia el estado
+    *
+    * @param Type var post
+    * @return void
+    * @throws conditon
+    * @date 10-10-2023
+    */
+    public function item_delete($id, $estado) {
+    
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $item = [
+                'id' => $id,
+                'estado' => $estado,
+            ];
+            //echo '<pre>'.var_export($item, true).'</pre>';exit;
+            $this->itemModel->_updateEstado($item);
+            //echo $this->db->getLastQuery();exit;
+
+            return redirect()->to('items');
+        }else{
+
+            $this->logout();
+        }
+        
+    }
 }

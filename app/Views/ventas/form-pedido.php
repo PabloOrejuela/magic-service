@@ -35,7 +35,7 @@
                             <!-- Morris chart - Sales -->
                             <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
-                            <form action="#" method="post">
+                            <form action="<?= site_url().'/pedido-insert';?>" method="post">
                                 <div class="card-body">
                                     <div class="form-group row">
                                         <label for="fecha" class="col-sm-5 col-form-label">Fecha:</label>

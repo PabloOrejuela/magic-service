@@ -18,6 +18,7 @@ class Home extends BaseController {
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
+            $data['pedidos'] = $this->pedidoModel->findAll();
             //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
             $data['title']='Inicio';
             $data['subtitle']='Pedidos';
