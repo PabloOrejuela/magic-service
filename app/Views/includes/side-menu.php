@@ -111,13 +111,13 @@
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Proveedores</p>
+              <p>Reporte 1</p>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Gastos</p>
+              <p>Reporte 2</p>
             </a>
           </li>
         </ul>

@@ -241,4 +241,92 @@ class Administracion extends BaseController {
             $this->logout();
         }
     }
+
+    /*
+    * undocumented function summary
+    *
+    * @param Type var Description
+    * @return object
+    * @throws conditon
+    * @date fecha
+    */
+    public function usuarios() {
+    
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['usuarios'] = $this->usuarioModel->findAll();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Usuarios';
+            $data['main_content']='administracion/grid_usuarios';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    
+    }
+
+    /*
+    * undocumented function summary
+    *
+    * @param Type var Description
+    * @return object
+    * @throws conditon
+    * @date fecha
+    */
+    public function roles() {
+    
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['roles'] = $this->rolModel->findAll();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Roles y permisos';
+            $data['main_content']='administracion/grid_roles';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    
+    }
+
+    public function form_producto_create(){
+        echo 'Formulario para crear un Nuevo producto';
+    }
+
+    public function form_item_create(){
+        echo 'Formulario para crear un Nuevo Item';
+    }
+
+    public function form_formas_pago_create(){
+        echo 'Formulario para ingresar un Nueva forma de pago';
+    }
+
+    public function form_usuario_create(){
+        echo 'Formulario para crear un Nuevo usuario';
+    }
+
+    public function form_rol_edit($id){
+        echo 'Formulario para crear un Nuevo usuario DESHABILITADO';
+    }
 }

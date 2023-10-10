@@ -30,27 +30,35 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" id="btn-register" href="<?= site_url().'form-pago-create/'; ?>" class="edit mb-2">
+                            <a type="button" id="btn-register" href="<?= site_url().'usuario-create/'; ?>" class="edit mb-2">
                                 <img src="<?= site_url().'public/images/new-file.png'; ?>" >
-                                <span id="title-link">Registrar una nueva forma de pago</span>
+                                <span id="title-link">Registrar un nuevo Usuario</span>
                             </a>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             
                             <thead>
-                                <th>Codigo</th>
-                                <th>Forma de pago</th>
+                                <th>Nombre</th>
+                                <th>Telefono</th>
+                                <th>Email</th>
+                                <th>Dirección</th>
+                                <th>Documento</th>
+                                <th>Logueado</th>
                                 <th>Estado</th>
                                 <th>Desactivar</th>
                             </thead>
                             <tbody>
                                 <?php
-                                    if (isset($formas_pago) && $formas_pago != NULL) {
-                                        foreach ($formas_pago as $key => $value) {
+                                    if (isset($usuarios) && $usuarios != NULL) {
+                                        foreach ($usuarios as $key => $value) {
                                             echo '<tr>
-                                                <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'item-edit/'.$value->id.'" id="link-editar">'.$value->forma_pago.'</a></td>';
+                                                <td><a href="'.site_url().'usuario-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
+                                                <td>'.$value->telefono.'</td>
+                                                <td>'.$value->email.'</td>
+                                                <td>'.$value->direccion.'</td>
+                                                <td>'.$value->cedula.'</td>
+                                                <td>'.$value->logged.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){
@@ -59,7 +67,7 @@
                                             echo '
                                                 <td>
                                                     <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'forma-pago-delete/'.$value->id.'/'.$value->estado.'" class="edit">
+                                                        <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'/'.$value->estado.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>

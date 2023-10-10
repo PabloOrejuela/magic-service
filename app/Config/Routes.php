@@ -39,14 +39,20 @@ $routes->post('ventas/get-valor-producto', 'Ventas::get_valor_producto');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
+$routes->get('producto-create', 'Administracion::form_producto_create');
 $routes->get('items', 'Administracion::items');
 $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
 $routes->post('item-update', 'Administracion::item_update');
+$routes->get('item-create', 'Administracion::form_item_create');
 $routes->get('item-delete/(:num)/(:num)', 'Administracion::item_delete/$1/$2');
 $routes->get('formas-pago', 'Administracion::formas_pago');
+$routes->get('form-pago-create', 'Administracion::form_formas_pago_create');
 $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
 $routes->get('usuarios', 'Administracion::usuarios');
+$routes->get('usuario-edit/(:num)', 'Administracion::form_usuario_edit/$1');
+$routes->get('usuario-create', 'Administracion::form_usuario_create');
 $routes->get('roles', 'Administracion::roles');
+$routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
 
 /*
  * --------------------------------------------------------------------

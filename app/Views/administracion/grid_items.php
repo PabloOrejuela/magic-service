@@ -29,6 +29,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
+                        <div>
+                            <a type="button" id="btn-register" href="<?= site_url().'item-create/'; ?>" class="edit mb-2">
+                                <img src="<?= site_url().'public/images/new-file.png'; ?>" >
+                                <span id="title-link">Registrar un nuevo Item</span>
+                            </a>
+                        </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             

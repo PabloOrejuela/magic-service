@@ -29,41 +29,34 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
-                        <div>
-                            <a type="button" id="btn-register" href="<?= site_url().'form-pago-create/'; ?>" class="edit mb-2">
-                                <img src="<?= site_url().'public/images/new-file.png'; ?>" >
-                                <span id="title-link">Registrar una nueva forma de pago</span>
-                            </a>
-                        </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             
                             <thead>
-                                <th>Codigo</th>
-                                <th>Forma de pago</th>
-                                <th>Estado</th>
-                                <th>Desactivar</th>
+                                <th>Rol</th>
+                                <th>Administración</th>
+                                <th>Ventas</th>
+                                <th>Proveedores</th>
+                                <th>Reportes</th>
+                                <th>Editar</th>
                             </thead>
                             <tbody>
                                 <?php
-                                    if (isset($formas_pago) && $formas_pago != NULL) {
-                                        foreach ($formas_pago as $key => $value) {
+                                    if (isset($roles) && $roles != NULL) {
+                                        foreach ($roles as $key => $value) {
                                             echo '<tr>
-                                                <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'item-edit/'.$value->id.'" id="link-editar">'.$value->forma_pago.'</a></td>';
-                                                if ($value->estado == 1) {
-                                                    echo '<td>Activo</td>';
-                                                }else if($value->estado == 0){
-                                                    echo '<td>Inactivo</td>';
-                                                }
-                                            echo '
-                                                <td>
-                                                    <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'forma-pago-delete/'.$value->id.'/'.$value->estado.'" class="edit">
-                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
-                                                        </a>
-                                                    </div>
-                                                </td>
+                                                    <td>'.$value->rol.'</td>
+                                                    <td>'.$value->admin.'</td>
+                                                    <td>'.$value->ventas.'</td>
+                                                    <td>'.$value->proveedores.'</td>
+                                                    <td>'.$value->reportes.'</td>
+                                                    <td>
+                                                        <div class="contenedor">
+                                                            <a type="button" id="btn-register" href="'.site_url().'rol-edit/'.$value->id.'" class="edit">
+                                                                <img src="'.site_url().'public/images/edit.png" width="30" >
+                                                            </a>
+                                                        </div>
+                                                    </td>
                                                 </tr>';
                                         }
                                     }
@@ -104,9 +97,9 @@
         },
         //"lengthChange": false, 
         "autoWidth": false,
-        "dom": "<'row'<'col-sm-12 col-md-10'l><'col-sm-12 col-md-2'f>>" +
+        "dom": "<'row'<'col-sm-12 col-md-10'><'col-sm-12 col-md-2'>>" +
                 "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
+                "<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'>>"
     });
 });
 </script>
