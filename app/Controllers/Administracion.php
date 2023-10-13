@@ -310,8 +310,62 @@ class Administracion extends BaseController {
     
     }
 
-    public function form_producto_create(){
-        echo 'Formulario para crear un Nuevo producto';
+    /**
+     * Formulario para crear un nuevo producto
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function form_producto_create() {
+
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['categorias'] = $this->categoriaModel->findAll();
+            $data['items'] = $this->itemModel->findAll();
+
+            //echo '<pre>'.var_export($data['categorias'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Crear producto';
+            $data['main_content']='administracion/form-product-new';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function product_insert(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $producto = [
+                'producto' => strtoupper($this->request->getPostGet('producto')),
+                'categoria' => strtoupper($this->request->getPostGet('categoria')),
+                'precio' => strtoupper($this->request->getPostGet('precio')),
+                'items' => $this->request->getPostGet('items'),
+                'elementos' => $this->request->getPostGet('elementos'),
+            ];
+            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+            $this->productoModel->_insert($producto);
+            //echo $this->db->getLastQuery;exit;
+
+            return redirect()->to('items');
+        }else{
+
+            $this->logout();
+        }
     }
 
     public function form_item_create(){

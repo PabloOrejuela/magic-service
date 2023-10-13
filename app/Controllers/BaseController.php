@@ -16,6 +16,7 @@ use App\Models\ProductoModel;
 use App\Models\ItemModel;
 use App\Models\PedidoModel;
 use App\Models\RolModel;
+use App\Models\CategoriaModel;
 
 /**
  * Class BaseController
@@ -68,6 +69,7 @@ abstract class BaseController extends Controller {
         $this->itemModel = new ItemModel($this->db);
         $this->pedidoModel = new PedidoModel($this->db);
         $this->rolModel = new RolModel($this->db);
+        $this->categoriaModel = new CategoriaModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

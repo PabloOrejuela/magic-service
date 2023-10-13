@@ -83,4 +83,23 @@ class ProductoModel extends Model {
         //echo $this->db->getLastQuery();
         return $result;
     }
+
+    public function _insert($data) {
+
+        //Inserto el nuevo producto
+
+        echo '<pre>'.var_export($data, true).'</pre>';exit;
+        $builder = $this->db->table($this->table);
+        if ($data['item'] != 'NULL') {
+            $builder->set('item', $data['item']);
+        }
+        if ($data['precio'] != 'NULL') {
+            $builder->set('precio', $data['precio']);
+        }
+
+        $builder->where('id', $data['id']);
+        $builder->insert();
+
+        //Recibo el id insertado y hago el insert de los items del producto
+    }
 }
