@@ -33,10 +33,11 @@
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             
                             <thead>
-                                <th>No.</th>
+                                <th>Código</th>
                                 <th>Pedido</th>
                                 <th>Cliente</th>
-                                <th>Fecha</th>
+                                <th>Categoría</th>
+                                <th>Fecha entrega</th>
                                 <th>Estado</th>
                             </thead>
                             <tbody>
@@ -46,7 +47,8 @@
                                             echo '<tr>
                                                 <td>'.$value->id.'</td>
                                                 <td><a href="'.site_url().'prod_4_edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>
-                                                <td>'.$value->idcliente.'</td>';
+                                                <td>'.$value->idcliente.'</td>
+                                                <td>'.$value->categoria.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){

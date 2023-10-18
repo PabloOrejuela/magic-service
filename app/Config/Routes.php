@@ -41,6 +41,7 @@ $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
 $routes->get('producto-create', 'Administracion::form_producto_create');
 $routes->post('product-insert', 'Administracion::product_insert');
+$routes->get('product-edit/(:num)', 'Administracion::product_edit/$1');
 $routes->get('items', 'Administracion::items');
 $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
 $routes->post('item-update', 'Administracion::item_update');

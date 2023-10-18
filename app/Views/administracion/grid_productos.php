@@ -51,7 +51,7 @@
                                         foreach ($productos as $key => $value) {
                                             echo '<tr>
                                                 <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'prod_4_edit/'.$value->id.'" id="link-editar">'.$value->producto.'</a></td>
+                                                <td><a href="'.site_url().'product-edit/'.$value->id.'" id="link-editar">'.$value->producto.'</a></td>
                                                 <td>'.$value->categoria.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
