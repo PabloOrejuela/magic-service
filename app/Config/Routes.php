@@ -35,12 +35,14 @@ $routes->get('inicio', 'Home::index');
 $routes->get('logout', 'Home::logout');
 $routes->get('ventas', 'Ventas::index');
 $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
-$routes->post('ventas/get-valor-producto', 'Ventas::get_valor_producto');
+$routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
+$routes->post('pedido-insert', 'Ventas::pedido_insert');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
 $routes->get('producto-create', 'Administracion::form_producto_create');
 $routes->post('product-insert', 'Administracion::product_insert');
+$routes->post('product-update', 'Administracion::product_update');
 $routes->get('product-edit/(:num)', 'Administracion::product_edit/$1');
 $routes->get('items', 'Administracion::items');
 $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
@@ -55,6 +57,9 @@ $routes->get('usuario-edit/(:num)', 'Administracion::form_usuario_edit/$1');
 $routes->get('usuario-create', 'Administracion::form_usuario_create');
 $routes->get('roles', 'Administracion::roles');
 $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
+
+//Proveedores
+$routes->get('proveedores', 'Proveedores::index');
 
 /*
  * --------------------------------------------------------------------

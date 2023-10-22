@@ -330,7 +330,7 @@ class Administracion extends BaseController {
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['items'] = $this->itemModel->findAll();
 
-            //echo '<pre>'.var_export($data['categorias'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Crear producto';
             $data['main_content']='administracion/form-product-new';
@@ -386,7 +386,7 @@ class Administracion extends BaseController {
             $data['producto'] = $this->productoModel->_getProducto($idproducto);
             $data['elementos'] = $this->itemsProductoModel->_getItemsproducto($idproducto);
 
-            //echo '<pre>'.var_export($data['elementos'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Editar producto';
             $data['main_content']='administracion/form-product-edit';
@@ -394,6 +394,38 @@ class Administracion extends BaseController {
         }else{
             $this->logout();
             return redirect()->to('/');
+        }
+    }
+
+    public function product_update(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $producto = [
+                'idusuario' => $data['id'],
+                'producto' => strtoupper($this->request->getPostGet('producto')),
+                'categoria' => strtoupper($this->request->getPostGet('categoria')),
+                'precio' => strtoupper($this->request->getPostGet('precio')),
+                'items' => $this->request->getPostGet('items'),
+                'elementos' => $this->request->getPostGet('elementos'),
+                'cantidad' => $this->request->getPostGet('cantidad'),
+            ];
+            echo '<pre>'.var_export($producto, true).'</pre>';exit;
+            //Inserto el nuevo producto
+            $idproducto = $this->productoModel->_insert($producto);
+            
+            //Recibo el id insertado y hago el insert de los items del producto
+            $this->itemsProductoModel->_insert($idproducto, $producto['elementos']);
+
+            return redirect()->to('productos');
+        }else{
+
+            $this->logout();
         }
     }
 

@@ -4,6 +4,7 @@
     }
     #item-grid{
         margin-left: 20px;
+        /*float: left;*/
     }
     #items{
         text-align: left;
@@ -12,7 +13,18 @@
         text-decoration: none;
     }
     #input-item{
-        width: 60%;
+        width: 80%;
+        margin-right: 5px;
+    }
+    .cant{
+        /* width: 20%; */
+        text-align: right;
+        margin-left: 0px;
+    }
+
+    #mensaje{
+        color: red;
+        font-size: 2.5em;
     }
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -25,11 +37,11 @@
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?> AUN ESTOY TERMINADO ESTA FUNCION</h3>
+                        <h3 class="card-title"><?= $subtitle; ?><span id="mensaje"> Aún trabajando esta parte</span></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'/product-insert';?>" method="post">
+                    <form action="<?= site_url().'product-update';?>" method="post">
                         <div class="card-body">
                             <div class="form-group col-md-7">
                                 <label for="producto">Nombre del producto:</label>
@@ -76,24 +88,23 @@
                                     <a href="#" class="btn btn-secondary stretched-link" onclick="agregar();">+ Agregar</a>
                                 </div>
                             </div>
-                            <div class="mb-3 row col-sm-12" >
-                                <ol id="item-grid">
+                            <div class="input-group col-md-8 mb-3" id="item-grid" >
                                 <?php
+                                    $precio = 0;
                                     //echo '<pre>'.var_export($elementos, true).'</pre>';exit;
                                     foreach ($elementos as $key => $elemento) {
-                                        echo '
-                                            <li>'.$elemento->item.'</li>
-                                        ';
+                                        $precio += $elemento->precio;
+                                        echo '<input type="text" class="form-control" id="input-item" name="elementos['.$elemento->id.']" value="'.$elemento->item.'" >
+                                                <input class="form-control mb-1 col-sm-2 cant" type="text"  value="'.$elemento->cantidad.'" name="cantidad[]" id="'.$elemento->id.'">';
                                     }
                                 ?>
-                                </ol>
                             </div>
                             <div class="mb-3 row col-sm-8" id="elementos" hidden>
                                 <ol>
                                 <?php
                                     foreach ($elementos as $key => $elemento) {
                                         echo '
-                                            <li>'.$elemento->item.'</li>
+                                            <li><input class="form-control" type="hidden" name="'.$elemento->id.'" value="'.$elemento->cantidad.'" ></li>
                                         ';
                                     }
                                 ?>
@@ -102,7 +113,7 @@
                             <div class="mb-3 row col-sm-8">
                                 <label for="precio" class="col-sm-3 col-form-label">Precio:</label>
                                 <div class="col-sm-4">
-                                <input type="text" class="form-control" id="precio" name="precio" placeholder="0.00" value="" readonly>
+                                <input type="text" class="form-control" id="precio" name="precio" placeholder="0.00" value="<?= number_format($precio, 2); ?>" readonly>
                                 </div>
                             </div> 
                             
@@ -122,12 +133,16 @@
 <script>
 
 
-    var elementos = [];
+    var elementos = []
+    var id = []
+    var cant = []
     var precio = 0
     var total = 0.00
     var html = ''
     var html2 = ''
     var nombre = ''
+    var num = 1
+   
    
 
     function agregar(){
@@ -138,26 +153,52 @@
             
             nombre = texto.split('$')[0]
             precio = texto.split('$')[1]
+            
 
             if (texto != "-- Seleccionar Item --") {
-                //elementos.push({key: ''+valor, item: ''+texto, precio: ''+precio})
+                
                 total = total + parseFloat(precio)
                 document.getElementById("precio").value = total.toFixed(2)
+                
 
-                //Mostrar los elementos
-                //html += '<li>'+texto+'</li>'
-                html += '<li><input class="form-control g-3" name="items[]" value="'+texto+'" id="input-item"  readonly></li>'
-                $('#item-grid').html(html)
-                html2 += '<input class="form-control" type="hidden" name="elementos[]" value="'+valor+'" >'
-                $('#elementos').html(html2)
+                if (elementos[valor] == undefined || elementos[valor] == NaN) {
+                    //console.log("NO");
+                    elementos[valor] = 1
+                    // const el = document.createElement('div')
+                    // el.textContent = elementos[valor]
+                    // div.appendChild(el)
+                    //document.getElementById("input-cant").value = num
+                    html = '<input class="form-control mb-1" name="items[]" value="'+texto+'" id="input-item" readonly>'+
+                            '<input class="form-control mb-1 col-sm-2 cant" type="text"  value="'+num+'" name="cantidad[]" id="'+valor+'">'+
+                            '<input type="button" value="quitar" >'
+                    $('#item-grid').append(html)
+                
+                    //console.log(elementos)
+                    html2 += '<input class="form-control" type="hidden" name="elementos['+valor+']" value="'+num+'" >'+
+                    '<input class="form-control mb-1 cant" type="hidden" name="cant[]" value="'+num+'"  id="input-cant">'
+                    $('#elementos').html(html2)
+                   
+                }else{
+                    elementos[valor] = parseInt(elementos[valor])+1
+
+                    html2 += '<input class="form-control" type="hidden" name="elementos['+valor+']" value="'+elementos[valor]+'" >'+
+                        '<input class="cant form-control mb-1 " type="hidden" name="cant[]" value="'+num+'"  id="input-cant">'+
+                        '<input type="button" value="quitar" >'
+                    $('#elementos').html(html2)
+                    document.getElementById(valor).value = elementos[valor] 
+                    
+                    
+                    
+                }
+                
+                //console.log(elementos)
             }
+            
             
             
         //});
     }
 
-
-    
 
     $('#activar').click(function() {
 

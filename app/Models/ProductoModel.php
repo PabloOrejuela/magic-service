@@ -55,6 +55,22 @@ class ProductoModel extends Model {
         return $result;
     }
 
+    function _getPrecioProducto($id){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('precio')->where($this->table.'.id', $id);
+        //$builder->join('items_productos', $this->table.'.id = items_productos.idproducto');
+        //$builder->join('items', 'items_productos.item = items.id');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getCliente($documento){
         $result = NULL;
         $builder = $this->db->table($this->table);

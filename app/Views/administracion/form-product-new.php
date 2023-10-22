@@ -13,15 +13,29 @@
         text-decoration: none;
     }
     #input-item{
-        width: 70%;
+        width: 65%;
         margin-right: 5px;
     }
-    #input-cant{
-        width: 20%;
+    .cant{
+        /* width: 20%; */
         text-align: right;
-        margin-left: 0px;
+        margin-left: 1px;
+    }
+
+    #ion-delete{
+        
+        margin-left: 7px;
+        padding: 2px;
+        padding-top: 3px;
+        font-size: 1.5em;
+        color: red;
     }
 </style>
+<script>
+    $(document).ready( 
+        
+    );
+</script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
 <section class="content">
@@ -77,13 +91,10 @@
                                     <a href="#" class="btn btn-secondary stretched-link" onclick="agregar();">+ Agregar</a>
                                 </div>
                             </div>
-                            <div class="input-group col-md-10 mb-3" id="item-grid" >
+                            <div class="input-group col-md-12 mb-3" id="item-grid" >
                                 
                             </div>
                             <div class="mb-3 row col-sm-8" id="elementos" hidden>
-                                <ul>
-
-                                </ul>
                                 
                             </div>
                             <div class="mb-3 row col-sm-8">
@@ -106,99 +117,118 @@
         </div>
     </div>
 </section> <!-- /.card -->
-<script>
+<script type="text/javascript">
 
-
-    var elementos = []
-    var id = []
-    var cant = []
-    var precio = 0
-    var total = 0.00
-    var html = ''
-    var html2 = ''
-    var nombre = ''
-    var num = 1
-   
-   
-
-    function agregar(){
-
-        const div = document.getElementById("item-grid")
+var elementos = []
+var id = []
+var cant = []
+var precio = 0
+var total = 0.00
+var html = ''
+var html2 = ''
+var nombre = ''
+var num = 1
+    
+    
+function agregar(){
+    //console.log(elementos)
+    //$("#items").change(function() {
+        var id = $("#items").val() // Capturamos el id que es el valor del select
+        var texto = $("#items").find('option:selected').text(); // Capturamos el texto del option seleccionado
         
-        //$("#items").change(function() {
-            var valor = $("#items").val() // Capturamos el valor del select
-            var texto = $("#items").find('option:selected').text(); // Capturamos el texto del option seleccionado
+        nombre = texto.split('$')[0]
+        precio = texto.split('$')[1]
+        
+        if (texto != "-- Seleccionar Item --") {
             
-            nombre = texto.split('$')[0]
-            precio = texto.split('$')[1]
+            total = total + parseFloat(precio)
+            document.getElementById("precio").value = total.toFixed(2)
             
-
-            if (texto != "-- Seleccionar Item --") {
                 
-                total = total + parseFloat(precio)
-                document.getElementById("precio").value = total.toFixed(2)
+            if (elementos[id] == undefined || elementos[id] == NaN) {
                 
-
-                if (elementos[valor] == undefined || elementos[valor] == NaN) {
-                    //console.log("NO");
-                    elementos[valor] = 1
-                    // const el = document.createElement('div')
-                    // el.textContent = elementos[valor]
-                    // div.appendChild(el)
-                    //document.getElementById("input-cant").value = num
-                    html = '<input class="form-control mb-1" name="items[]" value="'+texto+'" id="input-item" readonly><input class="form-control mb-1" type="text"  value="'+num+'" name="cantidad[]" id="'+valor+'">'
-                    $('#item-grid').append(html)
-                
-                    //console.log(elementos)
-                    html2 += '<input class="form-control" type="hidden" name="elementos['+valor+']" value="'+num+'" ><input class="form-control mb-1" type="hidden" name="cant[]" value="'+num+'"  id="input-cant">'
-                    $('#elementos').html(html2)
-                   
-                }else{
-                    elementos[valor] = parseInt(elementos[valor])+1
-
-                    html2 += '<input class="form-control" type="hidden" name="elementos['+valor+']" value="'+elementos[valor]+'" ><input class="form-control mb-1" type="hidden" name="cant[]" value="'+num+'"  id="input-cant">'
-                    $('#elementos').html(html2)
-                    document.getElementById(valor).value = elementos[valor] 
-                    
-                    
-                    
-                }
-                
+                elementos[id] = 1
+                // const el = document.createElement('div')
+                // el.textContent = elementos[id]
+                // div.appendChild(el)
+                //document.getElementById("input-cant").value = num
+                html = '<div class="form-group"><input class="form-control mb-1" name="items[]" value="'+id+' - '+texto+'" id="input-item" readonly><input class="form-control mb-1 col-sm-1 cant" type="text"  value="'+num+'" name="cantidad[]" id="'+id+'"><a href="#" ><i class="ion ion-android-delete" id="ion-delete"></i></a></div>'
+                $('#item-grid').append(html)
+            
                 //console.log(elementos)
+                html2 += '<input class="form-control" type="hidden" name="elementos['+id+']" value="'+num+'" >'
+                        $('#elementos').html(html2)
+                
+            }else{
+                elementos[id] = parseInt(elementos[id])+1
+                //console.log(elementos[id]);
+                html2 += '<div class="form-group"><input class="form-control" type="hidden" name="elementos['+id+']" value="'+elementos[id]+'" ><input class="cant form-control mb-1 " type="hidden" name="cant[]" value="'+num+'"  id="input-cant"><a href="#" onclick=""><i class="ion ion-android-delete" id="ion-delete"></i></a></div>'
+                        $('#elementos').html(html2)
+                //console.log(elementos)
+                document.getElementById(id).value = elementos[id] 
             }
+
             
-            
-            
-        //});
-    }
+            //actualizaTotal(elementos, id)
+        }
+        
+        
+        
+    //});
+}
+
+function quitar(valor){
+    $('#'+valor).empty();
+    $('#'+valor).remove();
+    
+    elementos.splice(valor,1);
+    console.log(elementos);
+}
+
+function actualizaTotal(items, id){
+    
+    $(document).on("input","#"+id,function(){
+        let c = document.getElementById(id).value 
+
+        // let result = elementos.filter(e => elementos.id.find(t => t.id == 6));
+        console.log(items);
+        // let valor = precio*c;
+        // let subtotal = document.getElementById('precio').value
+        // let total = subtotal + valor
+        // document.getElementById('precio').value = total.toFixed(2);
+
+        //console.log(elementos);
+    });
+    
+}
 
 
     
 
-    $('#activar').click(function() {
+$('#activar').click(function() {
+    //actualizaTotal()
+    if ($('#categoria').val().trim() === '') {
+        alert('Debe seleccionar una CATEGORÍA');
 
-        if ($('#categoria').val().trim() === '') {
-            alert('Debe seleccionar una CATEGORÍA');
+    } else {
+        //console.log('Campo correcto');
+        $("#activar").change(function() {
+            $("#btnGuardar").prop('disabled', false)
+            $("#activar").prop('disabled', true)
+        });
+    }
+});
 
-        } else {
-            //console.log('Campo correcto');
-            $("#activar").change(function() {
-                $("#btnGuardar").prop('disabled', false)
-                $("#activar").prop('disabled', true)
-            });
-        }
-    });
 
-</script>
 
-<script>
 /* Multiple Item Picker */
 $('.selectpicker').selectpicker({
     style: 'btn-default'
 });
+
+
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
+
 

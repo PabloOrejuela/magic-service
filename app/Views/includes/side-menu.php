@@ -8,7 +8,7 @@
     if ($session->ventas == 1) {
       echo '
         <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link" id="btnVentas">
           <i class="ion ion-bag"></i>
           <p>
             Ventas
@@ -28,7 +28,7 @@
     if ($session->admin == 1) {
       echo '
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="#" class="nav-link" >
           <i class="ion ion-bag"></i>
           <p>
             Administración
@@ -72,7 +72,7 @@
 
     if ($session->proveedores == 1) {
       echo '
-      <li class="nav-item">
+      <li class="nav-item" onclick="activeFunc()">
         <a href="#" class="nav-link">
           <i class="ion ion-bag"></i>
           <p>
@@ -80,9 +80,9 @@
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
-        <ul class="nav nav-treeview">
+        <ul class="nav nav-treeview" id="btnAdmin">
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="'.base_url().'proveedores" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Proveedores</p>
             </a>

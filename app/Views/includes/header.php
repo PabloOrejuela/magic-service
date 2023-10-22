@@ -29,9 +29,9 @@
   <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 
   <!-- DataTables -->
-  <link rel="stylesheet" href="<?= site_url(); ?>plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= site_url(); ?>plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= site_url(); ?>plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 
   <!-- Owner styles -->
   <link rel="stylesheet" href="<?= site_url(); ?>public/css/styles.css">
@@ -39,7 +39,5 @@
   src="https://code.jquery.com/jquery-3.7.1.min.js"
   integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
   crossorigin="anonymous"></script>
-
-
-  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>

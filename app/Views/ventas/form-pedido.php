@@ -81,7 +81,7 @@
                                                 }
                                             ?>
                                         </select>
-                                        <a href="pages/charts/chartjs.html" class="nav-link mb-3 link-editar">Editar producto</a>
+                                        <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a>
                                     </div>
                                     <div class="form-group">
                                         <label for="formas_pago">Forma de pago:</label>
@@ -97,31 +97,31 @@
                                         </select>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputPassword3" class="col-sm-8 col-form-label">Valor neto:</label>
+                                        <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control inputValor" id="valor_neto" placeholder="0.00" onchange="sumarTotal(this.value);" name="valor_neto">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputPassword3" class="col-sm-8 col-form-label">Descuento (%):</label>
+                                        <label for="descuento" class="col-sm-8 col-form-label">Descuento (%):</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control inputValor" id="descuento" placeholder="0" onchange="descontar(this.value);" name="descuento">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputPassword3" class="col-sm-8 col-form-label">Transporte:</label>
+                                        <label for="transporte" class="col-sm-8 col-form-label">Transporte:</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control inputValor" id="transporte" placeholder="0.00" onchange="sumar(this.value);" name="transporte">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="inputPassword3" class="col-sm-8 col-form-label">Total:</label>
+                                        <label for="total" class="col-sm-8 col-form-label">Total:</label>
                                         <div class="col-sm-4">
                                             <input type="text" class="form-control inputValor" id="total" placeholder="0.00" onchange="sumar(this.value);" name="total">
                                         </div>
                                     </div>
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="venta_extra">
+                                        <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra">
                                         <label class="form-check-label" for="venta_extra">Venta extra</label>
                                     </div>
                                     </div>
@@ -164,21 +164,22 @@
     })
 
     $(document).ready(function(){
-        $("#inputProducto").on('input',function(){
+        $("#inputProducto").on('change',function(){
             if($("#inputProducto").val() !=""){
                 valor = $("#inputProducto").val();
                 //console.log(valor);
                 $.ajax({
-                    type:"POST",
+                    type:"GET",
                     dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/get-valor-producto",
+                    url: "<?php echo site_url(); ?>ventas/get_valor_producto/"+valor,
                     data:"producto="+valor,
                     beforeSend: function (f) {
                         //$('#cliente').html('Cargando ...');
                     },
                     success: function(data){
-                        console.log(data);
+                        //console.log(data);
                         $('#valor_neto').html(data);
+                        //document.getElementById("valor_neto").value = "0.01"
                     }
                 });
             }
