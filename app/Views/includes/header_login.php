@@ -34,14 +34,11 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
 <script src="<?= site_url(); ?>public/plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
+<script> $.widget.bridge('uibutton', $.ui.button) </script>
 <!-- Bootstrap 4 -->
 <script src="<?= site_url(); ?>public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- ChartJS -->
@@ -64,6 +61,7 @@
 <script src="<?= site_url(); ?>public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?= site_url(); ?>public/dist/js/adminlte.js"></script>
+<link rel="icon" href="<?= site_url();?>favicon.ico" type="image/gif">
 <!-- AdminLTE for demo purposes -->
 <!-- <script src="<?= site_url(); ?>public/dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

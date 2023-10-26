@@ -7,7 +7,7 @@
       echo '<script>
         document.getElementById("nombre").value = "'.$data->nombre.'"
         document.getElementById("telefono").value = "'.$data->telefono.'"
-        document.getElementById("valor_neto").value = "0.01"
+        document.getElementById("idcliente").value = "'.$data->id.'"
       </script>';
       
       

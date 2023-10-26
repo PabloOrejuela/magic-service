@@ -55,4 +55,39 @@ class Validation extends BaseConfig {
             'required' => 'El campo "Contraseña" es obligatorio',
         ]
     ];
+
+    public $pedido = [
+        'idcliente'  => 'greater_than[0]',
+        'nombre'   => 'required',
+        'vendedor'  => 'greater_than[0]',
+        'producto'  => 'greater_than[0]',
+        'formas_pago'  => 'greater_than[0]',
+        'sectores'  => 'required',
+        //'email'  => 'valid_email',
+        'fecha' => 'valid_date'
+    ]; 
+
+    public $pedido_errors = [
+        'idcliente' => [
+            'greater_than[0]' => 'El campo "Cliente" es obligatorio',
+        ],
+        'nombre' => [
+            'required' => 'El campo "Cliente" es obligatorio',
+        ],
+        'vendedor' => [
+            'greater_than' => 'El campo "Vendedor" es obligatorio',
+        ],
+        'producto' => [
+            'greater_than' => 'El campo "Producto" es obligatorio',
+        ],
+        'formas_pago' => [
+            'greater_than' => 'El campo "Forma de pago" es obligatorio',
+        ],
+        'email' => [
+            'valid_email' => 'El "Email" debe ser un email válido',
+        ],
+        'sectores' => [
+            'required' => '',
+        ],
+    ];
 }

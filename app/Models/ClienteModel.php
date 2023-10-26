@@ -52,4 +52,23 @@ class ClienteModel extends Model {
         //echo $this->db->getLastQuery();
         return $result;
     }
+
+    public function _insert($data) {
+
+        //Inserto el nuevo cliente
+        $builder = $this->db->table($this->table);
+        if ($data['nombre'] != 'NULL' && $data['nombre'] != '') {
+            $builder->set('nombre', $data['nombre']);
+        }
+
+        if ($data['telefono'] != 'NULL' && $data['telefono'] != '') {
+            $builder->set('idtelefono', $data['telefono']);
+        }
+
+        if ($data['documento'] != 'NULL' && $data['documento'] != '') {
+            $builder->set('documento', $data['documento']);
+        }
+        $builder->insert();
+        return  $this->db->insertID();
+    }
 }

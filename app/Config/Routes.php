@@ -34,9 +34,12 @@ $routes->post('validate_login', 'Home::validate_login');
 $routes->get('inicio', 'Home::index');
 $routes->get('logout', 'Home::logout');
 $routes->get('ventas', 'Ventas::index');
+$routes->get('pedidos', 'Ventas::pedidos');
 $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
 $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
+$routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
+$routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
@@ -60,6 +63,7 @@ $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
 
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');
+$routes->get('proveedor-create', 'Proveedores::create');
 
 /*
  * --------------------------------------------------------------------

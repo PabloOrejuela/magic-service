@@ -12,12 +12,16 @@
         color: #000;
         text-decoration: none;
     }
-    .input {
+    /* .input {
         border-radius: 300px;
-        width: 250px;
-    }
+        width: 100px;
+    } */
     .row {
         margin-bottom: 20px;
+    }
+
+    #datatablesSimple{
+        font-size: 0.7em;
     }
 </style>
 <!-- Main content -->
@@ -33,22 +37,44 @@
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             
                             <thead>
-                                <th>Código</th>
-                                <th>Pedido</th>
+                                <th>Fecha</th>
                                 <th>Cliente</th>
+                                <th>Pedido</th>
                                 <th>Categoría</th>
+                                <th>Sector</th>
+                                <th>Dir. entrega</th>
                                 <th>Fecha entrega</th>
+                                <th>Mensajero</th>
                                 <th>Estado</th>
+                                <th></th>
                             </thead>
                             <tbody>
                                 <?php
+                                    $mensajero[0] = '--Seleccionar--';
+
+                                    foreach ($mensajeros as $key => $value) {
+                                        $mensajero[$value->id] = $value->nombre;
+                                    }
+
                                     if (isset($pedidos) && $pedidos != NULL) {
                                         foreach ($pedidos as $key => $value) {
                                             echo '<tr>
-                                                <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'prod_4_edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>
-                                                <td>'.$value->idcliente.'</td>
-                                                <td>'.$value->categoria.'</td>';
+                                                <td>'.$value->fecha.'</td>
+                                                <td>'.$value->nombre.'</td>
+                                                <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>
+                                                <td>'.$value->categoria.'</td>
+                                                <td>'.$value->sector.'</td>';
+                                                if ($value->dir_entrega) {
+                                                    echo '<td>'.$value->dir_entrega.'</td>';
+                                                }else{
+                                                    echo '<td>Registrar</td>';
+                                                }
+                                                if ($value->fecha_entrega) {
+                                                    echo '<td>'.$value->fecha_entrega.'</td>';
+                                                }else{
+                                                    echo '<td>Registrar fecha de entrega</td>';
+                                                }
+                                            echo '<td>'.form_dropdown('mensajero', $mensajero, '').'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){
@@ -57,7 +83,7 @@
                                             echo '<td>
                                                     <div class="contenedor">
                                                         <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
-                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
+                                                            <img src="'.site_url().'public/images/edit.png" width="20" >
                                                         </a>
                                                     </div>
                                                 </td>
@@ -101,7 +127,7 @@
         },
         //"lengthChange": false, 
         "autoWidth": false,
-        "dom": "<'row'<'col-sm-12 col-md-10'l><'col-sm-12 col-md-2'f>>" +
+        "dom": "<'row'<'col-sm-12 col-md-9'l><'col-sm-12 col-md-1' f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
     });

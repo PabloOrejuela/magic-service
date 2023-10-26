@@ -8,6 +8,8 @@ class Login extends BaseController {
 
     public function index(){
 
+        //echo '<pre>'.var_export($data['mensaje'], true).'</pre>';exit;
+
         $data['title']='Magic Service';
         $data['main_content']='login';
         return view('includes/template_login', $data);

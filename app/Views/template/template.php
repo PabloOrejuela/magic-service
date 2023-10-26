@@ -14,7 +14,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #00514e;">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="<?= base_url(); ?>" class="brand-link">
       <img src="<?= base_url(); ?>public/images/logo-magic-small.png" alt="magic Service Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">Magic Service</span>
     </a>
@@ -94,7 +94,8 @@
 <!-- AdminLTE for demo purposes -->
 <!-- <script src="<?= site_url(); ?>public/dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?= site_url(); ?>public/dist/js/pages/dashboard.js"></script>
+
+<!-- <script src="<?= site_url(); ?>public/dist/js/pages/dashboard.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 <!-- DataTables  & Plugins -->

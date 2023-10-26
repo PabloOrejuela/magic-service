@@ -15,15 +15,16 @@ class Home extends BaseController {
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
         if ($data['logged'] == 1) {
             
-            $data['session'] = $this->session;
-            $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
-            $data['formas_pago'] = $this->formaPagoModel->findAll();
-            $data['pedidos'] = $this->pedidoModel->findAll();
-            //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
-            $data['title']='Inicio';
-            $data['subtitle']='Pedidos';
-            $data['main_content']='home/form-pedidos-inicio';
-            return view('dashboard/index', $data);
+            // $data['session'] = $this->session;
+            // $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            // $data['formas_pago'] = $this->formaPagoModel->findAll();
+            // $data['pedidos'] = $this->pedidoModel->findAll();
+            // //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
+            // $data['title']='Inicio';
+            // $data['subtitle']='Pedidos';
+            // $data['main_content']='home/form-pedidos-inicio';
+            // return view('dashboard/index', $data);
+            return redirect()->to('pedidos');
         }else{
             $this->logout();
             return redirect()->to('/');
@@ -38,18 +39,21 @@ class Home extends BaseController {
         
         $this->validation->setRuleGroup('login');
         
+        
         if (!$this->validation->withRequest($this->request)->run()) {
             //Depuración
             //dd($validation->getErrors());
+            
             return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
         }else{ 
 
             $usuario = $this->usuarioModel->_getUsuario($data);
             $ip = $_SERVER['REMOTE_ADDR'];
             
+            
             if (isset($usuario) && $usuario != NULL) {
                 //valido el login y pongo el id en sesion  && $usuario->id != 1 
-                echo '<pre>'.var_export($usuario, true).'</pre>';
+                //echo '<pre>'.var_export($usuario, true).'</pre>';
                 if ($usuario->logged == 1 ) {
                     //Está logueado así que lo deslogueo
                     $user = [
@@ -88,8 +92,10 @@ class Home extends BaseController {
                 return redirect()->to('inicio');
 
             }else{
-                $this->logout();
-                return redirect()->to('/');
+
+                $this->session->setFlashdata('mensaje', $data);
+                //$this->logout();
+                return redirect()->back()->with('mensaje', 'Hubo un error, usuario o contraseña incorrectos');
             }
         }
         
