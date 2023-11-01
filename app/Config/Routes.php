@@ -32,6 +32,7 @@ $routes->setAutoRoute(false);
 $routes->get('/', 'Login::index');
 $routes->post('validate_login', 'Home::validate_login');
 $routes->get('inicio', 'Home::index');
+$routes->get('mantenimiento', 'Home::mantenimiento');
 $routes->get('logout', 'Home::logout');
 $routes->get('ventas', 'Ventas::index');
 $routes->get('pedidos', 'Ventas::pedidos');

@@ -13,7 +13,7 @@ class Home extends BaseController {
         $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
         $data['nombre'] = $this->session->nombre;
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
-        if ($data['logged'] == 1) {
+        if ($data['logged'] == 1 ) {
             
             // $data['session'] = $this->session;
             // $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
@@ -49,11 +49,15 @@ class Home extends BaseController {
 
             $usuario = $this->usuarioModel->_getUsuario($data);
             $ip = $_SERVER['REMOTE_ADDR'];
+            //echo '<pre>'.var_export($this->estadoSistema, true).'</pre>';exit;
+            if ($this->estadoSistema == 'INACTIVO') {
+                //return redirect()->back()->with('mensaje', 'El sistema se encuentra en desarrollo, por favor vuelva mas tarde');
+                return redirect()->to('mantenimiento');
+            }
             
-            
-            if (isset($usuario) && $usuario != NULL) {
+            if (isset($usuario) && $usuario != NULL ) {
                 //valido el login y pongo el id en sesion  && $usuario->id != 1 
-                //echo '<pre>'.var_export($usuario, true).'</pre>';
+                //echo '<pre>'.var_export($this->estadoSistema, true).'</pre>';
                 if ($usuario->logged == 1 ) {
                     //Está logueado así que lo deslogueo
                     $user = [
@@ -99,6 +103,15 @@ class Home extends BaseController {
             }
         }
         
+    }
+
+    public function mantenimiento() {
+
+        $this->logout();
+        $data['mensaje'] = "El sistema se encuentra en desarrollo, por favor vuelva mas tarde";
+        $data['title']='Magic Service';
+        $data['main_content']='home/mantenimiento_view';
+        return view('includes/template_login', $data);
     }
 
     public function logout(){

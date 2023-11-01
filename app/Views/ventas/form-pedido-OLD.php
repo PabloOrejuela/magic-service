@@ -32,11 +32,6 @@
         font-size: 1.2em;
     }
 
-    #horario_entrega{
-        width:100%;
-        font-size: 1.1em;
-    }
-
     #error-message{
         color:red;
         font-size: 0.7em;
@@ -74,24 +69,9 @@
                             <form action="<?= site_url().'/pedido-insert';?>" method="post">
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega:</label>
+                                        <label for="fecha" class="col-sm-5 col-form-label">Fecha:</label>
                                         <div class="col-sm-7">
-                                            <input type="date" class="form-control" id="inputFecha" name="fecha" value="">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="horario_entrega" class="col-md-5 col-form-label">Horario de entrega:</label>
-                                        <div class="col-md-6">
-                                            <select class="form-select form-control-border" id="horario_entrega" name="horario_entrega">
-                                                <option value="0" selected>--Seleccionar horario--</option>
-                                                <?php
-                                                    if (isset($horariosEntrega)) {
-                                                        foreach ($horariosEntrega as $key => $horario) {
-                                                            echo '<option value="'.$key.'" '.set_select('vendedor', $key, false).' >'.$horario.'</option>';
-                                                        }
-                                                    }
-                                                ?>
-                                        </select>
+                                            <input type="date" class="form-control" id="inputFecha" name="fecha" value="<?php echo date('Y-m-d');?>">
                                         </div>
                                     </div>
                                     <div class="form-group"  style="display: none;">

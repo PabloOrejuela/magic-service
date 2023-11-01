@@ -44,6 +44,7 @@
                                 <th>Email</th>
                                 <th>Dirección</th>
                                 <th>Documento</th>
+                                <th>Rol</th>
                                 <th>Logueado</th>
                                 <th>Estado</th>
                                 <th>Desactivar</th>
@@ -58,6 +59,7 @@
                                                 <td>'.$value->email.'</td>
                                                 <td>'.$value->direccion.'</td>
                                                 <td>'.$value->cedula.'</td>
+                                                <td>'.$value->rol.'</td>
                                                 <td>'.$value->logged.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
@@ -112,7 +114,7 @@
         },
         //"lengthChange": false, 
         "autoWidth": false,
-        "dom": "<'row'<'col-sm-12 col-md-10'l><'col-sm-12 col-md-2'f>>" +
+        "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
     });

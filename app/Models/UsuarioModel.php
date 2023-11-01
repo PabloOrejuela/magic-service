@@ -66,6 +66,23 @@ class UsuarioModel extends Model {
         return $result;
     }
 
+    function _getAllUsers(){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select(
+            'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,proveedores,reportes,rol,direccion,estado'
+        );
+        $builder->join('roles', 'roles.id=usuarios.idroles');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getUsuariosRol($idrol){
         $result = NULL;
         $builder = $this->db->table($this->table);

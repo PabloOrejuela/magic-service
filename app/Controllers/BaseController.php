@@ -47,6 +47,8 @@ abstract class BaseController extends Controller {
      * @var array
      */
     protected $helpers = ['form', 'url', 'html'];
+    //protected $estadoSistema = 'INACTIVO';
+    protected $estadoSistema = 'ACTIVO';
 
     /**
      * Be sure to declare properties for any property fetch you initialized.

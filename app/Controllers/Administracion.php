@@ -261,8 +261,7 @@ class Administracion extends BaseController {
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
-
-            $data['usuarios'] = $this->usuarioModel->findAll();
+            $data['usuarios'] = $this->usuarioModel->_getAllUsers();
 
             //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Administración';
