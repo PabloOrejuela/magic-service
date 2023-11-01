@@ -57,6 +57,7 @@ $routes->get('formas-pago', 'Administracion::formas_pago');
 $routes->get('form-pago-create', 'Administracion::form_formas_pago_create');
 $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
 $routes->get('usuarios', 'Administracion::usuarios');
+$routes->post('user-insert', 'Administracion::user_insert');
 $routes->get('usuario-edit/(:num)', 'Administracion::form_usuario_edit/$1');
 $routes->get('usuario-create', 'Administracion::form_usuario_create');
 $routes->get('roles', 'Administracion::roles');

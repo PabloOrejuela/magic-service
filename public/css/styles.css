@@ -23,3 +23,7 @@ a{
   text-decoration: none;
   color: #00514E;
 }
+
+#error-message{
+  color: red;
+}

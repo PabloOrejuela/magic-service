@@ -437,7 +437,64 @@ class Administracion extends BaseController {
     }
 
     public function form_usuario_create(){
-        echo 'Formulario para crear un Nuevo usuario';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['roles'] = $this->rolModel->findAll();
+
+            //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Nuevo Usuario';
+            $data['main_content']='administracion/form-user-new';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function user_insert(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $user = [
+                'nombre' => strtoupper($this->request->getPostGet('nombre')),
+                'user' => $this->request->getPostGet('user'),
+                'password' => $this->request->getPostGet('password'),
+                'telefono' => $this->request->getPostGet('telefono'),
+                'email' => $this->request->getPostGet('email'),
+                'cedula' => $this->request->getPostGet('cedula'),
+                'direccion' => $this->request->getPostGet('direccion'),
+                'idroles' => $this->request->getPostGet('idroles'),
+            ];
+            
+            $this->validation->setRuleGroup('usuario');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+                //echo '<pre>'.var_export($user, true).'</pre>';exit;
+                $this->usuarioModel->_insert($user);
+
+                return redirect()->to('usuarios');
+            }
+            
+        }else{
+
+            $this->logout();
+        }
     }
 
     public function form_rol_edit($id){

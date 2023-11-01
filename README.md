@@ -1,4 +1,4 @@
 <h4>Implementados:</h4>  
 <ul>
-    <li>Corregido el campo buscar del grid Pedidos, productos, items, formas de pago</li>
+    <li>Creado el form de creación de un nuevo usuario</li>
 </ul>

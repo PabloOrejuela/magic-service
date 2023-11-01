@@ -18,11 +18,13 @@ class UsuarioModel extends Model {
         'user',
         'telefono',
         'email',
+        'direccion',
         'password',
         'cedula',
-        'idrol',
-        'is_logged',
-        'ip'
+        'idroles',
+        'logged',
+        'ip',
+        'estado'
     ];
 
     // Dates
@@ -128,5 +130,28 @@ class UsuarioModel extends Model {
         $builder->set('ip', NULL);
         $builder->where('id', $usuario['id']);
         $builder->update();
+    }
+
+    public function _insert($data) {
+
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        $builder = $this->db->table($this->table);
+        $this->db->transStart();
+        $builder->set('nombre', $data['nombre']);
+        $builder->set('user', $data['user']);
+        $builder->set('password', md5($data['password']));
+        $builder->set('telefono', $data['telefono']);
+        $builder->set('email', $data['email']);
+        $builder->set('cedula', $data['cedula']);
+        $builder->set('direccion', $data['direccion']);
+        $builder->set('idroles', $data['idroles']);
+
+        $builder->insert();
+        //echo $this->db->getLastQuery();
+        $this->db->transComplete();
+        if ($this->db->transStatus() === false) {
+            echo log_message();
+        }
+        //return  $this->db->insertID();
     }
 }
