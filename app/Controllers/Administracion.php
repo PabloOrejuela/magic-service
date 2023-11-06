@@ -27,6 +27,16 @@ class Administracion extends BaseController {
         }
     }
 
+    public function desactivar() {
+
+        $this->logout();
+        $this->configuracionModel->_desactivar();
+        $data['mensaje'] = "El sistema se encuentra en desarrollo, por favor vuelva mas tarde";
+        $data['title']='Magic Service';
+        $data['main_content']='home/mantenimiento_view';
+        return view('includes/template_login', $data);
+    }
+
     public function productos() {
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
@@ -150,7 +160,7 @@ class Administracion extends BaseController {
     * @throws conditon
     * @date 10-10-2023
     */
-    public function item_delete($id, $estado) {
+    public function item_delete($id) {
     
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
@@ -162,12 +172,9 @@ class Administracion extends BaseController {
 
             $item = [
                 'id' => $id,
-                'estado' => $estado,
             ];
             //echo '<pre>'.var_export($item, true).'</pre>';exit;
-            $this->itemModel->_updateEstado($item);
-            //echo $this->db->getLastQuery();exit;
-
+            $this->itemModel->_itemDelete($item);
             return redirect()->to('items');
         }else{
 
@@ -273,6 +280,32 @@ class Administracion extends BaseController {
             return redirect()->to('/');
         }
     
+    }
+
+    public function estado(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $data['session'] = $this->session;
+            $data['estado'] = $this->estadoSistema();
+
+            $data['title']='Administración';
+            $data['subtitle']='Estado del sistema';
+            $data['main_content']='administracion/frm_estado';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function estadoSistema(){
+        return $this->configuracionModel->findAll();
     }
 
     /*
@@ -429,7 +462,57 @@ class Administracion extends BaseController {
     }
 
     public function form_item_create(){
-        echo 'Formulario para crear un Nuevo Item';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Nuevo Item';
+            $data['main_content']='administracion/form-item-new';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function itemCreate(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $item = [
+                'item' => strtoupper($this->request->getPostGet('item')),
+                'precio' => $this->request->getPostGet('precio'),
+            ];
+            
+            $this->validation->setRuleGroup('items');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+                //echo '<pre>'.var_export($item, true).'</pre>';exit;
+                $this->itemModel->_insert($item);
+
+                return redirect()->to('items');
+            }
+            
+        }else{
+
+            $this->logout();
+        }
     }
 
     public function form_formas_pago_create(){
@@ -495,6 +578,10 @@ class Administracion extends BaseController {
 
             $this->logout();
         }
+    }
+
+    public function form_usuario_edit($id){
+        echo 'Formulario para EDITAR un Nuevo usuario DESHABILITADO';
     }
 
     public function form_rol_edit($id){

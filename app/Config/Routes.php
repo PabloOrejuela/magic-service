@@ -41,6 +41,7 @@ $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1'
 $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
 $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
+$routes->get('estado', 'Administracion::estado');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
@@ -50,9 +51,10 @@ $routes->post('product-update', 'Administracion::product_update');
 $routes->get('product-edit/(:num)', 'Administracion::product_edit/$1');
 $routes->get('items', 'Administracion::items');
 $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
+$routes->post('item-create', 'Administracion::itemCreate');
 $routes->post('item-update', 'Administracion::item_update');
-$routes->get('item-create', 'Administracion::form_item_create');
-$routes->get('item-delete/(:num)/(:num)', 'Administracion::item_delete/$1/$2');
+$routes->get('frm-item-create', 'Administracion::form_item_create');
+$routes->get('item-delete/(:num)', 'Administracion::item_delete/$1');
 $routes->get('formas-pago', 'Administracion::formas_pago');
 $routes->get('form-pago-create', 'Administracion::form_formas_pago_create');
 $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
@@ -62,6 +64,7 @@ $routes->get('usuario-edit/(:num)', 'Administracion::form_usuario_edit/$1');
 $routes->get('usuario-create', 'Administracion::form_usuario_create');
 $routes->get('roles', 'Administracion::roles');
 $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
+$routes->get('desactivar', 'Administracion::desactivar');
 
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');

@@ -19,6 +19,7 @@ use App\Models\RolModel;
 use App\Models\CategoriaModel;
 use App\Models\ItemsProductoModel;
 use App\Models\SectoresEntregaModel;
+use App\Models\ConfiguracionModel;
 
 /**
  * Class BaseController
@@ -48,7 +49,6 @@ abstract class BaseController extends Controller {
      */
     protected $helpers = ['form', 'url', 'html'];
     //protected $estadoSistema = 'INACTIVO';
-    protected $estadoSistema = 'ACTIVO';
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -76,6 +76,7 @@ abstract class BaseController extends Controller {
         $this->categoriaModel = new CategoriaModel($this->db);
         $this->itemsProductoModel = new ItemsProductoModel($this->db);
         $this->sectoresEntregaModel = new SectoresEntregaModel($this->db);
+        $this->configuracionModel = new ConfiguracionModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
@@ -83,4 +84,6 @@ abstract class BaseController extends Controller {
         $this->validation = \Config\Services::validation();
         $this->image = \Config\Services::image();
     }
+
+    
 }

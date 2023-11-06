@@ -6,7 +6,9 @@ use App\Controllers\BaseController;
 
 class Home extends BaseController {
 
+
     public function index() {
+
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
         $data['id'] = $this->session->id;
@@ -50,59 +52,65 @@ class Home extends BaseController {
             $usuario = $this->usuarioModel->_getUsuario($data);
             $ip = $_SERVER['REMOTE_ADDR'];
             //echo '<pre>'.var_export($this->estadoSistema, true).'</pre>';exit;
-            if ($this->estadoSistema == 'INACTIVO') {
-                //return redirect()->back()->with('mensaje', 'El sistema se encuentra en desarrollo, por favor vuelva mas tarde');
-                return redirect()->to('mantenimiento');
-            }
-            
-            if (isset($usuario) && $usuario != NULL ) {
-                //valido el login y pongo el id en sesion  && $usuario->id != 1 
-                //echo '<pre>'.var_export($this->estadoSistema, true).'</pre>';
-                if ($usuario->logged == 1 ) {
-                    //Está logueado así que lo deslogueo
-                    $user = [
-                        'id' => $usuario->id,
-                        'logged' => 0,
-                        'ip' => 0
-                    ];
-                    $this->usuarioModel->update($usuario->id, $user);
-                }
-                
-                $sessiondata = [
-                    //'is_logged' => 1,
-                    'id' => $usuario->id,
-                    'nombre' => $usuario->nombre,
-                    'idroles' => $usuario->idroles,
-                    'rol' => $usuario->rol,
-                    'cedula' => $usuario->cedula,
-                    'logged' => $usuario->logged,
-                    'rol' => $usuario->rol,
-                    'admin' => $usuario->admin,
-                    'ventas' => $usuario->ventas,
-                    'proveedores' => $usuario->proveedores,
-                    'reportes' => $usuario->reportes,
-                ];
-        
-                $user = [
-                    'id' => $usuario->id,
-                    'logged' => 1,
-                    'ip' => $ip
-                ];
-                //echo '<pre>'.var_export($user, true).'</pre>';exit;
-                $this->usuarioModel->_updateLoggin($user);
-                
-                $this->session->set($sessiondata);
-        
-                return redirect()->to('inicio');
 
+            $estado = $this->estadoSistema();
+            
+            if ($estado[0]->estado == 0) {
+                return redirect()->to('mantenimiento');
             }else{
 
-                $this->session->setFlashdata('mensaje', $data);
-                //$this->logout();
-                return redirect()->back()->with('mensaje', 'Hubo un error, usuario o contraseña incorrectos');
+                if (isset($usuario) && $usuario != NULL ) {
+                    //valido el login y pongo el id en sesion  && $usuario->id != 1 
+                    //echo '<pre>'.var_export($this->estadoSistema, true).'</pre>';
+                    if ($usuario->logged == 1 ) {
+                        //Está logueado así que lo deslogueo
+                        $user = [
+                            'id' => $usuario->id,
+                            'logged' => 0,
+                            'ip' => 0
+                        ];
+                        $this->usuarioModel->update($usuario->id, $user);
+                    }
+                    
+                    $sessiondata = [
+                        //'is_logged' => 1,
+                        'id' => $usuario->id,
+                        'nombre' => $usuario->nombre,
+                        'idroles' => $usuario->idroles,
+                        'rol' => $usuario->rol,
+                        'cedula' => $usuario->cedula,
+                        'logged' => $usuario->logged,
+                        'rol' => $usuario->rol,
+                        'admin' => $usuario->admin,
+                        'ventas' => $usuario->ventas,
+                        'proveedores' => $usuario->proveedores,
+                        'reportes' => $usuario->reportes,
+                    ];
+            
+                    $user = [
+                        'id' => $usuario->id,
+                        'logged' => 1,
+                        'ip' => $ip
+                    ];
+                    //echo '<pre>'.var_export($user, true).'</pre>';exit;
+                    $this->usuarioModel->_updateLoggin($user);
+                    
+                    $this->session->set($sessiondata);
+            
+                    return redirect()->to('inicio');
+
+                }else{
+                    $this->session->setFlashdata('mensaje', $data);
+                    //$this->logout();
+                    return redirect()->back()->with('mensaje', 'Hubo un error, usuario o contraseña incorrectos');
+                }
             }
         }
         
+    }
+
+    public function estadoSistema(){
+        return $this->configuracionModel->findAll();
     }
 
     public function mantenimiento() {

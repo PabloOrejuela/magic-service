@@ -112,4 +112,19 @@ class Validation extends BaseConfig {
             'required' => 'El campo "Password" es obligatorio',
         ],
     ];
+
+    public $items = [
+        'item'   => 'required',
+        'precio'   => 'required|decimal',
+    ]; 
+
+    public $items_errors = [
+        'item' => [
+            'required' => 'El campo "Rol" es obligatorio',
+        ],
+        'precio' => [
+            'required' => 'El campo "Precio" es obligatorio',
+            'decimal' => 'El campo "Precio" debe ser una cantidad decimal',
+        ],
+    ];
 }

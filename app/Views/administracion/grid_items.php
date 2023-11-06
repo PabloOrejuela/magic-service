@@ -30,7 +30,7 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" id="btn-register" href="<?= site_url().'item-create/'; ?>" class="edit mb-2">
+                            <a type="button" id="btn-register" href="<?= site_url().'frm-item-create/'; ?>" class="edit mb-2">
                                 <img src="<?= site_url().'public/images/new-file.png'; ?>" >
                                 <span id="title-link">Registrar un nuevo Item</span>
                             </a>
@@ -61,7 +61,7 @@
                                             echo '
                                                 <td>
                                                     <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'/'.$value->estado.'" class="edit">
+                                                        <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>

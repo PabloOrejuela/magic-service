@@ -66,4 +66,29 @@ class ItemModel extends Model {
         $builder->where('id', $data['id']);
         $builder->update();
     }
+
+    public function _insert($data) {
+
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        $builder = $this->db->table($this->table);
+        $this->db->transStart();
+        $builder->set('item', $data['item']);
+        $builder->set('precio', $data['precio']);
+        $builder->insert();
+        //echo $this->db->getLastQuery();
+        $this->db->transComplete();
+        if ($this->db->transStatus() === false) {
+            echo log_message();
+        }
+        //return  $this->db->insertID();
+    }
+
+    public function _itemDelete($data) {
+        $builder = $this->db->table($this->table);
+
+        $builder->set('estado', 0);
+        $builder->where('id', $data['id']);
+        $builder->update();
+    }
+
 }

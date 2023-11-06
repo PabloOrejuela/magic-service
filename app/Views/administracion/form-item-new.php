@@ -15,21 +15,20 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'/item-update';?>" method="post">
+                    <form action="<?= site_url().'/item-create';?>" method="post">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="item">Nombre:</label>
-                                <input type="text" class="form-control" id="item" name="item" value="<?= $item->item; ?>">
+                                <label for="item">Item:</label>
+                                <input type="text" class="form-control" id="item" name="item" placeholder="Item" value="<?= old('item'); ?>">
                             </div>
                             <div class="form-group col-sm-3">
                                 <label for="exampleInpupreciotPassword1">Precio:</label>
-                                <input type="text" class="form-control" id="precio" name="precio" value="<?= $item->precio; ?>">
+                                <input type="text" class="form-control" id="precio" name="precio" placeholder="0.00" value="<?= old('precio'); ?>">
                             </div>
                         </div>
                         <!-- /.card-body -->
-                        <?= form_hidden('id', $item->id); ?>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Actualizar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </form>
                 </div>
