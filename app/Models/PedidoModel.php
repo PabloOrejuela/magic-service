@@ -60,7 +60,8 @@ class PedidoModel extends Model {
                 fecha_entrega,
                 fecha,
                 sectores_entrega.sector as sector,
-                dir_entrega'
+                dir_entrega,
+                mensajero'
         );
         $builder->join('productos', $this->table.'.producto = productos.id');
         $builder->join('categorias', 'productos.idcategoria = categorias.id');

@@ -159,6 +159,31 @@ class Ventas extends BaseController {
         }
     }
 
+    public function pedidos_ventana() {
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+            
+            $data['session'] = $this->session;
+            $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            $data['formas_pago'] = $this->formaPagoModel->findAll();
+            $data['pedidos'] = $this->pedidoModel->_getPedidos();
+            $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
+            //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
+            $data['title']='Ventas';
+            $data['subtitle']='Pedidos';
+            $data['main_content']='ventas/form-pedidos-inicio';
+            return view('dashboard/index_ventana', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
     public function logout(){
         //destruyo la session  y salgo
         

@@ -33,6 +33,12 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
+                        <div>
+                            <a type="button" id="btn-ventana" href="<?= site_url().'pedidos-ventana/'; ?>" target="_blank" class="edit mb-2">
+                                <img src="<?= site_url().'public/images/ventana.png'; ?>" >
+                                <span id="title-link">Abrir en nueva ventana</span>
+                            </a>
+                        </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             
@@ -50,11 +56,11 @@
                             </thead>
                             <tbody>
                                 <?php
-                                    $mensajero[0] = '--Seleccionar--';
+                                    // $mensajero[0] = '--Seleccionar--';
 
-                                    foreach ($mensajeros as $key => $value) {
-                                        $mensajero[$value->id] = $value->nombre;
-                                    }
+                                    // foreach ($mensajeros as $key => $value) {
+                                    //     $mensajero[$value->id] = $value->nombre;
+                                    // }
 
                                     if (isset($pedidos) && $pedidos != NULL) {
                                         foreach ($pedidos as $key => $value) {
@@ -74,7 +80,7 @@
                                                 }else{
                                                     echo '<td>Registrar fecha de entrega</td>';
                                                 }
-                                            echo '<td>'.form_dropdown('mensajero', $mensajero, '').'</td>';
+                                            echo '<td>'.$value->mensajero.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){

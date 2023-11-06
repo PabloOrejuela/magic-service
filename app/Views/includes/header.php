@@ -30,7 +30,7 @@
   <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
 
   <!-- DataTables -->
-  <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"> -->
+  <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"> 
   <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 

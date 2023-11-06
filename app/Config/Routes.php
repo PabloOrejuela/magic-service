@@ -36,6 +36,7 @@ $routes->get('mantenimiento', 'Home::mantenimiento');
 $routes->get('logout', 'Home::logout');
 $routes->get('ventas', 'Ventas::index');
 $routes->get('pedidos', 'Ventas::pedidos');
+$routes->get('pedidos-ventana', 'Ventas::pedidos_ventana');
 $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
 $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
 $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
