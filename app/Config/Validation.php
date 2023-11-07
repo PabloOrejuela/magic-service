@@ -91,6 +91,20 @@ class Validation extends BaseConfig {
         ],
     ];
 
+    public $pedidoInicial = [
+        'idcliente'  => 'greater_than[0]',
+        'nombre'   => 'required',
+    ]; 
+
+    public $pedidoInicial_errors = [
+        'idcliente' => [
+            'greater_than[0]' => 'El campo "Cliente" es obligatorio',
+        ],
+        'nombre' => [
+            'required' => 'El campo "Cliente" es obligatorio',
+        ]
+    ];
+
     public $usuario = [
         'nombre'   => 'required',
         'user'   => 'required',

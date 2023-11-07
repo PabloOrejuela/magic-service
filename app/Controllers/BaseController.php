@@ -20,6 +20,7 @@ use App\Models\CategoriaModel;
 use App\Models\ItemsProductoModel;
 use App\Models\SectoresEntregaModel;
 use App\Models\ConfiguracionModel;
+use App\Models\HorariosEntregaModel;
 
 /**
  * Class BaseController
@@ -77,6 +78,7 @@ abstract class BaseController extends Controller {
         $this->itemsProductoModel = new ItemsProductoModel($this->db);
         $this->sectoresEntregaModel = new SectoresEntregaModel($this->db);
         $this->configuracionModel = new ConfiguracionModel($this->db);
+        $this->horariosEntregaModel = new HorariosEntregaModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

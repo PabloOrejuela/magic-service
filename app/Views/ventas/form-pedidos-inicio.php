@@ -50,6 +50,7 @@
                                 <th>Sector</th>
                                 <th>Dir. entrega</th>
                                 <th>Fecha entrega</th>
+                                <th>Hora entrega</th>
                                 <th>Mensajero</th>
                                 <th>Estado</th>
                                 <th></th>
@@ -80,6 +81,7 @@
                                                 }else{
                                                     echo '<td>Registrar fecha de entrega</td>';
                                                 }
+                                            echo '<td>'.$value->hora.'</td>';
                                             echo '<td>'.$value->mensajero.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';

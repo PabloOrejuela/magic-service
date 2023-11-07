@@ -6,11 +6,6 @@ use App\Controllers\BaseController;
 
 class Ventas extends BaseController {
 
-    protected $horariosEntrega = [
-        '8:00', '8:30','9:00','9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30'
-        ,'16:00','16:30','17:00','17:30','18:00'
-    ];
-
     public function index() {
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
@@ -26,7 +21,7 @@ class Ventas extends BaseController {
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
             $data['sectores'] = $this->sectoresEntregaModel->findAll();
-            $data['horariosEntrega'] = $this->horariosEntrega;
+            $data['horariosEntrega'] = $this->horariosEntregaModel->FindAll();
 
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
@@ -72,16 +67,17 @@ class Ventas extends BaseController {
         
             $pedido = [
                 'idusuario' => $data['id'],
-                'fecha' => $this->request->getPostGet('fecha'),
+                'fecha' => date('Y-m-d'),
                 //Cliente
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
-                'telefono' => strtoupper($this->request->getPostGet('telefono')),
+                'fecha_entrega' => strtoupper($this->request->getPostGet('fecha_entrega')),
                 
                 'vendedor' => $this->request->getPostGet('vendedor'),
                 'producto' => $this->request->getPostGet('producto'),
-                'formas_pago' => $this->request->getPostGet('formas_pago'),
+                'cant' => strtoupper($this->request->getPostGet('cant')),
+
                 'valor_neto' => $this->request->getPostGet('valor_neto'),
                 'descuento' => $this->request->getPostGet('descuento'),
                 'transporte' => $this->request->getPostGet('transporte'),
@@ -91,7 +87,7 @@ class Ventas extends BaseController {
             ];
 
             //VALIDACIONES
-            $this->validation->setRuleGroup('pedido');
+            $this->validation->setRuleGroup('pedidoInicial');
 
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
@@ -100,12 +96,12 @@ class Ventas extends BaseController {
             }else{
                 //Codigo del pedido
                 $pedido['cod'] = $this->pedidoModel->_makeCodproduct($pedido);
-
+                //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
                 $cliente = $this->clienteModel->find($pedido['idcliente']);
                 if ($cliente) {
                     
-                    //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+                    
                     //Inserto el nuevo producto
                     $this->pedidoModel->_insert($pedido);
 
@@ -119,7 +115,7 @@ class Ventas extends BaseController {
                     ];
                     $pedido['idcliente'] = $this->clienteModel->_insert($data);
 
-                    echo '<pre>'.var_export($producto, true).'</pre>';exit;
+                    //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                     //Inserto el nuevo pedido
                     $this->pedidoModel->_insert($pedido);
 
@@ -152,6 +148,33 @@ class Ventas extends BaseController {
             $data['title']='Ventas';
             $data['subtitle']='Pedidos';
             $data['main_content']='ventas/form-pedidos-inicio';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function pedido_edit($pedido) {
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+            
+            $data['session'] = $this->session;
+            $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            $data['formas_pago'] = $this->formaPagoModel->findAll();
+            $data['pedido'] = $this->pedidoModel->_getDatosPedido($pedido);
+            $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
+            $data['horariosEntrega'] = $this->horariosEntregaModel->FindAll();
+
+            //echo '<pre>'.var_export($data['horariosEntrega'], true).'</pre>';exit;
+            $data['title']='Ventas';
+            $data['subtitle']='Editar Pedido';
+            $data['main_content']='ventas/form-pedido-edit';
             return view('dashboard/index', $data);
         }else{
             $this->logout();
