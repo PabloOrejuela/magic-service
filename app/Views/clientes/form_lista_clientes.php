@@ -45,15 +45,16 @@
                                 <th>Dirección</th>
                                 <th>Email</th>
                                 <th>Estado</th>
+                                <th></th>
                             </thead>
                             <tbody>
                                 <?php
                                     if (isset($clientes) && $clientes != NULL) {
                                         foreach ($clientes as $key => $value) {
                                             echo '<tr>
-                                                <td><a href="'.site_url().'product-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
-                                                <td>'.$value->telefono.'</td>
+                                                <td><a href="'.site_url().'cliente-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
                                                 <td>'.$value->documento.'</td>
+                                                <td>'.$value->telefono.'</td>
                                                 <td>'.$value->direccion.'</td>
                                                 <td>'.$value->email.'</td>';
                                                 if ($value->estado == 1) {
