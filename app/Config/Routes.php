@@ -71,6 +71,10 @@ $routes->get('desactivar', 'Administracion::desactivar');
 $routes->get('proveedores', 'Proveedores::index');
 $routes->get('proveedor-create', 'Proveedores::create');
 
+//Clientes
+$routes->get('clientes', 'Clientes::index');
+$routes->get('cliente-delete/(:num)', 'Clientes::cliente_delete/$1');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

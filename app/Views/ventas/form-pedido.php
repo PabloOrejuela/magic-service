@@ -6,7 +6,7 @@
         text-align: right;
     }
     #form-pedido{
-        width:500px;
+        width:600px;
     }
 
     #inputProducto{
@@ -60,7 +60,7 @@
 <section class="content">
       <div class="container-fluid">
         <div class="row">
-            <section class="col-lg-10 connectedSortable">
+            <section class="col-lg-12 connectedSortable">
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card" id="form-pedido">
                     <div class="card-header">

@@ -3,13 +3,13 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-  }
+}
 
-  .form {
+.form {
     width: 450px;
-  }
+}
 
-  #wrap {
+#wrap {
 	margin: 0 auto 0 auto;
 	width: 30%;
 	min-width: 350px;
@@ -26,4 +26,9 @@ a{
 
 #error-message{
   color: red;
+}
+
+#btn-pedido{
+  color: antiquewhite;
+  background-color: rgb(184, 45, 27, 1);
 }

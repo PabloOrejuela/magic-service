@@ -31,6 +31,26 @@
         </ul>
       </li>';
     }
+    if ($session->clientes == 1) {
+      echo '
+        <li class="nav-item">
+        <a href="#" class="nav-link" id="btnVentas">
+          <i class="ion ion-bag"></i>
+          <p>
+            Clientes
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="'.base_url().'clientes" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Lista de Clientes</p>
+            </a>
+          </li>
+        </ul>
+      </li>';
+    }
     if ($session->admin == 1) {
       echo '
       <li class="nav-item">

@@ -1,5 +1,6 @@
 <h4>Implementados:</h4>  
 <ul>   
-    <li>Implementado el form para desactivar el sistema</li>
-    <li>Implementado el grid de pedidos en nueva ventana</li>
+    <li>Corregido error que no mostraba el horario de entrega</li>
+    <li>Form lista de clientes</li>
+    <li>Cambio del estilo del botón de nuevo pedido</li>
 </ul>

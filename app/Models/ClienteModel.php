@@ -71,4 +71,26 @@ class ClienteModel extends Model {
         $builder->insert();
         return  $this->db->insertID();
     }
+
+    function _getClientes(){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    public function _clienteDelete($data) {
+        $builder = $this->db->table($this->table);
+
+        $builder->set('estado', 0);
+        $builder->where('id', $data['id']);
+        $builder->update();
+    }
 }
