@@ -46,7 +46,6 @@
                                 <th>Fecha</th>
                                 <th>Cliente</th>
                                 <th>Pedido</th>
-                                <th>Categoría</th>
                                 <th>Sector</th>
                                 <th>Dir. entrega</th>
                                 <th>Fecha entrega</th>
@@ -68,9 +67,12 @@
                                             echo '<tr>
                                                 <td>'.$value->fecha.'</td>
                                                 <td>'.$value->nombre.'</td>
-                                                <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>
-                                                <td>'.$value->categoria.'</td>
-                                                <td>'.$value->sector.'</td>';
+                                                <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
+                                                if ($value->sector) {
+                                                    echo '<td>'.$value->sector.'</td>';
+                                                }else{
+                                                    echo '<td></td>';
+                                                }
                                                 if ($value->dir_entrega) {
                                                     echo '<td>'.$value->dir_entrega.'</td>';
                                                 }else{

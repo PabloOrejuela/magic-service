@@ -8,6 +8,7 @@
         document.getElementById("nombre").value = "'.$data->nombre.'"
         document.getElementById("telefono").value = "'.$data->telefono.'"
         document.getElementById("idcliente").value = "'.$data->id.'"
+        document.getElementById("email").value = "'.$data->email.'"
       </script>';
       
       

@@ -17,7 +17,7 @@ class Home extends BaseController {
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
         if ($data['logged'] == 1 ) {
             
-            // $data['session'] = $this->session;
+            $data['session'] = $this->session;
             // $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             // $data['formas_pago'] = $this->formaPagoModel->findAll();
             // $data['pedidos'] = $this->pedidoModel->findAll();

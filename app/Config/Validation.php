@@ -141,4 +141,14 @@ class Validation extends BaseConfig {
             'decimal' => 'El campo "Precio" debe ser una cantidad decimal',
         ],
     ];
+
+    public $cliente = [
+        'nombre'   => 'required',
+    ]; 
+
+    public $cliente_errors = [
+        'nombre' => [
+            'required' => 'El campo "Nombre" es obligatorio',
+        ],
+    ];
 }

@@ -30,7 +30,7 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" id="btn-register" href="<?= site_url().'producto-create/'; ?>" class="edit mb-2">
+                            <a type="button" id="btn-register" href="<?= site_url().'cliente-create/'; ?>" class="edit mb-2">
                                 <img src="<?= site_url().'public/images/new-file.png'; ?>" >
                                 <span id="title-link">Registrar un nuevo cliente</span>
                             </a>

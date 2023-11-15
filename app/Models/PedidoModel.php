@@ -54,22 +54,18 @@ class PedidoModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select(
                 $this->table.'.id as id,cod_pedido,
-                '.$this->table.'.producto as producto,categoria,
-                '.$this->table.'.estado as estado, 
+                '.$this->table.'.estado as estado,hora,
                 nombre, 
                 fecha_entrega,
                 horario_entrega,
                 fecha,
-                hora,
                 sectores_entrega.sector as sector,
                 dir_entrega,
                 mensajero'
         );
-        $builder->join('productos', $this->table.'.producto = productos.id');
-        $builder->join('categorias', 'productos.idcategoria = categorias.id');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
-        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id');
+        $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
+        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -122,8 +118,8 @@ class PedidoModel extends Model {
 
         //Inserto el nuevo producto
         $builder = $this->db->table($this->table);
-        if ($data['cod'] != 'NULL' && $data['cod'] != '') {
-            $builder->set('cod_pedido', $data['cod']);
+        if ($data['cod_pedido'] != 'NULL' && $data['cod_pedido'] != '') {
+            $builder->set('cod_pedido', $data['cod_pedido']);
         }
 
         if ($data['idcliente'] != 'NULL' && $data['idcliente'] != '') {
@@ -134,12 +130,16 @@ class PedidoModel extends Model {
             $builder->set('fecha', $data['fecha']);
         }
 
-        if ($data['vendedor'] != 'NULL' && $data['vendedor'] != '') {
-            $builder->set('vendedor', $data['vendedor']);
+        if ($data['fecha_entrega'] != 'NULL' && $data['fecha_entrega'] != '') {
+            $builder->set('fecha_entrega', $data['fecha_entrega']);
+        }
+        
+        if ($data['horario_entrega'] != 'NULL' && $data['horario_entrega'] != '') {
+            $builder->set('horario_entrega', $data['horario_entrega']); 
         }
 
-        if ($data['producto'] != 'NULL' && $data['producto'] != '') {
-            $builder->set('producto', $data['producto']);
+        if ($data['vendedor'] != 'NULL' && $data['vendedor'] != '') {
+            $builder->set('vendedor', $data['vendedor']);
         }
 
         if ($data['valor_neto'] != 'NULL' && $data['valor_neto'] != '') {

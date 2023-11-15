@@ -43,6 +43,8 @@ $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
 $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
 $routes->get('estado', 'Administracion::estado');
+$routes->get('ventas/detalle_pedido_insert/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert/$1/$2/$3');
+$routes->get('ventas/detalle_pedido_delete_producto/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto/$1/$2');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
@@ -74,6 +76,10 @@ $routes->get('proveedor-create', 'Proveedores::create');
 //Clientes
 $routes->get('clientes', 'Clientes::index');
 $routes->get('cliente-delete/(:num)', 'Clientes::cliente_delete/$1');
+$routes->get('cliente-create', 'Clientes::cliente_create');
+$routes->get('cliente-edit/(:num)', 'Clientes::cliente_edit/$1');
+$routes->post('cliente-insert', 'Clientes::cliente_insert');
+$routes->post('cliente-update', 'Clientes::cliente_update');
 
 /*
  * --------------------------------------------------------------------

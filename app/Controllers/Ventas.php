@@ -16,12 +16,28 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
+            date_default_timezone_set('America/Guayaquil');
+            $date = date('ymdHis');
+            
+            // ejecutamos la función pasándole la fecha que queremos
+            $this->saber_dia(date('Y-m-d'));
+            
+            $diaSemana = date('l');
+            if($diaSemana == "Sunday"){
+                echo "Es ".$diaSemana;
+            }else{
+                echo "No ".$diaSemana;
+            }
+
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
             $data['sectores'] = $this->sectoresEntregaModel->findAll();
             $data['horariosEntrega'] = $this->horariosEntregaModel->FindAll();
+            $data['cod_pedido'] = $this->session->id.$date;
+
+            //echo '<pre>'.var_export($this->session , true).'</pre>';exit;
 
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
@@ -33,6 +49,13 @@ class Ventas extends BaseController {
             return redirect()->to('/');
         }
     }
+
+    function saber_dia($nombredia) {
+        $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
+        $fecha = $dias[date('N', strtotime($nombredia))];
+        return $fecha;
+    }
+        
 
     function clientes_select(){
         $documento = $this->request->getPostGet('documento');
@@ -55,6 +78,103 @@ class Ventas extends BaseController {
         echo view('precio_sector', $data);
     }
 
+    function detalle_pedido_insert($idproducto, $cantidad, $cod_pedido){
+        $error = '';
+
+        $producto = $this->productoModel->find($idproducto);
+
+        if ($producto) {
+            $datosExiste = $this->detallePedidoModel->_getProdDetallePedido($idproducto, $cod_pedido);
+
+            if ($datosExiste) {
+                $cantidad = $datosExiste->cantidad + $cantidad;
+                $subtotal = $cantidad * $datosExiste->precio;
+                
+                $this->detallePedidoModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+
+            }else{
+                $subtotal = $cantidad * $producto->precio;
+
+                $data = [
+                    'cod_pedido' => $cod_pedido,
+                    'idproducto' => $idproducto,
+                    'cantidad' => $cantidad,
+                    'precio' => $producto->precio,
+                    'subtotal' => $subtotal,
+                ];
+
+                $this->detallePedidoModel->save($data);
+            }
+        }else{
+            $error = 'No existe el producto';
+        }
+        $res['datos'] = $this->cargaProductos($cod_pedido);
+        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    function detalle_pedido_delete_producto($idproducto, $cod_pedido){
+        $error = '';
+
+        $datosExiste = $this->detallePedidoModel->_getProdDetallePedido($idproducto, $cod_pedido);
+
+        if ($datosExiste) {
+            if ($datosExiste->cantidad > 1) {
+                $cantidad = $datosExiste->cantidad - 1;
+                $subtotal = $cantidad * $datosExiste->precio;
+
+                $this->detallePedidoModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+            }else{
+                $this->detallePedidoModel->_eliminarProdDetalle($idproducto, $cod_pedido);
+            }
+        }
+
+        $res['datos'] = $this->cargaProductos($cod_pedido);
+        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    function cargaProductos($cod_pedido){
+        $resultado = $this->detallePedidoModel->_getDetallePedido($cod_pedido);
+        $fila = '';
+        $numFila = 0;
+        if ($resultado) {
+            foreach ($resultado as $row) {
+                $numFila++;
+                //$cod_pedido = "231114181156";
+                $fila .= '<tr id="fila_'.$numFila.'">';
+                $fila .= '<td>'.$numFila.'</td>';
+                $fila .= '<td>'.$row->id.'</td>';
+                $fila .= '<td>'.$row->producto.'</td>';
+                $fila .= '<td>'.$row->precio.'</td>';
+                $fila .= '<td>'.$row->cantidad.'</td>';
+                
+                $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="borrar">
+                            <img src="'.site_url().'public/images/delete.png" width="20" >
+                            </a></td>';
+                $fila .= '</tr>';
+                
+            }
+            return $fila;
+        }
+        
+    }
+
+    function totalDetallePedido($cod_pedido){
+        $resultado = $this->detallePedidoModel->_getDetallePedido($cod_pedido);
+        $total = 0;
+
+        if ($resultado) {
+            foreach ($resultado as $row) {
+                $total += $row->subtotal;
+            }
+        }
+        
+        return $total;
+    }
+
     public function pedido_insert(){
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
@@ -73,9 +193,9 @@ class Ventas extends BaseController {
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'fecha_entrega' => strtoupper($this->request->getPostGet('fecha_entrega')),
+                'horario_entrega' => strtoupper($this->request->getPostGet('horario_entrega')),
                 
                 'vendedor' => $this->request->getPostGet('vendedor'),
-                'producto' => $this->request->getPostGet('producto'),
                 'cant' => strtoupper($this->request->getPostGet('cant')),
 
                 'valor_neto' => $this->request->getPostGet('valor_neto'),
@@ -84,6 +204,7 @@ class Ventas extends BaseController {
                 'total' => $this->request->getPostGet('total'),
                 'sectores' => $this->request->getPostGet('sectores'),
                 'venta_extra' => $this->request->getPostGet('venta_extra'),
+                'cod_pedido' => $this->request->getPostGet('cod_pedido'),
             ];
 
             //VALIDACIONES
@@ -95,7 +216,7 @@ class Ventas extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
                 //Codigo del pedido
-                $pedido['cod'] = $this->pedidoModel->_makeCodproduct($pedido);
+                //$pedido['cod'] = $this->pedidoModel->_makeCodproduct($pedido);
                 //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
                 $cliente = $this->clienteModel->find($pedido['idcliente']);
@@ -145,8 +266,8 @@ class Ventas extends BaseController {
             $data['pedidos'] = $this->pedidoModel->_getPedidos();
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
             //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
-            $data['title']='Ventas';
-            $data['subtitle']='Pedidos';
+            $data['title']='Pedidos';
+            $data['subtitle']='Listado de pedidos';
             $data['main_content']='ventas/form-pedidos-inicio';
             return view('dashboard/index', $data);
         }else{
