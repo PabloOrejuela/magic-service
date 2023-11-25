@@ -22,6 +22,7 @@ use App\Models\SectoresEntregaModel;
 use App\Models\ConfiguracionModel;
 use App\Models\HorariosEntregaModel;
 use App\Models\DetallePedidoModel;
+use App\Models\SucursalModel;
 
 /**
  * Class BaseController
@@ -50,7 +51,6 @@ abstract class BaseController extends Controller {
      * @var array
      */
     protected $helpers = ['form', 'url', 'html'];
-    //protected $estadoSistema = 'INACTIVO';
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -81,6 +81,7 @@ abstract class BaseController extends Controller {
         $this->configuracionModel = new ConfiguracionModel($this->db);
         $this->horariosEntregaModel = new HorariosEntregaModel($this->db);
         $this->detallePedidoModel = new DetallePedidoModel($this->db);
+        $this->sucursalModel = new SucursalModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
@@ -88,6 +89,4 @@ abstract class BaseController extends Controller {
         $this->validation = \Config\Services::validation();
         $this->image = \Config\Services::image();
     }
-
-    
 }

@@ -69,6 +69,11 @@ $routes->get('roles', 'Administracion::roles');
 $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
 $routes->get('desactivar', 'Administracion::desactivar');
 
+$routes->get('sucursales', 'Administracion::Sucursales');
+$routes->get('sucursal-create', 'Administracion::form_sucursal_create');
+$routes->post('sucursal-insert', 'Administracion::sucursal_insert');
+$routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
+
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');
 $routes->get('proveedor-create', 'Proveedores::create');

@@ -6,7 +6,6 @@ use App\Controllers\BaseController;
 
 class Home extends BaseController {
 
-
     public function index() {
 
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
@@ -95,6 +94,8 @@ class Home extends BaseController {
                     ];
                     //echo '<pre>'.var_export($user, true).'</pre>';exit;
                     $this->usuarioModel->_updateLoggin($user);
+                    $this->session->version = $this->configuracionModel->_getVersion();
+
                     
                     $this->session->set($sessiondata);
             

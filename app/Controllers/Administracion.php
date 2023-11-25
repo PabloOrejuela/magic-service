@@ -61,6 +61,30 @@ class Administracion extends BaseController {
         }
     }
 
+    public function Sucursales() {
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sucursales'] = $this->sucursalModel->findAll();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Sucursales';
+            $data['main_content']='administracion/grid_sucursales';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
     public function items() {
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
@@ -358,15 +382,16 @@ class Administracion extends BaseController {
         //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
-            $data['session'] = $this->session;
-            $data['categorias'] = $this->categoriaModel->findAll();
-            $data['items'] = $this->itemModel->findAll();
+            echo 'sección en construcción';
+            // $data['session'] = $this->session;
+            // $data['categorias'] = $this->categoriaModel->findAll();
+            // $data['items'] = $this->itemModel->findAll();
 
-            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
-            $data['title']='Administración';
-            $data['subtitle']='Crear producto';
-            $data['main_content']='administracion/form-product-new';
-            return view('dashboard/index', $data);
+            // //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
+            // $data['title']='Administración';
+            // $data['subtitle']='Crear producto';
+            // $data['main_content']='administracion/form-product-new';
+            // return view('dashboard/index', $data);
         }else{
             $this->logout();
             return redirect()->to('/');
@@ -458,6 +483,37 @@ class Administracion extends BaseController {
         }else{
 
             $this->logout();
+        }
+    }
+
+    /**
+     * Formulario para registrar una nueva sucursal
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function form_sucursal_create() {
+
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            // $data['categorias'] = $this->categoriaModel->findAll();
+            // $data['items'] = $this->itemModel->findAll();
+
+            //echo '<pre>'.var_export($data, true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Registrar sucursal';
+            $data['main_content']='administracion/form-sucursal-new';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
         }
     }
 
@@ -580,12 +636,49 @@ class Administracion extends BaseController {
         }
     }
 
+    public function sucursal_insert(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $data = [
+                'sucursal' => strtoupper($this->request->getPostGet('sucursal')),
+                'direccion' => strtoupper($this->request->getPostGet('direccion')),
+            ];
+            
+            $this->validation->setRuleGroup('sucursal');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+                //echo '<pre>'.var_export($user, true).'</pre>';exit;
+                $this->sucursalModel->_insert($data);
+
+                return redirect()->to('sucursales');
+            }
+            
+        }else{
+
+            $this->logout();
+        }
+    }
+
     public function form_usuario_edit($id){
         echo 'Formulario para EDITAR un Nuevo usuario DESHABILITADO';
     }
 
     public function form_rol_edit($id){
         echo 'Formulario para crear un Nuevo usuario DESHABILITADO';
+    }
+
+    public function form_sucursal_edit($id){
+        echo 'Formulario para EDITAR datos de una sucursal DESHABILITADO';
     }
 
     public function logout(){

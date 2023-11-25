@@ -151,4 +151,18 @@ class Validation extends BaseConfig {
             'required' => 'El campo "Nombre" es obligatorio',
         ],
     ];
+
+    public $sucursal = [
+        'sucursal'   => 'required',
+        'direccion'   => 'required',
+    ]; 
+
+    public $sucursal_errors = [
+        'sucursal' => [
+            'required' => 'El campo "Sucursal" es obligatorio',
+        ],
+        'direccion' => [
+            'required' => 'El campo "Dirección" es obligatorio',
+        ],
+    ];
 }

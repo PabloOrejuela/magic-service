@@ -93,6 +93,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="'.base_url().'sucursales" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Sucursales</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="'.base_url().'estado" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Estado del sistema</p>

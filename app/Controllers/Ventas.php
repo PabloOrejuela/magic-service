@@ -284,19 +284,19 @@ class Ventas extends BaseController {
         $data['nombre'] = $this->session->nombre;
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
-            
-            $data['session'] = $this->session;
-            $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
-            $data['formas_pago'] = $this->formaPagoModel->findAll();
-            $data['pedido'] = $this->pedidoModel->_getDatosPedido($pedido);
-            $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
-            $data['horariosEntrega'] = $this->horariosEntregaModel->FindAll();
+            echo 'sección en cosntrucción';
+            // $data['session'] = $this->session;
+            // $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            // $data['formas_pago'] = $this->formaPagoModel->findAll();
+            // $data['pedido'] = $this->pedidoModel->_getDatosPedido($pedido);
+            // $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
+            // $data['horariosEntrega'] = $this->horariosEntregaModel->FindAll();
 
-            //echo '<pre>'.var_export($data['horariosEntrega'], true).'</pre>';exit;
-            $data['title']='Ventas';
-            $data['subtitle']='Editar Pedido';
-            $data['main_content']='ventas/form-pedido-edit';
-            return view('dashboard/index', $data);
+            // //echo '<pre>'.var_export($data['horariosEntrega'], true).'</pre>';exit;
+            // $data['title']='Ventas';
+            // $data['subtitle']='Editar Pedido';
+            // $data['main_content']='ventas/form-pedido-edit';
+            // return view('dashboard/index', $data);
         }else{
             $this->logout();
             return redirect()->to('/');

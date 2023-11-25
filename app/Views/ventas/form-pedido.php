@@ -1,66 +1,3 @@
-<style>
-    .inputValor{
-        text-align: right;
-    }
-    #inputfecha{
-        text-align: right;
-    }
-    #form-pedido{
-        width:600px;
-    }
-
-    #inputProducto{
-        width:50%;
-    }
-
-    #link-edita-producto{
-        margin-left:10px;
-    }
-
-    #sectores{
-        width:40%;
-        font-size: 1.2em;
-    }
-
-    #formas_pago{
-        width:60%;
-        font-size: 1.2em;
-    }
-
-    #vendedor{
-        width:50%;
-        font-size: 1.2em;
-    }v
-
-    #idproducto{
-        width:50%;
-        font-size: 1.2em;
-    }
-
-    #horario_entrega{
-        width:100%;
-        font-size: 1.1em;
-    }
-
-    #error-message{
-        color:red;
-        font-size: 0.7em;
-    }
-
-    .link-editar{
-        color: blue;
-    }
-
-    #a{
-        text-decoration: none;
-        float:left;
-    }
-
-    #a:hover{
-        text-decoration: none;
-    }
-    
-</style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
 <?php
@@ -103,7 +40,7 @@
                                                 <?php
                                                     if (isset($horariosEntrega)) {
                                                         foreach ($horariosEntrega as $key => $hora) {
-                                                            if ($hora->id < 5) {
+                                                            if ($hora->id < 5 || $hora->id > 24) {
                                                                 echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).' style="color:red;">'.$hora->hora.' Horario extra</option>';
                                                             }else{
                                                                 echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).'>'.$hora->hora.'</option>';
@@ -136,7 +73,7 @@
                                     </div>
                                     <div class="form-group" id="campo-extra">
                                         <label for="email" >Email:</label>
-                                        <input type="email" class="form-control number" id="email" name="email" placeholder="cliente@email.com" value="<?= old('email'); ?>">
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= old('email'); ?>">
                                     </div>
                                     <p id="error-message"><?= session('errors.email');?> </p>
                                     <div class="form-group mb-3">
@@ -153,41 +90,59 @@
                                         </select>
                                     </div>
                                     <p id="error-message"><?= session('errors.vendedor');?> </p>
-                                    <div class="row form-group mb-3">
-                                        <label for="producto">Producto: </label>
-                                        <!-- <select class="custom-select form-control-border" id="inputProducto" name="producto"> -->
-                                        <select 
-                                            class="col-sm-7 selectpicker" 
-                                            id="idproducto" 
-                                            name="producto"
-                                            data-style="form-control" 
-                                            data-live-search="true" 
-                                        >
-                                            <option value="0" selected>--Seleccionar producto--</option>
-                                            <?php
-                                                if (isset($productos)) {
-                                                    $defaultvalue = 1;
-                                                    foreach ($productos as $key => $value) {
-                                                        echo "<option value='$value->id' " . set_select('producto', $value->id, false). " >". $value->producto."</option>";
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                        <div style="width: 90px;margin-left:3px;">
-                                            <input 
-                                                type="text" 
-                                                class="form-control inputValor number" 
-                                                id="cant" 
-                                                name="cant"  
-                                                value="1"
-                                            >
-                                            <a href="#" class="link-opacity-75" id="a" onclick="agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )"> +Agregar </a>
-                                        </div>
-                                        
+                                    <div class="form-check mb-5">
+                                        <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" <?php echo set_checkbox('venta_extra', '0'); ?> >
+                                        <label class="form-check-label" for="venta_extra">Venta extra</label>
+                                    </div>
+                                    <div class="row form-group mb-3 px-2">
                                         <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
+                                        <table>
+                                            <thead>
+                                                <th><label for="producto" class="px-3 lbl-producto">Producto: </label></th>
+                                                <th>Cantidad</th>
+                                                <th></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select 
+                                                            class="col-md-12 selectpicker" 
+                                                            id="idproducto" 
+                                                            name="producto"
+                                                            data-style="form-control" 
+                                                            data-live-search="true" 
+                                                        >
+                                                        <option value="0" selected>--Seleccionar producto--</option>
+                                                        <?php
+                                                            if (isset($productos)) {
+                                                                $defaultvalue = 1;
+                                                                foreach ($productos as $key => $value) {
+                                                                    echo "<option value='$value->id' " . set_select('producto', $value->id, false). " >". $value->producto."</option>";
+                                                                }
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            type="text" 
+                                                            class="form-control inputValor number" 
+                                                            id="cant" 
+                                                            name="cant"  
+                                                            value="1"
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="link-opacity-75" id="a" onclick="agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )">
+                                                            <img src="<?= site_url(); ?>public/images/btn-agregar.png" alt="agregar" id="img-agregar" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                     <p id="error-message"><?= session('errors.producto');?> </p>
-                                    <div class="row">
+                                    <div class="row mb-2">
                                         <table id="tablaProductos" class="table table-hover table-stripped table-sm table-responsive tablaProductos" width:="100%">
                                             <thead class="thead-light">
                                                 <th>#</th>
@@ -200,9 +155,8 @@
                                             <tbody></tbody>
                                         </table>
                                     </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" <?php echo set_checkbox('venta_extra', '0'); ?> >
-                                        <label class="form-check-label" for="venta_extra">Venta extra</label>
+                                    <div class="form-check mb-2">
+                                        <h3 id="error-message">Estoy reprogramando los cálculos, por eso no salen los subtotales y totales</h3>
                                     </div>
                                     <!-- /.card-body -->
                                     <?= form_hidden('cod_pedido', $cod_pedido); ?>

@@ -38,10 +38,10 @@
                                 <img src="<?= site_url().'public/images/ventana.png'; ?>" >
                                 <span id="title-link">Abrir en nueva ventana</span>
                             </a>
+                            <h3 id="error-message">Aquí tuve que quitar algunas columnas y estoy rehaciendo algunas partes debido a los cambios que se hicieron, así que esta parte está otra vez en proceso</h3>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
-                            
                             <thead>
                                 <th>Fecha</th>
                                 <th>Cliente</th>

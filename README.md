@@ -10,4 +10,6 @@
     <li>Insert de pedido</li>
     <li>No se puede elegir una fecha anterior a la actual</li>
     <li>Insert de nuevo pedido</li>
+    <li>Horarios extendidos en rojo</li>
+    <li>Creado el menu de sucursales y el form para registrar sucursales</li>
 </ul>

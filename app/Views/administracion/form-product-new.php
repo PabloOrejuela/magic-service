@@ -152,7 +152,8 @@ function agregar(){
                 // el.textContent = elementos[id]
                 // div.appendChild(el)
                 //document.getElementById("input-cant").value = num
-                html = '<div class="form-group"><input class="form-control mb-1" name="items[]" value="'+id+' - '+texto+'" id="input-item" readonly><input class="form-control mb-1 col-sm-1 cant" type="text"  value="'+num+'" name="cantidad[]" id="'+id+'"><a href="#" ><i class="ion ion-android-delete" id="ion-delete"></i></a></div>'
+                html = '<div class="form-group"><input class="form-control mb-1" name="items[]" value="'+id+' - '+texto+'" id="input-item" readonly><input class="form-control mb-1 col-sm-1 cant" type="text"  value="%" name="cantidad[]" id="'+id+'">'+
+                    '<input class="form-control mb-1 col-sm-1 cant" type="text"  value="'+num+'" name="cantidad[]" id="'+id+'"><a href="#" ><i class="ion ion-android-delete" id="ion-delete"></i></a></div>'
                 $('#item-grid').append(html)
             
                 //console.log(elementos)

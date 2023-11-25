@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ConfiguracionModel extends Model {
+class SucursalModel extends Model {
 
     protected $DBGroup          = 'default';
-    protected $table            = 'configuracion';
+    protected $table            = 'sucursales';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
+    protected $protectFields    = false;
     protected $allowedFields    = [];
 
     // Dates
@@ -39,24 +39,34 @@ class ConfiguracionModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function _desactivar() {
-        $builder = $this->db->table($this->table);
+    public function _insert($data) {
 
-        $builder->set('estado', 0);
-        $builder->update();
+        //Inserto el nuevo cliente
+        $builder = $this->db->table($this->table);
+        if ($data['sucursal'] != 'NULL' && $data['sucursal'] != '') {
+            $builder->set('sucursal', $data['sucursal']);
+        }
+
+        if ($data['direccion'] != 'NULL' && $data['direccion'] != '') {
+            $builder->set('direccion', $data['direccion']);
+        }
+
+        $builder->insert();
+        return  $this->db->insertID();
     }
 
-    public function _getVersion(){
-        $result = NULL;
+    public function _update($data) {
+
+        //Inserto el nuevo cliente
         $builder = $this->db->table($this->table);
-        $builder->select('version');
-        $query = $builder->get();
-        if ($query->getResult() != null) {
-            foreach ($query->getResult() as $row) {
-                $result = $row->version;
-            }
+        if ($data['sucursal'] != 'NULL' && $data['sucursal'] != '') {
+            $builder->set('sucursal', $data['sucursal']);
         }
-        //echo $this->db->getLastQuery();
-        return $result;
+
+        if ($data['direccion'] != 'NULL' && $data['direccion'] != '') {
+            $builder->set('direccion', $data['direccion']);
+        }
+        $builder->where('id', $data['id']);
+        $builder->update();
     }
 }
