@@ -24,9 +24,9 @@ class Ventas extends BaseController {
             
             $diaSemana = date('l');
             if($diaSemana == "Sunday"){
-                echo "Es ".$diaSemana;
+                //echo "Es ".$diaSemana;
             }else{
-                echo "No ".$diaSemana;
+                //echo "No ".$diaSemana;
             }
 
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);

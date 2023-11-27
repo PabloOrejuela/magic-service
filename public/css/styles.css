@@ -129,3 +129,8 @@ a{
 .link-editar{
   color: blue;
 }
+
+#btn-copy{
+  display: flex;
+  justify-content: center;
+}

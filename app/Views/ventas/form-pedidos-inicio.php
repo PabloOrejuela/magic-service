@@ -23,6 +23,16 @@
     #datatablesSimple{
         font-size: 0.7em;
     }
+    
+    .item-list:hover{
+        cursor: move;
+        caret-color: red;
+        box-shadow: 0px 0px 20px rgba(149, 153, 159, 0.3)
+    }
+
+    .lista .item-list.fantasma{
+        border: 2px dotted #000;
+    }
 </style>
 <!-- Main content -->
 <section class="content">
@@ -38,23 +48,26 @@
                                 <img src="<?= site_url().'public/images/ventana.png'; ?>" >
                                 <span id="title-link">Abrir en nueva ventana</span>
                             </a>
-                            <h3 id="error-message">Aquí tuve que quitar algunas columnas y estoy rehaciendo algunas partes debido a los cambios que se hicieron, así que esta parte está otra vez en proceso</h3>
+                            <h3 id="error-message">Implementando funcionalidad Drag and Drop a las filas del grid de pedidos</h3>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             <thead>
-                                <th>Fecha</th>
-                                <th>Cliente</th>
                                 <th>Pedido</th>
+                                <th>Fecha entrega</th>
+                                <th>Cliente</th>
                                 <th>Sector</th>
                                 <th>Dir. entrega</th>
-                                <th>Fecha entrega</th>
+                                <th>COD Arreglo</th>
+                                <th>Hora salida</th>
                                 <th>Hora entrega</th>
                                 <th>Mensajero</th>
                                 <th>Estado</th>
-                                <th></th>
+                                <th>Información</th>
+                                <th>Observación</th>
+                                <th>Copiar</th>
                             </thead>
-                            <tbody>
+                            <tbody id="lista">
                                 <?php
                                     // $mensajero[0] = '--Seleccionar--';
 
@@ -64,36 +77,39 @@
 
                                     if (isset($pedidos) && $pedidos != NULL) {
                                         foreach ($pedidos as $key => $value) {
-                                            echo '<tr>
-                                                <td>'.$value->fecha.'</td>
-                                                <td>'.$value->nombre.'</td>
+                                            echo '<tr class="item-list" data-id="'.$value->id.'">
                                                 <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
-                                                if ($value->sector) {
-                                                    echo '<td>'.$value->sector.'</td>';
-                                                }else{
-                                                    echo '<td></td>';
-                                                }
-                                                if ($value->dir_entrega) {
-                                                    echo '<td>'.$value->dir_entrega.'</td>';
-                                                }else{
-                                                    echo '<td>Registrar</td>';
-                                                }
                                                 if ($value->fecha_entrega) {
                                                     echo '<td>'.$value->fecha_entrega.'</td>';
                                                 }else{
                                                     echo '<td>Registrar fecha de entrega</td>';
                                                 }
+                                            echo '<td>'.$value->nombre.'</td>';
+                                            if ($value->sector) {
+                                                echo '<td>'.$value->sector.'</td>';
+                                            }else{
+                                                echo '<td></td>';
+                                            }
+                                            if ($value->dir_entrega) {
+                                                echo '<td>'.$value->dir_entrega.'</td>';
+                                            }else{
+                                                echo '<td>Registrar dirección</td>';
+                                            }
+                                            echo '<td></td>';
+                                            echo '<td>H SALIDA</td>';
                                             echo '<td>'.$value->hora.'</td>';
                                             echo '<td>'.$value->mensajero.'</td>';
-                                                if ($value->estado == 1) {
-                                                    echo '<td>Activo</td>';
-                                                }else if($value->estado == 0){
-                                                    echo '<td>Inactivo</td>';
-                                                }
+                                            if ($value->estado == 1) {
+                                                echo '<td>Activo</td>';
+                                            }else if($value->estado == 0){
+                                                echo '<td>Inactivo</td>';
+                                            }
+                                            echo '<td>Información</td>';
+                                            echo '<td>Observación</td>';
                                             echo '<td>
-                                                    <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
-                                                            <img src="'.site_url().'public/images/edit.png" width="20" >
+                                                    <div class="contenedor" id="btn-copy">
+                                                        <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" >
+                                                            <img src="'.site_url().'public/images/copy.png" width="30" >
                                                         </a>
                                                     </div>
                                                 </td>
@@ -110,6 +126,32 @@
         </div>
     </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+    const lista = document.getElementById('lista')
+    Sortable.create(lista, {
+        chosenClass: "seleccionado",
+        ghostClass: "fantasma",
+        onEnd: () => {
+            //console.log('se movió el elemento')
+        },
+        group: "lista-pedidos-grid",
+        store: {
+            //Guarda el orden de la lista
+            set: (sortable) => {
+                const orden = sortable.toArray()
+                localStorage.setItem(sortable.options.group.name, orden.join('|'))
+            },
+
+            //Obtenemos el óden de la lista
+            get: (sortable) => {
+                const orden = localStorage.getItem(sortable.options.group.name)
+                return orden ? orden.split('|') : []
+            },
+
+        }
+    })
+</script>
 <script>
   $(document).ready(function () {
     $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";

@@ -75,7 +75,6 @@
                                         <label for="email" >Email:</label>
                                         <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= old('email'); ?>">
                                     </div>
-                                    <p id="error-message"><?= session('errors.email');?> </p>
                                     <div class="form-group mb-3">
                                         <label for="vendedor">Vendedor:</label>
                                         <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
