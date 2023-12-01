@@ -64,6 +64,14 @@ class Ventas extends BaseController {
         echo view('clientes_select', $data);
     }
 
+    function clientes_select_telefono(){
+        $telefono = $this->request->getPostGet('telefono');
+        $cliente = $this->clienteModel->_getClienteByPhone($telefono);
+        //$data['clientes'] = $this->clienteModel->findAll();
+        echo json_encode($cliente);
+        //echo view('clientes_select', $data);
+    }
+
     function get_valor_producto($producto){
         //$producto = $this->request->getPostGet('producto');
         $data['producto'] = $this->productoModel->_getProducto($producto);

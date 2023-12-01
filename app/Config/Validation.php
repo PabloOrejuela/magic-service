@@ -165,4 +165,18 @@ class Validation extends BaseConfig {
             'required' => 'El campo "Dirección" es obligatorio',
         ],
     ];
+
+    public $proveedor = [
+        'nombre'   => 'required',
+        'contacto'   => 'required',
+    ]; 
+
+    public $proveedor_errors = [
+        'nombre' => [
+            'required' => 'El campo "Nombre" es obligatorio',
+        ],
+        'contacto' => [
+            'required' => 'El campo "Nombre Contacto" es obligatorio',
+        ],
+    ];
 }

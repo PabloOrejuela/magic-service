@@ -15,6 +15,7 @@ use App\Models\ClienteModel;
 use App\Models\ProductoModel;
 use App\Models\ItemModel;
 use App\Models\PedidoModel;
+use App\Models\ProveedorModel;
 use App\Models\RolModel;
 use App\Models\CategoriaModel;
 use App\Models\ItemsProductoModel;
@@ -82,6 +83,7 @@ abstract class BaseController extends Controller {
         $this->horariosEntregaModel = new HorariosEntregaModel($this->db);
         $this->detallePedidoModel = new DetallePedidoModel($this->db);
         $this->sucursalModel = new SucursalModel($this->db);
+        $this->proveedorModel = new ProveedorModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

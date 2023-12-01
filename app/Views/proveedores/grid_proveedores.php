@@ -40,37 +40,19 @@
                             
                             <thead>
                                 <th>Nombre</th>
-                                <th>Telefono</th>
-                                <th>Email</th>
-                                <th>Dirección</th>
                                 <th>Documento</th>
-                                <th>Estado</th>
-                                <th>Desactivar</th>
+                                <th>Contacto</th>
+                                <th>Telf. contacto</th>
                             </thead>
                             <tbody>
                                 <?php
                                     if (isset($proveedores) && $proveedores != NULL) {
                                         foreach ($proveedores as $key => $value) {
                                             echo '<tr>
-                                                <td><a href="'.site_url().'usuario-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
-                                                <td>'.$value->telefono.'</td>
-                                                <td>'.$value->email.'</td>
-                                                <td>'.$value->direccion.'</td>
-                                                <td>'.$value->cedula.'</td>';
-                                                if ($value->estado == 1) {
-                                                    echo '<td>Activo</td>';
-                                                }else if($value->estado == 0){
-                                                    echo '<td>Inactivo</td>';
-                                                }
-                                            echo '
-                                                <td>
-                                                    <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'/'.$value->estado.'" class="edit">
-                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                </tr>';
+                                                <td><a href="'.site_url().'proveedor-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
+                                                <td>'.$value->documento.'</td>
+                                                <td>'.$value->contacto.'</td>
+                                                <td>'.$value->celular_contacto.'</td>';
                                         }
                                     }
                                 ?>

@@ -69,7 +69,14 @@
                                     <div id="cliente"> </div>
                                     <div class="form-group" id="campo-extra">
                                         <label for="telefono">Celular:</label>
-                                        <input type="text" class="form-control number" id="telefono" name="telefono" placeholder="Celular" value="<?= old('telefono'); ?>">
+                                        <input 
+                                            type="text" 
+                                            class="form-control number" 
+                                            id="telefono" 
+                                            name="telefono" 
+                                            placeholder="Celular" 
+                                            value="<?= old('telefono'); ?>"
+                                        >
                                     </div>
                                     <div class="form-group" id="campo-extra">
                                         <label for="email" >Email:</label>
@@ -155,7 +162,73 @@
                                         </table>
                                     </div>
                                     <div class="form-check mb-2">
-                                        <h3 id="error-message">Estoy reprogramando los cálculos, por eso no salen los subtotales y totales</h3>
+                                        <h3 id="error-message">Estoy reprogramando los cálculos, por eso no se calculan bien los subtotales y totales</h3>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
+                                        <div class="col-sm-4">
+                                            <input 
+                                                type="text" 
+                                                class="form-control inputValor" 
+                                                id="valor_neto" 
+                                                placeholder="0.00" 
+                                                onchange="sumarTotal(this.value);" 
+                                                name="valor_neto"
+                                                value="<?= old('valor_neto'); ?>"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="descuento" class="col-sm-8 col-form-label">Descuento (%):</label>
+                                        <div class="col-sm-4">
+                                            <input 
+                                                type="text" 
+                                                class="form-control inputValor" 
+                                                id="descuento" 
+                                                placeholder="0" 
+                                                onchange="descontar(this.value);" 
+                                                name="descuento"
+                                                value="<?= old('descuento'); ?>"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="sectores" class="col-md-3 col-form-label">Transporte:</label>
+                                        <select class="form-select form-control-border" id="sectores" name="sectores">
+                                            <option value="0" selected>--Seleccionar sector--</option>
+                                            <?php
+                                                if (isset($sectores)) {
+                                                    foreach ($sectores as $key => $value) {
+                                                        echo '<option value="'.$value->id.'" '.set_select('sectores', $value->id, false).' >'.$value->sector.'</option>';
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                        <div class="col-md-4" id="div-cant">
+                                            <input 
+                                                type="text" 
+                                                class="form-control inputValor" 
+                                                id="transporte" 
+                                                placeholder="0.00" 
+                                                onchange="sumar(this.value);" 
+                                                name="transporte"
+                                                value="<?= old('transporte'); ?>"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="total" class="col-sm-8 col-form-label">Total:</label>
+                                        <div class="col-sm-4">
+                                            <input 
+                                                type="text" 
+                                                class="form-control inputValor" 
+                                                id="total" 
+                                                placeholder="0.00" 
+                                                onchange="sumar(this.value);" 
+                                                name="total"
+                                                value="<?= old('total'); ?>"
+                                            >
+                                        </div>
                                     </div>
                                     <!-- /.card-body -->
                                     <?= form_hidden('cod_pedido', $cod_pedido); ?>
@@ -201,6 +274,30 @@
             });
         }
     }
+
+    $(document).ready(function(){
+        $("#idproducto").on('change',function(){
+            if($("#idproducto").val() !=""){
+                valor = $("#idproducto").val();
+                //console.log(valor);
+                $.ajax({
+                    type:"GET",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/get_valor_producto/"+valor,
+                    data:"producto="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        //console.log(data);
+                        $('#valor_neto').html(data);
+                        //document.getElementById("valor_neto").value = "0.01"
+                    }
+                });
+            }
+        });
+    });
+
     function eliminaProducto(idproducto, cod_pedido){
 
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
@@ -255,6 +352,29 @@
     })
 
     $(document).ready(function(){
+        $("#telefono").on('input',function(){
+            if($("#telefono").val() !=""){
+                valor = $("#telefono").val();
+                $.ajax({
+                    type:"POST",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/clientes_select_telefono",
+                    data:"telefono="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        let cliente = JSON.parse(data);
+                        document.getElementById('nombre').value = cliente.nombre
+                        document.getElementById('documento').value = cliente.documento
+                        document.getElementById('email').value = cliente.email
+                    }
+                });
+            }
+        })
+    })
+
+    $(document).ready(function(){
         $("#sectores").on('change',function(){
             if($("#sectores").val() !=""){
                 valor = $("#sectores").val();
@@ -289,15 +409,23 @@
     });
 
     /* Multiple Item Picker */
-    $('.selectpicker').selectpicker({
-        style: 'btn-default'
-    });
+    // $('.selectpicker').selectpicker({
+    //     style: 'btn-default'
+    // });
 
+    $(document).ready(function(){
+        $("#telefono").on( "change", function() {
+            let string = $("#telefono").val();
+           
+            $("#telefono").val(string.replace(/[^\w]/gi, ''))
+        })
+    })
+    
 </script>
 
 
 
 
 </script>
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>

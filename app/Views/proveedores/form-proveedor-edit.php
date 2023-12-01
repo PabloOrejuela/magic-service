@@ -15,7 +15,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'proveedor-insert';?>" method="post">
+                    <form action="<?= site_url().'proveedor-update';?>" method="post">
                         <div class="card-body">
                             <div class="form-group col-md-12">
                                 <label for="nombre">Nombre:</label>
@@ -25,7 +25,7 @@
                                     id="nombre" 
                                     name="nombre" 
                                     placeholder="Nombre proveedor" 
-                                    value="<?= old('nombre'); ?>" 
+                                    value="<?= $proveedor->nombre; ?>" 
                                     required
                                 >
                                 <p id="error-message"><?= session('errors.nombre');?> </p>
@@ -38,7 +38,7 @@
                                     id="documento" 
                                     name="documento" 
                                     placeholder="RUC / Cédula" 
-                                    value="<?= old('documento'); ?>" 
+                                    value="<?= $proveedor->documento; ?>" 
                                 >
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                                     id="contacto" 
                                     name="contacto" 
                                     placeholder="Nombre del contacto" 
-                                    value="<?= old('contacto'); ?>" 
+                                    value="<?= $proveedor->contacto; ?>" 
                                     required
                                 >
                                 <p id="error-message"><?= session('errors.contacto');?> </p>
@@ -64,14 +64,14 @@
                                     id="celular_contacto" 
                                     name="celular_contacto" 
                                     placeholder="Teléfono contacto" 
-                                    value="<?= old('celular_contacto'); ?>" 
+                                    value="<?= $proveedor->celular_contacto;?>" 
                                 >
                             </div>
                         </div>
                         <!-- /.card-body -->
-                        <?= form_hidden('id', 0); ?>
+                        <?= form_hidden('id', $proveedor->id); ?>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">Actualizar</button>
                         </div>
                     </form>
                 </div>

@@ -38,6 +38,7 @@ $routes->get('ventas', 'Ventas::index');
 $routes->get('pedidos', 'Ventas::pedidos');
 $routes->get('pedidos-ventana', 'Ventas::pedidos_ventana');
 $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
+$routes->post('ventas/clientes_select_telefono', 'Ventas::clientes_select_telefono');
 $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
 $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
@@ -77,6 +78,9 @@ $routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');
 $routes->get('proveedor-create', 'Proveedores::create');
+$routes->post('proveedor-insert', 'Proveedores::insert');
+$routes->get('proveedor-edit/(:num)', 'Proveedores::edit/$1');
+$routes->post('proveedor-update', 'Proveedores::update');
 
 //Clientes
 $routes->get('clientes', 'Clientes::index');

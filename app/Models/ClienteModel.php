@@ -53,6 +53,20 @@ class ClienteModel extends Model {
         return $result;
     }
 
+    function _getClienteByPhone($telefono){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*')->where('telefono', $telefono);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     public function _insert($data) {
 
         //Inserto el nuevo cliente
