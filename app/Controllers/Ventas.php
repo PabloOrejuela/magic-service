@@ -93,7 +93,7 @@ class Ventas extends BaseController {
 
         if ($producto) {
             $datosExiste = $this->detallePedidoModel->_getProdDetallePedido($idproducto, $cod_pedido);
-
+            
             if ($datosExiste) {
                 $cantidad = $datosExiste->cantidad + $cantidad;
                 $subtotal = $cantidad * $datosExiste->precio;
@@ -140,6 +140,26 @@ class Ventas extends BaseController {
 
         $res['datos'] = $this->cargaProductos($cod_pedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    function getDetallePedido($cod_pedido){
+        $error = '';
+        $subtotal = 0;
+        $cantidad = 0;
+        $detalle = $this->detallePedidoModel->_getDetallePedido($cod_pedido);
+
+        if ($detalle) {
+            $res['datos'] = $detalle;
+            foreach ($detalle as $key => $value) {
+                $subtotal += $value->cantidad * $value->precio;
+            }
+            
+        }else{
+            $res['datos'] = 'NO existe ese pedido';
+        }
+        $res['subtotal'] = $subtotal;
         $res['error'] = $error;
         echo json_encode($res);
     }

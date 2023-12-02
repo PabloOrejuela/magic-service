@@ -14,9 +14,8 @@
                 <div class="card" id="form-pedido">
                     <div class="card-header">
                         <h3 class="card-title">
-                        <i class="fas fa-chart-pie mr-1"></i>
-                        <?= $subtitle;?>
-                        
+                            <i class="fas fa-chart-pie mr-1"></i>
+                            <?= $subtitle;?>
                         </h3>
                     </div><!-- /.card-header -->
                     <div class="card-body">
@@ -24,218 +23,246 @@
                             <!-- Morris chart - Sales -->
                             <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
-                            <form action="<?= site_url().'pedido-insert';?>" method="post">
-                                <div class="card-body">
-                                    <div class="form-group row">
-                                        <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega:</label>
-                                        <div class="col-sm-7">
-                                            <input type="date" class="form-control" id="inputFecha" name="fecha_entrega" value ="" min="<?= date('Y-m-d') ?>">
+                                <form action="<?= site_url().'pedido-insert';?>" method="post">
+                                    <div class="card-body">
+                                        <h4 style="color:#B82D1B;">Los campos con asterisco * son obligatorios</h4>
+                                        <div class="form-group row">
+                                            <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
+                                            <div class="col-sm-7">
+                                                <input type="date" class="form-control" id="inputFecha" name="fecha_entrega" value ="" min="<?= date('Y-m-d') ?>">
+                                            </div>
+                                            <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="horario_entrega" class="col-md-5 col-form-label">Horario de entrega:</label>
-                                        <div class="col-md-6">
-                                            <select class="form-select form-control-border" id="horario_entrega" name="horario_entrega">
-                                                <option value="0" selected>--Seleccionar horario--</option>
-                                                <?php
-                                                    if (isset($horariosEntrega)) {
-                                                        foreach ($horariosEntrega as $key => $hora) {
-                                                            if ($hora->id < 5 || $hora->id > 24) {
-                                                                echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).' style="color:red;">'.$hora->hora.' Horario extra</option>';
-                                                            }else{
-                                                                echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).'>'.$hora->hora.'</option>';
+                                        <div class="form-group row">
+                                            <label for="horario_entrega" class="col-md-5 col-form-label">Horario de entrega:</label>
+                                            <div class="col-md-6">
+                                                <select class="form-select form-control-border" id="horario_entrega" name="horario_entrega">
+                                                    <option value="0" selected>--Seleccionar horario--</option>
+                                                    <?php
+                                                        if (isset($horariosEntrega)) {
+                                                            foreach ($horariosEntrega as $key => $hora) {
+                                                                if ($hora->id < 5 || $hora->id > 24) {
+                                                                    echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).' style="color:red;">'.$hora->hora.' Horario extra</option>';
+                                                                }else{
+                                                                    echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).'>'.$hora->hora.'</option>';
+                                                                }
+                                                                
                                                             }
-                                                            
+                                                        }
+                                                    ?>
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group"  style="display: none;">
+                                            <label for="nombre">Id Cliente:</label>
+                                            <input type="hidden" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>" >
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nombre">Nombre cliente *:</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
+                                        </div>
+                                        <p id="error-message"><?= session('errors.nombre');?> </p>
+                                        <div class="form-group">
+                                            <label for="documento">Documento:</label>
+                                            <input type="text" class="form-control" id="documento" name="documento" placeholder="documento" value="<?= old('documento'); ?>" >
+                                        </div>
+                                        <p id="error-message"><?= session('errors.documento');?> </p>
+                                        <div id="cliente"> </div>
+                                        <div class="form-group" id="campo-extra">
+                                            <label for="telefono">Celular:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control number" 
+                                                id="telefono" 
+                                                name="telefono" 
+                                                placeholder="Celular" 
+                                                value="<?= old('telefono'); ?>"
+                                            >
+                                        </div>
+                                        <div class="form-group" id="campo-extra">
+                                            <label for="email" >Email:</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= old('email'); ?>">
+                                        </div>
+                                        <div class="form-group mb-3">
+                                            <label for="vendedor">Vendedor *:</label>
+                                            <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
+                                                <option value="0" selected>--Seleccionar vendedor--</option>
+                                                <?php
+                                                    if (isset($vendedores)) {
+                                                        foreach ($vendedores as $key => $value) {
+                                                            echo '<option value="'.$value->id.'" '.set_select('vendedor', $value->id, false).' >'.$value->nombre.'</option>';
                                                         }
                                                     }
                                                 ?>
-                                        </select>
+                                            </select>
                                         </div>
-                                    </div>
-                                    <div class="form-group"  style="display: none;">
-                                        <label for="nombre">Id Cliente:</label>
-                                        <input type="hidden" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="nombre">Nombre cliente:</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
-                                    </div>
-                                    <p id="error-message"><?= session('errors.nombre');?> </p>
-                                    <div class="form-group">
-                                        <label for="documento">Documento:</label>
-                                        <input type="text" class="form-control" id="documento" name="documento" placeholder="documento" value="<?= old('documento'); ?>" >
-                                    </div>
-                                    <p id="error-message"><?= session('errors.documento');?> </p>
-                                    <div id="cliente"> </div>
-                                    <div class="form-group" id="campo-extra">
-                                        <label for="telefono">Celular:</label>
-                                        <input 
-                                            type="text" 
-                                            class="form-control number" 
-                                            id="telefono" 
-                                            name="telefono" 
-                                            placeholder="Celular" 
-                                            value="<?= old('telefono'); ?>"
-                                        >
-                                    </div>
-                                    <div class="form-group" id="campo-extra">
-                                        <label for="email" >Email:</label>
-                                        <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= old('email'); ?>">
-                                    </div>
-                                    <div class="form-group mb-3">
-                                        <label for="vendedor">Vendedor:</label>
-                                        <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
-                                            <option value="0" selected>--Seleccionar vendedor--</option>
-                                            <?php
-                                                if (isset($vendedores)) {
-                                                    foreach ($vendedores as $key => $value) {
-                                                        echo '<option value="'.$value->id.'" '.set_select('vendedor', $value->id, false).' >'.$value->nombre.'</option>';
-                                                    }
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <p id="error-message"><?= session('errors.vendedor');?> </p>
-                                    <div class="form-check mb-5">
-                                        <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" <?php echo set_checkbox('venta_extra', '0'); ?> >
-                                        <label class="form-check-label" for="venta_extra">Venta extra</label>
-                                    </div>
-                                    <div class="row form-group mb-3 px-2">
-                                        <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
-                                        <table>
-                                            <thead>
-                                                <th><label for="producto" class="px-3 lbl-producto">Producto: </label></th>
-                                                <th>Cantidad</th>
-                                                <th></th>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <select 
-                                                            class="col-md-12 selectpicker" 
-                                                            id="idproducto" 
-                                                            name="producto"
-                                                            data-style="form-control" 
-                                                            data-live-search="true" 
-                                                        >
-                                                        <option value="0" selected>--Seleccionar producto--</option>
-                                                        <?php
-                                                            if (isset($productos)) {
-                                                                $defaultvalue = 1;
-                                                                foreach ($productos as $key => $value) {
-                                                                    echo "<option value='$value->id' " . set_select('producto', $value->id, false). " >". $value->producto."</option>";
+                                        <p id="error-message"><?= session('errors.vendedor');?> </p>
+                                        <div class="form-check mb-5">
+                                            <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" <?php echo set_checkbox('venta_extra', '0'); ?> >
+                                            <label class="form-check-label" for="venta_extra">Venta extra</label>
+                                        </div>
+                                        <div class="row form-group mb-3 px-2">
+                                            <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
+                                            <table>
+                                                <thead>
+                                                    <th><label for="producto" class="px-3 lbl-producto">Producto: </label></th>
+                                                    <th>Cantidad</th>
+                                                    <th></th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <select 
+                                                                class="col-md-12 selectpicker" 
+                                                                id="idproducto" 
+                                                                name="producto"
+                                                                data-style="form-control" 
+                                                                data-live-search="true" 
+                                                            >
+                                                            <option value="0" selected>--Seleccionar producto--</option>
+                                                            <?php
+                                                                if (isset($productos)) {
+                                                                    $defaultvalue = 1;
+                                                                    foreach ($productos as $key => $value) {
+                                                                        echo "<option value='$value->id' " . set_select('producto', $value->id, false). " >". $value->producto."</option>";
+                                                                    }
                                                                 }
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            type="text" 
-                                                            class="form-control inputValor number" 
-                                                            id="cant" 
-                                                            name="cant"  
-                                                            value="1"
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <a href="#" class="link-opacity-75" id="a" onclick="agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )">
-                                                            <img src="<?= site_url(); ?>public/images/btn-agregar.png" alt="agregar" id="img-agregar" />
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <p id="error-message"><?= session('errors.producto');?> </p>
-                                    <div class="row mb-2">
-                                        <table id="tablaProductos" class="table table-hover table-stripped table-sm table-responsive tablaProductos" width:="100%">
-                                            <thead class="thead-light">
-                                                <th>#</th>
-                                                <th>Código</th>
-                                                <th>Producto</th>
-                                                <th>Precio</th>
-                                                <th>Cant</th>
-                                                <th width="1%"></th>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
-                                    <div class="form-check mb-2">
-                                        <h3 id="error-message">Estoy reprogramando los cálculos, por eso no se calculan bien los subtotales y totales</h3>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
-                                        <div class="col-sm-4">
-                                            <input 
-                                                type="text" 
-                                                class="form-control inputValor" 
-                                                id="valor_neto" 
-                                                placeholder="0.00" 
-                                                onchange="sumarTotal(this.value);" 
-                                                name="valor_neto"
-                                                value="<?= old('valor_neto'); ?>"
-                                            >
+                                                            ?>
+                                                        </select>
+                                                        </td>
+                                                        <td>
+                                                            <input 
+                                                                type="text" 
+                                                                class="form-control inputValor number" 
+                                                                id="cant" 
+                                                                name="cant"  
+                                                                value="1"
+                                                            >
+                                                        </td>
+                                                        <td>
+                                                            <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
+                                                            <a href="javascript:agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )" class="link-opacity-75" id="a">
+                                                                <img src="<?= site_url(); ?>public/images/btn-agregar.png" alt="agregar" id="img-agregar" />
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="descuento" class="col-sm-8 col-form-label">Descuento (%):</label>
-                                        <div class="col-sm-4">
-                                            <input 
-                                                type="text" 
-                                                class="form-control inputValor" 
-                                                id="descuento" 
-                                                placeholder="0" 
-                                                onchange="descontar(this.value);" 
-                                                name="descuento"
-                                                value="<?= old('descuento'); ?>"
-                                            >
+                                        <p id="error-message"><?= session('errors.producto');?> </p>
+                                        <div class="row mb-2">
+                                            <table id="tablaProductos" class="table table-hover table-stripped table-sm table-responsive tablaProductos" width:="100%">
+                                                <thead class="thead-light">
+                                                    <th>#</th>
+                                                    <th>Código</th>
+                                                    <th>Producto</th>
+                                                    <th>Precio</th>
+                                                    <th>Cant</th>
+                                                    <th width="1%"></th>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="sectores" class="col-md-3 col-form-label">Transporte:</label>
-                                        <select class="form-select form-control-border" id="sectores" name="sectores">
-                                            <option value="0" selected>--Seleccionar sector--</option>
-                                            <?php
-                                                if (isset($sectores)) {
-                                                    foreach ($sectores as $key => $value) {
-                                                        echo '<option value="'.$value->id.'" '.set_select('sectores', $value->id, false).' >'.$value->sector.'</option>';
+                                        <div class="form-group row">
+                                            <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="valor_neto" 
+                                                    placeholder="0.00" 
+                                                    onchange="sumarTotal(this.value);" 
+                                                    name="valor_neto"
+                                                    value="<?= old('valor_neto'); ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="descuento" class="col-sm-8 col-form-label">Descuento (%):</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="descuento" 
+                                                    placeholder="0" 
+                                                    onchange="descontar(this.value);" 
+                                                    name="descuento"
+                                                    value="<?= old('descuento'); ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="sectores" class="col-md-3 col-form-label">Transporte:</label>
+                                            <select class="form-select form-control-border" id="sectores" name="sectores">
+                                                <option value="0" selected>--Seleccionar sector--</option>
+                                                <?php
+                                                    if (isset($sectores)) {
+                                                        foreach ($sectores as $key => $value) {
+                                                            echo '<option value="'.$value->id.'" '.set_select('sectores', $value->id, false).' >'.$value->sector.'</option>';
+                                                        }
                                                     }
-                                                }
-                                            ?>
-                                        </select>
-                                        <div class="col-md-4" id="div-cant">
-                                            <input 
-                                                type="text" 
-                                                class="form-control inputValor" 
-                                                id="transporte" 
-                                                placeholder="0.00" 
-                                                onchange="sumar(this.value);" 
-                                                name="transporte"
-                                                value="<?= old('transporte'); ?>"
-                                            >
+                                                ?>
+                                            </select>
+                                            <div class="col-md-4 px-2" id="div-cant">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="transporte" 
+                                                    placeholder="0.00" 
+                                                    onchange="sumar(this.value);" 
+                                                    name="transporte"
+                                                    value="<?= old('transporte'); ?>"
+                                                >
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="total" class="col-sm-8 col-form-label">Total:</label>
-                                        <div class="col-sm-4">
-                                            <input 
-                                                type="text" 
-                                                class="form-control inputValor" 
-                                                id="total" 
-                                                placeholder="0.00" 
-                                                onchange="sumar(this.value);" 
-                                                name="total"
-                                                value="<?= old('total'); ?>"
-                                            >
+                                        <div class="form-group row">
+                                            <label for="horario-extra" class="col-sm-8 col-form-label">Cargo Horario:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="horario-extra" 
+                                                    placeholder="0" 
+                                                    onchange="sumar(this.value);" 
+                                                    name="horario_extra"
+                                                    value="<?= old('horario_extra'); ?>"
+                                                >
+                                            </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <label for="cargo-domingo" class="col-sm-8 col-form-label">Cargo por entrega domingo:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="cargo-domingo" 
+                                                    placeholder="0" 
+                                                    onchange="sumar(this.value);" 
+                                                    name="cargo_domingo"
+                                                    value="<?= old('cargo_domingo'); ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="total" class="col-sm-8 col-form-label">Total:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="total" 
+                                                    placeholder="0.00" 
+                                                    onchange="sumar(this.value);" 
+                                                    name="total"
+                                                    value="<?= old('total'); ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <?= form_hidden('cod_pedido', $cod_pedido); ?>
+                                        <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary">Enviar</button>
                                     </div>
-                                    <!-- /.card-body -->
-                                    <?= form_hidden('cod_pedido', $cod_pedido); ?>
-                                    <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Enviar</button>
-                                </div>
-                            </form>
+                                </form>
                             </div>
                         </div>
                     </div></div><!-- /.card-body -->
@@ -247,56 +274,33 @@
 <script>
 
     function agregarProducto(idproducto, cantidad, cod_pedido){
-
+        let dia = getDayOfWeek();
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
 
-            $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert/' + idproducto + '/' + cantidad + '/' + cod_pedido,
-                success: function(resultado){
-                    if (resultado == 0) {
+             $.ajax({
+                 url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert/' + idproducto + '/' + cantidad + '/' + cod_pedido,
+                 success: function(resultado){
+                     if (resultado == 0) {
+                     }else{
+                         //Exito
+                         console.log(`Se insertó el producto y el día es: ${dia}`);
+                         let detalle = JSON.parse(resultado);
 
-                    }else{
-                        //Exito
-                        console.log("Se insertó el producto");
-                        let detalle = JSON.parse(resultado);
+                         if (detalle.error == '') {
+                             $("#tablaProductos tbody").empty();
+                             $("#tablaProductos tbody").append(detalle.datos);
+                             $("#total").val(detalle.total);
 
-                        if (detalle.error == '') {
-                            $("#tablaProductos tbody").empty();
-                            $("#tablaProductos tbody").append(detalle.datos);
-                            $("#total").val(detalle.total);
-
-                            document.getElementById("cant").value = 1;
-                            let selectProductos = document.getElementById("idproducto");
-                            selectProductos.value = 0;
-                        }
-                    }
-                }
-            });
+                             document.getElementById("cant").value = 1;
+                             let selectProductos = document.getElementById("idproducto");
+                             selectProductos.value = 0;
+                         }
+                     }
+                 }
+             });
         }
+        calculaValorNeto(cod_pedido);
     }
-
-    $(document).ready(function(){
-        $("#idproducto").on('change',function(){
-            if($("#idproducto").val() !=""){
-                valor = $("#idproducto").val();
-                //console.log(valor);
-                $.ajax({
-                    type:"GET",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/get_valor_producto/"+valor,
-                    data:"producto="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        //console.log(data);
-                        $('#valor_neto').html(data);
-                        //document.getElementById("valor_neto").value = "0.01"
-                    }
-                });
-            }
-        });
-    });
 
     function eliminaProducto(idproducto, cod_pedido){
 
@@ -328,8 +332,169 @@
             });
         }
     }
+
+    function limpiarValores(valor) {
+        var valor = 0
+        document.getElementById('descuento').value = valor;
+        document.getElementById('transporte').value = valor.toFixed(2);
+        document.getElementById('total').value = valor.toFixed(2);
+    }
+
+    function descontar(valor) {
+        var total = 0;
+        var descuento = 0;
+        valor = valor.replace(/,/g, '.')
+        valor = parseFloat(valor); // Convertir el valor a un float (número).
+
+        total = document.getElementById('total').value;
+
+        // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+        total = (total == null || total == undefined || total == "") ? 0 : total;
+
+        /* Este es el cálculo. */
+        descuento = (parseFloat(total) * parseFloat(valor))/100
+        total = (parseFloat(total) - parseFloat(descuento));
+        // console.log("Valor: " + valor);
+        // console.log("Descuento: " +descuento);
+        document.getElementById('total').value = total.toFixed(2);
+    }
+
+    function sumarTotal(valor) {
+
+        limpiarValores()
+
+        var total = 0;	
+        valor = valor.replace(/,/g, '.')
+        valor = parseFloat(valor); // Convertir el valor a un float (número).
+
+        total = document.getElementById('total').value;
+
+        // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+        total = (total == null || total == undefined || total == "") ? 0 : total;
+
+        /* Este es el cálculo. */
+        total = (parseFloat(total) + parseFloat(valor));
+        document.getElementById('total').value = total.toFixed(2);
+    }
+
+    function eliminaProducto(idproducto, cod_pedido){
+
+        if (idproducto != null && idproducto != 0 && idproducto > 0) {
+
+            $.ajax({
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto/' + idproducto + '/' + cod_pedido,
+                success: function(resultado){
+                    if (resultado == 0) {
+
+                    }else{
+                        //Exito
+                        console.log("Se eliminó el producto");
+                        let detalle = JSON.parse(resultado);
+
+                        if (detalle.error == '') {
+                            $("#tablaProductos tbody").empty();
+                            $("#tablaProductos tbody").append(detalle.datos);
+                            $("#total").val(detalle.total);
+
+                            document.getElementById("cant").value = 1;
+                            let selectProductos = document.getElementById("idproducto");
+                            selectProductos.value = 0;
+                        }else{
+                            console.log("Error");
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function getDayOfWeek(){
+        let ahora = new Date();
+        let diaSemana = ahora.getDay();
+        return diaSemana;
+    }
+
+    function calculaValorNeto(cod_pedido) {
+
+        let total = 0;
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "<?php echo site_url(); ?>ventas/getDetallePedido/"+cod_pedido,
+            success: function(resultado){
+                let detalle = JSON.parse(resultado);
+                console.log(detalle.subtotal);
+                document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
+            }
+        });
+    }
+   
     
-    
+</script>
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    });
+
+    /* Multiple Item Picker */
+    $('.selectpicker').selectpicker({
+        style: 'btn-default'
+    });
+
+    $(document).ready(function(){
+        $("#idproducto").on('change',function(){
+            if($("#idproducto").val() !=""){
+                valor = $("#idproducto").val();
+                //console.log(valor);
+                $.ajax({
+                    type:"GET",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/get_valor_producto/"+valor,
+                    data:"producto="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        //console.log(data);
+                        $('#valor_neto').html(data);
+                        //document.getElementById("valor_neto").value = "0.01"
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#telefono").on( "change", function() {
+            let string = $("#telefono").val();
+           
+            $("#telefono").val(string.replace(/[^\w]/gi, ''))
+        })
+    })
+
+    $(document).ready(function(){
+        $("#sectores").on('change',function(){
+            if($("#sectores").val() !=""){
+                valor = $("#sectores").val();
+                //console.log(valor);
+                $.ajax({
+                    type:"GET",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/get_valor_sector/"+valor,
+                    data:"sector="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        //console.log(data);
+                        $('#transporte').html(data);
+                        //document.getElementById("valor_neto").value = "0.01"
+                    }
+                });
+            }
+        });
+    });
+
     $(document).ready(function(){
         $("#documento").on('input',function(){
             if($("#documento").val() !=""){
@@ -373,54 +538,6 @@
             }
         })
     })
-
-    $(document).ready(function(){
-        $("#sectores").on('change',function(){
-            if($("#sectores").val() !=""){
-                valor = $("#sectores").val();
-                //console.log(valor);
-                $.ajax({
-                    type:"GET",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/get_valor_sector/"+valor,
-                    data:"sector="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        //console.log(data);
-                        $('#transporte').html(data);
-                        //document.getElementById("valor_neto").value = "0.01"
-                    }
-                });
-            }
-        });
-    });
-
-    function limpiarValores(valor) {
-        var valor = 0
-        document.getElementById('descuento').value = valor;
-        document.getElementById('transporte').value = valor.toFixed(2);
-        document.getElementById('total').value = valor.toFixed(2);
-    }
-    
-    $('#myModal').on('shown.bs.modal', function () {
-        $('#myInput').trigger('focus')
-    });
-
-    /* Multiple Item Picker */
-    // $('.selectpicker').selectpicker({
-    //     style: 'btn-default'
-    // });
-
-    $(document).ready(function(){
-        $("#telefono").on( "change", function() {
-            let string = $("#telefono").val();
-           
-            $("#telefono").val(string.replace(/[^\w]/gi, ''))
-        })
-    })
-    
 </script>
 
 

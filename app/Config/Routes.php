@@ -46,6 +46,7 @@ $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
 $routes->get('estado', 'Administracion::estado');
 $routes->get('ventas/detalle_pedido_insert/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert/$1/$2/$3');
 $routes->get('ventas/detalle_pedido_delete_producto/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto/$1/$2');
+$routes->get('ventas/getDetallePedido/(:num)', 'Ventas::getDetallePedido/$1');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');

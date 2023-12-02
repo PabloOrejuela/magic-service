@@ -94,6 +94,7 @@ class Validation extends BaseConfig {
     public $pedidoInicial = [
         'idcliente'  => 'greater_than[0]',
         'nombre'   => 'required',
+        'fecha_entrega'   => 'required',
     ]; 
 
     public $pedidoInicial_errors = [
@@ -102,6 +103,9 @@ class Validation extends BaseConfig {
         ],
         'nombre' => [
             'required' => 'El campo "Cliente" es obligatorio',
+        ],
+        'fecha_entrega' => [
+            'required' => 'El campo "Fecha de entrega" es obligatorio',
         ]
     ];
 
