@@ -53,19 +53,21 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-                $this->table.'.id as id,cod_pedido,
+                $this->table.'.id as id,
+                cod_pedido,
                 '.$this->table.'.estado as estado,hora,
-                nombre, 
+                clientes.nombre as nombre, 
                 fecha_entrega,
                 horario_entrega,
                 fecha,
                 sectores_entrega.sector as sector,
                 dir_entrega,
-                mensajero'
+                usuarios.nombre as mensajero'
         );
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
+        $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -218,6 +220,19 @@ class PedidoModel extends Model {
         }
 
         $builder->where($this->table.'.id', $data['id']);
+        $builder->update();
+    }
+
+    public function _actualizaMensajero($mensajero, $codigo_pedido) {
+
+        $builder = $this->db->table($this->table);
+
+        if ($mensajero != 0 && $mensajero != null) {
+            $builder->set('mensajero', $mensajero);
+        }
+
+
+        $builder->where($this->table.'.cod_pedido', $codigo_pedido);
         $builder->update();
     }
 }

@@ -86,6 +86,13 @@ class Ventas extends BaseController {
         echo view('precio_sector', $data);
     }
 
+    function actualizaMensajero($mensajero, $cod_pedido){
+        //$producto = $this->request->getPostGet('producto');
+        $this->pedidoModel->_actualizaMensajero($mensajero, $cod_pedido);
+        
+        return true;
+    }
+
     function get_costo_horario($horario){
         //$producto = $this->request->getPostGet('producto');
         $costo_horario = $this->horariosEntregaModel->find($horario);

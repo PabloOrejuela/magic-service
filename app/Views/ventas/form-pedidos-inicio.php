@@ -48,7 +48,7 @@
                                 <img src="<?= site_url().'public/images/ventana.png'; ?>" >
                                 <span id="title-link">Abrir en nueva ventana</span>
                             </a>
-                            <h3 id="error-message">Implementando funcionalidad Drag and Drop a las filas del grid de pedidos</h3>
+                            <h3 id="error-message">Trabajando en los modales de los campos</h3>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
@@ -69,36 +69,41 @@
                             </thead>
                             <tbody id="lista">
                                 <?php
-                                    // $mensajero[0] = '--Seleccionar--';
-
-                                    // foreach ($mensajeros as $key => $value) {
-                                    //     $mensajero[$value->id] = $value->nombre;
-                                    // }
+                                    use App\Models\DetallePedidoModel;
+                                    $this->detallePedidoModel = new DetallePedidoModel();
 
                                     if (isset($pedidos) && $pedidos != NULL) {
                                         foreach ($pedidos as $key => $value) {
+                                            $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
+                                            //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                             echo '<tr class="item-list" data-id="'.$value->id.'">
                                                 <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                 if ($value->fecha_entrega) {
-                                                    echo '<td>'.$value->fecha_entrega.'</td>';
+                                                    echo '<td id="fechaEntrega_'.$value->id.'">'.$value->fecha_entrega.'</td>';
                                                 }else{
                                                     echo '<td>Registrar fecha de entrega</td>';
                                                 }
                                             echo '<td>'.$value->nombre.'</td>';
                                             if ($value->sector) {
-                                                echo '<td>'.$value->sector.'</td>';
+                                                echo '<td id="sector_'.$value->id.'">'.$value->sector.'</td>';
                                             }else{
                                                 echo '<td></td>';
                                             }
                                             if ($value->dir_entrega) {
-                                                echo '<td>'.$value->dir_entrega.'</td>';
+                                                echo '<td id="direccion_'.$value->id.'">'.$value->dir_entrega.'</td>';
                                             }else{
                                                 echo '<td>Registrar dirección</td>';
                                             }
-                                            echo '<td></td>';
+                                            echo '<td>';
+                                            foreach ($detalle as $key => $d) {
+                                                echo $d->producto;
+                                            }
+                                            echo '</td>';
                                             echo '<td>H SALIDA</td>';
-                                            echo '<td>'.$value->hora.'</td>';
-                                            echo '<td>'.$value->mensajero.'</td>';
+                                            echo '<td id="horaEntrega_'.$value->id.'">'.$value->hora.'</td>';
+                                            echo '<td id="mensajero'.$value->id.'">
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
+                                                </td>';
                                             if ($value->estado == 1) {
                                                 echo '<td>Activo</td>';
                                             }else if($value->estado == 0){
@@ -108,7 +113,7 @@
                                             echo '<td>Observación</td>';
                                             echo '<td>
                                                     <div class="contenedor" id="btn-copy">
-                                                        <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" >
+                                                        <a type="button" id="btn-register" href="javascript:copyData('.$value->id.')" >
                                                             <img src="'.site_url().'public/images/copy.png" width="30" >
                                                         </a>
                                                     </div>
@@ -126,6 +131,82 @@
         </div>
     </div>
 </section>
+<!-- Modal Mensajero-->
+<div class="modal fade" id="mensajeroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cambio de mensajero para el pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <h5 class="modal-title" id="staticBackdropLabel">Mensajeros</h5>
+      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+        <select 
+            class="form-select" 
+            id="mensajero" 
+            name="mensajero"
+            data-style="form-control" 
+            data-live-search="true" 
+        >
+        <option value="0" selected>--Seleccionar un mensajero--</option>
+        <?php 
+            $defaultvalue = 1;
+            if (isset($mensajeros)) {
+                foreach ($mensajeros as $key => $m) {
+                    if ($m->id == $defaultvalue) {
+                        echo "<option value='$m->id' " . set_select('producto', $m->id, false). " selected>". $m->nombre."</option>";
+                    }else{
+                        echo "<option value='$m->id' " . set_select('producto', $m->id, false). " >". $m->nombre."</option>";
+                    }
+                }
+            }
+        ?>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarMensajero(document.getElementById('mensajero').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    let botones = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
+        botones.forEach(btn => {
+            btn.addEventListener('click', function() {
+                let id = this.dataset.id;
+                //console.log(id);
+                document.querySelector('#codigo_pedido').value = id;
+                //console.log('abrir modal');
+                $('#mensajeroModal').modal();
+            });
+        });
+
+        function actualizarMensajero(mensajero, codigo_pedido){
+            // console.log(mensajero);
+            // console.log(codigo_pedido);
+            $.ajax({
+                type:"GET",
+                dataType:"html",
+                url: "<?php echo site_url(); ?>ventas/actualizaMensajero/"+mensajero+'/'+codigo_pedido,
+                //data:"codigo="+valor,
+                beforeSend: function (f) {
+                    //$('#cliente').html('Cargando ...');
+                },
+                success: function(data){
+                    //console.log(data);
+                    location.replace('pedidos');
+                }
+            });
+        }
+</script>
+
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
     const lista = document.getElementById('lista')
@@ -151,8 +232,26 @@
 
         }
     })
-</script>
-<script>
+    
+function copyData(id){
+    let sector = document.getElementById("sector_"+id)
+    let direccion = document.getElementById("direccion_"+id)
+    let fechaEntrega = document.getElementById("fechaEntrega_"+id)
+    let horaEntrega = document.getElementById("horaEntrega_"+id)
+
+    console.log(horaEntrega.innerHTML);
+
+    navigator.clipboard.writeText(sector.innerHTML + " \n" + direccion.innerHTML + " \n" + fechaEntrega.innerHTML + " \n" + horaEntrega.innerHTML)
+
+    alert('El texto "' + sector.innerHTML + ' ' + direccion.innerHTML + '" se ha copiado!!!')
+}
+
+    function editar(este) {
+      let ModalEdit = new bootstrap.Modal(mensajeroModal, function(este){
+        let dato = este
+      }).show();
+    }
+
   $(document).ready(function () {
     $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
     $('#datatablesSimple').DataTable({
