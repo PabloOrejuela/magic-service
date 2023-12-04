@@ -50,7 +50,7 @@ class Home extends BaseController {
 
             $usuario = $this->usuarioModel->_getUsuario($data);
             $ip = $_SERVER['REMOTE_ADDR'];
-            //echo '<pre>'.var_export($this->estadoSistema, true).'</pre>';exit;
+            //echo '<pre>'.var_export($usuario, true).'</pre>';exit;
 
             $estado = $this->estadoSistema();
             
@@ -84,6 +84,7 @@ class Home extends BaseController {
                         'ventas' => $usuario->ventas,
                         'clientes' => $usuario->clientes,
                         'proveedores' => $usuario->proveedores,
+                        'gastos' => $usuario->gastos,
                         'reportes' => $usuario->reportes,
                     ];
             

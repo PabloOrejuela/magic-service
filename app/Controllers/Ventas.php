@@ -86,6 +86,13 @@ class Ventas extends BaseController {
         echo view('precio_sector', $data);
     }
 
+    function get_costo_horario($horario){
+        //$producto = $this->request->getPostGet('producto');
+        $costo_horario = $this->horariosEntregaModel->find($horario);
+        
+        echo json_encode($costo_horario);
+    }
+
     function detalle_pedido_insert($idproducto, $cantidad, $cod_pedido){
         $error = '';
 
@@ -176,6 +183,7 @@ class Ventas extends BaseController {
                 $fila .= '<td>'.$numFila.'</td>';
                 $fila .= '<td>'.$row->id.'</td>';
                 $fila .= '<td>'.$row->producto.'</td>';
+                $fila .= '<td><input type="text" class="form-control name="observacion_'.$cod_pedido.'" value="" ></td>';
                 $fila .= '<td>'.$row->precio.'</td>';
                 $fila .= '<td>'.$row->cantidad.'</td>';
                 

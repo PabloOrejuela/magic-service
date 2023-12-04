@@ -30,29 +30,36 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" id="btn-register" href="<?= site_url().'proveedor-create/'; ?>" class="edit mb-2">
+                            <a type="button" id="btn-register" href="<?= site_url().'gasto-create/'; ?>" class="edit mb-2">
                                 <img src="<?= site_url().'public/images/new-file.png'; ?>" >
-                                <span id="title-link">Registrar un nuevo Proveedor</span>
+                                <span id="title-link">Registrar un nuevo Gasto</span>
                             </a>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             
                             <thead>
-                                <th>Nombre</th>
+                                <th>Fecha</th>
+                                <th>Sucursal</th>
+                                <th>Negocio</th>
+                                <th>Proveedor</th>
+                                <th>Tipo gasto</th>
                                 <th>Documento</th>
-                                <th>Contacto</th>
-                                <th>Telf. contacto</th>
+                                <th>Valor</th>
                             </thead>
                             <tbody>
                                 <?php
-                                    if (isset($proveedores) && $proveedores != NULL) {
-                                        foreach ($proveedores as $key => $value) {
+                                    if (isset($gastos) && $gastos != NULL) {
+                                        foreach ($gastos as $key => $value) {
                                             echo '<tr>
-                                                <td><a href="'.site_url().'proveedor-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
+                                                <td>'.$value->fecha.'</td>
+                                                <td>'.$value->sucursal.'</td>
+                                                <td>'.$value->negocio.'</td>
+                                                <td>'.$value->proveedor.'</td>
+                                                <td>'.$value->tipo_gasto.'</td>
                                                 <td>'.$value->documento.'</td>
-                                                <td>'.$value->contacto.'</td>
-                                                <td>'.$value->celular_contacto.'</td>';
+                                                <td>'.$value->valor.'</td>
+                                            ';
                                         }
                                     }
                                 ?>

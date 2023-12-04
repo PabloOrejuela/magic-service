@@ -3,4 +3,5 @@
     <li>Implementado el Drag and drop que guarda la el órden de la lista</li>
     <li>Formulario de Registro de un proveedor</li>
     <li>Formulario de edición de proveedor</li>
+    <li>Trabajando en el form de Pedido y en el link de copiar datos</li>
 </ul>

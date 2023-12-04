@@ -41,6 +41,7 @@ $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
 $routes->post('ventas/clientes_select_telefono', 'Ventas::clientes_select_telefono');
 $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
 $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
+$routes->get('ventas/get_costo_horario/(:num)', 'Ventas::get_costo_horario/$1');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
 $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
 $routes->get('estado', 'Administracion::estado');
@@ -82,6 +83,11 @@ $routes->get('proveedor-create', 'Proveedores::create');
 $routes->post('proveedor-insert', 'Proveedores::insert');
 $routes->get('proveedor-edit/(:num)', 'Proveedores::edit/$1');
 $routes->post('proveedor-update', 'Proveedores::update');
+
+//Gastos
+$routes->get('gastos', 'Gastos::index');
+$routes->get('gasto-create', 'Gastos::create');
+$routes->post('gasto-insert', 'Gastos::insert');
 
 //Clientes
 $routes->get('clientes', 'Clientes::index');

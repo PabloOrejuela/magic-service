@@ -161,4 +161,18 @@ class Proveedores extends BaseController {
             $this->logout();
         }
     }
+
+    public function logout(){
+        //destruyo la session  y salgo
+        
+        $user = [
+            'id' => $this->session->idusuario,
+            'logged' => 0,
+            'ip' => 0
+        ];
+        //echo '<pre>'.var_export($user, true).'</pre>';exit;
+        $this->usuarioModel->_updateLoggin($user);
+        $this->session->destroy();
+        return redirect()->to('/');
+    }
 }

@@ -28,8 +28,8 @@
                                         <h4 style="color:#B82D1B;">Los campos con asterisco * son obligatorios</h4>
                                         <div class="form-group row">
                                             <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
-                                            <div class="col-sm-7">
-                                                <input type="date" class="form-control" id="inputFecha" name="fecha_entrega" value ="" min="<?= date('Y-m-d') ?>">
+                                            <div class="col-sm-6">
+                                                <input type="date" class="form-control" id="inputFecha" name="fecha_entrega"  min="<?= date('Y-m-d') ?>">
                                             </div>
                                             <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
                                         </div>
@@ -156,6 +156,7 @@
                                                     <th>#</th>
                                                     <th>Código</th>
                                                     <th>Producto</th>
+                                                    <th>Observación</th>
                                                     <th>Precio</th>
                                                     <th>Cant</th>
                                                     <th width="1%"></th>
@@ -185,7 +186,7 @@
                                                     class="form-control inputValor" 
                                                     id="descuento" 
                                                     placeholder="0" 
-                                                    onchange="descontar(this.value);" 
+                                                    onchange="sumarTotal()" 
                                                     name="descuento"
                                                     value="<?= old('descuento'); ?>"
                                                 >
@@ -209,7 +210,7 @@
                                                     class="form-control inputValor" 
                                                     id="transporte" 
                                                     placeholder="0.00" 
-                                                    onchange="sumar(this.value);" 
+                                                    onchange="sumarTotal()" 
                                                     name="transporte"
                                                     value="<?= old('transporte'); ?>"
                                                 >
@@ -223,21 +224,21 @@
                                                     class="form-control inputValor" 
                                                     id="horario-extra" 
                                                     placeholder="0" 
-                                                    onchange="sumar(this.value);" 
+                                                    onchange="sumarTotal()" 
                                                     name="horario_extra"
                                                     value="<?= old('horario_extra'); ?>"
                                                 >
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="cargo-domingo" class="col-sm-8 col-form-label">Cargo por entrega domingo:</label>
+                                            <label for="cargo_domingo" class="col-sm-8 col-form-label">Cargo por entrega domingo:</label>
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
                                                     class="form-control inputValor" 
-                                                    id="cargo-domingo" 
+                                                    id="cargo_domingo" 
                                                     placeholder="0" 
-                                                    onchange="sumar(this.value);" 
+                                                    onchange="sumarTotal()" 
                                                     name="cargo_domingo"
                                                     value="<?= old('cargo_domingo'); ?>"
                                                 >
@@ -251,7 +252,7 @@
                                                     class="form-control inputValor" 
                                                     id="total" 
                                                     placeholder="0.00" 
-                                                    onchange="sumar(this.value);" 
+                                                    onchange="sumarTotal()" 
                                                     name="total"
                                                     value="<?= old('total'); ?>"
                                                 >
@@ -272,34 +273,152 @@
     </div>
 </section>
 <script>
+    $(document).ready(function(){
+        $("#telefono").on('input',function(){
+            if($("#telefono").val() !=""){
+                valor = $("#telefono").val();
+                $.ajax({
+                    type:"POST",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/clientes_select_telefono",
+                    data:"telefono="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        let cliente = JSON.parse(data);
+                        document.getElementById('nombre').value = cliente.nombre
+                        document.getElementById('documento').value = cliente.documento
+                        document.getElementById('email').value = cliente.email
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#sectores").on('change',function(){
+            if($("#sectores").val() !=""){
+                valor = $("#sectores").val();
+                //console.log(valor);
+                $.ajax({
+                    type:"GET",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/get_valor_sector/"+valor,
+                    data:"sector="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        //console.log(data);
+                        $('#transporte').html(data);
+                        //document.getElementById("valor_neto").value = "0.01"
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#horario_entrega").on('change',function(){
+            if($("#horario_entrega").val() !=""){
+                valor = $("#horario_entrega").val();
+                //console.log(valor);
+                $.ajax({
+                    type:"GET",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/get_costo_horario/"+valor,
+                    data:"horario="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(res){
+                        //console.log(data);
+                        let data = JSON.parse(res);
+                        document.getElementById("horario-extra").value = data.costo
+                    }
+                });
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#inputFecha").on('change',function(){
+            if($("#inputFecha").val() !=""){
+                valor = $("#inputFecha").val();
+                //console.log(valor);
+                diaSemana = getDayOfWeek(valor)
+                if (diaSemana == 6) {
+                    document.getElementById("cargo_domingo").value = 2
+                }
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#telefono").on("change", function() {
+            let string = $("#telefono").val();
+           
+            $("#telefono").val(string.replace(/[^\w]/gi, ''));
+        });
+    });
+
+    $(document).ready(function(){
+        $("#documento").on('input',function(){
+            if($("#documento").val() !=""){
+                valor = $("#documento").val();
+                $.ajax({
+                    type:"POST",
+                    dataType:"html",
+                    url: "<?php echo site_url(); ?>ventas/clientes_select",
+                    data:"documento="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        //console.log(data);
+                        $('#cliente').html(data);
+                    }
+                });
+            }
+        });
+    });
+
 
     function agregarProducto(idproducto, cantidad, cod_pedido){
-        let dia = getDayOfWeek();
+        
+        //let dia = getDayOfWeek();
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
-
+            
              $.ajax({
                  url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert/' + idproducto + '/' + cantidad + '/' + cod_pedido,
                  success: function(resultado){
                      if (resultado == 0) {
                      }else{
                          //Exito
-                         console.log(`Se insertó el producto y el día es: ${dia}`);
+                         console.log(`Se insertó el producto`);
                          let detalle = JSON.parse(resultado);
 
                          if (detalle.error == '') {
-                             $("#tablaProductos tbody").empty();
-                             $("#tablaProductos tbody").append(detalle.datos);
-                             $("#total").val(detalle.total);
+                            $("#tablaProductos tbody").empty();
+                            $("#tablaProductos tbody").append(detalle.datos);
+                            $("#total").val(detalle.total);
 
-                             document.getElementById("cant").value = 1;
-                             let selectProductos = document.getElementById("idproducto");
-                             selectProductos.value = 0;
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
+                            // let selectProductos = document.getElementById("idproducto");
+                            // selectProductos.value = 0;
+
                          }
+                         
                      }
                  }
              });
+            calculaValorNeto(cod_pedido);
+            sumarTotal()
         }
-        calculaValorNeto(cod_pedido);
+
+        
     }
 
     function eliminaProducto(idproducto, cod_pedido){
@@ -335,6 +454,7 @@
 
     function limpiarValores(valor) {
         var valor = 0
+        document.getElementById("idproducto").selectedIndex = 2;
         document.getElementById('descuento').value = valor;
         document.getElementById('transporte').value = valor.toFixed(2);
         document.getElementById('total').value = valor.toFixed(2);
@@ -357,23 +477,50 @@
         // console.log("Valor: " + valor);
         // console.log("Descuento: " +descuento);
         document.getElementById('total').value = total.toFixed(2);
+        sumarTotal()
     }
 
-    function sumarTotal(valor) {
+    function sumarTotal() {
 
-        limpiarValores()
+        let descuento = 0
+        let total = 0
+        let subtotal = 0
+        let porcentajeDescuento = 0
+        let transporte = 0
+        let cargoDomingo = 0
+        let horarioExtra = 0
+        //limpiarValores()
+        
 
-        var total = 0;	
-        valor = valor.replace(/,/g, '.')
-        valor = parseFloat(valor); // Convertir el valor a un float (número).
+        //Obtengo todos los valores de las casillas
+        if (document.getElementById('valor_neto').value != 0) {
+            subtotal = document.getElementById('valor_neto').value
+        }
 
-        total = document.getElementById('total').value;
+        if (document.getElementById('descuento').value != 0)  {
+            porcentajeDescuento = document.getElementById('descuento').value
+        }
 
-        // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
-        total = (total == null || total == undefined || total == "") ? 0 : total;
+        if (document.getElementById('transporte').value != 0 ) {
+            transporte = document.getElementById('transporte').value
+        }
 
-        /* Este es el cálculo. */
-        total = (parseFloat(total) + parseFloat(valor));
+        if (document.getElementById('cargo_domingo').value != 0 ) {
+            cargoDomingo = document.getElementById('cargo_domingo').value
+        }
+
+        if (document.getElementById('horario_entrega').value != 0 && document.getElementById('horario_entrega').value != null) {
+            horarioExtra = document.getElementById('horario_entrega').value
+        }
+
+
+        descuento = (parseFloat(subtotal) * parseFloat(porcentajeDescuento))/100
+        total = subtotal - descuento
+
+        console.log("Cargo: " + cargoDomingo);
+        
+        // /* Este es el cálculo. */
+        total = (parseFloat(total) + parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra));
         document.getElementById('total').value = total.toFixed(2);
     }
 
@@ -408,8 +555,8 @@
         }
     }
 
-    function getDayOfWeek(){
-        let ahora = new Date();
+    function getDayOfWeek(fechaEntrega){
+        let ahora = new Date(fechaEntrega);
         let diaSemana = ahora.getDay();
         return diaSemana;
     }
@@ -423,121 +570,19 @@
             url: "<?php echo site_url(); ?>ventas/getDetallePedido/"+cod_pedido,
             success: function(resultado){
                 let detalle = JSON.parse(resultado);
-                console.log(detalle.subtotal);
+                console.log("Detalle: " + detalle.subtotal);
                 document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
             }
         });
     }
    
-    
-</script>
-<script>
-    $('#myModal').on('shown.bs.modal', function () {
-        $('#myInput').trigger('focus')
-    });
-
     /* Multiple Item Picker */
     $('.selectpicker').selectpicker({
         style: 'btn-default'
     });
 
-    $(document).ready(function(){
-        $("#idproducto").on('change',function(){
-            if($("#idproducto").val() !=""){
-                valor = $("#idproducto").val();
-                //console.log(valor);
-                $.ajax({
-                    type:"GET",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/get_valor_producto/"+valor,
-                    data:"producto="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        //console.log(data);
-                        $('#valor_neto').html(data);
-                        //document.getElementById("valor_neto").value = "0.01"
-                    }
-                });
-            }
-        });
-    });
 
-    $(document).ready(function(){
-        $("#telefono").on( "change", function() {
-            let string = $("#telefono").val();
-           
-            $("#telefono").val(string.replace(/[^\w]/gi, ''))
-        })
-    })
 
-    $(document).ready(function(){
-        $("#sectores").on('change',function(){
-            if($("#sectores").val() !=""){
-                valor = $("#sectores").val();
-                //console.log(valor);
-                $.ajax({
-                    type:"GET",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/get_valor_sector/"+valor,
-                    data:"sector="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        //console.log(data);
-                        $('#transporte').html(data);
-                        //document.getElementById("valor_neto").value = "0.01"
-                    }
-                });
-            }
-        });
-    });
-
-    $(document).ready(function(){
-        $("#documento").on('input',function(){
-            if($("#documento").val() !=""){
-                valor = $("#documento").val();
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/clientes_select",
-                    data:"documento="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        //console.log(data);
-                        $('#cliente').html(data);
-                    }
-                });
-            }
-        })
-    })
-
-    $(document).ready(function(){
-        $("#telefono").on('input',function(){
-            if($("#telefono").val() !=""){
-                valor = $("#telefono").val();
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/clientes_select_telefono",
-                    data:"telefono="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        let cliente = JSON.parse(data);
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                    }
-                });
-            }
-        })
-    })
 </script>
 
 
