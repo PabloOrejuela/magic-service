@@ -27,6 +27,7 @@ use App\Models\DetallePedidoModel;
 use App\Models\SucursalModel;
 use App\Models\NegocioModel;
 use App\Models\TipoGastoModel;
+use App\Models\EstadoPedidoModel;
 
 /**
  * Class BaseController
@@ -90,6 +91,7 @@ abstract class BaseController extends Controller {
         $this->gastoModel = new GastoModel($this->db);
         $this->negocioModel = new NegocioModel($this->db);
         $this->tipoGastoModel = new TipoGastoModel($this->db);
+        $this->estadoPedidoModel = new EstadoPedidoModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

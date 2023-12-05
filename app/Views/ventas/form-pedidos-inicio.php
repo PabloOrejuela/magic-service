@@ -99,16 +99,20 @@
                                                 echo $d->producto;
                                             }
                                             echo '</td>';
-                                            echo '<td>H SALIDA</td>';
-                                            echo '<td id="horaEntrega_'.$value->id.'">'.$value->hora.'</td>';
+                                            echo '<td>
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
+                                                </td>';
+                                            echo '<td id="hora_entrega'.$value->id.'">
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
+                                                </td>';
                                             echo '<td id="mensajero'.$value->id.'">
                                                     <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
                                                 </td>';
-                                            if ($value->estado == 1) {
-                                                echo '<td>Activo</td>';
-                                            }else if($value->estado == 0){
-                                                echo '<td>Inactivo</td>';
-                                            }
+
+                                            echo '<td >
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
+                                                </td>';
+
                                             echo '<td>Información</td>';
                                             echo '<td>Observación</td>';
                                             echo '<td>
@@ -131,6 +135,101 @@
         </div>
     </div>
 </section>
+
+<!-- Modal Hora Salida-->
+<div class="modal fade" id="horaSalidaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar hora de salida del pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+      <input class="form-control" type="text" name="hora_salida_pedido" id="hora_salida_pedido">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHoraSalidaPedido(document.getElementById('hora_salida_pedido').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Hora Entrega-->
+<div class="modal fade" id="estadoPedidoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar estado del pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <h5 class="modal-title" id="staticBackdropLabel">Estados</h5>
+      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+        <select 
+            class="form-select" 
+            id="estado_pedido" 
+            name="estado_pedido"
+            data-style="form-control" 
+            data-live-search="true" 
+        >
+        <option value="0" selected>--Seleccionar un estado--</option>
+        <?php 
+            if (isset($estadosPedido)) {
+                foreach ($estadosPedido as $key => $e) {
+                    echo "<option value='$e->id' >". $e->estado."</option>";
+                }
+            }
+        ?>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarEstadoPedido(document.getElementById('estado_pedido').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Hora Entrega-->
+<div class="modal fade" id="horaEntregaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Hora de entrega</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <h5 class="modal-title" id="staticBackdropLabel">Horarios</h5>
+      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+        <select 
+            class="form-select" 
+            id="hora_entrega" 
+            name="hora_entrega"
+            data-style="form-control" 
+            data-live-search="true" 
+        >
+        <option value="0" selected>--Seleccionar un horario de entrega--</option>
+        <?php 
+            $defaultvalue = 1;
+            if (isset($horariosEntrega)) {
+                foreach ($horariosEntrega as $key => $m) {
+                    echo "<option value='$m->id' >". $m->hora."</option>";
+                }
+            }
+        ?>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHorarioEntrega(document.getElementById('hora_entrega').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal Mensajero-->
 <div class="modal fade" id="mensajeroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -172,43 +271,127 @@
   </div>
 </div>
 
-<script>
-    let botones = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
-        botones.forEach(btn => {
-            btn.addEventListener('click', function() {
-                let id = this.dataset.id;
-                //console.log(id);
-                document.querySelector('#codigo_pedido').value = id;
-                //console.log('abrir modal');
-                $('#mensajeroModal').modal();
-            });
-        });
-
-        function actualizarMensajero(mensajero, codigo_pedido){
-            // console.log(mensajero);
-            // console.log(codigo_pedido);
-            $.ajax({
-                type:"GET",
-                dataType:"html",
-                url: "<?php echo site_url(); ?>ventas/actualizaMensajero/"+mensajero+'/'+codigo_pedido,
-                //data:"codigo="+valor,
-                beforeSend: function (f) {
-                    //$('#cliente').html('Cargando ...');
-                },
-                success: function(data){
-                    //console.log(data);
-                    location.replace('pedidos');
-                }
-            });
-        }
-</script>
-
-
-
-
-
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="<?= site_url(); ?>public/js/grid-pedido.js"></script>
 <script>
+
+    let botones = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
+    let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEntregaModal"]');
+    let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');
+    let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
+
+    botones.forEach(btn => {
+        btn.addEventListener('click', function() {
+            let id = this.dataset.id;
+            //console.log(id);
+            document.querySelector('#codigo_pedido').value = id;
+            //console.log('abrir modal');
+            $('#mensajeroModal').modal();
+        });
+    });
+
+    botonesHorariosEntrega.forEach(btn => {
+        btn.addEventListener('click', function() {
+            let id = this.dataset.id;
+            //console.log(id);
+            document.querySelector('#codigo_pedido').value = id;
+            //console.log('abrir modal');
+            $('#horaEntregaModal').modal();
+        });
+    });
+
+    botonesEstadoPedido.forEach(btn => {
+        btn.addEventListener('click', function() {
+            let id = this.dataset.id;
+            //console.log(id);
+            document.querySelector('#codigo_pedido').value = id;
+            //console.log('abrir modal');
+            $('#estadoPedidoModal').modal();
+        });
+    });
+
+    botonesHoraSalidaPedido.forEach(btn => {
+        btn.addEventListener('click', function() {
+            let id = this.dataset.id;
+            //console.log(id);
+            document.querySelector('#codigo_pedido').value = id;
+            //console.log('abrir modal');
+            $('#horaSalidaModal').modal();
+        });
+    });
+
+    function actualizarHoraSalidaPedido(hora_salida_pedido, codigo_pedido){
+        // console.log(mensajero);
+        // console.log(codigo_pedido);
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "<?php echo site_url(); ?>ventas/actualizarHoraSalidaPedido/"+hora_salida_pedido+'/'+codigo_pedido,
+            //data:"codigo="+valor,
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                //console.log(data);
+                location.replace('pedidos');
+            }
+        });
+    }
+    
+    function actualizarMensajero(mensajero, codigo_pedido){
+        // console.log(mensajero);
+        // console.log(codigo_pedido);
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "<?php echo site_url(); ?>ventas/actualizaMensajero/"+mensajero+'/'+codigo_pedido,
+            //data:"codigo="+valor,
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                //console.log(data);
+                location.replace('pedidos');
+            }
+        });
+    }
+
+    function actualizarEstadoPedido(estado_pedido, codigo_pedido){
+        console.log(mensajero);
+        // console.log(codigo_pedido);
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "<?php echo site_url(); ?>ventas/actualizarEstadoPedido/"+estado_pedido+'/'+codigo_pedido,
+            //data:"codigo="+valor,
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                //console.log(data);
+                location.replace('pedidos');
+            }
+        });
+    }
+
+    function actualizarHorarioEntrega(horario_entrega, codigo_pedido){
+        // console.log(mensajero);
+        // console.log(codigo_pedido);
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "<?php echo site_url(); ?>ventas/actualizarHorarioEntrega/"+horario_entrega+'/'+codigo_pedido,
+            //data:"codigo="+valor,
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                //console.log(data);
+                location.replace('pedidos');
+            }
+        });
+    }
+
     const lista = document.getElementById('lista')
     Sortable.create(lista, {
         chosenClass: "seleccionado",
@@ -232,55 +415,37 @@
 
         }
     })
-    
-function copyData(id){
-    let sector = document.getElementById("sector_"+id)
-    let direccion = document.getElementById("direccion_"+id)
-    let fechaEntrega = document.getElementById("fechaEntrega_"+id)
-    let horaEntrega = document.getElementById("horaEntrega_"+id)
 
-    console.log(horaEntrega.innerHTML);
 
-    navigator.clipboard.writeText(sector.innerHTML + " \n" + direccion.innerHTML + " \n" + fechaEntrega.innerHTML + " \n" + horaEntrega.innerHTML)
-
-    alert('El texto "' + sector.innerHTML + ' ' + direccion.innerHTML + '" se ha copiado!!!')
-}
-
-    function editar(este) {
-      let ModalEdit = new bootstrap.Modal(mensajeroModal, function(este){
-        let dato = este
-      }).show();
-    }
-
-  $(document).ready(function () {
-    $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
-    $('#datatablesSimple').DataTable({
-        "responsive": true, 
-        
-        language: {
-            processing: 'Procesando...',
-            lengthMenu: 'Mostrando _MENU_ registros por página',
-            zeroRecords: 'No hay registros',
-            info: 'Mostrando _START_ a _END_ de _MAX_',
-            infoEmpty: 'No hay registros disponibles',
-            infoFiltered: '(filtrando de _MAX_ total registros)',
-            search: 'Buscar',
-            paginate: {
-            first:      "Primero",
-            previous:   "Anterior",
-            next:       "Siguiente",
-            last:       "Último"
-                },
-                aria: {
-                    sortAscending:  ": activar para ordenar ascendentemente",
-                    sortDescending: ": activar para ordenar descendentemente"
-                }
-        },
-        //"lengthChange": false, 
-        "autoWidth": false,
-        "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
+    $(document).ready(function () {
+        $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
+        $('#datatablesSimple').DataTable({
+            "responsive": true, 
+            
+            language: {
+                processing: 'Procesando...',
+                lengthMenu: 'Mostrando _MENU_ registros por página',
+                zeroRecords: 'No hay registros',
+                info: 'Mostrando _START_ a _END_ de _MAX_',
+                infoEmpty: 'No hay registros disponibles',
+                infoFiltered: '(filtrando de _MAX_ total registros)',
+                search: 'Buscar',
+                paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Último"
+                    },
+                    aria: {
+                        sortAscending:  ": activar para ordenar ascendentemente",
+                        sortDescending: ": activar para ordenar descendentemente"
+                    }
+            },
+            //"lengthChange": false, 
+            "autoWidth": false,
+            "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
+        });
     });
-});
 </script>

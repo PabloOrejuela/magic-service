@@ -34,7 +34,7 @@ class Ventas extends BaseController {
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
             $data['sectores'] = $this->sectoresEntregaModel->findAll();
-            $data['horariosEntrega'] = $this->horariosEntregaModel->FindAll();
+            $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['cod_pedido'] = $this->session->id.$date;
 
             //echo '<pre>'.var_export($this->session , true).'</pre>';exit;
@@ -87,9 +87,36 @@ class Ventas extends BaseController {
     }
 
     function actualizaMensajero($mensajero, $cod_pedido){
-        //$producto = $this->request->getPostGet('producto');
-        $this->pedidoModel->_actualizaMensajero($mensajero, $cod_pedido);
+
+        if ($mensajero != 0) {
+            $this->pedidoModel->_actualizaMensajero($mensajero, $cod_pedido);
+        }
         
+        return true;
+    }
+
+    function actualizarHorarioEntrega($horario_entrega, $cod_pedido){
+        
+        if ($horario_entrega != 0) {
+            $this->pedidoModel->_actualizaHorarioEntrega($horario_entrega, $cod_pedido);
+        }
+        
+        return true;
+    }
+
+    function actualizarEstadoPedido($estado_pedido, $cod_pedido){
+
+        if ($estado_pedido != 0) {
+            $this->pedidoModel->_actualizarEstadoPedido($estado_pedido, $cod_pedido);
+        }
+        return true;
+    }
+
+    function actualizarHoraSalidaPedido($hora_salida_pedido, $cod_pedido){
+
+        if ($hora_salida_pedido != 0) {
+            $this->pedidoModel->_actualizarHoraSalidaPedido($hora_salida_pedido, $cod_pedido);
+        }
         return true;
     }
 
@@ -307,6 +334,8 @@ class Ventas extends BaseController {
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['pedidos'] = $this->pedidoModel->_getPedidos();
+            $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
+            $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
             //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
             $data['title']='Pedidos';

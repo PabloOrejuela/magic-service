@@ -62,12 +62,15 @@ class PedidoModel extends Model {
                 fecha,
                 sectores_entrega.sector as sector,
                 dir_entrega,
+                estados_pedidos.estado as estado,
+                hora_salida_pedido,
                 usuarios.nombre as mensajero'
         );
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
+        $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -233,6 +236,44 @@ class PedidoModel extends Model {
 
 
         $builder->where($this->table.'.cod_pedido', $codigo_pedido);
+        $builder->update();
+    }
+
+    public function _actualizaHorarioEntrega($horario_entrega, $codigo_pedido) {
+
+        $builder = $this->db->table($this->table);
+
+        if ($horario_entrega != 0 && $horario_entrega != null) {
+            $builder->set('horario_entrega', $horario_entrega);
+        }
+
+
+        $builder->where($this->table.'.cod_pedido', $codigo_pedido);
+        $builder->update();
+    }
+
+    public function _actualizarEstadoPedido($estado_pedido, $cod_pedido) {
+
+        $builder = $this->db->table($this->table);
+
+        if ($estado_pedido != 0 && $estado_pedido != null) {
+            $builder->set('estado', $estado_pedido);
+        }
+
+
+        $builder->where($this->table.'.cod_pedido', $cod_pedido);
+        $builder->update();
+    }
+
+    public function _actualizarHoraSalidaPedido($hora_salida_pedido, $cod_pedido) {
+
+        $builder = $this->db->table($this->table);
+
+        if ($hora_salida_pedido != 0 && $hora_salida_pedido != null) {
+            $builder->set('hora_salida_pedido', $hora_salida_pedido);
+        }
+
+        $builder->where($this->table.'.cod_pedido', $cod_pedido);
         $builder->update();
     }
 }
