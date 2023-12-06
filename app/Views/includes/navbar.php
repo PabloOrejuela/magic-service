@@ -10,8 +10,8 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido">Registrar Nuevo Pedido</a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?= base_url(); ?>cotizador" class="btn btn-primary" id="btn-pedido">Cotizador</a>
+      <li class="nav-item d-none d-sm-inline-block px-3">
+        <a href="<?= base_url(); ?>cotizador" class="btn btn-primary" id="btn-cotizador">Cotizador</a>
       </li>
     </ul>
 

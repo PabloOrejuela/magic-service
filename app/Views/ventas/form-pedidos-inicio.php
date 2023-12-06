@@ -24,7 +24,7 @@
         font-size: 0.7em;
     }
     
-    .item-list:hover{
+    .handle:hover{
         cursor: move;
         caret-color: red;
         box-shadow: 0px 0px 20px rgba(149, 153, 159, 0.3)
@@ -48,11 +48,15 @@
                                 <img src="<?= site_url().'public/images/ventana.png'; ?>" >
                                 <span id="title-link">Abrir en nueva ventana</span>
                             </a>
-                            <h3 id="error-message">Trabajando en los modales de los campos</h3>
+                        </div>
+                        <div>
+                            <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido">Registrar Nuevo Pedido</a>
+                            <a href="<?= base_url(); ?>cotizador" class="btn btn-primary" id="btn-cotizador">Cotizador</a>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             <thead>
+                                <th></th>
                                 <th>Pedido</th>
                                 <th>Fecha entrega</th>
                                 <th>Cliente</th>
@@ -77,13 +81,14 @@
                                             $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
                                             //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                             echo '<tr class="item-list" data-id="'.$value->id.'">
+                                                <td><i class="handle fa-solid fa-grip-lines"></i></td>
                                                 <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                 if ($value->fecha_entrega) {
                                                     echo '<td id="fechaEntrega_'.$value->id.'">'.$value->fecha_entrega.'</td>';
                                                 }else{
                                                     echo '<td>Registrar fecha de entrega</td>';
                                                 }
-                                            echo '<td>'.$value->nombre.'</td>';
+                                            echo '<td id="cliente_'.$value->id.'">'.$value->nombre.'</td>';
                                             if ($value->sector) {
                                                 echo '<td id="sector_'.$value->id.'">'.$value->sector.'</td>';
                                             }else{
@@ -94,16 +99,16 @@
                                             }else{
                                                 echo '<td>Registrar dirección</td>';
                                             }
-                                            echo '<td>';
+                                            echo '<td id="cod_arreglo_'.$value->id.'">';
                                             foreach ($detalle as $key => $d) {
                                                 echo $d->producto;
                                             }
                                             echo '</td>';
                                             echo '<td>
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
+                                                    <a type="button" id="sector_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
                                                 </td>';
                                             echo '<td id="hora_entrega'.$value->id.'">
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
+                                                    <a type="button" id="horaEntrega_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
                                                 </td>';
                                             echo '<td id="mensajero'.$value->id.'">
                                                     <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
@@ -114,7 +119,7 @@
                                                 </td>';
 
                                             echo '<td>Información</td>';
-                                            echo '<td>Observación</td>';
+                                            echo '<td id="observacion_'.$value->id.'">Observación</td>';
                                             echo '<td>
                                                     <div class="contenedor" id="btn-copy">
                                                         <a type="button" id="btn-register" href="javascript:copyData('.$value->id.')" >
@@ -271,6 +276,8 @@
   </div>
 </div>
 
+<!-- FONTAWESOME -->
+<script src="https://kit.fontawesome.com/964a730002.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="<?= site_url(); ?>public/js/grid-pedido.js"></script>
 <script>
@@ -337,6 +344,7 @@
             }
         });
     }
+
     
     function actualizarMensajero(mensajero, codigo_pedido){
         // console.log(mensajero);
@@ -400,6 +408,7 @@
             //console.log('se movió el elemento')
         },
         group: "lista-pedidos-grid",
+        handle: ".handle",
         store: {
             //Guarda el orden de la lista
             set: (sortable) => {
