@@ -19,6 +19,11 @@
     .row {
         margin-bottom: 20px;
     }
+
+    .div.dataTables_length select{
+    width: 150px; important!
+    }
+
 </style>
 <!-- Main content -->
 <section class="content">
@@ -99,7 +104,7 @@
         },
         //"lengthChange": false, 
         "autoWidth": false,
-        "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
+        "dom": "<'row'<'col-md-12 col-md-4'l><'col-md-12 col-md-4'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
     });

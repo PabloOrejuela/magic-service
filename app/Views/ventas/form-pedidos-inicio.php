@@ -95,7 +95,8 @@
                                                 echo '<td></td>';
                                             }
                                             if ($value->dir_entrega) {
-                                                echo '<td id="direccion_'.$value->id.'">'.$value->dir_entrega.'</td>';
+                                                //echo '<td id="direccion_'.$value->id.'">'.$value->dir_entrega.'</td>';
+                                                echo '<td id="direccion_'.$value->id.'">Calle a y la que cruza, edif bonito <a href="'.$value->dir_entrega.'" id="link-editar" target="_blank">'.$value->dir_entrega.'</a></td>';
                                             }else{
                                                 echo '<td>Registrar dirección</td>';
                                             }

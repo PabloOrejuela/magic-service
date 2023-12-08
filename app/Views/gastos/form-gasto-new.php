@@ -93,6 +93,18 @@
                                 <p id="error-message"><?= session('errors.tipo');?> </p>
                             </div>
                             <div class="form-group col-md-12">
+                                <label for="fecha">Fecha *:</label>
+                                <input 
+                                    type="date" 
+                                    class="form-control text" 
+                                    id="fecha" 
+                                    name="fecha" 
+                                    value="<?= set_value('fecha'); ?>" 
+                                    required
+                                >
+                                <p id="error-message"><?= session('errors.fecha');?> </p>
+                            </div>
+                            <div class="form-group col-md-12">
                                 <label for="documento">No. Documento / Factura *:</label>
                                 <input 
                                     type="text" 

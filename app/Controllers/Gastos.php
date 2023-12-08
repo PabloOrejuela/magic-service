@@ -77,6 +77,7 @@ class Gastos extends BaseController {
                 'idtipogasto' => strtoupper($this->request->getPostGet('tipo')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'valor' => strtoupper($this->request->getPostGet('valor')),
+                'fecha' => strtoupper($this->request->getPostGet('fecha')),
             ];
 
             $this->validation->setRuleGroup('gasto');
