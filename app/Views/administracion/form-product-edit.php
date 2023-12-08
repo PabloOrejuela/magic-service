@@ -123,6 +123,7 @@
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" disabled="true" id="btnGuardar">Guardar</button>
                             <input type="checkbox" id="activar" value="1"> Activar
+                            <a href="<?= site_url(); ?>clientes" class="btn btn-light ml-5" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>
