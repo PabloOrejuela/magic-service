@@ -57,7 +57,7 @@
                         <?= form_hidden('id', $cliente->id); ?>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
-                            <a href="<?= site_url(); ?>clientes" class="btn btn-light" id="btn-cancela">Cancelar edición y volver a la lista de clientes</a>
+                            <a href="<?= site_url(); ?>clientes" class="btn btn-light" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>
