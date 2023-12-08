@@ -2,6 +2,11 @@
     #precio{
         text-align: right;
     }
+
+    .cancelar{
+        position: absolute;
+        right: 5px;
+    }
 </style>
 <section class="content">
       <div class="container-fluid">
@@ -30,6 +35,7 @@
                         <?= form_hidden('id', $item->id); ?>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Actualizar</button>
+                            <a href="<?= site_url(); ?>items" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>
