@@ -1,7 +1,4 @@
 <style>
-    .inputValor{
-        text-align: right;
-    }
 
     #link-editar{
         color: #00514E;
@@ -12,16 +9,16 @@
         color: #000;
         text-decoration: none;
     }
-    .input {
-        border-radius: 300px;
-        width: 250px;
-    }
     .row {
         margin-bottom: 20px;
     }
 
     .div.dataTables_length select{
-    width: 150px; important!
+        width: 150px; important!;
+    }
+
+    .grid{
+        font-size: 0.8em;
     }
 
 </style>
@@ -41,9 +38,10 @@
                             </a>
                         </div>
                         <form action="#" method="post">
-                        <table id="datatablesSimple" class="table table-bordered table-striped">
+                        <table id="datatablesSimple" class="table table-bordered table-striped grid">
                             
                             <thead>
+                                <th>ID</th>
                                 <th>Fecha</th>
                                 <th>Sucursal</th>
                                 <th>Negocio</th>
@@ -57,6 +55,7 @@
                                     if (isset($gastos) && $gastos != NULL) {
                                         foreach ($gastos as $key => $value) {
                                             echo '<tr>
+                                                <td><a href="'.site_url().'gasto-edit/'.$value->id.'" id="link-editar">'.$value->id.'</a></td>
                                                 <td>'.$value->fecha.'</td>
                                                 <td>'.$value->sucursal.'</td>
                                                 <td>'.$value->negocio.'</td>

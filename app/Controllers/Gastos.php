@@ -101,6 +101,80 @@ class Gastos extends BaseController {
         }
     }
 
+    public function update(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->clientes == 1) {
+            $id = strtoupper($this->request->getPostGet('id'));
+            $gasto = [
+                'idsucursal' => $this->request->getPostGet('sucursal'),
+                'idnegocio' => $this->request->getPostGet('negocio'),
+                'idproveedor' => $this->request->getPostGet('proveedor'),
+                'idtipogasto' => $this->request->getPostGet('tipo'),
+                'documento' => strtoupper($this->request->getPostGet('documento')),
+                'valor' => strtoupper($this->request->getPostGet('valor')),
+                'fecha' => $this->request->getPostGet('fecha'),
+            ];
+
+            $this->validation->setRuleGroup('gasto');
+        
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                //echo '<pre>'.var_export($id, true).'</pre>';exit;
+
+                //Inserto el nuevo cliente
+                $this->gastoModel->update($id, $gasto);
+                return redirect()->to('gastos');
+            }
+        }else{
+
+            $this->logout();
+        }
+    }
+
+    /**
+     * Formulario para editar un nuevo Gasto
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function edit($id) {
+
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->gastos == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sucursales'] = $this->sucursalModel->findAll();
+            $data['negocios'] = $this->negocioModel->findAll();
+            $data['proveedores'] = $this->proveedorModel->findAll();
+            $data['tipos_gasto'] = $this->tipoGastoModel->findAll();
+            $data['gasto'] = $this->gastoModel->find($id);
+
+            //echo '<pre>'.var_export($data['gasto'], true).'</pre>';exit;
+            $data['title']='Gastos';
+            $data['subtitle']='Editar Gasto';
+            $data['main_content']='gastos/form-gasto-edit';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
     public function logout(){
         //destruyo la session  y salgo
         

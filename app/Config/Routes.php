@@ -82,16 +82,18 @@ $routes->post('sucursal-insert', 'Administracion::sucursal_insert');
 $routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
 
 //Proveedores
-$routes->get('proveedores', 'Proveedores::index');
+$routes->get('gastoes', 'Proveedores::index');
 $routes->get('proveedor-create', 'Proveedores::create');
 $routes->post('proveedor-insert', 'Proveedores::insert');
 $routes->get('proveedor-edit/(:num)', 'Proveedores::edit/$1');
-$routes->post('proveedor-update', 'Proveedores::update');
+
 
 //Gastos
 $routes->get('gastos', 'Gastos::index');
 $routes->get('gasto-create', 'Gastos::create');
 $routes->post('gasto-insert', 'Gastos::insert');
+$routes->get('gasto-edit/(:num)', 'Gastos::edit/$1');
+$routes->post('gasto-update', 'Gastos::update');
 
 //Clientes
 $routes->get('clientes', 'Clientes::index');

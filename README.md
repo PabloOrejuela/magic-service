@@ -5,4 +5,6 @@
     <li>Cambiado el nombre del boton a cancelar en edición de clientes</li>
     <li>Agregado el botón cancelar en editar producto</li>
     <li>Agregado el botón cancelar en editar Item</li>
+    <li>Eliminada la opción de editar formas de Pago</li>
+    <li>Implementado el form de edición de gastos</li>
 </ul>

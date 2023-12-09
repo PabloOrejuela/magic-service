@@ -50,7 +50,7 @@
                                         foreach ($formas_pago as $key => $value) {
                                             echo '<tr>
                                                 <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'item-edit/'.$value->id.'" id="link-editar">'.$value->forma_pago.'</a></td>';
+                                                <td>'.$value->forma_pago.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){
