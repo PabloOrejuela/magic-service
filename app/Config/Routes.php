@@ -82,10 +82,11 @@ $routes->post('sucursal-insert', 'Administracion::sucursal_insert');
 $routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
 
 //Proveedores
-$routes->get('gastoes', 'Proveedores::index');
+$routes->get('proveedores', 'Proveedores::index');
 $routes->get('proveedor-create', 'Proveedores::create');
 $routes->post('proveedor-insert', 'Proveedores::insert');
 $routes->get('proveedor-edit/(:num)', 'Proveedores::edit/$1');
+$routes->post('proveedor-update', 'Proveedores::update');
 
 
 //Gastos

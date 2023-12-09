@@ -6,6 +6,11 @@
     #error-message{
         margin-top: 4px;
     }
+
+    .cancelar{
+        position: absolute;
+        right: 20px;
+    }
 </style>
 <section class="content">
       <div class="container-fluid">
@@ -57,7 +62,7 @@
                         <?= form_hidden('id', $cliente->id); ?>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
-                            <a href="<?= site_url(); ?>clientes" class="btn btn-light" id="btn-cancela">Cancelar</a>
+                            <a href="<?= site_url(); ?>clientes" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>

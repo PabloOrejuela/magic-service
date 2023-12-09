@@ -670,7 +670,26 @@ class Administracion extends BaseController {
     }
 
     public function form_usuario_edit($id){
-        echo 'Formulario para EDITAR un Nuevo usuario DESHABILITADO';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['roles'] = $this->rolModel->findAll();
+            $data['usuario'] = $this->usuarioModel->find($id);
+
+            //echo '<pre>'.var_export($data['usuario'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Editar Usuario';
+            $data['main_content']='administracion/form-user-edit';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
     }
 
     public function form_rol_edit($id){
