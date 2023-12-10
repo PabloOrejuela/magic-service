@@ -72,6 +72,7 @@
                         <?= form_hidden('id', 0); ?>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                            <a href="<?= site_url(); ?>proveedores" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>

@@ -2,10 +2,10 @@
     .text {
         text-transform: uppercase;
     }
-    .cancelar{
+    /* .cancelar{
         position: absolute;
         right: 20px;
-    }
+    } */
 </style>
 <section class="content">
       <div class="container-fluid">
@@ -159,7 +159,7 @@
                         <!-- /.card-body -->                        
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Actualizar</button>
-                            <a href="<?= site_url(); ?>proveedores" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>
+                            <a href="<?= site_url(); ?>gastos" class="btn btn-light" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>

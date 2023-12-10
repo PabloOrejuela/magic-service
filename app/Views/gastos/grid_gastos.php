@@ -32,10 +32,7 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" id="btn-register" href="<?= site_url().'gasto-create/'; ?>" class="edit mb-2">
-                                <img src="<?= site_url().'public/images/new-file.png'; ?>" >
-                                <span id="title-link">Registrar un nuevo Gasto</span>
-                            </a>
+                            <a type="button" href="<?= site_url().'gasto-create/'; ?>"  class="btn btn-success mb-2" >Registrar un nuevo Gasto</a>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped grid">

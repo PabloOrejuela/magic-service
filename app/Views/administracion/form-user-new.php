@@ -67,6 +67,7 @@
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary"  id="btnGuardar">Guardar</button>
+                            <a href="<?= site_url(); ?>usuarios" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>

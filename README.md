@@ -9,4 +9,5 @@
     <li>Implementado el form de edición de gastos</li>
     <li>Implementado el form de edición de usuarios</li>
     <li>Corregido error en rutas de proveedores</li>
+    <li>Cambiado el link de Registrar por un botón</li>
 </ul>

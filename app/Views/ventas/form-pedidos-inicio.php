@@ -12,10 +12,7 @@
         color: #000;
         text-decoration: none;
     }
-    /* .input {
-        border-radius: 300px;
-        width: 100px;
-    } */
+    
     .row {
         margin-bottom: 20px;
     }
@@ -33,6 +30,25 @@
     .lista .item-list.fantasma{
         border: 2px dotted #000;
     }
+
+    .clipboard:focus{
+        outline:none;
+    }
+
+    #mensaje{
+        background-color:transparent;
+        color: #000;
+        border: none;
+        outline:none;
+        overflow:hidden;
+        font-size: 0.01em;
+    }
+
+    #mensaje::selection{
+        background-color:transparent;
+        color: #000;
+        border: none;
+    }
 </style>
 <!-- Main content -->
 <section class="content">
@@ -44,10 +60,7 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" id="btn-ventana" href="<?= site_url().'pedidos-ventana/'; ?>" target="_blank" class="edit mb-2">
-                                <img src="<?= site_url().'public/images/ventana.png'; ?>" >
-                                <span id="title-link">Abrir en nueva ventana</span>
-                            </a>
+                            <a href="<?= site_url().'pedidos-ventana/'; ?>"  class="btn btn-success mb-2" target="_blank">Abrir en nueva ventana</a>
                         </div>
                         <div>
                             <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido">Registrar Nuevo Pedido</a>
@@ -88,7 +101,7 @@
                                                 }else{
                                                     echo '<td>Registrar fecha de entrega</td>';
                                                 }
-                                            echo '<td id="cliente_'.$value->id.'">'.$value->nombre.'</td>';
+                                            echo '<td id="cliente_'.$value->id.'" class="clipboard">'.$value->nombre.'</td>';
                                             if ($value->sector) {
                                                 echo '<td id="sector_'.$value->id.'">'.$value->sector.'</td>';
                                             }else{
@@ -96,7 +109,7 @@
                                             }
                                             if ($value->dir_entrega) {
                                                 //echo '<td id="direccion_'.$value->id.'">'.$value->dir_entrega.'</td>';
-                                                echo '<td id="direccion_'.$value->id.'">Calle a y la que cruza, edif bonito <a href="'.$value->dir_entrega.'" id="link-editar" target="_blank">'.$value->dir_entrega.'</a></td>';
+                                                echo '<td id="direccion_'.$value->id.'" class="clipboard">Calle a y la que cruza, edif bonito <a href="'.$value->dir_entrega.'" id="link-editar" target="_blank">'.$value->dir_entrega.'</a></td>';
                                             }else{
                                                 echo '<td>Registrar dirección</td>';
                                             }
@@ -127,6 +140,7 @@
                                                             <img src="'.site_url().'public/images/copy.png" width="30" >
                                                         </a>
                                                     </div>
+                                                    
                                                 </td>
                                                 </tr>';
                                         }
@@ -134,6 +148,7 @@
                                 ?>
                             </tbody>
                         </table>
+                        <textarea id="mensaje" style="color:white;"></textarea>
                         </form>
                     </div></div><!-- /.card-body -->
                 </div><!-- /.card-->

@@ -78,6 +78,7 @@
                         <!-- /.card-body -->
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Registrar</button>
+                            <a href="<?= site_url(); ?>sucursales" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>
                         </div>
                     </form>
                 </div>
