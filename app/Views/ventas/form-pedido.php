@@ -217,12 +217,12 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="horario-extra" class="col-sm-8 col-form-label">Cargo Horario:</label>
+                                            <label for="horario_extra" class="col-sm-8 col-form-label">Cargo Horario:</label>
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
-                                                    id="horario-extra" 
+                                                    class="form-control inputValor"
+                                                    id="horario_extra" 
                                                     placeholder="0" 
                                                     onchange="sumarTotal()" 
                                                     name="horario_extra"
@@ -312,6 +312,7 @@
                     success: function(data){
                         //console.log(data);
                         $('#transporte').html(data);
+                        sumarTotal()
                         //document.getElementById("valor_neto").value = "0.01"
                     }
                 });
@@ -333,9 +334,11 @@
                         //$('#cliente').html('Cargando ...');
                     },
                     success: function(res){
-                        //console.log(data);
+                        
                         let data = JSON.parse(res);
-                        document.getElementById("horario-extra").value = data.costo
+                        console.log(data.costo);
+                        document.getElementById("horario_extra").value = parseFloat(data.costo)
+                        sumarTotal()
                     }
                 });
             }
@@ -350,7 +353,10 @@
                 diaSemana = getDayOfWeek(valor)
                 if (diaSemana == 6) {
                     document.getElementById("cargo_domingo").value = 2
+                }else{
+                    document.getElementById("cargo_domingo").value = 0
                 }
+                sumarTotal()
             }
         });
     });
@@ -390,34 +396,36 @@
         //let dia = getDayOfWeek();
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
             
-             $.ajax({
-                 url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert/' + idproducto + '/' + cantidad + '/' + cod_pedido,
-                 success: function(resultado){
-                     if (resultado == 0) {
-                     }else{
-                         //Exito
-                         console.log(`Se insertó el producto`);
-                         let detalle = JSON.parse(resultado);
+            $.ajax({
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert/' + idproducto + '/' + cantidad + '/' + cod_pedido,
+                success: function(resultado){
+                    if (resultado == 0) {
+                    }else{
+                        //Exito
+                        console.log(`Se insertó el producto`);
+                        let detalle = JSON.parse(resultado);
 
-                         if (detalle.error == '') {
-                            $("#tablaProductos tbody").empty();
-                            $("#tablaProductos tbody").append(detalle.datos);
-                            $("#total").val(detalle.total);
+                        if (detalle.error == '') {
+                        $("#tablaProductos tbody").empty();
+                        $("#tablaProductos tbody").append(detalle.datos);
+                        $("#total").val(detalle.total);
+                        $("#valor_neto").val(detalle.subtotal);
 
-                            document.getElementById("cant").value = 1;
-                            document.getElementById("idproducto").selectedIndex = 0;
-                            // let selectProductos = document.getElementById("idproducto");
-                            // selectProductos.value = 0;
+                        document.getElementById("cant").value = 1;
+                        document.getElementById("idproducto").selectedIndex = 0;
+                        // let selectProductos = document.getElementById("idproducto");
+                        // selectProductos.value = 0;
 
-                         }
-                         
-                     }
-                 }
-             });
-            calculaValorNeto(cod_pedido);
-            sumarTotal()
+                        }
+                        
+                    }
+                }
+            });
+            //console.log(cod_pedido);
+            
         }
-
+        calculaValorNeto(cod_pedido);
+        sumarTotal()
         
     }
 
@@ -439,6 +447,7 @@
                             $("#tablaProductos tbody").empty();
                             $("#tablaProductos tbody").append(detalle.datos);
                             $("#total").val(detalle.total);
+                            $("#valor_neto").val(detalle.subtotal);
 
                             document.getElementById("cant").value = 1;
                             let selectProductos = document.getElementById("idproducto");
@@ -446,10 +455,14 @@
                         }else{
                             console.log("Error");
                         }
+                        
                     }
                 }
             });
+            
         }
+        calculaValorNeto(cod_pedido);
+        sumarTotal()
     }
 
     function limpiarValores(valor) {
@@ -493,67 +506,83 @@
         
 
         //Obtengo todos los valores de las casillas
-        if (document.getElementById('valor_neto').value != 0) {
-            subtotal = document.getElementById('valor_neto').value
+        subtotal = document.getElementById('valor_neto').value
+        porcentajeDescuento = document.getElementById('descuento').value
+        transporte = document.getElementById('transporte').value
+        cargoDomingo = document.getElementById('cargo_domingo').value
+        horarioExtra = document.getElementById('horario_extra').value
+        if (isNaN(parseFloat(subtotal)) == true ) {
+            subtotal = 0
+        }
+        
+        if (isNaN(parseFloat(porcentajeDescuento)) == true ) {
+            porcentajeDescuento = 0
         }
 
-        if (document.getElementById('descuento').value != 0)  {
-            porcentajeDescuento = document.getElementById('descuento').value
+        if (isNaN(parseFloat(transporte)) == true) {
+            transporte = 0
         }
 
-        if (document.getElementById('transporte').value != 0 ) {
-            transporte = document.getElementById('transporte').value
+        if (isNaN(parseFloat(cargoDomingo)) == true) {
+            cargoDomingo = 0
         }
 
-        if (document.getElementById('cargo_domingo').value != 0 ) {
-            cargoDomingo = document.getElementById('cargo_domingo').value
+        if (isNaN(parseFloat(horarioExtra)) == true) {
+            horarioExtra = 0
         }
+        
+        
 
-        if (document.getElementById('horario_entrega').value != 0 && document.getElementById('horario_entrega').value != null) {
-            horarioExtra = document.getElementById('horario_entrega').value
+        if (porcentajeDescuento != 0) {
+            descuento = (parseFloat(subtotal) * parseFloat(porcentajeDescuento))/100
+        }else{
+            descuento = 0
         }
-
-
-        descuento = (parseFloat(subtotal) * parseFloat(porcentajeDescuento))/100
+        
         total = subtotal - descuento
-
-        console.log("Cargo: " + cargoDomingo);
         
         // /* Este es el cálculo. */
         total = (parseFloat(total) + parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra));
         document.getElementById('total').value = total.toFixed(2);
+
+        console.log("Subtotal: " + subtotal);
+        console.log("Descuento: " + descuento);
+        console.log("Transporte: " + transporte);
+        console.log("Horario extra: " + horarioExtra);
+        console.log("Cargo Domingo: " + cargoDomingo);
+        console.log("Total: " + total);
     }
 
-    function eliminaProducto(idproducto, cod_pedido){
+    // function eliminaProducto(idproducto, cod_pedido){
 
-        if (idproducto != null && idproducto != 0 && idproducto > 0) {
+    //     if (idproducto != null && idproducto != 0 && idproducto > 0) {
 
-            $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto/' + idproducto + '/' + cod_pedido,
-                success: function(resultado){
-                    if (resultado == 0) {
+    //         $.ajax({
+    //             url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto/' + idproducto + '/' + cod_pedido,
+    //             success: function(resultado){
+    //                 if (resultado == 0) {
 
-                    }else{
-                        //Exito
-                        console.log("Se eliminó el producto");
-                        let detalle = JSON.parse(resultado);
+    //                 }else{
+    //                     //Exito
+    //                     console.log("Se eliminó el producto");
+    //                     let detalle = JSON.parse(resultado);
 
-                        if (detalle.error == '') {
-                            $("#tablaProductos tbody").empty();
-                            $("#tablaProductos tbody").append(detalle.datos);
-                            $("#total").val(detalle.total);
+    //                     if (detalle.error == '') {
+    //                         $("#tablaProductos tbody").empty();
+    //                         $("#tablaProductos tbody").append(detalle.datos);
+    //                         $("#total").val(detalle.total);
 
-                            document.getElementById("cant").value = 1;
-                            let selectProductos = document.getElementById("idproducto");
-                            selectProductos.value = 0;
-                        }else{
-                            console.log("Error");
-                        }
-                    }
-                }
-            });
-        }
-    }
+    //                         document.getElementById("cant").value = 1;
+    //                         let selectProductos = document.getElementById("idproducto");
+    //                         selectProductos.value = 0;
+    //                     }else{
+    //                         console.log("Error");
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }
 
     function getDayOfWeek(fechaEntrega){
         let ahora = new Date(fechaEntrega);
@@ -570,8 +599,9 @@
             url: "<?php echo site_url(); ?>ventas/getDetallePedido/"+cod_pedido,
             success: function(resultado){
                 let detalle = JSON.parse(resultado);
-                console.log("Detalle: " + detalle.subtotal);
+                //console.log("Detalle: " + detalle.subtotal);
                 document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
+                sumarTotal()
             }
         });
     }
