@@ -1,5 +1,5 @@
 <?php echo view('includes/header');?>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed" >
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -120,6 +120,7 @@
             }
         });
     });
+
 </script>
 </body>
 </html>

@@ -34,6 +34,8 @@ $routes->post('validate_login', 'Home::validate_login');
 $routes->get('inicio', 'Home::index');
 $routes->get('mantenimiento', 'Home::mantenimiento');
 $routes->get('logout', 'Home::logout');
+
+//VENTAS
 $routes->get('ventas', 'Ventas::index');
 $routes->get('pedidos', 'Ventas::pedidos');
 $routes->get('pedidos-ventana', 'Ventas::pedidos_ventana');
@@ -46,6 +48,7 @@ $routes->post('pedido-insert', 'Ventas::pedido_insert');
 $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
 $routes->get('estado', 'Administracion::estado');
 $routes->get('ventas/detalle_pedido_insert/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert/$1/$2/$3');
+$routes->get('ventas/detalle_pedido_insert_observacion/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion/$1/$2/$3');
 $routes->get('ventas/detalle_pedido_delete_producto/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto/$1/$2');
 $routes->get('ventas/getDetallePedido/(:num)', 'Ventas::getDetallePedido/$1');
 $routes->get('ventas/actualizaMensajero/(:num)/(:num)', 'Ventas::actualizaMensajero/$1/$2');

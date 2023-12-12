@@ -29,7 +29,7 @@
                                         <div class="form-group row">
                                             <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
                                             <div class="col-sm-6">
-                                                <input type="date" class="form-control" id="inputFecha" name="fecha_entrega"  min="<?= date('Y-m-d') ?>">
+                                                <input type="date" class="form-control" id="inputFecha" name="fecha_entrega"  min="<?= date('Y-m-d') ?>" value="<?= old('fecha_entrega')?>">
                                             </div>
                                             <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
                                         </div>
@@ -273,6 +273,9 @@
     </div>
 </section>
 <script>
+    window.onbeforeunload = function() {
+        return "¿Desea recargar la página web?";
+    };
     $(document).ready(function(){
         $("#telefono").on('input',function(){
             if($("#telefono").val() !=""){
@@ -320,6 +323,38 @@
         });
     });
 
+    function observacion(idproducto, cod_pedido){
+        let observacion = document.getElementById("observa_"+idproducto).value
+        //console.log(observacion);
+        if (observacion != null && observacion != '') {
+
+            $.ajax({
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion/' + idproducto + '/' + cod_pedido+'/'+observacion,
+                success: function(resultado){
+                    if (resultado == 0) {
+
+                    }else{
+                        //Exito
+                        let detalle = JSON.parse(resultado);
+
+                        if (detalle.error == '') {
+                        $("#tablaProductos tbody").empty();
+                        $("#tablaProductos tbody").append(detalle.datos);
+                        $("#total").val(detalle.total);
+                        $("#valor_neto").val(detalle.subtotal);
+
+                        document.getElementById("cant").value = 1;
+                        document.getElementById("idproducto").selectedIndex = 0;
+                        calculaValorNeto(cod_pedido);
+                        sumarTotal()
+                        }
+                    }
+                }
+            });
+            
+        }
+    }
+
     $(document).ready(function(){
         $("#horario_entrega").on('change',function(){
             if($("#horario_entrega").val() !=""){
@@ -336,7 +371,7 @@
                     success: function(res){
                         
                         let data = JSON.parse(res);
-                        console.log(data.costo);
+                        //console.log(data.costo);
                         document.getElementById("horario_extra").value = parseFloat(data.costo)
                         sumarTotal()
                     }
@@ -402,14 +437,14 @@
                     if (resultado == 0) {
                     }else{
                         //Exito
-                        console.log(`Se insertó el producto`);
+                        //console.log(`Se insertó el producto`);
                         let detalle = JSON.parse(resultado);
 
                         if (detalle.error == '') {
                         $("#tablaProductos tbody").empty();
                         $("#tablaProductos tbody").append(detalle.datos);
                         $("#total").val(detalle.total);
-                        $("#valor_neto").val(detalle.subtotal);
+                        document.getElementById('valor_neto').value = detalle.total
 
                         document.getElementById("cant").value = 1;
                         document.getElementById("idproducto").selectedIndex = 0;
@@ -440,7 +475,7 @@
 
                     }else{
                         //Exito
-                        console.log("Se eliminó el producto");
+                        //console.log("Se eliminó el producto");
                         let detalle = JSON.parse(resultado);
 
                         if (detalle.error == '') {
@@ -545,44 +580,14 @@
         total = (parseFloat(total) + parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra));
         document.getElementById('total').value = total.toFixed(2);
 
-        console.log("Subtotal: " + subtotal);
-        console.log("Descuento: " + descuento);
-        console.log("Transporte: " + transporte);
-        console.log("Horario extra: " + horarioExtra);
-        console.log("Cargo Domingo: " + cargoDomingo);
-        console.log("Total: " + total);
+        // console.log("Subtotal: " + subtotal);
+        // console.log("Descuento: " + descuento);
+        // console.log("Transporte: " + transporte);
+        // console.log("Horario extra: " + horarioExtra);
+        // console.log("Cargo Domingo: " + cargoDomingo);
+        // console.log("Total: " + total);
     }
 
-    // function eliminaProducto(idproducto, cod_pedido){
-
-    //     if (idproducto != null && idproducto != 0 && idproducto > 0) {
-
-    //         $.ajax({
-    //             url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto/' + idproducto + '/' + cod_pedido,
-    //             success: function(resultado){
-    //                 if (resultado == 0) {
-
-    //                 }else{
-    //                     //Exito
-    //                     console.log("Se eliminó el producto");
-    //                     let detalle = JSON.parse(resultado);
-
-    //                     if (detalle.error == '') {
-    //                         $("#tablaProductos tbody").empty();
-    //                         $("#tablaProductos tbody").append(detalle.datos);
-    //                         $("#total").val(detalle.total);
-
-    //                         document.getElementById("cant").value = 1;
-    //                         let selectProductos = document.getElementById("idproducto");
-    //                         selectProductos.value = 0;
-    //                     }else{
-    //                         console.log("Error");
-    //                     }
-    //                 }
-    //             }
-    //         });
-    //     }
-    // }
 
     function getDayOfWeek(fechaEntrega){
         let ahora = new Date(fechaEntrega);

@@ -31,3 +31,4 @@ function copyData(id){
             alert('La información se ha copiado inseguro!!!')
       }
 }
+

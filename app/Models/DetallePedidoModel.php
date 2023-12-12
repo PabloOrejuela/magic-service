@@ -83,4 +83,13 @@ class DetallePedidoModel extends Model {
         $builder->where('idproducto', $idproducto);
         $builder->delete();
     }
+
+    public function _updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->set('observacion', $observacion);
+        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idproducto', $idproducto);
+        $builder->update();
+    }
 }

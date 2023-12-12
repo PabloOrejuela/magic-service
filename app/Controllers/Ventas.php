@@ -159,6 +159,23 @@ class Ventas extends BaseController {
         }
         $res['datos'] = $this->cargaProductos($cod_pedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    function detalle_pedido_insert_observacion($idproducto, $cod_pedido, $observacion){
+        $error = '';
+
+        $datosExiste = $this->detallePedidoModel->_getProdDetallePedido($idproducto, $cod_pedido);
+            
+        if ($datosExiste) {
+            $this->detallePedidoModel->_updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion);
+        }
+        
+        $res['datos'] = $this->cargaProductos($cod_pedido);
+        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
         echo json_encode($res);
     }
@@ -218,7 +235,7 @@ class Ventas extends BaseController {
                 $fila .= '<td>'.$numFila.'</td>';
                 $fila .= '<td>'.$row->id.'</td>';
                 $fila .= '<td>'.$row->producto.'</td>';
-                $fila .= '<td><input type="text" class="form-control name="observacion_'.$cod_pedido.'" value="" ></td>';
+                $fila .= '<td><input type="text" class="form-control name="observacion_'.$row->idproducto.'" value="'.$row->observacion.'" onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" id="observa_'.$row->idproducto.'"></td>';
                 $fila .= '<td>'.$row->precio.'</td>';
                 $fila .= '<td>'.$row->cantidad.'</td>';
                 
@@ -260,25 +277,30 @@ class Ventas extends BaseController {
             $pedido = [
                 'idusuario' => $data['id'],
                 'fecha' => date('Y-m-d'),
-                //Cliente
+
+                'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
+                'horario_entrega' => $this->request->getPostGet('horario_entrega'),
+                
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
-                'fecha_entrega' => strtoupper($this->request->getPostGet('fecha_entrega')),
-                'horario_entrega' => strtoupper($this->request->getPostGet('horario_entrega')),
+                'telefono' => strtoupper($this->request->getPostGet('telefono')),
+                
                 
                 'vendedor' => $this->request->getPostGet('vendedor'),
-                'cant' => strtoupper($this->request->getPostGet('cant')),
-
+                'venta_extra' => $this->request->getPostGet('venta_extra'),
+                
+                //DETALLE
+               
+                //TOTALES
                 'valor_neto' => $this->request->getPostGet('valor_neto'),
                 'descuento' => $this->request->getPostGet('descuento'),
                 'transporte' => $this->request->getPostGet('transporte'),
+                'horario_extra' => $this->request->getPostGet('horario_extra'),
+                'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
                 'total' => $this->request->getPostGet('total'),
-                'sectores' => $this->request->getPostGet('sectores'),
-                'venta_extra' => $this->request->getPostGet('venta_extra'),
-                'cod_pedido' => $this->request->getPostGet('cod_pedido'),
             ];
-
+            echo '<pre>'.var_export($pedido, true).'</pre>';exit;
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
