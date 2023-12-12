@@ -18,6 +18,8 @@ class Ventas extends BaseController {
             $data['session'] = $this->session;
             date_default_timezone_set('America/Guayaquil');
             $date = date('ymdHis');
+
+            //Borramos pedidos 
             
             // ejecutamos la función pasándole la fecha que queremos
             $this->saber_dia(date('Y-m-d'));
