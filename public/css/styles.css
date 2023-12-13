@@ -150,3 +150,12 @@ a{
   display: flex;
   justify-content: center;
 }
+
+#div-pedido label{
+  display: inline-flex;
+}
+
+.span-pedido{
+  margin-left: 5px;
+  font-size: 0.8em;
+}

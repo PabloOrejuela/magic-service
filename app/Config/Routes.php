@@ -56,6 +56,9 @@ $routes->get('ventas/actualizarHorarioEntrega/(:num)/(:num)', 'Ventas::actualiza
 $routes->get('ventas/actualizarEstadpPedido/(:num)/(:num)', 'Ventas::actualizarEstadpPedido/$1/$2');
 $routes->get('ventas/actualizarHoraSalidaPedido/(:any)/(:num)', 'Ventas::actualizarHoraSalidaPedido/$1/$2');
 
+$routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
+$routes->get('ventas/detalle_pedido_insert_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_temp/$1/$2/$3');
+
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');
 $routes->get('producto-create', 'Administracion::form_producto_create');

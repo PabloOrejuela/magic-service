@@ -129,19 +129,21 @@ class Ventas extends BaseController {
         echo json_encode($costo_horario);
     }
 
-    function detalle_pedido_insert($idproducto, $cantidad, $cod_pedido){
+    function detalle_pedido_insert_temp($idproducto, $cantidad, $cod_pedido){
         $error = '';
+        //Borro temporales de fechas anteriores
+        $this->detallePedidoTempModel->_deleteDetallesTempOld();
 
         $producto = $this->productoModel->find($idproducto);
 
         if ($producto) {
-            $datosExiste = $this->detallePedidoModel->_getProdDetallePedido($idproducto, $cod_pedido);
+            $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
             
             if ($datosExiste) {
                 $cantidad = $datosExiste->cantidad + $cantidad;
                 $subtotal = $cantidad * $datosExiste->precio;
                 
-                $this->detallePedidoModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
 
             }else{
                 $subtotal = $cantidad * $producto->precio;
@@ -154,62 +156,62 @@ class Ventas extends BaseController {
                     'subtotal' => $subtotal,
                 ];
 
-                $this->detallePedidoModel->save($data);
+                $this->detallePedidoTempModel->save($data);
             }
         }else{
             $error = 'No existe el producto';
         }
-        $res['datos'] = $this->cargaProductos($cod_pedido);
+        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
         echo json_encode($res);
     }
 
-    function detalle_pedido_insert_observacion($idproducto, $cod_pedido, $observacion){
+    function detalle_pedido_insert_observacion_temp($idproducto, $cod_pedido, $observacion){
         $error = '';
 
-        $datosExiste = $this->detallePedidoModel->_getProdDetallePedido($idproducto, $cod_pedido);
+        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
             
         if ($datosExiste) {
-            $this->detallePedidoModel->_updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion);
+            $this->detallePedidoTempModel->_updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion);
         }
         
-        $res['datos'] = $this->cargaProductos($cod_pedido);
+        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
         echo json_encode($res);
     }
 
-    function detalle_pedido_delete_producto($idproducto, $cod_pedido){
+    function detalle_pedido_delete_producto_temp($idproducto, $cod_pedido){
         $error = '';
 
-        $datosExiste = $this->detallePedidoModel->_getProdDetallePedido($idproducto, $cod_pedido);
+        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
 
         if ($datosExiste) {
             if ($datosExiste->cantidad > 1) {
                 $cantidad = $datosExiste->cantidad - 1;
                 $subtotal = $cantidad * $datosExiste->precio;
 
-                $this->detallePedidoModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
             }else{
-                $this->detallePedidoModel->_eliminarProdDetalle($idproducto, $cod_pedido);
+                $this->detallePedidoTempModel->_eliminarProdDetalle($idproducto, $cod_pedido);
             }
         }
 
-        $res['datos'] = $this->cargaProductos($cod_pedido);
+        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
         echo json_encode($res);
     }
 
-    function getDetallePedido($cod_pedido){
+    function getDetallePedido_temp($cod_pedido){
         $error = '';
         $subtotal = 0;
         $cantidad = 0;
-        $detalle = $this->detallePedidoModel->_getDetallePedido($cod_pedido);
+        $detalle = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
 
         if ($detalle) {
             $res['datos'] = $detalle;
@@ -225,8 +227,8 @@ class Ventas extends BaseController {
         echo json_encode($res);
     }
 
-    function cargaProductos($cod_pedido){
-        $resultado = $this->detallePedidoModel->_getDetallePedido($cod_pedido);
+    function cargaProductos_temp($cod_pedido){
+        $resultado = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
         $fila = '';
         $numFila = 0;
         if ($resultado) {
@@ -253,7 +255,7 @@ class Ventas extends BaseController {
     }
 
     function totalDetallePedido($cod_pedido){
-        $resultado = $this->detallePedidoModel->_getDetallePedido($cod_pedido);
+        $resultado = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
         $total = 0;
 
         if ($resultado) {

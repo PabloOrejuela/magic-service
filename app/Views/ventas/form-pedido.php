@@ -25,6 +25,9 @@
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
                                 <form action="<?= site_url().'pedido-insert';?>" method="post">
                                     <div class="card-body">
+                                        <div id="div-pedido">
+                                            <label for="cod_pedido">Pedido: </label><span class="span-pedido"><?= $cod_pedido ?></span>
+                                        </div>
                                         <h4 style="color:#B82D1B;">Los campos con asterisco * son obligatorios</h4>
                                         <div class="form-group row">
                                             <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
@@ -329,7 +332,7 @@
         if (observacion != null && observacion != '') {
 
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion/' + idproducto + '/' + cod_pedido+'/'+observacion,
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion_tmp/' + idproducto + '/' + cod_pedido+'/'+observacion,
                 success: function(resultado){
                     if (resultado == 0) {
 
@@ -432,7 +435,7 @@
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
             
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert/' + idproducto + '/' + cantidad + '/' + cod_pedido,
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_temp/' + idproducto + '/' + cantidad + '/' + cod_pedido,
                 success: function(resultado){
                     if (resultado == 0) {
                     }else{
@@ -469,7 +472,7 @@
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
 
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto/' + idproducto + '/' + cod_pedido,
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
                 success: function(resultado){
                     if (resultado == 0) {
 
@@ -601,7 +604,7 @@
         $.ajax({
             type:"GET",
             dataType:"html",
-            url: "<?php echo site_url(); ?>ventas/getDetallePedido/"+cod_pedido,
+            url: "<?php echo site_url(); ?>ventas/getDetallePedido_temp/"+cod_pedido,
             success: function(resultado){
                 let detalle = JSON.parse(resultado);
                 //console.log("Detalle: " + detalle.subtotal);
@@ -615,8 +618,6 @@
     $('.selectpicker').selectpicker({
         style: 'btn-default'
     });
-
-
 
 </script>
 

@@ -39,6 +39,13 @@ class DetallePedidoTempModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function _deleteDetallesTempOld(){
+        
+        $builder = $this->db->table($this->table);
+        $builder->where('created_at <', date('Y-m-d'));
+        $builder->delete();
+    }
+
     public function _getProdDetallePedido($idproducto, $cod_pedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
@@ -67,7 +74,7 @@ class DetallePedidoTempModel extends Model {
     }
 
     public function _updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal){
-        $result = NULL;
+        
         $builder = $this->db->table($this->table);
         $builder->set('cantidad', $cantidad);
         $builder->set('subtotal', $subtotal);
@@ -77,7 +84,7 @@ class DetallePedidoTempModel extends Model {
     }
 
     public function _eliminarProdDetalle($idproducto, $cod_pedido){
-        $result = NULL;
+        
         $builder = $this->db->table($this->table);
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
@@ -85,7 +92,7 @@ class DetallePedidoTempModel extends Model {
     }
 
     public function _updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion){
-        $result = NULL;
+        
         $builder = $this->db->table($this->table);
         $builder->set('observacion', $observacion);
         $builder->where('cod_pedido', $cod_pedido);
