@@ -40,9 +40,9 @@ class DetallePedidoTempModel extends Model {
     protected $afterDelete    = [];
 
     public function _deleteDetallesTempOld(){
-        
+        $ayer = date('Y-m-d', time() - 60 * 60 * 24);
         $builder = $this->db->table($this->table);
-        $builder->where('created_at <', date('Y-m-d'));
+        $builder->where('created_at <=', $ayer);
         $builder->delete();
     }
 

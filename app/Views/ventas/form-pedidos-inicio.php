@@ -115,7 +115,7 @@
                                             }
                                             echo '<td id="cod_arreglo_'.$value->id.'">';
                                             foreach ($detalle as $key => $d) {
-                                                echo $d->producto;
+                                                echo $d->producto.' / ';
                                             }
                                             echo '</td>';
                                             echo '<td>
@@ -295,7 +295,6 @@
 <!-- FONTAWESOME -->
 <script src="https://kit.fontawesome.com/964a730002.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-<script src="<?= site_url(); ?>public/js/grid-pedido.js"></script>
 <script>
 
     let botones = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');

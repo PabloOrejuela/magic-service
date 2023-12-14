@@ -92,4 +92,39 @@ class DetallePedidoModel extends Model {
         $builder->where('idproducto', $idproducto);
         $builder->update();
     }
+
+    public function _insert($detalle) {
+
+        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
+
+        foreach ($detalle as $key => $value) {
+            //Inserto el nuevo producto
+            $builder = $this->db->table($this->table);
+            if ($value->cod_pedido != 'NULL' && $value->cod_pedido != '') {
+                $builder->set('cod_pedido', $value->cod_pedido);
+            }
+
+            if ($value->idproducto != 'NULL' && $value->idproducto != '') {
+                $builder->set('idproducto', $value->idproducto);
+            }
+
+            if ($value->cantidad != 'NULL' && $value->cantidad != '') {
+                $builder->set('cantidad', $value->cantidad);
+            }
+
+            if ($value->precio != 'NULL' && $value->precio != '') {
+                $builder->set('precio', $value->precio);
+            }
+
+            if ($value->subtotal != 'NULL' && $value->subtotal != '') {
+                $builder->set('subtotal', $value->subtotal);
+            }
+
+            if ($value->observacion != 'NULL' && $value->observacion != '') {
+                $builder->set('observacion', $value->observacion);
+            }
+            
+            $builder->insert();
+        }  
+    }
 }

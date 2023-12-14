@@ -135,14 +135,6 @@ class PedidoModel extends Model {
             $builder->set('fecha', $data['fecha']);
         }
 
-        if ($data['fecha_entrega'] != 'NULL' && $data['fecha_entrega'] != '') {
-            $builder->set('fecha_entrega', $data['fecha_entrega']);
-        }
-        
-        if ($data['horario_entrega'] != 'NULL' && $data['horario_entrega'] != '') {
-            $builder->set('horario_entrega', $data['horario_entrega']); 
-        }
-
         if ($data['vendedor'] != 'NULL' && $data['vendedor'] != '') {
             $builder->set('vendedor', $data['vendedor']);
         }
@@ -159,12 +151,24 @@ class PedidoModel extends Model {
             $builder->set('transporte', $data['transporte']);
         }
 
+        if ($data['sector'] != 'NULL' && $data['sector'] != '') {
+            $builder->set('sector', $data['sector']); 
+        }
+
         if ($data['total'] != 'NULL' && $data['total'] != '') {
             $builder->set('total', $data['total']);
         }
 
         if ($data['venta_extra'] != 'NULL' && $data['venta_extra'] != '') {
             $builder->set('venta_extra', $data['venta_extra']);
+        }
+
+        if ($data['fecha_entrega'] != 'NULL' && $data['fecha_entrega'] != '') {
+            $builder->set('fecha_entrega', $data['fecha_entrega']);
+        }
+        
+        if ($data['horario_entrega'] != 'NULL' && $data['horario_entrega'] != '') {
+            $builder->set('horario_entrega', $data['horario_entrega']); 
         }
 
         $builder->insert();
@@ -176,10 +180,10 @@ class PedidoModel extends Model {
 
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
 
-        //Inserto el nuevo producto
+        //Actualizo el nuevo pedido
         $builder = $this->db->table($this->table);
-        if ($data['cod'] != 'NULL' && $data['cod'] != '') {
-            $builder->set('cod_pedido', $data['cod']);
+        if ($data['cod_pedido'] != 'NULL' && $data['cod_pedido'] != '') {
+            $builder->set('cod_pedido', $data['cod_pedido']);
         }
 
         if ($data['idcliente'] != 'NULL' && $data['idcliente'] != '') {
@@ -194,14 +198,6 @@ class PedidoModel extends Model {
             $builder->set('vendedor', $data['vendedor']);
         }
 
-        if ($data['producto'] != 'NULL' && $data['producto'] != '') {
-            $builder->set('producto', $data['producto']);
-        }
-
-        if ($data['formas_pago'] != 'NULL' && $data['formas_pago'] != '') {
-            $builder->set('formas_pago', $data['formas_pago']);
-        }
-
         if ($data['valor_neto'] != 'NULL' && $data['valor_neto'] != '') {
             $builder->set('valor_neto', $data['valor_neto']);
         }
@@ -214,12 +210,24 @@ class PedidoModel extends Model {
             $builder->set('transporte', $data['transporte']);
         }
 
+        if ($data['sector'] != 'NULL' && $data['sector'] != '') {
+            $builder->set('sector', $data['sector']); 
+        }
+
         if ($data['total'] != 'NULL' && $data['total'] != '') {
             $builder->set('total', $data['total']);
         }
 
         if ($data['venta_extra'] != 'NULL' && $data['venta_extra'] != '') {
             $builder->set('venta_extra', $data['venta_extra']);
+        }
+
+        if ($data['fecha_entrega'] != 'NULL' && $data['fecha_entrega'] != '') {
+            $builder->set('fecha_entrega', $data['fecha_entrega']);
+        }
+        
+        if ($data['horario_entrega'] != 'NULL' && $data['horario_entrega'] != '') {
+            $builder->set('horario_entrega', $data['horario_entrega']); 
         }
 
         $builder->where($this->table.'.id', $data['id']);

@@ -280,32 +280,6 @@
         return "¿Desea recargar la página web?";
     };
 
-    $(document).ready(function(){
-        $("#telefono").on('change',function(){
-            if($("#telefono").val() !=""){
-                limpiarClienteTelefono();
-                valor = $("#telefono").val();
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/clientes_select_telefono",
-                    data:"telefono="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        let cliente = JSON.parse(data);
-                        //console.log(data);
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('telefono').value = cliente.telefono
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                        document.getElementById('idcliente').value = cliente.id
-                    }
-                });
-            }
-        });
-    });
 
     $(document).ready(function(){
         $("#sectores").on('change',function(){
@@ -411,34 +385,6 @@
             $("#telefono").val(string.replace(/[^\w]/gi, ''));
         });
     });
-
-    $(document).ready(function(){
-        $("#documento").on('change',function(){
-            if($("#documento").val() !=""){
-                limpiarClienteDocumento();
-                valor = $("#documento").val();
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/clientes_select",
-                    data:"documento="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        let cliente = JSON.parse(data);
-                        console.log(data);
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('telefono').value = cliente.telefono
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                        document.getElementById('idcliente').value = cliente.id
-                    }
-                });
-            }
-        });
-    });
-
 
     function agregarProducto(idproducto, cantidad, cod_pedido){
         

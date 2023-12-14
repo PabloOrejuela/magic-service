@@ -18,8 +18,9 @@ class Ventas extends BaseController {
             $data['session'] = $this->session;
             date_default_timezone_set('America/Guayaquil');
             $date = date('ymdHis');
-
-            //Borramos pedidos 
+            
+            //Borramos pedidos
+            $this->detallePedidoTempModel->_deleteDetallesTempOld();
             
             // ejecutamos la función pasándole la fecha que queremos
             $this->saber_dia(date('Y-m-d'));
@@ -131,8 +132,6 @@ class Ventas extends BaseController {
 
     function detalle_pedido_insert_temp($idproducto, $cantidad, $cod_pedido){
         $error = '';
-        //Borro temporales de fechas anteriores
-        $this->detallePedidoTempModel->_deleteDetallesTempOld();
 
         $producto = $this->productoModel->find($idproducto);
 
@@ -283,20 +282,14 @@ class Ventas extends BaseController {
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $data['id'],
                 'fecha' => date('Y-m-d'),
+                'idcliente' => $this->request->getPostGet('idcliente'),
 
                 'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
                 'horario_entrega' => $this->request->getPostGet('horario_entrega'),
-                
-                'idcliente' => $this->request->getPostGet('idcliente'),
-                'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                'documento' => strtoupper($this->request->getPostGet('documento')),
-                'telefono' => strtoupper($this->request->getPostGet('telefono')),
-                
-                
+                'sector' => $this->request->getPostGet('sectores'),
+                          
                 'vendedor' => $this->request->getPostGet('vendedor'),
                 'venta_extra' => $this->request->getPostGet('venta_extra'),
-                
-                //DETALLE
                
                 //TOTALES
                 'valor_neto' => $this->request->getPostGet('valor_neto'),
@@ -306,8 +299,15 @@ class Ventas extends BaseController {
                 'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
                 'total' => $this->request->getPostGet('total'),
             ];
-            echo '<pre>'.var_export($pedido, true).'</pre>';
-            echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
+
+            $cliente = [
+                'idcliente' => $this->request->getPostGet('idcliente'),
+                'nombre' => strtoupper($this->request->getPostGet('nombre')),
+                'documento' => strtoupper($this->request->getPostGet('documento')),
+                'telefono' => strtoupper($this->request->getPostGet('telefono')),
+            ];
+
+            
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
@@ -316,28 +316,28 @@ class Ventas extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                //Codigo del pedido
-                //$pedido['cod'] = $this->pedidoModel->_makeCodproduct($pedido);
+
                 //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
-                $cliente = $this->clienteModel->find($pedido['idcliente']);
+                $cliente = $this->clienteModel->find($cliente['idcliente']);
                 if ($cliente) {
-                    
-                    
+                    // echo '<pre>'.var_export($pedido, true).'</pre>';
+                    // echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
                     //Inserto el nuevo producto
                     $this->pedidoModel->_insert($pedido);
 
+                    //Inserto el detalle
+                    $this->detallePedidoModel->_insert($detalleTemporal);
+
                     return redirect()->to('pedidos');
                 }else{
+                    echo '<pre>'.var_export($pedido, true).'</pre>';
+                    echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
                     //Inserto el cliente nuevo
-                    $data = [
-                        'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                        'documento' => strtoupper($this->request->getPostGet('documento')),
-                        'telefono' => strtoupper($this->request->getPostGet('telefono')),
-                    ];
-                    $pedido['idcliente'] = $this->clienteModel->_insert($data);
+                    
+                    $pedido['idcliente'] = $this->clienteModel->_insert($cliente);
 
-                    echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+                    echo '<pre>'.var_export($pedido['idcliente'], true).'</pre>';exit;
                     //Inserto el nuevo pedido
                     $this->pedidoModel->_insert($pedido);
 
