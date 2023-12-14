@@ -32,3 +32,17 @@ function copyData(id){
       }
 }
 
+function limpiarClienteTelefono() {
+  document.getElementById('nombre').value = ''
+  document.getElementById('documento').value = ''
+  document.getElementById('email').value = ''
+  document.getElementById('idcliente').value = ''
+}
+
+function limpiarClienteDocumento() {
+  document.getElementById('nombre').value = ''
+  document.getElementById('telefono').value = ''
+  document.getElementById('email').value = ''
+  document.getElementById('idcliente').value = ''
+}
+

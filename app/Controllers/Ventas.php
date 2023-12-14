@@ -61,9 +61,9 @@ class Ventas extends BaseController {
 
     function clientes_select(){
         $documento = $this->request->getPostGet('documento');
-        $data['clientes'] = $this->clienteModel->_getCliente($documento);
+        $cliente = $this->clienteModel->_getCliente($documento);
         //$data['clientes'] = $this->clienteModel->findAll();
-        echo view('clientes_select', $data);
+        echo json_encode($cliente);
     }
 
     function clientes_select_telefono(){
@@ -276,9 +276,11 @@ class Ventas extends BaseController {
         $data['nombre'] = $this->session->nombre;
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
-
+            $cod_pedido = $this->request->getPostGet('cod_pedido');
+            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido );
         
             $pedido = [
+                'cod_pedido' => $cod_pedido,
                 'idusuario' => $data['id'],
                 'fecha' => date('Y-m-d'),
 
@@ -304,7 +306,8 @@ class Ventas extends BaseController {
                 'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
                 'total' => $this->request->getPostGet('total'),
             ];
-            echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+            echo '<pre>'.var_export($pedido, true).'</pre>';
+            echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
@@ -334,7 +337,7 @@ class Ventas extends BaseController {
                     ];
                     $pedido['idcliente'] = $this->clienteModel->_insert($data);
 
-                    //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+                    echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                     //Inserto el nuevo pedido
                     $this->pedidoModel->_insert($pedido);
 
