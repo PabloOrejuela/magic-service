@@ -3,15 +3,6 @@
         text-align: right;
     }
 
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
     .input {
         border-radius: 300px;
         width: 250px;

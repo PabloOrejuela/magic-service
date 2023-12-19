@@ -93,19 +93,19 @@ class ClienteModel extends Model {
             $builder->set('telefono', $data['telefono']);
         }
 
-        if ($data['telefono_2'] != 'NULL' && $data['telefono_2'] != '') {
+        if ($data['telefono_2'] != 'NULL') {
             $builder->set('telefono_2', $data['telefono_2']);
         }
 
-        if ($data['documento'] != 'NULL' && $data['documento'] != '') {
+        if ($data['documento'] != 'NULL') {
             $builder->set('documento', $data['documento']);
         }
 
-        if ($data['direccion'] != 'NULL' && $data['direccion'] != '') {
+        if ($data['direccion'] != 'NULL') {
             $builder->set('direccion', $data['direccion']);
         }
 
-        if ($data['email'] != 'NULL' && $data['email'] != '') {
+        if ($data['email'] != 'NULL') {
             $builder->set('email', $data['email']);
         }
 
@@ -125,21 +125,22 @@ class ClienteModel extends Model {
             $builder->set('telefono', $data['telefono']);
         }
 
-        if ($data['telefono_2'] != 'NULL' && $data['telefono_2'] != '') {
+        if ($data['telefono_2'] != 'NULL') {
             $builder->set('telefono_2', $data['telefono_2']);
         }
 
-        if ($data['documento'] != 'NULL' && $data['documento'] != '') {
+        if ($data['documento'] != 'NULL') {
             $builder->set('documento', $data['documento']);
         }
 
-        if ($data['direccion'] != 'NULL' && $data['direccion'] != '') {
+        if ($data['direccion'] != 'NULL') {
             $builder->set('direccion', $data['direccion']);
         }
 
-        if ($data['email'] != 'NULL' && $data['email'] != '') {
+        if ($data['email'] != 'NULL') {
             $builder->set('email', $data['email']);
         }
+
         $builder->where('id', $data['id'] );
         $builder->update();
         return  $this->db->insertID();

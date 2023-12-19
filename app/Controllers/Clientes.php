@@ -100,6 +100,7 @@ class Clientes extends BaseController {
             $cliente = [
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'telefono' => strtoupper($this->request->getPostGet('telefono')),
+                'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'direccion' => strtoupper($this->request->getPostGet('direccion')),
                 'email' => $this->request->getPostGet('email'),
@@ -147,7 +148,7 @@ class Clientes extends BaseController {
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Clientes';
-            $data['subtitle']='Registrar Cliente';
+            $data['subtitle']='Editar Cliente';
             $data['main_content']='clientes/form-cliente-edit';
             return view('dashboard/index', $data);
         }else{
@@ -169,6 +170,7 @@ class Clientes extends BaseController {
                 'id' => $this->request->getPostGet('id'),
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'telefono' => strtoupper($this->request->getPostGet('telefono')),
+                'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'direccion' => strtoupper($this->request->getPostGet('direccion')),
                 'email' => $this->request->getPostGet('email'),

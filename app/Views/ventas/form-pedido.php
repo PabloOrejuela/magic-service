@@ -28,7 +28,7 @@
                                         <div id="div-pedido">
                                             <label for="cod_pedido">Pedido: </label><span class="span-pedido"><?= $cod_pedido ?></span>
                                         </div>
-                                        <h4 style="color:#B82D1B;">Los campos con asterisco * son obligatorios</h4>
+                                        <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
                                         <div class="form-group row">
                                             <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
                                             <div class="col-sm-6">
@@ -289,6 +289,7 @@
         </div>
     </div>
 </section>
+<script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
 <script>
     window.onbeforeunload = function() {
         return "¿Desea recargar la página web?";

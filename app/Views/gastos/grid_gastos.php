@@ -52,7 +52,7 @@
                                     if (isset($gastos) && $gastos != NULL) {
                                         foreach ($gastos as $key => $value) {
                                             echo '<tr>
-                                                <td><a href="'.site_url().'gasto-edit/'.$value->id.'" id="link-editar">'.$value->id.'</a></td>
+                                                <td><a href="'.site_url().'gasto-edit/'.$value->id.'" id="link-editar">00'.$value->id.'</a></td>
                                                 <td>'.$value->fecha.'</td>
                                                 <td>'.$value->sucursal.'</td>
                                                 <td>'.$value->negocio.'</td>

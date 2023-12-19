@@ -142,10 +142,6 @@ a{
   font-size: 1.1em;
 }
 
-.link-editar{
-  color: blue;
-}
-
 #btn-copy{
   display: flex;
   justify-content: center;
@@ -158,4 +154,23 @@ a{
 .span-pedido{
   margin-left: 5px;
   font-size: 0.8em;
+}
+
+#mensaje-campos-requeridos{
+  color:#B82D1B;
+  margin-bottom: 20px;
+  font-size: 1em;;
+}
+
+#link-editar{
+  text-decoration: underline !important;
+  font-weight: bold;
+  font-size: 1em;
+  color:#050f9c;
+}
+
+#link-editar:hover{
+  color: #000;
+  font-size: 1em;
+  font-weight: bold;
 }

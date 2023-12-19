@@ -42,8 +42,5 @@
   crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="<?= site_url(); ?>public/js/grid-pedido.js"></script>
-  <script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
-  
 
 </head>

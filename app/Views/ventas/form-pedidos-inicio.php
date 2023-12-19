@@ -2,17 +2,6 @@
     .inputValor{
         text-align: right;
     }
-
-    #link-editar{
-        text-decoration: underline !important;
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
     
     .row {
         margin-bottom: 20px;
@@ -306,6 +295,8 @@
     </div>
   </div>
 </div>
+
+<script src="<?= site_url(); ?>public/js/grid-pedido.js"></script>
 
 <!-- FONTAWESOME -->
 <script src="https://kit.fontawesome.com/964a730002.js" crossorigin="anonymous"></script>
