@@ -58,7 +58,7 @@
                                         </div>
                                         <div class="form-group"  style="display: none;">
                                             <label for="nombre">Id Cliente:</label>
-                                            <input type="hidden" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>" >
+                                            <input type="hidden" class="form-control" id="idcliente" name="idcliente"  >
                                         </div>
                                         <div class="form-group">
                                             <label for="nombre">Nombre cliente *:</label>
@@ -71,16 +71,30 @@
                                         </div>
                                         <p id="error-message"><?= session('errors.documento');?> </p>
                                         <div id="cliente"> </div>
-                                        <div class="form-group" id="campo-extra">
-                                            <label for="telefono">Celular:</label>
-                                            <input 
-                                                type="text" 
-                                                class="form-control number" 
-                                                id="telefono" 
-                                                name="telefono" 
-                                                placeholder="Celular" 
-                                                value="<?= old('telefono'); ?>"
-                                            >
+                                        <div class="form-group row" id="campo-extra">
+                                            <div class="col-md-6 div-celular">
+                                                <label for="telefono">Celular 1:</label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control number" 
+                                                    id="telefono" 
+                                                    name="telefono" 
+                                                    placeholder="Celular" 
+                                                    value="<?= old('telefono'); ?>"
+                                                >
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <label for="telefono">Celular 2:</label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control number" 
+                                                    id="telefono_2" 
+                                                    name="telefono_2" 
+                                                    placeholder="Celular" 
+                                                    value="<?= old('telefono_2'); ?>"
+                                                >
+                                            </div>
                                         </div>
                                         <div class="form-group" id="campo-extra">
                                             <label for="email" >Email:</label>
@@ -196,7 +210,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="sectores" class="col-md-3 col-form-label">Transporte:</label>
+                                            <label for="sectores" class="col-md-3 col-form-label">Transporte *:</label>
                                             <select class="form-select form-control-border" id="sectores" name="sectores">
                                                 <option value="0" selected>--Seleccionar sector--</option>
                                                 <?php
@@ -383,6 +397,14 @@
             let string = $("#telefono").val();
            
             $("#telefono").val(string.replace(/[^\w]/gi, ''));
+        });
+    });
+
+    $(document).ready(function(){
+        $("#telefono_2").on("change", function() {
+            let string = $("#telefono_2").val();
+           
+            $("#telefono_2").val(string.replace(/[^\w]/gi, ''));
         });
     });
 

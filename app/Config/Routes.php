@@ -41,6 +41,7 @@ $routes->get('pedidos', 'Ventas::pedidos');
 $routes->get('pedidos-ventana', 'Ventas::pedidos_ventana');
 $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
 $routes->post('ventas/clientes_select_telefono', 'Ventas::clientes_select_telefono');
+$routes->post('ventas/clientes_select_telefono_2', 'Ventas::clientes_select_telefono_2');
 $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
 $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->get('ventas/get_costo_horario/(:num)', 'Ventas::get_costo_horario/$1');
@@ -58,6 +59,7 @@ $routes->get('ventas/actualizarHoraSalidaPedido/(:any)/(:num)', 'Ventas::actuali
 
 $routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
 $routes->get('ventas/detalle_pedido_insert_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_temp/$1/$2/$3');
+$routes->get('ventas/detalle_pedido_delete_producto_temp/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto_temp/$1/$2');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');

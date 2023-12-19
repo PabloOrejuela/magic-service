@@ -1,7 +1,7 @@
 $(document).ready(function(){
   $("#telefono").on('change',function(){
       if($("#telefono").val() !=""){
-          limpiarClienteTelefono();
+
           valor = $("#telefono").val();
           $.ajax({
               type:"POST",
@@ -12,13 +12,48 @@ $(document).ready(function(){
                   //$('#cliente').html('Cargando ...');
               },
               success: function(data){
-                  let cliente = JSON.parse(data);
-                  //console.log(data);
-                  document.getElementById('nombre').value = cliente.nombre
-                  document.getElementById('telefono').value = cliente.telefono
-                  document.getElementById('documento').value = cliente.documento
-                  document.getElementById('email').value = cliente.email
-                  document.getElementById('idcliente').value = cliente.id
+                // limpiarClienteDocumento();
+                let cliente = JSON.parse(data);
+                //console.log(data);
+                document.getElementById('nombre').value = cliente.nombre
+                document.getElementById('telefono').value = cliente.telefono
+                document.getElementById('telefono_2').value = cliente.telefono_2
+                document.getElementById('documento').value = cliente.documento
+                document.getElementById('email').value = cliente.email
+                document.getElementById('idcliente').value = cliente.id
+              },
+              error: function(data){
+              }
+          });
+      }
+  });
+});
+
+$(document).ready(function(){
+  $("#telefono_2").on('change',function(){
+      if($("#telefono_2").val() !=""){
+
+          valor = $("#telefono_2").val();
+          $.ajax({
+              type:"POST",
+              dataType:"html",
+              url: "ventas/clientes_select_telefono_2",
+              data:"telefono="+valor,
+              beforeSend: function (f) {
+                  //$('#cliente').html('Cargando ...');
+              },
+              success: function(data){
+                // limpiarClienteDocumento();
+                let cliente = JSON.parse(data);
+                //console.log(data);
+                document.getElementById('nombre').value = cliente.nombre
+                document.getElementById('telefono').value = cliente.telefono
+                document.getElementById('telefono_2').value = cliente.telefono_2
+                document.getElementById('documento').value = cliente.documento
+                document.getElementById('email').value = cliente.email
+                document.getElementById('idcliente').value = cliente.id
+              },
+              error: function(data){
               }
           });
       }
@@ -28,7 +63,7 @@ $(document).ready(function(){
 $(document).ready(function(){
   $("#documento").on('change',function(){
       if($("#documento").val() !=""){
-          limpiarClienteDocumento();
+          
           valor = $("#documento").val();
           $.ajax({
               type:"POST",
@@ -39,13 +74,16 @@ $(document).ready(function(){
                   //$('#cliente').html('Cargando ...');
               },
               success: function(data){
-                  let cliente = JSON.parse(data);
-                  console.log(data);
-                  document.getElementById('nombre').value = cliente.nombre
-                  document.getElementById('telefono').value = cliente.telefono
-                  document.getElementById('documento').value = cliente.documento
-                  document.getElementById('email').value = cliente.email
-                  document.getElementById('idcliente').value = cliente.id
+                let cliente = JSON.parse(data);
+                console.log(data);
+                document.getElementById('nombre').value = cliente.nombre
+                document.getElementById('telefono').value = cliente.telefono
+                document.getElementById('documento').value = cliente.documento
+                document.getElementById('email').value = cliente.email
+                document.getElementById('idcliente').value = cliente.id
+              },
+              error: function(data){
+                console.log("No existe el cliente");
               }
           });
       }

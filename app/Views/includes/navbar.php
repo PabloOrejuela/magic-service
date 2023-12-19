@@ -13,6 +13,9 @@
       <li class="nav-item d-none d-sm-inline-block px-3">
         <a href="<?= base_url(); ?>cotizador" class="btn btn-primary" id="btn-cotizador">Cotizador</a>
       </li>
+      <li class="nav-item d-none d-sm-inline-block px-1">
+        <a href="<?= base_url(); ?>pedidos" class="btn btn-primary" id="btn-cotizador">Pedidos</a>
+      </li>
     </ul>
 
     <!-- Right navbar links -->

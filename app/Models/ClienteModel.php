@@ -67,6 +67,20 @@ class ClienteModel extends Model {
         return $result;
     }
 
+    function _getClienteByPhoneDos($telefono){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*')->where('telefono_2', $telefono);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     public function _insert($data) {
 
         //Inserto el nuevo cliente
@@ -77,6 +91,10 @@ class ClienteModel extends Model {
 
         if ($data['telefono'] != 'NULL' && $data['telefono'] != '') {
             $builder->set('telefono', $data['telefono']);
+        }
+
+        if ($data['telefono_2'] != 'NULL' && $data['telefono_2'] != '') {
+            $builder->set('telefono_2', $data['telefono_2']);
         }
 
         if ($data['documento'] != 'NULL' && $data['documento'] != '') {
@@ -105,6 +123,10 @@ class ClienteModel extends Model {
 
         if ($data['telefono'] != 'NULL' && $data['telefono'] != '') {
             $builder->set('telefono', $data['telefono']);
+        }
+
+        if ($data['telefono_2'] != 'NULL' && $data['telefono_2'] != '') {
+            $builder->set('telefono_2', $data['telefono_2']);
         }
 
         if ($data['documento'] != 'NULL' && $data['documento'] != '') {

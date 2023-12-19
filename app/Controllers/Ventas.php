@@ -75,6 +75,12 @@ class Ventas extends BaseController {
         //echo view('clientes_select', $data);
     }
 
+    function clientes_select_telefono_2(){
+        $telefono = $this->request->getPostGet('telefono');
+        $cliente = $this->clienteModel->_getClienteByPhoneDos($telefono);
+        echo json_encode($cliente);
+    }
+
     function get_valor_producto($producto){
         //$producto = $this->request->getPostGet('producto');
         $data['producto'] = $this->productoModel->_getProducto($producto);
@@ -91,7 +97,7 @@ class Ventas extends BaseController {
 
     function actualizaMensajero($mensajero, $cod_pedido){
 
-        if ($mensajero != 0) {
+        if ($mensajero != 0 && $mensajero != NULL) {
             $this->pedidoModel->_actualizaMensajero($mensajero, $cod_pedido);
         }
         
@@ -303,8 +309,11 @@ class Ventas extends BaseController {
             $cliente = [
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                'documento' => strtoupper($this->request->getPostGet('documento')),
                 'telefono' => strtoupper($this->request->getPostGet('telefono')),
+                'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
+                'documento' => strtoupper($this->request->getPostGet('documento')),
+                'direccion' => '',
+                'email' => strtoupper($this->request->getPostGet('email')),
             ];
 
             
@@ -319,10 +328,9 @@ class Ventas extends BaseController {
 
                 //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
-                $cliente = $this->clienteModel->find($cliente['idcliente']);
-                if ($cliente) {
-                    // echo '<pre>'.var_export($pedido, true).'</pre>';
-                    // echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
+                $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
+                if ($clienteExiste) {
+
                     //Inserto el nuevo producto
                     $this->pedidoModel->_insert($pedido);
 
@@ -331,16 +339,19 @@ class Ventas extends BaseController {
 
                     return redirect()->to('pedidos');
                 }else{
-                    echo '<pre>'.var_export($pedido, true).'</pre>';
-                    echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
+                    // echo '<pre>'.var_export($cliente, true).'</pre>';
+                    // echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
+                    // echo '<pre>'.var_export($pedido, true).'</pre>';
+                    // echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
                     //Inserto el cliente nuevo
-                    
                     $pedido['idcliente'] = $this->clienteModel->_insert($cliente);
 
-                    echo '<pre>'.var_export($pedido['idcliente'], true).'</pre>';exit;
                     //Inserto el nuevo pedido
                     $this->pedidoModel->_insert($pedido);
 
+                    //Inserto el detalle
+                    $this->detallePedidoModel->_insert($detalleTemporal);
+                    
                     return redirect()->to('pedidos');
                 }
                 

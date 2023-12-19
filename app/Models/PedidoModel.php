@@ -235,7 +235,7 @@ class PedidoModel extends Model {
     }
 
     public function _actualizaMensajero($mensajero, $codigo_pedido) {
-
+        //echo $mensajero;
         $builder = $this->db->table($this->table);
 
         if ($mensajero != 0 && $mensajero != null) {

@@ -4,6 +4,7 @@
     }
 
     #link-editar{
+        text-decoration: underline !important;
         color: #00514E;
         text-decoration: none;
     }
@@ -118,15 +119,29 @@
                                                 echo $d->producto.' / ';
                                             }
                                             echo '</td>';
-                                            echo '<td>
+                                            if ($value->hora_salida_pedido) {
+                                                echo '<td>
                                                     <a type="button" id="sector_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
                                                 </td>';
+                                            }else{
+                                                echo '<td>
+                                                    <a type="button" id="sector_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaSalidaModal">Registrar</a>
+                                                </td>';
+                                            }
+                                            
                                             echo '<td id="hora_entrega'.$value->id.'">
                                                     <a type="button" id="horaEntrega_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
                                                 </td>';
-                                            echo '<td id="mensajero'.$value->id.'">
+                                            if ($value->mensajero) {
+                                                echo '<td id="mensajero'.$value->id.'">
                                                     <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
                                                 </td>';
+                                            }else{
+                                                echo '<td id="mensajero'.$value->id.'">
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
+                                                </td>';
+                                            }
+                                            
 
                                             echo '<td >
                                                     <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
@@ -275,9 +290,9 @@
             if (isset($mensajeros)) {
                 foreach ($mensajeros as $key => $m) {
                     if ($m->id == $defaultvalue) {
-                        echo "<option value='$m->id' " . set_select('producto', $m->id, false). " selected>". $m->nombre."</option>";
+                        echo "<option value='$m->id' " . set_select('mensajero', $m->id, false). " selected>". $m->nombre."</option>";
                     }else{
-                        echo "<option value='$m->id' " . set_select('producto', $m->id, false). " >". $m->nombre."</option>";
+                        echo "<option value='$m->id' " . set_select('mensajero', $m->id, false). " >". $m->nombre."</option>";
                     }
                 }
             }
@@ -362,8 +377,7 @@
 
     
     function actualizarMensajero(mensajero, codigo_pedido){
-        // console.log(mensajero);
-        // console.log(codigo_pedido);
+
         $.ajax({
             type:"GET",
             dataType:"html",
@@ -373,7 +387,7 @@
                 //$('#cliente').html('Cargando ...');
             },
             success: function(data){
-                //console.log(data);
+                console.log(data);
                 location.replace('pedidos');
             }
         });
