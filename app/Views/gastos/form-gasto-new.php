@@ -17,7 +17,7 @@
                     <!-- form start -->
                     <form action="<?= site_url().'gasto-insert';?>" method="post">
                         <div class="card-body">
-                            <p>Los campos con asterisco * son obligatorios</p>
+                            <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
                             <div class="form-group col-md-12">
                                 <label for="sucursal">Sucursal *:</label>
                                 <select 

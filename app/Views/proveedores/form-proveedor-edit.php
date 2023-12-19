@@ -22,8 +22,9 @@
                     <!-- form start -->
                     <form action="<?= site_url().'proveedor-update';?>" method="post">
                         <div class="card-body">
+                            <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
                             <div class="form-group col-md-12">
-                                <label for="nombre">Nombre:</label>
+                                <label for="nombre">Nombre *:</label>
                                 <input 
                                     type="text" 
                                     class="form-control text" 
@@ -36,7 +37,7 @@
                                 <p id="error-message"><?= session('errors.nombre');?> </p>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="documento">RUC/Cédula:</label>
+                                <label for="documento">RUC/Cédula *:</label>
                                 <input 
                                     type="text" 
                                     class="form-control text" 
@@ -49,7 +50,7 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group col-md-12">
-                                <label for="contacto">Nombre Contacto:</label>
+                                <label for="contacto">Nombre Contacto *:</label>
                                 <input 
                                     type="text" 
                                     class="form-control text" 
@@ -62,7 +63,7 @@
                                 <p id="error-message"><?= session('errors.contacto');?> </p>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="celular_contacto">Celular Contacto:</label>
+                                <label for="celular_contacto">Celular Contacto *:</label>
                                 <input 
                                     type="text" 
                                     class="form-control number" 

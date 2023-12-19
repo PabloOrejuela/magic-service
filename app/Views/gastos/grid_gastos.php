@@ -1,14 +1,4 @@
 <style>
-
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
     .row {
         margin-bottom: 20px;
     }
@@ -51,8 +41,26 @@
                                 <?php
                                     if (isset($gastos) && $gastos != NULL) {
                                         foreach ($gastos as $key => $value) {
+                                            $ceros = 5 - strlen($value->id);
+                                            $cadena = '';
+                                            switch($ceros){
+                                                case 1: 
+                                                    $cadena = '0';
+                                                    break;
+                                                case 2: 
+                                                    $cadena = '00';
+                                                    break;
+                                                case 3: 
+                                                    $cadena = '000';
+                                                    break;
+                                                case 4:
+                                                    $cadena = '00000';
+                                                    break;
+                                                default:
+                                                    $cadena = '';
+                                            }
                                             echo '<tr>
-                                                <td><a href="'.site_url().'gasto-edit/'.$value->id.'" id="link-editar">00'.$value->id.'</a></td>
+                                                <td><a href="'.site_url().'gasto-edit/'.$value->id.'" id="link-editar">'.$cadena.$value->id.'</a></td>
                                                 <td>'.$value->fecha.'</td>
                                                 <td>'.$value->sucursal.'</td>
                                                 <td>'.$value->negocio.'</td>
