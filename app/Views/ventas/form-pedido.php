@@ -162,7 +162,7 @@
                                                         <td>
                                                             <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
                                                             <a href="javascript:agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )" class="link-opacity-75" id="a">
-                                                                <img src="<?= site_url(); ?>public/images/btn-agregar.png" alt="agregar" id="img-agregar" />
+                                                                <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar" id="img-agregar" />
                                                             </a>
                                                         </td>
                                                     </tr>
