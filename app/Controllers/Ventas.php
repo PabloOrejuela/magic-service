@@ -146,9 +146,15 @@ class Ventas extends BaseController {
             
             if ($datosExiste) {
                 $cantidad = $datosExiste->cantidad + $cantidad;
-                $subtotal = $cantidad * $datosExiste->precio;
+                $precio = $datosExiste->precio;
+                if ($datosExiste->pvp != '0.00') {
+                    $subtotal = $cantidad * $datosExiste->pvp;
+                }else{
+                    $subtotal = $cantidad * $datosExiste->precio;
+                }
                 
-                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                
+                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $precio, $subtotal);
 
             }else{
                 $subtotal = $cantidad * $producto->precio;
@@ -158,10 +164,11 @@ class Ventas extends BaseController {
                     'idproducto' => $idproducto,
                     'cantidad' => $cantidad,
                     'precio' => $producto->precio,
+                    'pvp' => $producto->precio,
                     'subtotal' => $subtotal,
                 ];
 
-                $this->detallePedidoTempModel->save($data);
+                $this->detallePedidoTempModel->_saveProdDetalle($data);
             }
         }else{
             $error = 'No existe el producto';
@@ -180,6 +187,23 @@ class Ventas extends BaseController {
             
         if ($datosExiste) {
             $this->detallePedidoTempModel->_updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion);
+        }
+        
+        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
+        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    function detalle_pedido_update_precio_temp($idproducto, $cod_pedido, $precio, $cant){
+        $error = '';
+        $subtotal = number_format($precio * $cant,2);
+
+        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+            
+        if ($datosExiste) {
+            $this->detallePedidoTempModel->_updateProdDetallePrecio($idproducto, $cod_pedido, $precio, $subtotal);
         }
         
         $res['datos'] = $this->cargaProductos_temp($cod_pedido);
@@ -221,7 +245,7 @@ class Ventas extends BaseController {
         if ($detalle) {
             $res['datos'] = $detalle;
             foreach ($detalle as $key => $value) {
-                $subtotal += $value->cantidad * $value->precio;
+                $subtotal += $value->subtotal;
             }
             
         }else{
@@ -244,9 +268,10 @@ class Ventas extends BaseController {
                 $fila .= '<td>'.$numFila.'</td>';
                 $fila .= '<td>'.$row->id.'</td>';
                 $fila .= '<td>'.$row->producto.'</td>';
-                $fila .= '<td><input type="text" class="form-control name="observacion_'.$row->idproducto.'" value="'.$row->observacion.'" onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" id="observa_'.$row->idproducto.'"></td>';
-                $fila .= '<td>'.$row->precio.'</td>';
-                $fila .= '<td>'.$row->cantidad.'</td>';
+                $fila .= '<td><input type="text" class="form-control" name="observacion_'.$row->idproducto.'" value="'.$row->observacion.'" onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" id="observa_'.$row->idproducto.'"></td>';
+                $fila .= '<td><input type="text" class="form-control input-precio" name="precio_'.$row->idproducto.'" value="'.$row->pvp.'" onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" id="precio_'.$row->idproducto.'"></td>';
+                //$fila .= '<td>'.$row->precio.'</td>';
+                $fila .= '<td id="cant_'.$row->idproducto.'">'.$row->cantidad.'</td>';
                 
                 $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="borrar">
                             <img src="'.site_url().'public/images/delete.png" width="20" >

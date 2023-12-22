@@ -73,14 +73,27 @@ class DetallePedidoTempModel extends Model {
         return $result;
     }
 
-    public function _updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal){
+    public function _updateProdDetalle($idproducto, $cod_pedido, $cantidad, $precio, $subtotal){
         
         $builder = $this->db->table($this->table);
         $builder->set('cantidad', $cantidad);
         $builder->set('subtotal', $subtotal);
+        $builder->set('precio', $precio);
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();
+    }
+
+    public function _saveProdDetalle($data){
+        
+        $builder = $this->db->table($this->table);
+        $builder->set('cantidad', $data['cantidad']);
+        $builder->set('subtotal', $data['subtotal']);
+        $builder->set('precio', $data['precio']);
+        $builder->set('pvp', $data['pvp']);
+        $builder->set('cod_pedido', $data['cod_pedido']);
+        $builder->set('idproducto', $data['idproducto']);
+        $builder->insert();
     }
 
     public function _eliminarProdDetalle($idproducto, $cod_pedido){
@@ -95,6 +108,16 @@ class DetallePedidoTempModel extends Model {
         
         $builder = $this->db->table($this->table);
         $builder->set('observacion', $observacion);
+        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idproducto', $idproducto);
+        $builder->update();
+    }
+
+    public function _updateProdDetallePrecio($idproducto, $cod_pedido, $precio, $subtotal){
+        
+        $builder = $this->db->table($this->table);
+        $builder->set('pvp', $precio);
+        $builder->set('subtotal', $subtotal);
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();

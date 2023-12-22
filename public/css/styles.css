@@ -174,3 +174,25 @@ a{
   font-size: 1em;
   font-weight: bold;
 }
+
+#link-clear-fields{
+  position: absolute;
+  right: 10px;
+  text-decoration: underline !important;
+  font-weight: bold;
+  font-size: 1em;
+  color:#00514E;
+}
+
+#link-clear-fields:hover{
+  position: absolute;
+  right: 10px;
+  text-decoration: underline !important;
+  color: #000;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.input-precio{
+  text-align: right;
+}

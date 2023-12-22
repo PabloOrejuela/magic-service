@@ -60,6 +60,8 @@ $routes->get('ventas/actualizarHoraSalidaPedido/(:any)/(:num)', 'Ventas::actuali
 $routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
 $routes->get('ventas/detalle_pedido_insert_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_temp/$1/$2/$3');
 $routes->get('ventas/detalle_pedido_delete_producto_temp/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto_temp/$1/$2');
+$routes->get('ventas/detalle_pedido_update_precio_temp/(:num)/(:num)/(:any)/(:num)', 'Ventas::detalle_pedido_update_precio_temp/$1/$2/$3/$4');
+$routes->get('ventas/detalle_pedido_insert_observacion_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion_temp/$1/$2/$3');
 
 $routes->get('administracion', 'Administracion::index');
 $routes->get('productos', 'Administracion::productos');

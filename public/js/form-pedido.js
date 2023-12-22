@@ -95,6 +95,7 @@ function limpiarClienteTelefono() {
   document.getElementById('documento').value = ''
   document.getElementById('email').value = ''
   document.getElementById('idcliente').value = ''
+  document.getElementById('telefono_2').value = ''
 }
 
 function limpiarClienteDocumento() {
@@ -102,6 +103,16 @@ function limpiarClienteDocumento() {
   document.getElementById('telefono').value = ''
   document.getElementById('email').value = ''
   document.getElementById('idcliente').value = ''
+  document.getElementById('telefono_2').value = ''
+}
+
+function limpiaCamposCliente(){
+  document.getElementById('nombre').value = ''
+  document.getElementById('documento').value = ''
+  document.getElementById('telefono').value = ''
+  document.getElementById('email').value = ''
+  document.getElementById('idcliente').value = ''
+  document.getElementById('telefono_2').value = ''
 }
 
 const confirmSaveAlert = () => {

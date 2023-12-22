@@ -100,7 +100,10 @@
                                             <label for="email" >Email:</label>
                                             <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= old('email'); ?>">
                                         </div>
-                                        <div class="form-group mb-3">
+                                        <div class="form-group mt-2">
+                                            <a href="javascript:limpiaCamposCliente()" class="nav-link mb-3" id="link-clear-fields">Limpiar campos</a>
+                                        </div>
+                                        <div class="form-group mb-3 mt-5">
                                             <label for="vendedor">Vendedor *:</label>
                                             <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
                                                 <option value="0" selected>--Seleccionar vendedor--</option>
@@ -326,7 +329,7 @@
         if (observacion != null && observacion != '') {
 
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion_tmp/' + idproducto + '/' + cod_pedido+'/'+observacion,
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
                 success: function(resultado){
                     if (resultado == 0) {
 
@@ -335,15 +338,48 @@
                         let detalle = JSON.parse(resultado);
 
                         if (detalle.error == '') {
-                        $("#tablaProductos tbody").empty();
-                        $("#tablaProductos tbody").append(detalle.datos);
-                        $("#total").val(detalle.total);
-                        $("#valor_neto").val(detalle.subtotal);
+                            $("#tablaProductos tbody").empty();
+                            $("#tablaProductos tbody").append(detalle.datos);
+                            $("#total").val(detalle.total);
+                            $("#valor_neto").val(detalle.subtotal);
 
-                        document.getElementById("cant").value = 1;
-                        document.getElementById("idproducto").selectedIndex = 0;
-                        calculaValorNeto(cod_pedido);
-                        sumarTotal()
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
+                            calculaValorNeto(cod_pedido);
+                            sumarTotal()
+                        }
+                    }
+                }
+            });
+            
+        }
+    }
+
+    function actualizaPrecio(idproducto, cod_pedido){
+        let precio = document.getElementById("precio_"+idproducto).value
+        let cant = document.getElementById("cant_"+idproducto).innerHTML
+        //console.log(cant);
+        if (precio != null && precio != '') {
+
+            $.ajax({
+                url: '<?php echo base_url(); ?>ventas/detalle_pedido_update_precio_temp/' + idproducto + '/' + cod_pedido+'/'+precio+'/'+cant,
+                success: function(resultado){
+                    if (resultado == 0) {
+
+                    }else{
+                        //Exito
+                        let detalle = JSON.parse(resultado);
+                        //console.log(resultado);
+                        if (detalle.error == '') {
+                            $("#tablaProductos tbody").empty();
+                            $("#tablaProductos tbody").append(detalle.datos);
+                            $("#total").val(detalle.total);
+                            $("#valor_neto").val(detalle.subtotal);
+
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
+                            calculaValorNeto(cod_pedido);
+                            sumarTotal()
                         }
                     }
                 }
@@ -428,7 +464,6 @@
                         $("#tablaProductos tbody").append(detalle.datos);
                         $("#total").val(detalle.total);
                         document.getElementById('valor_neto').value = detalle.total
-
                         document.getElementById("cant").value = 1;
                         document.getElementById("idproducto").selectedIndex = 0;
                         // let selectProductos = document.getElementById("idproducto");
