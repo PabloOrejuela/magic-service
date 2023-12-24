@@ -61,7 +61,7 @@ class Administracion extends BaseController {
         }
     }
 
-    public function Sucursales() {
+    public function sucursales() {
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
         $data['id'] = $this->session->id;
@@ -78,6 +78,31 @@ class Administracion extends BaseController {
             $data['title']='Administración';
             $data['subtitle']='Sucursales';
             $data['main_content']='administracion/grid_sucursales';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function sectoresEntrega() {
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sectores'] = $this->sectoresEntregaModel->_getSucursales();
+            $data['sucursales'] = $this->sucursalModel->findAll();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Sectores de entrega';
+            $data['main_content']='administracion/grid_sectores_entrega';
             return view('dashboard/index', $data);
         }else{
             $this->logout();
@@ -690,6 +715,19 @@ class Administracion extends BaseController {
             $this->logout();
             return redirect()->to('/');
         }
+    }
+
+    function updateSucursalSector($sector, $sucursal){
+        $mensaje = '';
+        if (isset($sucursal) && $sucursal != 0) {
+            $this->sectoresEntregaModel->_updateSucursalSector($sector, $sucursal);
+            $mensaje = 'Se ha actualizado';
+
+        }else{
+            $mensaje = 'NO se ha actualizado';
+            
+        }
+        return json_encode($mensaje);
     }
 
     public function form_rol_edit($id){

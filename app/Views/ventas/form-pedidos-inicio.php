@@ -39,6 +39,13 @@
         color: #000;
         border: none;
     }
+
+    .btn{
+
+        background:transparent;
+        margin:auto;
+        border: none;
+    }
 </style>
 <!-- Main content -->
 <section class="content">
@@ -140,13 +147,16 @@
                                             echo '<td id="observacion_'.$value->id.'">Observación</td>';
                                             echo '<td>
                                                     <div class="contenedor" id="btn-copy">
-                                                        <a type="button" id="btn-register" href="javascript:copyData('.$value->id.')" >
+                                                        <a type="button" class="btn" href="javascript:copyData('.$value->id.')" >
                                                             <img src="'.site_url().'public/images/copy.png" width="30" >
                                                         </a>
+        
+                                                        <button class="btn" id="btn-print" disabled>
+                                                            <img src="'.site_url().'public/images/btn-print.png" width="30" onclick="javascript:print('.$value->id.')" >
+                                                        </button>
                                                     </div>
-                                                    
-                                                </td>
-                                                </tr>';
+                                            </td>
+                                            </tr>';
                                         }
                                     }
                                 ?>
@@ -240,8 +250,12 @@
         <?php 
             $defaultvalue = 1;
             if (isset($horariosEntrega)) {
-                foreach ($horariosEntrega as $key => $m) {
-                    echo "<option value='$m->id' >". $m->hora."</option>";
+                foreach ($horariosEntrega as $key => $hora) {
+                    if ($hora->id < 5 || $hora->id > 24) {
+                        echo '<option value="'.$hora->id.'"  style="color:red;">'.$hora->hora.' Horario extra</option>';
+                    }else{
+                        echo '<option value="'.$hora->id.'" >'.$hora->hora.'</option>';
+                    }
                 }
             }
         ?>

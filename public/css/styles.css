@@ -113,6 +113,13 @@ a{
   width: 5%;
 }
 
+.inputCant{
+  margin-left: 20px;
+  margin-right: 0px;
+  text-align: right;
+  width: 70px !important;
+}
+
 #link-edita-producto{
   margin-left:10px;
 }

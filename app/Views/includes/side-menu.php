@@ -99,6 +99,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="'.base_url().'sectores-entrega" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Setores de entrega</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="'.base_url().'estado" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Estado del sistema</p>

@@ -6,6 +6,17 @@
     // $cod_pedido = 'P'.$session->id.$date;
     //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
 ?>
+<style>
+    #idproducto{
+        width: 80px !important;
+    }
+
+    #carrito{
+        margin: auto;
+        padding: auto;
+        width: 20px;
+    }
+</style>
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -153,13 +164,13 @@
                                                         <td>
                                                             <input 
                                                                 type="text" 
-                                                                class="form-control inputValor number" 
+                                                                class="form-control inputCant number" 
                                                                 id="cant" 
                                                                 name="cant"  
                                                                 value="1"
                                                             >
                                                         </td>
-                                                        <td>
+                                                        <td id="carrito">
                                                             <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
                                                             <a href="javascript:agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )" class="link-opacity-75" id="a">
                                                                 <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar" id="img-agregar" />
