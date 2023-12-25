@@ -1,17 +1,6 @@
 function copyData(id){
-    let cliente = ''
-    let sector = ''
-    let direccion = ''
-    let ubicacion = ''
     let cod_arreglo = ''
-    //let fechaEntrega = document.getElementById("fechaEntrega_"+id)
-    let horaEntrega = ''
     let observacion = ''
-    let mensaje = ''
-    //alert(id)
-    cadenaQuitar = ''
-    //cadenaDireccion = direccion.innerHTML
-
     $.ajax({
         type:"GET",
         dataType:"html",
@@ -28,9 +17,11 @@ function copyData(id){
             direccion = pedido.datos.dir_entrega
             ubicacion = pedido.datos.ubicacion
             horaEntrega = pedido.datos.hora
-            observacion = pedido.datos.observaciones
+            if (typeof pedido.datos.observaciones != 'undefined') {
+                observacion = pedido.datos.observaciones
+            }
+            
 
-            console.log(pedido.detalle);
             //detalle
             if (pedido.detalle) {
                 for (const cod of pedido.detalle) {
