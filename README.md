@@ -1,4 +1,5 @@
 <h4>Cambios:</h4>  
 <ul>   
-    <li>Creado el Form para asignar las sucursales a los sectores de entrega</li>
+    <li>Listo el formato del mensaje copiado del pedido</li>
+    <li>Faltan las validaciones de la función copyData, que no vaya Undefined ningún campo</li>
 </ul>

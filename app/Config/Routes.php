@@ -47,6 +47,7 @@ $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->get('ventas/get_costo_horario/(:num)', 'Ventas::get_costo_horario/$1');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
 $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
+$routes->get('getDatosPedido/(:num)', 'Ventas::getDatosPedido/$1');
 $routes->get('estado', 'Administracion::estado');
 $routes->get('ventas/detalle_pedido_insert/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert/$1/$2/$3');
 $routes->get('ventas/detalle_pedido_insert_observacion/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion/$1/$2/$3');

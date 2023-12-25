@@ -256,6 +256,23 @@ class Ventas extends BaseController {
         echo json_encode($res);
     }
 
+    function getDatosPedido($id){
+        $error = '';
+        $subtotal = 0;
+        $cantidad = 0;
+        $datos = $this->pedidoModel->_getDatosPedido($id);
+
+        if ($datos) {
+            $res['datos'] = $datos;
+            $res['detalle'] = $this->detallePedidoModel->_getDetallePedido($datos->cod_pedido);
+            
+        }else{
+            $res['datos'] = 'NO existe ese pedido';
+        }
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
     function cargaProductos_temp($cod_pedido){
         $resultado = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
         $fila = '';

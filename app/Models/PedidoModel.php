@@ -63,7 +63,7 @@ class PedidoModel extends Model {
                 sectores_entrega.sector as sector,
                 dir_entrega,
                 estados_pedidos.estado as estado,
-                hora_salida_pedido,
+                hora_salida_pedido,ubicacion,
                 usuarios.nombre as mensajero'
         );
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
@@ -85,8 +85,7 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-                $this->table.'.id as id,cod_pedido,
-                '.$this->table.'.producto as producto,categoria,
+                $this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,
                 '.$this->table.'.estado as estado, 
                 nombre,
                 documento,
@@ -96,16 +95,17 @@ class PedidoModel extends Model {
                 email,
                 fecha_entrega,
                 horario_entrega,
+                hora,
                 fecha,
                 vendedor,
+                ubicacion,
                 sectores_entrega.sector as sector,
                 dir_entrega,
                 mensajero'
         );
-        $builder->join('productos', $this->table.'.producto = productos.id');
-        $builder->join('categorias', 'productos.idcategoria = categorias.id');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
+        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id');
         $builder->where($this->table.'.id', $idpedido);
         $query = $builder->get();
         if ($query->getResult() != null) {

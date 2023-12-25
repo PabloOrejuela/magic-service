@@ -106,7 +106,7 @@
                                             }
                                             if ($value->dir_entrega) {
                                                 //echo '<td id="direccion_'.$value->id.'">'.$value->dir_entrega.'</td>';
-                                                echo '<td id="direccion_'.$value->id.'" class="clipboard">Calle a y la que cruza, edif bonito <a href="'.$value->dir_entrega.'" id="link-editar" target="_blank">'.$value->dir_entrega.'</a></td>';
+                                                echo '<td id="direccion_'.$value->id.'" class="clipboard">'.$value->dir_entrega.' <a href="'.$value->ubicacion.'" id="link-editar" target="_blank">'.$value->ubicacion.'</a></td>';
                                             }else{
                                                 echo '<td>Registrar dirección</td>';
                                             }
@@ -144,7 +144,7 @@
                                                 </td>';
 
                                             echo '<td>Información</td>';
-                                            echo '<td id="observacion_'.$value->id.'">Observación</td>';
+                                            echo '<td id="observacion_'.$value->id.'">'.$value->ubicacion.'</td>';
                                             echo '<td>
                                                     <div class="contenedor" id="btn-copy">
                                                         <a type="button" class="btn" href="javascript:copyData('.$value->id.')" >
