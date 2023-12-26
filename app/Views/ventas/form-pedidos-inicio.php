@@ -40,12 +40,6 @@
         border: none;
     }
 
-    .btn{
-
-        background:transparent;
-        margin:auto;
-        border: none;
-    }
 </style>
 <!-- Main content -->
 <section class="content">
@@ -83,15 +77,19 @@
                             </thead>
                             <tbody id="lista">
                                 <?php
+                                    use App\Models\PedidoModel;
                                     use App\Models\DetallePedidoModel;
                                     $this->detallePedidoModel = new DetallePedidoModel();
+                                    $this->pedidoModel = new PedidoModel();
+                                    $pedidos = $this->pedidoModel->_getPedidos();
 
                                     if (isset($pedidos) && $pedidos != NULL) {
                                         foreach ($pedidos as $key => $value) {
                                             $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
+                                            $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
                                             //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                             echo '<tr class="item-list" data-id="'.$value->id.'">
-                                                <td><i class="handle fa-solid fa-grip-lines"></i></td>
+                                                <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
                                                 <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                 if ($value->fecha_entrega) {
                                                     echo '<td id="fechaEntrega_'.$value->id.'">'.$value->fecha_entrega.'</td>';
@@ -105,14 +103,16 @@
                                                 echo '<td></td>';
                                             }
                                             if ($value->dir_entrega) {
-                                                //echo '<td id="direccion_'.$value->id.'">'.$value->dir_entrega.'</td>';
+                                                
                                                 echo '<td id="direccion_'.$value->id.'" class="clipboard">'.$value->dir_entrega.' <a href="'.$value->ubicacion.'" id="link-editar" target="_blank">'.$value->ubicacion.'</a></td>';
                                             }else{
                                                 echo '<td>Registrar dirección</td>';
                                             }
                                             echo '<td id="cod_arreglo_'.$value->id.'">';
-                                            foreach ($detalle as $key => $d) {
-                                                echo $d->producto.' / ';
+                                            if (isset($detalle)) {
+                                                foreach ($detalle as $key => $d) {
+                                                    echo $d->producto.' / ';
+                                                }
                                             }
                                             echo '</td>';
                                             if ($value->hora_salida_pedido) {
@@ -137,26 +137,44 @@
                                                     <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
                                                 </td>';
                                             }
-                                            
-
+                                        
                                             echo '<td >
                                                     <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
                                                 </td>';
-
-                                            echo '<td>Información</td>';
-                                            echo '<td id="observacion_'.$value->id.'">'.$value->ubicacion.'</td>';
+                                            if ($verificaCampos == 0) {
+                                                echo '<td id="informacion"><span id="span-completo">Completo</span></td>';
+                                                
+                                            }else{
+                                                echo '<td id="informacion"><span id="span-incompleto">Incompleto: '.$verificaCampos.'</span></td>';
+                                            }
+                                            // echo '<td id="observacion_'.$value->id.'">'.$value->observaciones.'</td>';
+                                            if ($value->observaciones != '') {
+                                                echo '<td id="observaciones'.$value->id.'">
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">'.$value->observaciones.'</a>
+                                                </td>';
+                                            }else{
+                                                echo '<td id="observaciones'.$value->id.'">
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">Registrar</a>
+                                                </td>';
+                                            }
+    
+                                            
                                             echo '<td>
                                                     <div class="contenedor" id="btn-copy">
-                                                        <a type="button" class="btn" href="javascript:copyData('.$value->id.')" >
-                                                            <img src="'.site_url().'public/images/copy.png" width="30" >
-                                                        </a>
-        
-                                                        <button class="btn" id="btn-print" disabled>
-                                                            <img src="'.site_url().'public/images/btn-print.png" width="30" onclick="javascript:print('.$value->id.')" >
-                                                        </button>
-                                                    </div>
-                                            </td>
-                                            </tr>';
+                                                        <a type="button" class="btnAction" href="javascript:copyData('.$value->id.')" >
+                                                            <img src="'.site_url().'public/images/copy.png" width="25" >
+                                                        </a>';
+                                            if ($verificaCampos == 0) {
+                                                echo '<a type="button" href="javascript:print('.$value->id.')" class="btnAction">
+                                                        <img src="'.site_url().'public/images/btn-print.png" width="25" >
+                                                    </a>';
+                                            }else{
+                                                echo '<a type="button" href="#" class="btnAction">
+                                                        <img src="'.site_url().'public/images/btn-print.png" width="25" >
+                                                    </a>';
+                                            }
+                                                        
+                                            echo    '</div></td></tr>';
                                         }
                                     }
                                 ?>
@@ -170,6 +188,27 @@
         </div>
     </div>
 </section>
+
+<!-- Modal Observación-->
+<div class="modal fade" id="observacionPedidoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Observación del Pedido</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+      <input class="form-control" type="text" name="observaciones" id="observaciones">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizaObservacionPedido()">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal Hora Salida-->
 <div class="modal fade" id="horaSalidaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -185,14 +224,14 @@
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHoraSalidaPedido(document.getElementById('hora_salida_pedido').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHoraSalidaPedido()">Atualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal Hora Entrega-->
+<!-- Modal Estado-->
 <div class="modal fade" id="estadoPedidoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -321,6 +360,7 @@
     let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEntregaModal"]');
     let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');
     let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
+    let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
 
     botones.forEach(btn => {
         btn.addEventListener('click', function() {
@@ -362,23 +402,15 @@
         });
     });
 
-    function actualizarHoraSalidaPedido(hora_salida_pedido, codigo_pedido){
-        // console.log(mensajero);
-        // console.log(codigo_pedido);
-        $.ajax({
-            type:"GET",
-            dataType:"html",
-            url: "<?php echo site_url(); ?>ventas/actualizarHoraSalidaPedido/"+hora_salida_pedido+'/'+codigo_pedido,
-            //data:"codigo="+valor,
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(data){
-                //console.log(data);
-                location.replace('pedidos');
-            }
+    btnObservacionPedido.forEach(btn => {
+        btn.addEventListener('click', function() {
+            let id = this.dataset.id;
+            //console.log(id);
+            document.querySelector('#codigo_pedido').value = id;
+            //console.log('abrir modal');
+            $('#observacionPedidoModal').modal();
         });
-    }
+    });
 
     
     function actualizarMensajero(mensajero, codigo_pedido){
@@ -417,8 +449,7 @@
     }
 
     function actualizarHorarioEntrega(horario_entrega, codigo_pedido){
-        // console.log(mensajero);
-        // console.log(codigo_pedido);
+        
         $.ajax({
             type:"GET",
             dataType:"html",
@@ -428,8 +459,11 @@
                 //$('#cliente').html('Cargando ...');
             },
             success: function(data){
-                //console.log(data);
-                location.replace('pedidos');
+                let datos = JSON.parse(data);
+                if (datos.horario < 5 || datos.horario > 24) {
+                    alert("ALERTA, EL VALOR FINAL HA CAMBIADO")
+                }
+                location.replace('pedidos')
             }
         });
     }
@@ -464,7 +498,7 @@
         $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
         $('#datatablesSimple').DataTable({
             "responsive": true, 
-            
+            "order": [[ 0, 'dsc' ]],
             language: {
                 processing: 'Procesando...',
                 lengthMenu: 'Mostrando _MENU_ registros por página',
@@ -491,4 +525,11 @@
                     "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
         });
     });
+
+    setInterval(function(){   
+        location.reload();
+    }, 15000);
+    
+    
+    
 </script>

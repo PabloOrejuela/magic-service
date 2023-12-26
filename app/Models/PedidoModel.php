@@ -59,6 +59,7 @@ class PedidoModel extends Model {
                 clientes.nombre as nombre, 
                 fecha_entrega,
                 horario_entrega,
+                observaciones,
                 fecha,
                 sectores_entrega.sector as sector,
                 dir_entrega,
@@ -71,6 +72,7 @@ class PedidoModel extends Model {
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
+        //$builder->orderBy('id', 'ASC');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -99,6 +101,7 @@ class PedidoModel extends Model {
                 fecha,
                 vendedor,
                 ubicacion,
+                observaciones,
                 sectores_entrega.sector as sector,
                 dir_entrega,
                 mensajero'
@@ -277,11 +280,54 @@ class PedidoModel extends Model {
 
         $builder = $this->db->table($this->table);
 
-        if ($hora_salida_pedido != 0 && $hora_salida_pedido != null) {
+        if ($hora_salida_pedido != 0 && $hora_salida_pedido != null && $hora_salida_pedido != '') {
             $builder->set('hora_salida_pedido', $hora_salida_pedido);
         }
 
         $builder->where($this->table.'.cod_pedido', $cod_pedido);
         $builder->update();
+    }
+
+    public function _actualizaObservacionPedido($observacionPedido, $cod_pedido) {
+
+        $builder = $this->db->table($this->table);
+
+        $builder->set('observaciones', $observacionPedido);
+        $builder->where($this->table.'.cod_pedido', $cod_pedido);
+        $builder->update();
+    }
+
+    function _verificaCampos($id, $detalle){
+        //fecha_entrega, nombre, sector, dir_entrega, cod arreglo, horario_entrega
+        $numCampos = 6;
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $pedido = $this->_getDatosPedido($id);
+        if ($pedido->fecha_entrega != NULL) {
+            $numCampos--;
+        }
+
+        if ($pedido->nombre != NULL) {
+            $numCampos--;
+        }
+
+        if ($pedido->sector > 0) {
+            $numCampos--;
+        }
+
+        if ($pedido->dir_entrega != NULL && $pedido->dir_entrega != '') {
+            $numCampos--;
+        }
+
+        if ($pedido->horario_entrega != NULL) {
+            $numCampos--;
+        }
+        
+        if (isset($detalle) && count($detalle) > 0) {
+            $numCampos--;
+        }
+        return $numCampos;
+        // echo '<pre>'.var_export($numCampos, true).'</pre>';
+        // echo '<pre>'.var_export($pedido, true).'</pre>';exit;
     }
 }

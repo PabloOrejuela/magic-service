@@ -24,6 +24,18 @@
   background-color: #00514E;
 }
 
+.btnAction{
+  background:transparent;
+  margin:auto;
+  border: none;
+}
+
+.btnAction:hover{
+  background-color: rgb(124, 124, 124, 0.2);
+  margin:auto;
+  border: none;
+}
+
 a{
   text-decoration: none;
   color: #00514E;
@@ -168,6 +180,23 @@ a{
   margin-bottom: 20px;
   font-size: 1em;;
 }
+
+#span-incompleto{
+  color:#B82D1B;
+  text-align: center;
+  font-weight: bold;
+}
+
+#span-completo{
+  color: #00514E;
+  text-align: center;
+  font-weight: bold;
+}
+
+#id-hidden{
+  display: none;
+}
+
 
 #link-editar{
   text-decoration: underline !important;

@@ -56,7 +56,8 @@ $routes->get('ventas/getDetallePedido/(:num)', 'Ventas::getDetallePedido/$1');
 $routes->get('ventas/actualizaMensajero/(:num)/(:num)', 'Ventas::actualizaMensajero/$1/$2');
 $routes->get('ventas/actualizarHorarioEntrega/(:num)/(:num)', 'Ventas::actualizarHorarioEntrega/$1/$2');
 $routes->get('ventas/actualizarEstadpPedido/(:num)/(:num)', 'Ventas::actualizarEstadpPedido/$1/$2');
-$routes->get('ventas/actualizarHoraSalidaPedido/(:any)/(:num)', 'Ventas::actualizarHoraSalidaPedido/$1/$2');
+$routes->post('actualizarHoraSalidaPedido', 'Ventas::actualizarHoraSalidaPedido');
+$routes->post('actualizaObservacionPedido', 'Ventas::actualizaObservacionPedido');
 
 $routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
 $routes->get('ventas/detalle_pedido_insert_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_temp/$1/$2/$3');

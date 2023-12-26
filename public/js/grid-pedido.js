@@ -55,13 +55,17 @@ function copyData(id){
 }
 
 
-function actualizarHoraSalidaPedido(hora_salida_pedido, codigo_pedido){
-    // console.log(mensajero);
-    // console.log(codigo_pedido);
+function actualizarHoraSalidaPedido(){
+
+    //console.log(horaSalidaPedido);
     $.ajax({
-        type:"GET",
-        dataType:"html",
-        url: "<?php echo site_url(); ?>ventas/actualizarHoraSalidaPedido/"+hora_salida_pedido+'/'+codigo_pedido,
+        type:"POST",
+        //dataType:"html",
+        data: { 
+            horaSalidaPedido: document.getElementById('hora_salida_pedido').value, 
+            codigoPedido: document.getElementById('codigo_pedido').value
+        },
+        url: "actualizarHoraSalidaPedido",
         //data:"codigo="+valor,
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
@@ -71,4 +75,30 @@ function actualizarHoraSalidaPedido(hora_salida_pedido, codigo_pedido){
             location.replace('pedidos');
         }
     });
+}
+
+function actualizaObservacionPedido(){
+
+    //console.log(horaSalidaPedido);
+    $.ajax({
+        type:"POST",
+        //dataType:"html",
+        data: { 
+            observacionPedido: document.getElementById('observaciones').value, 
+            codigoPedido: document.getElementById('codigo_pedido').value
+        },
+        url: "actualizaObservacionPedido",
+        //data:"codigo="+valor,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(data){
+            //console.log(data);
+            location.replace('pedidos');
+        }
+    });
+}
+
+function print(id){
+    alert('Imprimiendo '+id)
 }

@@ -21,16 +21,6 @@ class Ventas extends BaseController {
             
             //Borramos pedidos
             $this->detallePedidoTempModel->_deleteDetallesTempOld();
-            
-            // ejecutamos la función pasándole la fecha que queremos
-            $this->saber_dia(date('Y-m-d'));
-            
-            $diaSemana = date('l');
-            if($diaSemana == "Sunday"){
-                //echo "Es ".$diaSemana;
-            }else{
-                //echo "No ".$diaSemana;
-            }
 
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
@@ -52,13 +42,6 @@ class Ventas extends BaseController {
             return redirect()->to('/');
         }
     }
-
-    function saber_dia($nombredia) {
-        $dias = array('','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
-        $fecha = $dias[date('N', strtotime($nombredia))];
-        return $fecha;
-    }
-        
 
     function clientes_select(){
         $documento = $this->request->getPostGet('documento');
@@ -109,8 +92,8 @@ class Ventas extends BaseController {
         if ($horario_entrega != 0) {
             $this->pedidoModel->_actualizaHorarioEntrega($horario_entrega, $cod_pedido);
         }
-        
-        return true;
+        $data['horario'] = $horario_entrega;
+        echo json_encode($data);
     }
 
     function actualizarEstadoPedido($estado_pedido, $cod_pedido){
@@ -121,10 +104,24 @@ class Ventas extends BaseController {
         return true;
     }
 
-    function actualizarHoraSalidaPedido($hora_salida_pedido, $cod_pedido){
+    function actualizarHoraSalidaPedido(){
 
-        if ($hora_salida_pedido != 0) {
+        $hora_salida_pedido =  strtoupper($this->request->getPostGet('horaSalidaPedido'));
+        $cod_pedido =  strtoupper($this->request->getPostGet('codigoPedido'));
+
+        if ($hora_salida_pedido != 0 && $hora_salida_pedido != '' ) {
             $this->pedidoModel->_actualizarHoraSalidaPedido($hora_salida_pedido, $cod_pedido);
+        }
+        return true;
+    }
+
+    function actualizaObservacionPedido(){
+
+        $observacionPedido =  strtoupper($this->request->getPostGet('observacionPedido'));
+        $cod_pedido =  strtoupper($this->request->getPostGet('codigoPedido'));
+
+        if ($observacionPedido != '' ) {
+            $this->pedidoModel->_actualizaObservacionPedido($observacionPedido, $cod_pedido);
         }
         return true;
     }
