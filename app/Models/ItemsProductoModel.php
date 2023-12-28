@@ -65,7 +65,7 @@ class ItemsProductoModel extends Model {
         }    
     }
 
-    function _getItemsproducto($idproducto){
+    function _getItemsProducto($idproducto){
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('*')->where($this->table.'.idproducto', $idproducto);

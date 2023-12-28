@@ -75,7 +75,7 @@ $(document).ready(function(){
               },
               success: function(data){
                 let cliente = JSON.parse(data);
-                console.log(data);
+                //console.log(data);
                 document.getElementById('nombre').value = cliente.nombre
                 document.getElementById('telefono').value = cliente.telefono
                 document.getElementById('documento').value = cliente.documento

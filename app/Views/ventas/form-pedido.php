@@ -84,7 +84,7 @@
                                         <div id="cliente"> </div>
                                         <div class="form-group row" id="campo-extra">
                                             <div class="col-md-6 div-celular">
-                                                <label for="telefono">Celular 1:</label>
+                                                <label for="telefono">Celular 1 *:</label>
                                                 <input 
                                                     type="text" 
                                                     class="form-control number" 
@@ -471,14 +471,14 @@
                         let detalle = JSON.parse(resultado);
 
                         if (detalle.error == '') {
-                        $("#tablaProductos tbody").empty();
-                        $("#tablaProductos tbody").append(detalle.datos);
-                        $("#total").val(detalle.total);
-                        document.getElementById('valor_neto').value = detalle.total
-                        document.getElementById("cant").value = 1;
-                        document.getElementById("idproducto").selectedIndex = 0;
-                        // let selectProductos = document.getElementById("idproducto");
-                        // selectProductos.value = 0;
+                            $("#tablaProductos tbody").empty();
+                            $("#tablaProductos tbody").append(detalle.datos);
+                            $("#total").val(detalle.total);
+                            document.getElementById('valor_neto').value = detalle.total
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
+                            // let selectProductos = document.getElementById("idproducto");
+                            // selectProductos.value = 0;
 
                         }
                         

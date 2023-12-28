@@ -88,7 +88,7 @@
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarSucursal(document.getElementById('sector').value, document.getElementById('sucursal').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarSucursal(document.getElementById('sector').value, document.getElementById('sucursal').value)">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>

@@ -100,6 +100,22 @@ class ProductoModel extends Model {
         return $result;
     }
 
+    function _getProductosCategoria($idcategoria){
+        
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->where('idcategoria', $idcategoria);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     public function _insert($data) {
 
         //echo '<pre>'.var_export($data, true).'</pre>';exit;

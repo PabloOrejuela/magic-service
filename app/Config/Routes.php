@@ -66,6 +66,7 @@ $routes->get('ventas/detalle_pedido_update_precio_temp/(:num)/(:num)/(:any)/(:nu
 $routes->get('ventas/detalle_pedido_insert_observacion_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion_temp/$1/$2/$3');
 
 $routes->get('administracion', 'Administracion::index');
+$routes->get('getProductosCategoria/(:num)', 'Administracion::getProductosCategoria/$1');
 $routes->get('productos', 'Administracion::productos');
 $routes->get('producto-create', 'Administracion::form_producto_create');
 $routes->post('product-insert', 'Administracion::product_insert');
@@ -75,6 +76,7 @@ $routes->get('items', 'Administracion::items');
 $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
 $routes->post('item-create', 'Administracion::itemCreate');
 $routes->post('item-update', 'Administracion::item_update');
+$routes->get('getItemsProducto/(:num)', 'Administracion::getItemsProducto/$1');
 $routes->get('frm-item-create', 'Administracion::form_item_create');
 $routes->get('item-delete/(:num)', 'Administracion::item_delete/$1');
 $routes->get('formas-pago', 'Administracion::formas_pago');
@@ -88,6 +90,7 @@ $routes->get('roles', 'Administracion::roles');
 $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
 $routes->get('desactivar', 'Administracion::desactivar');
 $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');
+$routes->get('cotizador', 'Ventas::cotizador');
 
 $routes->get('sucursales', 'Administracion::sucursales');
 $routes->get('sucursal-create', 'Administracion::form_sucursal_create');

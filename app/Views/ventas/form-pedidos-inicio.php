@@ -203,7 +203,7 @@
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizaObservacionPedido()">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizaObservacionPedido()">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -224,7 +224,7 @@
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHoraSalidaPedido()">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHoraSalidaPedido()">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -260,7 +260,7 @@
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarEstadoPedido(document.getElementById('estado_pedido').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarEstadoPedido(document.getElementById('estado_pedido').value, document.getElementById('codigo_pedido').value)">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -301,7 +301,7 @@
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHorarioEntrega(document.getElementById('hora_entrega').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHorarioEntrega(document.getElementById('hora_entrega').value, document.getElementById('codigo_pedido').value)">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -342,7 +342,7 @@
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarMensajero(document.getElementById('mensajero').value, document.getElementById('codigo_pedido').value)">Atualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarMensajero(document.getElementById('mensajero').value, document.getElementById('codigo_pedido').value)">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -528,7 +528,7 @@
 
     setInterval(function(){   
         location.reload();
-    }, 15000);
+    }, 60000);
     
     
     

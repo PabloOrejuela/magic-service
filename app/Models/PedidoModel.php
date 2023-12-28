@@ -60,6 +60,7 @@ class PedidoModel extends Model {
                 fecha_entrega,
                 horario_entrega,
                 observaciones,
+                hora_salida_pedido,
                 fecha,
                 sectores_entrega.sector as sector,
                 dir_entrega,
@@ -94,17 +95,27 @@ class PedidoModel extends Model {
                 clientes.id as idcliente,
                 direccion,
                 telefono,
+                telefono_2,
                 email,
                 fecha_entrega,
                 horario_entrega,
+                venta_extra,
                 hora,
                 fecha,
+                hora_salida_pedido,
                 vendedor,
                 ubicacion,
                 observaciones,
+                pedidos.sector as idsector,
                 sectores_entrega.sector as sector,
                 dir_entrega,
-                mensajero'
+                mensajero,
+                transporte,
+                cargo_horario,
+                domingo,
+                valor_neto,
+                descuento,
+                total'
         );
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
@@ -323,11 +334,15 @@ class PedidoModel extends Model {
             $numCampos--;
         }
         
+        // if ($pedido->hora_salida_pedido != NULL) {
+        //     $numCampos--;
+        // }
+
         if (isset($detalle) && count($detalle) > 0) {
             $numCampos--;
         }
         return $numCampos;
-        // echo '<pre>'.var_export($numCampos, true).'</pre>';
-        // echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+        //echo '<pre>'.var_export($detalle, true).'</pre>';
+        //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
     }
 }

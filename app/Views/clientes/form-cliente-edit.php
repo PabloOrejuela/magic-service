@@ -34,7 +34,7 @@
                                     <p id="error-message"><?= session('errors.nombre');?> </p>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label for="telefono" class="form-label">Teléfono *:</label>
+                                    <label for="telefono" class="form-label">Teléfono 1*:</label>
                                     <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" value="<?= $cliente->telefono; ?>" autofocus>
                                     <p id="error-message"><?= session('errors.telefono');?> </p>
                                 </div>

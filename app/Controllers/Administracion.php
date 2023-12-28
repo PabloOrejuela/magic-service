@@ -61,6 +61,18 @@ class Administracion extends BaseController {
         }
     }
 
+    public function getProductosCategoria($categoria){
+        
+        $productos = $this->productoModel->_getProductosCategoria($categoria );
+        echo json_encode($productos);
+    }
+
+    public function getItemsProducto($producto){
+        
+        $items = $this->itemsProductoModel->_getItemsProducto($producto );
+        echo json_encode($items);
+    }
+
     public function sucursales() {
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
@@ -466,7 +478,7 @@ class Administracion extends BaseController {
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['producto'] = $this->productoModel->_getProducto($idproducto);
-            $data['elementos'] = $this->itemsProductoModel->_getItemsproducto($idproducto);
+            $data['elementos'] = $this->itemsProductoModel->_getItemsProducto($idproducto);
 
             //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
             $data['title']='Administración';

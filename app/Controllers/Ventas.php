@@ -378,10 +378,7 @@ class Ventas extends BaseController {
 
                     return redirect()->to('pedidos');
                 }else{
-                    // echo '<pre>'.var_export($cliente, true).'</pre>';
-                    // echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
-                    // echo '<pre>'.var_export($pedido, true).'</pre>';
-                    // echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
+
                     //Inserto el cliente nuevo
                     $pedido['idcliente'] = $this->clienteModel->_insert($cliente);
 
@@ -439,13 +436,16 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
-            // $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
-            // $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($pedido);
-            // $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
-            // $data['horariosEntrega'] = $this->horariosEntregaModel->FindAll();
+            $data['detalle'] = $this->detallePedidoModel->_getDetallePedido($data['pedido']->cod_pedido);
+            $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            $data['formas_pago'] = $this->formaPagoModel->findAll();
+            $data['categorias'] = $this->categoriaModel->findAll();
+            $data['productos'] = $this->productoModel->findAll();
+            $data['sectores'] = $this->sectoresEntregaModel->findAll();
+            $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
 
-            // //echo '<pre>'.var_export($data['horariosEntrega'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['pedido'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';
@@ -475,6 +475,29 @@ class Ventas extends BaseController {
             $data['subtitle']='Pedidos';
             $data['main_content']='ventas/form-pedidos-inicio';
             return view('dashboard/index_ventana', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function cotizador(){
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['categorias'] = $this->categoriaModel->findAll();
+            $data['productos'] = $this->productoModel->findAll();
+
+            //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
+            $data['title']='Ventas';
+            $data['subtitle']='Cotizar producto';
+            $data['main_content']='ventas/form-cotizador';
+            return view('dashboard/index', $data);
         }else{
             $this->logout();
             return redirect()->to('/');

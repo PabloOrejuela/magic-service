@@ -232,3 +232,11 @@ a{
 .input-precio{
   text-align: right;
 }
+
+.input-cantidad{
+  text-align: right;
+  width: 50px;
+}
+
+
+
