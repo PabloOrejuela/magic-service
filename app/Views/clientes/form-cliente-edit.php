@@ -85,4 +85,12 @@
             $("#telefono").val(string.replace(/[^\w]/gi, ''));
         });
     });
+
+    $(document).ready(function(){
+        $("#telefono_2").on("change", function() {
+            let string = $("#telefono_2").val();
+           
+            $("#telefono_2").val(string.replace(/[^\w]/gi, ''));
+        });
+    });
 </script>

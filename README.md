@@ -1,5 +1,5 @@
 <h4>Cambios:</h4>  
 <ul>   
-    <li>Corregidos errores menores en la reunión del 27-12-2023</li>
+    <li>Implementada la funcionlidad que limpia los caracteres del telefono 2 en nuevo cliente y editar cliente</li>
 
 </ul>

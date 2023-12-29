@@ -276,6 +276,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
+                                            <label for="cargo_domingo" class="col-sm-8 col-form-label">Cargo por entrega domingo:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="cargo_domingo" 
+                                                    placeholder="0" 
+                                                    onchange="sumarTotal()" 
+                                                    name="cargo_domingo"
+                                                    value="<?= old('cargo_domingo'); ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
                                             <label for="total" class="col-sm-8 col-form-label">Total:</label>
                                             <div class="col-sm-4">
                                                 <input 
