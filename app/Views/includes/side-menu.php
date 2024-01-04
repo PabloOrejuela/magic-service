@@ -28,6 +28,12 @@
               <p>Pedidos</p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="'.base_url().'estadistica-ventas" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Estadística de ventas</p>
+            </a>
+          </li>
         </ul>
       </li>';
     }
@@ -129,6 +135,33 @@
             <a href="'.base_url().'proveedores" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Proveedores</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="'.base_url().'gastos" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Gastos</p>
+            </a>
+          </li>
+        </ul>
+      </li>';
+    }
+
+    if ($session->proveedores == 1) {
+      echo '
+      <li class="nav-item" onclick="activeFunc()">
+        <a href="#" class="nav-link">
+          <i class="ion ion-bag"></i>
+          <p>
+            Inventario
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview" id="btnAdmin">
+          <li class="nav-item">
+            <a href="'.base_url().'proveedores" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Inventario</p>
             </a>
           </li>
           <li class="nav-item">

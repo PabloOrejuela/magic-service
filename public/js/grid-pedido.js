@@ -27,23 +27,35 @@ function copyData(id){
                 for (const cod of pedido.detalle) {
                     cod_arreglo += cod.producto + ' / '
                 }
-            }  
+            }
 
             if (window.isSecureContext) {
-                // console.log(
-                //   'The context is secure, can use navigator.clipboard',
-                // );
-                    navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
-                    + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
-                    + "\nCódigos: " + cod_arreglo 
-                    + "\nHora de entrega: " + horaEntrega + "\nObservación: " + observacion)
+
+                    if (observacion == '') {
+                        navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
+                        + "\nCódigos: " + cod_arreglo 
+                        + "\nHora de entrega: " + horaEntrega)
+                    }else{
+                        navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
+                        + "\nCódigos: " + cod_arreglo 
+                        + "\nHora de entrega: " + horaEntrega + "\nObservación: " + observacion)
+                    }
                     alert('La información se ha copiado!!!')
+
                 } else {
-                    
-                    mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
-                    + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
-                    + "\nCódigo: " + cod_arreglo 
-                    + "\nHora de entrega: " + horaEntrega + "\nObservación: " + observacion
+                    if (observacion == '') {
+                        mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
+                        + "\nCódigo: " + cod_arreglo 
+                        + "\nHora de entrega: " + horaEntrega
+                    }else{
+                        mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
+                        + "\nCódigo: " + cod_arreglo 
+                        + "\nHora de entrega: " + horaEntrega + "\nObservación: " + observacion
+                    }
             
                     mensaje.select()
                     mensaje.setSelectionRange(0, 9999999)

@@ -24,12 +24,12 @@
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card" id="form-pedido">
                     <div class="card-header">
-                        <h3 class="card-title">
+                        <h3 class="card-title titulo-form-pedido">
                             <i class="fas fa-chart-pie mr-1"></i>
                             <?= $subtitle;?>
                         </h3>
                     </div><!-- /.card-header -->
-                    <div class="card-body">
+                    <div class="card-body edit-pedido">
                         <div class="tab-content p-0" >
                             <!-- Morris chart - Sales -->
                             <h3><?= $session->cliente;?></h3>

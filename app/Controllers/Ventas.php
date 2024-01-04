@@ -43,6 +43,30 @@ class Ventas extends BaseController {
         }
     }
 
+    public function estadisticaVentas() {
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+            
+            $data['session'] = $this->session;
+            date_default_timezone_set('America/Guayaquil');
+            $date = date('ymdHis');
+
+            $data['title']='Ventas';
+            $data['subtitle']='Estadísticas de Ventas';
+            $data['main_content']='ventas/estadistica-ventas';
+            return view('dashboard/index', $data);
+            
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
     function clientes_select(){
         $documento = $this->request->getPostGet('documento');
         $cliente = $this->clienteModel->_getCliente($documento);
@@ -75,7 +99,8 @@ class Ventas extends BaseController {
         //$producto = $this->request->getPostGet('producto');
         $data['sector'] = $this->sectoresEntregaModel->find($sector);
         
-        echo view('precio_sector', $data);
+        echo json_encode($data);
+        //echo view('precio_sector', $data);
     }
 
     function actualizaMensajero($mensajero, $cod_pedido){

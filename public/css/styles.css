@@ -238,5 +238,39 @@ a{
   width: 50px;
 }
 
+.titulo-form-pedido{
+  font-size: 2em;
+  font-weight: bold;
+  padding: 2px;
+  color:#00514E;
+}
+
+.edit-pedido{
+  background-color: rgba(165, 189, 176, 0.3);
+}
+
+#business-logo{
+  width: 12%;
+}
+
+.brand-link{
+  font-size: 1.2em;
+  padding: 20 10 !important;
+}
+
+.card-body{
+  height: auto;
+  margin-bottom: 100px;
+}
+
+.content{
+  height:500px;
+}
+
+.main-footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 
 

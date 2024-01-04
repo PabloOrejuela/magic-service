@@ -1,11 +1,5 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
-<?php
-    // date_default_timezone_set('America/Guayaquil');
-    // $date = date('ymdHis');
-    // $cod_pedido = 'P'.$session->id.$date;
-    //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
-?>
 <style>
     #idproducto{
         width: 80px !important;
@@ -16,15 +10,18 @@
         padding: auto;
         width: 20px;
     }
+    .card{
+        height:1250px;
+    }
 </style>
 <section class="content">
       <div class="container-fluid">
         <div class="row">
-            <section class="col-lg-8 connectedSortable">
+            <section class="col-lg-8 connectedSortable ">
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card" id="form-pedido">
                     <div class="card-header">
-                        <h3 class="card-title">
+                        <h3 class="card-title titulo-form-pedido">
                             <i class="fas fa-chart-pie mr-1"></i>
                             <?= $subtitle;?>
                         </h3>
@@ -225,7 +222,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <label for="sectores" class="col-md-3 col-form-label">Transporte *:</label>
-                                            <select class="form-select form-control-border" id="sectores" name="sectores">
+                                            <select class="form-select col-md-3 px-3" id="sectores" name="sectores">
                                                 <option value="0" selected>--Seleccionar sector--</option>
                                                 <?php
                                                     if (isset($sectores)) {
@@ -235,7 +232,8 @@
                                                     }
                                                 ?>
                                             </select>
-                                            <div class="col-md-4 px-2" id="div-cant">
+                                            
+                                            <div class="col-md-4" id="div-cant">
                                                 <input 
                                                     type="text" 
                                                     class="form-control inputValor" 
@@ -276,16 +274,27 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label for="cargo_domingo" class="col-sm-8 col-form-label">Cargo por entrega domingo:</label>
+                                            <label for="valor_mensajero_edit" class="col-sm-4 col-form-label">Valor mensajero:</label>
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
                                                     class="form-control inputValor" 
-                                                    id="cargo_domingo" 
+                                                    id="valor_mensajero_edit" 
                                                     placeholder="0" 
                                                     onchange="sumarTotal()" 
-                                                    name="cargo_domingo"
-                                                    value="<?= old('cargo_domingo'); ?>"
+                                                    name="valor_mensajero_edit"
+                                                    value="<?= old('valor_mensajero_edit'); ?>"
+                                                >
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="valor_mensajero" 
+                                                    placeholder="0" 
+                                                    onchange="sumarTotal()" 
+                                                    name="valor_mensajero"
+                                                    value="<?= old('valor_mensajero'); ?>"
                                                 >
                                             </div>
                                         </div>
@@ -311,7 +320,7 @@
                                 </form>
                             </div>
                         </div>
-                    </div></div><!-- /.card-body -->
+                    </div><!-- /.card-body -->
                 </div><!-- /.card-->
             </section>
         </div>
@@ -333,15 +342,15 @@
                     type:"GET",
                     dataType:"html",
                     url: "<?php echo site_url(); ?>ventas/get_valor_sector/"+valor,
-                    data:"sector="+valor,
                     beforeSend: function (f) {
                         //$('#cliente').html('Cargando ...');
                     },
-                    success: function(data){
-                        //console.log(data);
-                        $('#transporte').html(data);
+                    success: function(resultado){
+                        let dato = JSON.parse(resultado);
+                        
+                        document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4
                         sumarTotal()
-                        //document.getElementById("valor_neto").value = "0.01"
+
                     }
                 });
             }
@@ -622,6 +631,8 @@
         // /* Este es el cálculo. */
         total = (parseFloat(total) + parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra));
         document.getElementById('total').value = total.toFixed(2);
+
+        document.getElementById('valor_mensajero').value = parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra)
 
         // console.log("Subtotal: " + subtotal);
         // console.log("Descuento: " + descuento);
