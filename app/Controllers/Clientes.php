@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use TCPDF;
 
 class Clientes extends BaseController {
 
@@ -155,6 +156,63 @@ class Clientes extends BaseController {
             $this->logout();
             return redirect()->to('/');
         }
+    }
+
+    /**
+     * Genera reporte de historial de pedidos de un cliente
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function print_client_historial($idcliente) {
+
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->clientes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['pedidos'] = $this->pedidoModel->_getHistorialPedidos($idcliente);
+
+            //echo '<pre>'.var_export($data['pedidos'], true).'</pre>';exit;
+            $data['title']='Clientes';
+            $data['subtitle']='Historial del Cliente';
+            $data['main_content']='clientes/reporte_historial_cliente';
+            return view('dashboard/index', $data);
+
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    function pruebaPDF(){
+        //require __DIR__ . '/vendor/autoload.php';
+        $pdf = new TCPDF();                 // create TCPDF object with default constructor args
+
+        //IMPORTANTE ESTA LÍNEA
+        $this->response->setHeader('Content-Type', 'application/pdf'); 
+
+        $pdf->AddPage();                    // pretty self-explanatory
+        $pdf->Write(1, 'Hello world');      // 1 is line height
+
+        $pdf->Output('hello_world.pdf');    // send the file inline to the browser (default).
+    }
+
+    function pruebaExcel(){
+        //require __DIR__ . '/vendor/autoload.php';
+        $pdf = new TCPDF();                 // create TCPDF object with default constructor args
+
+        //IMPORTANTE ESTA LÍNEA
+        $this->response->setHeader('Content-Type', 'application/pdf'); 
+        
+        $pdf->AddPage();                    // pretty self-explanatory
+        $pdf->Write(1, 'Hello world');      // 1 is line height
+
+        $pdf->Output('hello_world.pdf');    // send the file inline to the browser (default).
     }
 
     public function cliente_update(){

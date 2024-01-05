@@ -7,7 +7,9 @@
         margin-top: 4px;
     }
 
-    .cancelar{
+    .btn-print{
+        background-color: #EEE;
+        color: #000;
         position: absolute;
         right: 20px;
     }
@@ -69,6 +71,9 @@
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Actualizar</button>
                             <a href="<?= site_url(); ?>clientes" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>
+                            <a type="button" href="<?= site_url().'print-client-historial/'.$cliente->id; ?>" class="btn btn-secondary btn-print">
+                                <img src="<?= site_url(); ?>public/images/btn-print.png" width="25"> Historial de pedidos
+                            </a>
                         </div>
                     </form>
                 </div>

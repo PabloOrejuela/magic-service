@@ -84,6 +84,28 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getHistorialPedidos($idcliente){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
+        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
+        $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
+        $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
+        $builder->join('sucursales',  'sectores_entrega.idsucursal = sucursales.id', 'left');
+        $builder->where($this->table.'.idcliente', $idcliente);
+        //$builder->orderBy('id', 'ASC');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getDatosPedido($idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);

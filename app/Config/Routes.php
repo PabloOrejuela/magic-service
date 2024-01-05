@@ -121,6 +121,10 @@ $routes->get('cliente-create', 'Clientes::cliente_create');
 $routes->get('cliente-edit/(:num)', 'Clientes::cliente_edit/$1');
 $routes->post('cliente-insert', 'Clientes::cliente_insert');
 $routes->post('cliente-update', 'Clientes::cliente_update');
+$routes->get('print-client-historial/(:num)', 'Clientes::pruebaPDF');
+
+//REPORTES
+$routes->get('reportes', 'Reportes::pruebaExcel');
 
 /*
  * --------------------------------------------------------------------
