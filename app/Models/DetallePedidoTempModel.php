@@ -73,12 +73,12 @@ class DetallePedidoTempModel extends Model {
         return $result;
     }
 
-    public function _updateProdDetalle($idproducto, $cod_pedido, $cantidad, $precio, $subtotal){
+    public function _updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal){
         
         $builder = $this->db->table($this->table);
         $builder->set('cantidad', $cantidad);
         $builder->set('subtotal', $subtotal);
-        $builder->set('precio', $precio);
+        //$builder->set('precio', $precio);
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();

@@ -312,8 +312,8 @@ class Ventas extends BaseController {
                 //$fila .= '<td>'.$row->precio.'</td>';
                 $fila .= '<td id="cant_'.$row->idproducto.'">'.$row->cantidad.'</td>';
                 
-                $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="borrar">
-                            <img src="'.site_url().'public/images/delete.png" width="20" >
+                $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="btn btn-borrar">
+                            <img src="'.site_url().'public/images/delete.png" width="25" >
                             </a></td>';
                 $fila .= '</tr>';
                 
@@ -367,6 +367,8 @@ class Ventas extends BaseController {
                 'transporte' => $this->request->getPostGet('transporte'),
                 'horario_extra' => $this->request->getPostGet('horario_extra'),
                 'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
+                'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
+                'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
             ];
 
@@ -377,7 +379,7 @@ class Ventas extends BaseController {
                 'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'direccion' => '',
-                'email' => strtoupper($this->request->getPostGet('email')),
+                'email' => $this->request->getPostGet('email'),
             ];
 
             
@@ -389,8 +391,8 @@ class Ventas extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-
-                //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+                echo '<pre>'.var_export($cliente, true).'</pre>';
+                echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
                 $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
                 if ($clienteExiste) {

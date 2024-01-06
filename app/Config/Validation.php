@@ -92,18 +92,26 @@ class Validation extends BaseConfig {
     ];
 
     public $pedidoInicial = [
-        'nombre'   => 'required',
         'fecha_entrega'   => 'required',
+        'nombre'   => 'required',
+        'idcliente'   => 'required',
+        'vendedor'   => 'required|greater_than[0]',
+        
     ]; 
 
     public $pedidoInicial_errors = [
-
+        'fecha_entrega' => [
+            'required' => 'El campo "Fecha de entrega" es obligatorio',
+        ],
         'nombre' => [
             'required' => 'El campo "Cliente" es obligatorio',
         ],
-        'fecha_entrega' => [
-            'required' => 'El campo "Fecha de entrega" es obligatorio',
-        ]
+        'idcliente' => [
+            'required' => 'El campo "Cliente" es obligatorio',
+        ],
+        'vendedor' => [
+            'greater_than' => 'El campo "Vendedor" es obligatorio',
+        ],
     ];
 
     public $usuario = [

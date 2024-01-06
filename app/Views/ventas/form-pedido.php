@@ -5,14 +5,11 @@
         width: 80px !important;
     }
 
-    #carrito{
-        margin: auto;
-        padding: auto;
-        width: 20px;
+    
+    #error-message{
+        color:red;
     }
-    .card{
-        height:1250px;
-    }
+
 </style>
 <section class="content">
       <div class="container-fluid">
@@ -66,8 +63,9 @@
                                         </div>
                                         <div class="form-group"  style="display: none;">
                                             <label for="nombre">Id Cliente:</label>
-                                            <input type="hidden" class="form-control" id="idcliente" name="idcliente"  >
+                                            <input type="hidden" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>"  >
                                         </div>
+                                        <p id="error-message"><?= session('errors.idcliente');?> </p>
                                         <div class="form-group">
                                             <label for="nombre">Nombre cliente *:</label>
                                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
@@ -167,10 +165,10 @@
                                                                 value="1"
                                                             >
                                                         </td>
-                                                        <td id="carrito">
+                                                        <td>
                                                             <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
-                                                            <a href="javascript:agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )" class="link-opacity-75" id="a">
-                                                                <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar" id="img-agregar" />
+                                                            <a href="javascript:agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )" class="btn btn-carrito">
+                                                                <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
                                                             </a>
                                                         </td>
                                                     </tr>
@@ -179,7 +177,7 @@
                                         </div>
                                         <p id="error-message"><?= session('errors.producto');?> </p>
                                         <div class="row mb-2">
-                                            <table id="tablaProductos" class="table table-hover table-stripped table-sm table-responsive tablaProductos" width:="100%">
+                                            <table id="tablaProductos" class="table table-stripped table-sm table-responsive tablaProductos" width:="100%">
                                                 <thead class="thead-light">
                                                     <th>#</th>
                                                     <th>Código</th>
@@ -328,9 +326,9 @@
 </section>
 <script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
 <script>
-    window.onbeforeunload = function() {
-        return "¿Desea recargar la página web?";
-    };
+    // window.onbeforeunload = function() {
+    //     return "¿Desea recargar la página web?";
+    // };
 
 
     $(document).ready(function(){
@@ -589,6 +587,8 @@
         let transporte = 0
         let cargoDomingo = 0
         let horarioExtra = 0
+        let valorMensajeroEdit = 0
+        let valorMensajero = 0
         //limpiarValores()
         
 
@@ -598,6 +598,11 @@
         transporte = document.getElementById('transporte').value
         cargoDomingo = document.getElementById('cargo_domingo').value
         horarioExtra = document.getElementById('horario_extra').value
+        valorMensajero = document.getElementById('valor_mensajero').value
+        valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
+
+        
+
         if (isNaN(parseFloat(subtotal)) == true ) {
             subtotal = 0
         }
@@ -627,12 +632,18 @@
         }
         
         total = subtotal - descuento
+        valorMensajero = parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra)
         
         // /* Este es el cálculo. */
-        total = (parseFloat(total) + parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra));
+        if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
+            total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
+        }else{
+            total = (parseFloat(total) + parseFloat(valorMensajero));
+        }
+        
         document.getElementById('total').value = total.toFixed(2);
 
-        document.getElementById('valor_mensajero').value = parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra)
+        document.getElementById('valor_mensajero').value = valorMensajero
 
         // console.log("Subtotal: " + subtotal);
         // console.log("Descuento: " + descuento);

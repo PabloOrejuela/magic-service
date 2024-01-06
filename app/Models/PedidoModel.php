@@ -207,6 +207,14 @@ class PedidoModel extends Model {
             $builder->set('horario_entrega', $data['horario_entrega']); 
         }
 
+        if ($data['valor_mensajero'] != 'NULL' && $data['valor_mensajero'] != '') {
+            $builder->set('valor_mensajero', $data['valor_mensajero']); 
+        }
+
+        if ($data['valor_mensajero_edit'] != 'NULL' && $data['valor_mensajero_edit'] != '') {
+            $builder->set('valor_mensajero_edit', $data['valor_mensajero_edit']); 
+        }
+
         $builder->insert();
         return  $this->db->insertID();
     }
@@ -264,6 +272,14 @@ class PedidoModel extends Model {
         
         if ($data['horario_entrega'] != 'NULL' && $data['horario_entrega'] != '') {
             $builder->set('horario_entrega', $data['horario_entrega']); 
+        }
+
+        if ($data['valor_mensajero'] != 'NULL' && $data['valor_mensajero'] != '') {
+            $builder->set('valor_mensajero', $data['valor_mensajero']); 
+        }
+
+        if ($data['valor_mensajero_edit'] != 'NULL' && $data['valor_mensajero_edit'] != '') {
+            $builder->set('valor_mensajero_edit', $data['valor_mensajero_edit']); 
         }
 
         $builder->where($this->table.'.id', $data['id']);
