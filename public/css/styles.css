@@ -252,14 +252,6 @@ a{
   padding: 20 10 !important;
 }
 
-.card-body{
-  height: auto;
-  margin-bottom: 100px;
-}
-
-.content{
-  height:500px;
-}
 
 .main-footer{
   position: fixed;
@@ -291,5 +283,7 @@ a{
   background-color: rgb(0, 0, 0, 0.1);
   box-shadow: rgb(0, 0, 0, 0.1);
 }
+
+
 
 

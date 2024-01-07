@@ -176,7 +176,7 @@
 
     if ($session->reportes == 1) {
       echo '
-      <li class="nav-item">
+      <li class="nav-item" onclick="activeFunc()">
         <a href="#" class="nav-link">
           <i class="ion ion-bag"></i>
           <p>
@@ -198,8 +198,7 @@
             </a>
           </li>
         </ul>
-      </li>
-    </ul>';
+      </li>';
     }
   ?>
   </ul>

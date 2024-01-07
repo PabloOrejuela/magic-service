@@ -5,16 +5,27 @@
         width: 80px !important;
     }
 
-    
     #error-message{
         color:red;
+    }
+
+    .div-cant{
+        position: relative;
+        float: right;
+        color: red;
+    }
+
+    .card{
+        height:auto !important;
+        padding: 3px !important;
+        margin-bottom: 100px !important;
     }
 
 </style>
 <section class="content">
       <div class="container-fluid">
         <div class="row">
-            <section class="col-lg-8 connectedSortable ">
+            <section class="col-lg-8  connectedSortable">
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card" id="form-pedido">
                     <div class="card-header">
@@ -29,7 +40,7 @@
                             <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
                                 <form action="<?= site_url().'pedido-insert';?>" method="post">
-                                    <div class="card-body">
+                                    
                                         <div id="div-pedido">
                                             <label for="cod_pedido">Pedido: </label><span class="span-pedido"><?= $cod_pedido ?></span>
                                         </div>
@@ -231,10 +242,10 @@
                                                 ?>
                                             </select>
                                             
-                                            <div class="col-md-4" id="div-cant">
+                                            <div class="col-md-4" style="padding-right:3px;">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
+                                                    class="form-control inputValor div-cant" 
                                                     id="transporte" 
                                                     placeholder="0.00" 
                                                     onchange="sumarTotal()" 
@@ -313,8 +324,8 @@
                                         <!-- /.card-body -->
                                         <?= form_hidden('cod_pedido', $cod_pedido); ?>
                                         <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">Enviar</button>
-                                    </div>
+                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                        </div>           
                                 </form>
                             </div>
                         </div>

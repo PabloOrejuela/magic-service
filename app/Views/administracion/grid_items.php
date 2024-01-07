@@ -17,14 +17,14 @@
         width: 250px;
     }
     .row {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
 </style>
 <!-- Main content -->
-<section class="content">
+<section class="content mb-3">
       <div class="container-fluid">
         <div class="row">
-            <section class="connectedSortable">
+            <section>
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card">
                     <div class="card-body">

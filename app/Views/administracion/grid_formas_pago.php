@@ -17,7 +17,7 @@
         width: 250px;
     }
     .row {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
 </style>
 <!-- Main content -->

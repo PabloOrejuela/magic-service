@@ -1,6 +1,3 @@
-<style>
-  
-</style>
 <?php echo view('includes/header');?>
 <body class="hold-transition sidebar-mini layout-fixed" >
 <div class="wrapper">
@@ -47,7 +44,7 @@
     <?= $this->renderSection('content'); ?>
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  <footer class="main-footer mt-3">
     <strong>Copyright &copy; 2014-2021 <a href="https://appdvp.com">Magic service</a>.</strong>
     Derechos reservados.
     <div class="float-right d-none d-sm-inline-block px-5">
