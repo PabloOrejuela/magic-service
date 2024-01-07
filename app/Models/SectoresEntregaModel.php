@@ -39,10 +39,10 @@ class SectoresEntregaModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function _getSucursales(){
+    function _getSectores(){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select(''.$this->table.'.id as idsector, sector, costo_entrega, estado, sucursal, direccion');
+        $builder->select(''.$this->table.'.id as idsector, sector, costo_entrega, estado, sucursal, direccion, idsucursal');
         $builder->join('sucursales', 'sucursales.id='.$this->table.'.idsucursal');
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -54,13 +54,18 @@ class SectoresEntregaModel extends Model {
         return $result;
     }
 
-    public function _updateSucursalSector($idsector, $sucursal) {
+    public function _updateSucursalSector($idsector, $sucursal, $costo_entrega) {
 
         //Inserto el nuevo cliente
         $builder = $this->db->table($this->table);
         if ($sucursal != 'NULL' && $sucursal != '') {
             $builder->set('idsucursal', $sucursal);
         }
+
+        if ($costo_entrega != 'NULL' && $costo_entrega != '') {
+            $builder->set('costo_entrega', $costo_entrega);
+        }
+
         $builder->where('id', $idsector);
         $builder->update();
     }

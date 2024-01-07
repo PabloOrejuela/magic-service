@@ -1,4 +1,4 @@
 <h4>Cambios:</h4>  
 <ul>   
-    <li>Corregidos errores en botones de carrito y borrar</li>
+    <li>En el form de editar los sectores de entrega ya se puede editar el costo de envío y funciona el select de sucursales</li>
 </ul>

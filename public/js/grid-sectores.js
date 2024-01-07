@@ -3,25 +3,53 @@ let btnSectores= document.querySelectorAll('[data-bs-target="#sucursalModal"]');
 btnSectores.forEach(btn => {
     btn.addEventListener('click', function() {
         let id = this.dataset.id;
+        let costo_entrega = this.dataset.costo_entrega;
+        let sucursal = this.dataset.sucursal;
+    
         //console.log(id);
         document.querySelector('#sector').value = id;
-        //console.log('abrir modal');
+        document.querySelector('#sucursal_actual').value = sucursal;
+        document.querySelector('#costo_entrega').value = costo_entrega;
+        selectSucursales(sucursal)
+        
         $('#sucursalModal').modal();
     });
 });
 
 
-function actualizarSucursal(sector, sucursal){
+function actualizarSucursal(sector, sucursal, costo_entrega){
 
     if (sucursal != null && sucursal != 0) {
-
+        //console.log(costo_entrega);
         $.ajax({
-            url: 'updateSucursalSector/'+sector+'/'+sucursal,
+            url: 'updateSucursalSector/'+sector+'/'+sucursal+'/'+costo_entrega,
             success: function(resultado){
-                console.log(resultado);
+                //console.log(resultado);
                 location.replace('sectores-entrega');
             }
         });
         
     }
 }
+
+function selectSucursales(sucursalActual){
+    $.ajax({
+        url: 'getSucursales/',
+        success: function(resultado){
+            let sucursales = JSON.parse(resultado);
+            //console.log(sucursalActual);
+            let selectSucursales = document.getElementById('sucursal')
+            selectSucursales.innerHTML += `<option value="0">--Seleccionar sucursal--</option>`
+            
+            for(let sucursal of sucursales){
+                if (sucursal.id == sucursalActual) {
+                    selectSucursales.innerHTML += `<option value="${sucursal.id}" selected>${sucursal.sucursal}</option>`
+                }else{
+                    selectSucursales.innerHTML += `<option value="${sucursal.id}">${sucursal.sucursal}</option>`
+                }
+                
+            }
+        }
+    });
+}
+

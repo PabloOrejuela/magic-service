@@ -73,6 +73,12 @@ class Administracion extends BaseController {
         echo json_encode($items);
     }
 
+    public function getSucursales(){
+        
+        $sucursales = $this->sucursalModel->findAll();
+        echo json_encode($sucursales);
+    }
+
     public function sucursales() {
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;
@@ -108,7 +114,7 @@ class Administracion extends BaseController {
             
             $data['session'] = $this->session;
 
-            $data['sectores'] = $this->sectoresEntregaModel->_getSucursales();
+            $data['sectores'] = $this->sectoresEntregaModel->_getSectores();
             $data['sucursales'] = $this->sucursalModel->findAll();
 
             //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
@@ -729,10 +735,11 @@ class Administracion extends BaseController {
         }
     }
 
-    function updateSucursalSector($sector, $sucursal){
+    function updateSucursalSector($sector, $sucursal, $costo_entrega){
+        echo $costo_entrega;
         $mensaje = '';
         if (isset($sucursal) && $sucursal != 0) {
-            $this->sectoresEntregaModel->_updateSucursalSector($sector, $sucursal);
+            $this->sectoresEntregaModel->_updateSucursalSector($sector, $sucursal, $costo_entrega);
             $mensaje = 'Se ha actualizado';
 
         }else{

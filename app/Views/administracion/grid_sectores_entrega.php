@@ -34,6 +34,7 @@
                             <thead>
                                 <th>No.</th>
                                 <th>Sector</th>
+                                <th>Costo ($)</th>
                                 <th>Sucursal que procesa los pedidos</th>
                             </thead>
                             <tbody>
@@ -42,7 +43,19 @@
                                         foreach ($sectores as $key => $value) {
                                             echo '<tr>
                                                 <td>'.$value->idsector.'</td>
-                                                <td><a type="button" id="'.$value->idsector.'" href="#"  data-id="'.$value->idsector.'" data-bs-toggle="modal" data-bs-target="#sucursalModal">'.$value->sector.'</a></td>
+                                                <td>
+                                                    <a 
+                                                        type="button" 
+                                                        id="'.$value->idsector.'" 
+                                                        href="#"  
+                                                        data-id="'.$value->idsector.'" 
+                                                        data-sucursal="'.$value->idsucursal.'" 
+                                                        data-costo_entrega="'.$value->costo_entrega.'" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#sucursalModal">'.$value->sector.
+                                                    '</a>
+                                                </td>
+                                                <td>'.number_format($value->costo_entrega+4, 2).'</td>
                                                 <td>'.$value->sucursal.'</td>
                                                 </tr>';
                                         }
@@ -67,8 +80,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <h5 class="modal-title" id="staticBackdropLabel">Sucursales</h5>
-      <input class="form-control" type="hidden" name="sector" id="sector">
+        <h5 class="modal-title" id="staticBackdropLabel">Sucursales</h5>
+        <input class="form-control" type="hidden" name="sector" id="sector">
+        <input class="form-control" type="hidden" name="sector" id="sucursal_actual">
         <select 
             class="form-select" 
             id="sucursal" 
@@ -76,19 +90,14 @@
             data-style="form-control" 
             data-live-search="true" 
         >
-        <option value="0" selected>--Seleccionar una sucursal--</option>
-        <?php 
-            $defaultvalue = 1;
-            if (isset($sucursales)) {
-                foreach ($sucursales as $key => $sucursal) {
-                    echo '<option value="'.$sucursal->id.'" >'.$sucursal->sucursal.'</option>';
-                }
-            }
-        ?>
+        
         </select>
+        <div class="mt-3">
+            <label for="costo_entrega">Costo de la entrega:</label>
+            <input class="form-control" type="text" name="costo_entrega" id="costo_entrega"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarSucursal(document.getElementById('sector').value, document.getElementById('sucursal').value)">Actualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarSucursal(document.getElementById('sector').value, document.getElementById('sucursal').value,document.getElementById('costo_entrega').value)">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
