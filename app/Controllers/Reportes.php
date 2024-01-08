@@ -12,6 +12,32 @@ class Reportes extends BaseController {
         //
     }
 
+    public function acl() {
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+        return $data;
+    }
+
+    public function frmReporte(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte';
+            $data['main_content']='reportes/form-reporte';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
     public function pruebaExcel(){
 
         $fila = 2;

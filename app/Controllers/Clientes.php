@@ -7,12 +7,17 @@ use TCPDF;
 
 class Clientes extends BaseController {
 
-    public function index(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+    public function acl() {
         $data['idroles'] = $this->session->idroles;
         $data['id'] = $this->session->id;
         $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
         $data['nombre'] = $this->session->nombre;
+        return $data;
+    }
+
+    public function index(){
+
+        $data = $this->acl();
         //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
             
@@ -40,11 +45,7 @@ class Clientes extends BaseController {
     */
     public function cliente_delete($id) {
     
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -69,11 +70,8 @@ class Clientes extends BaseController {
      **/
     public function cliente_create() {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
             
             $data['session'] = $this->session;
@@ -90,11 +88,8 @@ class Clientes extends BaseController {
     }
 
     public function cliente_insert(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
 
@@ -137,11 +132,8 @@ class Clientes extends BaseController {
      **/
     public function cliente_edit($idcliente) {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
             
             $data['session'] = $this->session;
@@ -167,11 +159,8 @@ class Clientes extends BaseController {
      **/
     public function print_client_historial($idcliente) {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
             
             $data['session'] = $this->session;
@@ -216,11 +205,8 @@ class Clientes extends BaseController {
     }
 
     public function cliente_update(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+        
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
 

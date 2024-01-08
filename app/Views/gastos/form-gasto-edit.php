@@ -2,16 +2,23 @@
     .text {
         text-transform: uppercase;
     }
-    /* .cancelar{
-        position: absolute;
-        right: 20px;
-    } */
+    .frm-gastos{
+        font-size: 0.7em;
+        margin-bottom: 100px !important;
+    }
+    label{
+        margin-bottom: 0.1rem !important;
+    }
+
+    .content-header{
+        padding: 3px 0.5rem;
+    }
 </style>
-<section class="content">
+<section class="content mb-5 frm-gastos">
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-7">
+            <div class="col-md-7 mb-3 mt-0">
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
@@ -73,7 +80,7 @@
                                 <p id="error-message"><?= session('errors.negocio');?> </p>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="proveedor">Proveedor *:</label>
+                                <label for="proveedor" class="mb-0">Proveedor *:</label>
                                 <select 
                                     class="form-select form-control-border" 
                                     id="proveedor" 

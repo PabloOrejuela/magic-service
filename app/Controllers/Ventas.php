@@ -425,6 +425,96 @@ class Ventas extends BaseController {
         }
     }
 
+    public function pedido_update(){
+        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+        $data['idroles'] = $this->session->idroles;
+        $data['id'] = $this->session->id;
+        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
+        $data['nombre'] = $this->session->nombre;
+
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+            $cod_pedido = $this->request->getPostGet('cod_pedido');
+            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido );
+        
+            $pedido = [
+                'cod_pedido' => $cod_pedido,
+                'idusuario' => $data['id'],
+                'fecha' => date('Y-m-d'),
+                'idcliente' => $this->request->getPostGet('idcliente'),
+
+                'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
+                'horario_entrega' => $this->request->getPostGet('horario_entrega'),
+                'formas_pago' => $this->request->getPostGet('formas_pago'),
+                'sector' => $this->request->getPostGet('sectores'),
+                          
+                'vendedor' => $this->request->getPostGet('vendedor'),
+                'observaciones' => $this->request->getPostGet('observaciones'),
+                'venta_extra' => $this->request->getPostGet('venta_extra'),
+               
+                //TOTALES
+                'valor_neto' => $this->request->getPostGet('valor_neto'),
+                'descuento' => $this->request->getPostGet('descuento'),
+                'transporte' => $this->request->getPostGet('transporte'),
+                'horario_extra' => $this->request->getPostGet('horario_extra'),
+                'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
+                'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
+                'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
+                'total' => $this->request->getPostGet('total'),
+            ];
+
+            $cliente = [
+                'idcliente' => $this->request->getPostGet('idcliente'),
+                'nombre' => strtoupper($this->request->getPostGet('nombre')),
+                'telefono' => strtoupper($this->request->getPostGet('telefono')),
+                'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
+                'documento' => strtoupper($this->request->getPostGet('documento')),
+                'direccion' => '',
+                'email' => $this->request->getPostGet('email'),
+            ];
+
+            
+            //VALIDACIONES
+            $this->validation->setRuleGroup('pedidoInicial');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+                
+                //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
+                $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
+                if ($clienteExiste) {
+
+                    //Inserto el nuevo producto
+                    $this->pedidoModel->_insert($pedido);
+
+                    //Inserto el detalle
+                    $this->detallePedidoModel->_insert($detalleTemporal);
+
+                    return redirect()->to('pedidos');
+                }else{
+
+                    //Inserto el cliente nuevo
+                    $pedido['idcliente'] = $this->clienteModel->_insert($cliente);
+
+                    //Inserto el nuevo pedido
+                    $this->pedidoModel->_insert($pedido);
+
+                    //Inserto el detalle
+                    $this->detallePedidoModel->_insert($detalleTemporal);
+                    
+                    return redirect()->to('pedidos');
+                }
+                
+            }
+            
+        }else{
+
+            $this->logout();
+        }
+    }
+
     public function pedidos() {
         //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
         $data['idroles'] = $this->session->idroles;

@@ -46,6 +46,7 @@ $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1'
 $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->get('ventas/get_costo_horario/(:num)', 'Ventas::get_costo_horario/$1');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
+$routes->post('pedido-update', 'Ventas::pedido_update');
 $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
 $routes->get('getDatosPedido/(:num)', 'Ventas::getDatosPedido/$1');
 $routes->get('estado', 'Administracion::estado');
@@ -125,7 +126,7 @@ $routes->post('cliente-update', 'Clientes::cliente_update');
 $routes->get('print-client-historial/(:num)', 'Clientes::pruebaPDF');
 
 //REPORTES
-$routes->get('reportes', 'Reportes::pruebaExcel');
+$routes->get('reporte', 'Reportes::frmReporte');
 
 /*
  * --------------------------------------------------------------------

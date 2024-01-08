@@ -258,6 +258,35 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <div class="form-group">
+                                            <label for="observaciones" >Observación del pedido:</label>
+                                            <input 
+                                                type="observaciones" 
+                                                class="form-control" 
+                                                id="observaciones" 
+                                                name="observaciones" 
+                                                placeholder="Observación" 
+                                                value="<?= $pedido->observaciones; ?>"
+                                            >
+                                        </div>
+                                        <div class="form-group mb-3 mt-5">
+                                            <label for="formas_pago">Forma de pago *:</label>
+                                            <select class="form-select form-control-border" id="formas_pago" name="formas_pago" required>
+                                                <option value="0" selected>--Seleccionar la forma de pago--</option>
+                                                <?php
+                                                    if (isset($formas_pago)) {
+                                                        foreach ($formas_pago as $key => $forma) {
+                                                            if ($forma->id == $pedido->formas_pago) {
+                                                                echo '<option value="'.$forma->id.'" selected>'.$forma->forma_pago.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$forma->id.'">'.$forma->forma_pago.'</option>';
+                                                            }
+                                                            
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
                                         <div class="form-group row">
                                             <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
                                             <div class="col-sm-4">
