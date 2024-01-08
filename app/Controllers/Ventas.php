@@ -391,8 +391,7 @@ class Ventas extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                echo '<pre>'.var_export($cliente, true).'</pre>';
-                echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+                
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
                 $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
                 if ($clienteExiste) {

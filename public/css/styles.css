@@ -284,6 +284,10 @@ a{
   box-shadow: rgb(0, 0, 0, 0.1);
 }
 
+.valorImportante{
+  font-weight: bold;
+}
+
 
 
 

@@ -96,6 +96,7 @@ class Validation extends BaseConfig {
         'nombre'   => 'required',
         'idcliente'   => 'required',
         'vendedor'   => 'required|greater_than[0]',
+        'sectores'   => 'required|greater_than[0]',
         
     ]; 
 
@@ -111,6 +112,9 @@ class Validation extends BaseConfig {
         ],
         'vendedor' => [
             'greater_than' => 'El campo "Vendedor" es obligatorio',
+        ],
+        'sectores' => [
+            'greater_than' => 'El campo "Sector" es obligatorio',
         ],
     ];
 

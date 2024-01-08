@@ -206,7 +206,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
+                                                    class="form-control inputValor valorImportante" 
                                                     id="valor_neto" 
                                                     placeholder="0.00" 
                                                     onchange="sumarTotal(this.value);" 
@@ -231,7 +231,7 @@
                                         </div>
                                         <div class="form-group row">
                                             <label for="sectores" class="col-md-3 col-form-label">Transporte *:</label>
-                                            <select class="form-select col-md-3 px-3" id="sectores" name="sectores">
+                                            <select class="form-select col-md-4 px-2 mx-2" id="sectores" name="sectores">
                                                 <option value="0" selected>--Seleccionar sector--</option>
                                                 <?php
                                                     if (isset($sectores)) {
@@ -242,7 +242,7 @@
                                                 ?>
                                             </select>
                                             
-                                            <div class="col-md-4" style="padding-right:3px;">
+                                            <div class="col-md-4" style="margin-rigth:0px;">
                                                 <input 
                                                     type="text" 
                                                     class="form-control inputValor div-cant" 
@@ -290,6 +290,7 @@
                                                     class="form-control inputValor" 
                                                     id="valor_mensajero_edit" 
                                                     placeholder="0" 
+                                                    style="color:blue;"
                                                     onchange="sumarTotal()" 
                                                     name="valor_mensajero_edit"
                                                     value="<?= old('valor_mensajero_edit'); ?>"
@@ -298,7 +299,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
+                                                    class="form-control inputValor valorImportante" 
                                                     id="valor_mensajero" 
                                                     placeholder="0" 
                                                     onchange="sumarTotal()" 
@@ -320,6 +321,9 @@
                                                     value="<?= old('total'); ?>"
                                                 >
                                             </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <p id="error-message"><?= session('errors.sectores');?> </p>
                                         </div>
                                         <!-- /.card-body -->
                                         <?= form_hidden('cod_pedido', $cod_pedido); ?>
@@ -656,12 +660,6 @@
 
         document.getElementById('valor_mensajero').value = valorMensajero
 
-        // console.log("Subtotal: " + subtotal);
-        // console.log("Descuento: " + descuento);
-        // console.log("Transporte: " + transporte);
-        // console.log("Horario extra: " + horarioExtra);
-        // console.log("Cargo Domingo: " + cargoDomingo);
-        // console.log("Total: " + total);
     }
 
 
