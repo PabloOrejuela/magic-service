@@ -5,13 +5,18 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 
 class Administracion extends BaseController {
-    public function index() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+
+    public function acl() {
         $data['idroles'] = $this->session->idroles;
         $data['id'] = $this->session->id;
         $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
         $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        return $data;
+    }
+
+    public function index() {
+        $data = $this->acl();
+
         if ($data['logged'] == 1) {
             
             $data['session'] = $this->session;
@@ -38,12 +43,9 @@ class Administracion extends BaseController {
     }
 
     public function productos() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -80,12 +82,9 @@ class Administracion extends BaseController {
     }
 
     public function sucursales() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -104,12 +103,9 @@ class Administracion extends BaseController {
     }
 
     public function sectoresEntrega() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -129,12 +125,9 @@ class Administracion extends BaseController {
     }
 
     public function items() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -161,11 +154,8 @@ class Administracion extends BaseController {
      **/
     public function form_item_edit($id) {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+        
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -193,11 +183,7 @@ class Administracion extends BaseController {
     */
     public function item_update() {
     
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -229,11 +215,7 @@ class Administracion extends BaseController {
     */
     public function item_delete($id) {
     
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -259,12 +241,8 @@ class Administracion extends BaseController {
     */
     public function formas_pago() {
     
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -293,11 +271,7 @@ class Administracion extends BaseController {
     */
     public function forma_pago_delete($id, $estado) {
     
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -326,12 +300,8 @@ class Administracion extends BaseController {
     */
     public function usuarios() {
     
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -350,12 +320,9 @@ class Administracion extends BaseController {
     }
 
     public function estado(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
             $data['session'] = $this->session;
@@ -385,12 +352,8 @@ class Administracion extends BaseController {
     */
     public function roles() {
     
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -418,11 +381,8 @@ class Administracion extends BaseController {
      **/
     public function form_producto_create() {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             echo 'sección en construcción';
@@ -442,11 +402,8 @@ class Administracion extends BaseController {
     }
 
     public function product_insert(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -474,11 +431,9 @@ class Administracion extends BaseController {
     }
 
     public function product_edit($idproducto){
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -498,11 +453,8 @@ class Administracion extends BaseController {
     }
 
     public function product_update(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+        
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -538,11 +490,8 @@ class Administracion extends BaseController {
      **/
     public function form_sucursal_create() {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -561,11 +510,9 @@ class Administracion extends BaseController {
     }
 
     public function form_item_create(){
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -582,11 +529,8 @@ class Administracion extends BaseController {
     }
 
     public function itemCreate(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -619,11 +563,9 @@ class Administracion extends BaseController {
     }
 
     public function form_usuario_create(){
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -641,11 +583,8 @@ class Administracion extends BaseController {
     }
 
     public function user_insert(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -680,11 +619,8 @@ class Administracion extends BaseController {
     }
 
     public function sucursal_insert(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
@@ -713,11 +649,9 @@ class Administracion extends BaseController {
     }
 
     public function form_usuario_edit($id){
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
@@ -736,7 +670,7 @@ class Administracion extends BaseController {
     }
 
     function updateSucursalSector($sector, $sucursal, $costo_entrega){
-        echo $costo_entrega;
+        
         $mensaje = '';
         if (isset($sucursal) && $sucursal != 0) {
             $this->sectoresEntregaModel->_updateSucursalSector($sector, $sucursal, $costo_entrega);

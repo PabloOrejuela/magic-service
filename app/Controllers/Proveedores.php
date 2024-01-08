@@ -6,13 +6,18 @@ use App\Controllers\BaseController;
 
 class Proveedores extends BaseController {
 
-    public function index(){
-        
+    public function acl() {
         $data['idroles'] = $this->session->idroles;
         $data['id'] = $this->session->id;
         $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
         $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        return $data;
+    }
+
+    public function index(){
+        
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
@@ -38,11 +43,8 @@ class Proveedores extends BaseController {
      **/
     public function create() {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
@@ -67,11 +69,8 @@ class Proveedores extends BaseController {
      **/
     public function edit($id) {
 
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
@@ -89,11 +88,8 @@ class Proveedores extends BaseController {
     }
 
     public function insert(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
 
@@ -126,11 +122,8 @@ class Proveedores extends BaseController {
     }
 
     public function update(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+        
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
             $id = $this->request->getPostGet('id');
