@@ -6,25 +6,21 @@ use App\Controllers\BaseController;
 
 class Home extends BaseController {
 
-    public function index() {
-
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+    public function acl() {
         $data['idroles'] = $this->session->idroles;
         $data['id'] = $this->session->id;
         $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
         $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        return $data;
+    }
+
+    public function index() {
+
+        $data = $this->acl();
+        
         if ($data['logged'] == 1 ) {
             
             $data['session'] = $this->session;
-            // $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
-            // $data['formas_pago'] = $this->formaPagoModel->findAll();
-            // $data['pedidos'] = $this->pedidoModel->findAll();
-            // //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
-            // $data['title']='Inicio';
-            // $data['subtitle']='Pedidos';
-            // $data['main_content']='home/form-pedidos-inicio';
-            // return view('dashboard/index', $data);
             return redirect()->to('pedidos');
         }else{
             $this->logout();
