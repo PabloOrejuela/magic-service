@@ -4,4 +4,5 @@
     <li>Implementada la función ACL en Clientes y en Gastos</li>
     <li>Implementada la función ACL en HOME</li>
     <li>Implementada la función ACL en ADMINISTRACION Y PROVEEDORES</li>
+    <li>Implementada la función ACL en VENTAS</li>
 </ul>

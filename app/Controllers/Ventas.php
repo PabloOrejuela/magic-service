@@ -6,13 +6,18 @@ use App\Controllers\BaseController;
 
 class Ventas extends BaseController {
 
-    public function index() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
+    public function acl() {
         $data['idroles'] = $this->session->idroles;
         $data['id'] = $this->session->id;
         $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
         $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        return $data;
+    }
+
+    public function index() {
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
@@ -44,12 +49,9 @@ class Ventas extends BaseController {
     }
 
     public function estadisticaVentas() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
@@ -338,11 +340,8 @@ class Ventas extends BaseController {
 
 
     public function pedido_insert(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
@@ -426,11 +425,9 @@ class Ventas extends BaseController {
     }
 
     public function pedido_update(){
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
+
+        $data = $this->acl();
+        
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
@@ -516,12 +513,9 @@ class Ventas extends BaseController {
     }
 
     public function pedidos() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
@@ -543,12 +537,9 @@ class Ventas extends BaseController {
     }
 
     public function pedido_edit($pedido) {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
@@ -573,12 +564,9 @@ class Ventas extends BaseController {
     }
 
     public function pedidos_ventana() {
-        //echo '<pre>'.var_export($this->session->idusuario, true).'</pre>';
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        
+        $data = $this->acl();
+
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
@@ -598,11 +586,9 @@ class Ventas extends BaseController {
     }
 
     public function cotizador(){
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
+
+        $data = $this->acl();
+        
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
