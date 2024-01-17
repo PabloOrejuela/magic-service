@@ -41,6 +41,7 @@
     }
 
 </style>
+
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
@@ -348,8 +349,9 @@
     </div>
   </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/grid-pedido.js"></script>
+
 
 <!-- FONTAWESOME -->
 <script src="https://kit.fontawesome.com/964a730002.js" crossorigin="anonymous"></script>
@@ -460,11 +462,20 @@
             },
             success: function(data){
                 let datos = JSON.parse(data);
+                //console.log(datos.horario);
                 if (datos.horario < 5 || datos.horario > 24) {
-                    alert("ALERTA, EL VALOR FINAL HA CAMBIADO")
+                    alertActualizaCampoCambio()
+                    setTimeout(function(){
+                        location.replace('pedidos');
+                    }, 3000);
+                }else{
+                    alertActualizaCampo()
+                    setTimeout(function(){
+                        location.replace('pedidos');
+                    }, 3000);
                 }
-                location.replace('pedidos')
             }
+                
         });
     }
 
@@ -529,7 +540,97 @@
     setInterval(function(){   
         location.reload();
     }, 60000);
-    
-    
+
+
+    const confirmSaveAlert = () => {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "El pedido ha sido guardado",
+            showConfirmButton: false,
+            toast: true,
+            timer: 500
+        });
+    }
+
+    const alertActualizaCampo = () => {
+        let toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            //timerProgressBar: true,
+            height: '200rem',
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            customClass: {
+                // container: '...',
+                popup: 'popup-class',
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
+                }
+        });
+        toast.fire({
+            position: "top-end",
+            icon: "success",
+            title: "El valor del campo se ha actualizado"
+        });
+    }
+
+    const alertActualizaCampoCambio = () => {
+        let toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            //timerProgressBar: true,
+            height: '200rem',
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            customClass: {
+                // container: '...',
+                popup: 'popup-class',
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
+                }
+        });
+        toast.fire({
+            position: "top-end",
+            icon: "warning",
+            title: "ALERTA, EL VALOR FINAL HA CAMBIADO"
+        });
+    }
     
 </script>

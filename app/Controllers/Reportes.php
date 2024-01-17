@@ -8,9 +8,12 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 
 class Reportes extends BaseController {
-    public function index() {
-        //
-    }
+
+    private $sugest = [
+        1 => 'Día actual', 
+        2 =>'Ultimo mes', 
+        3 =>'Ultima semana', 
+    ];
 
     public function acl() {
         $data['idroles'] = $this->session->idroles;
@@ -27,6 +30,7 @@ class Reportes extends BaseController {
         if ($data['logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte';

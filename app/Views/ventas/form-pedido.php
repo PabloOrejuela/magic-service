@@ -328,7 +328,7 @@
                                         <!-- /.card-body -->
                                         <?= form_hidden('cod_pedido', $cod_pedido); ?>
                                         <div class="card-footer">
-                                            <button type="submit" class="btn btn-primary">Enviar</button>
+                                            <button type="submit" class="btn btn-primary" >Enviar</button>
                                         </div>           
                                 </form>
                             </div>
@@ -339,12 +339,180 @@
         </div>
     </div>
 </section>
-<script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
+<script type="module" src="<?= site_url(); ?>public/js/form-pedido.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // window.onbeforeunload = function() {
     //     return "¿Desea recargar la página web?";
     // };
+    //import Swal from 'sweetalert2';
 
+    $(document).ready(function(){
+        $("#telefono").on('change',function(){
+            if($("#telefono").val() !=""){
+
+                valor = $("#telefono").val();
+                $.ajax({
+                    type:"POST",
+                    dataType:"html",
+                    url: "ventas/clientes_select_telefono",
+                    data:"telefono="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        // limpiarClienteDocumento();
+                        let cliente = JSON.parse(data);
+
+                        if (cliente) {
+                        //console.log(data);
+                        document.getElementById('nombre').value = cliente.nombre
+                        document.getElementById('telefono').value = cliente.telefono
+                        document.getElementById('telefono_2').value = cliente.telefono_2
+                        document.getElementById('documento').value = cliente.documento
+                        document.getElementById('email').value = cliente.email
+                        document.getElementById('idcliente').value = cliente.id
+                        }else {
+                        console.log('No hay, debo buscar en el 1 también');
+                        searchPhones(valor, 2)
+                        }
+                    },
+                    error: function(data){
+                        console.log("No hay");
+                    }
+                });
+            }
+        });
+    });
+
+function searchPhones(valor, phone) {
+    if (phone == 1) {
+      $.ajax({
+        type:"POST",
+        dataType:"html",
+        url: "ventas/clientes_select_telefono",
+        data:"telefono="+valor,
+        beforeSend: function (f) {
+            $('#cliente').html('Buscando ...');
+        },
+        success: function(data){
+          let cliente = JSON.parse(data);
+          //console.log(cliente);
+          if (cliente) {
+            
+            document.getElementById('nombre').value = cliente.nombre
+            document.getElementById('telefono').value = cliente.telefono
+            document.getElementById('telefono_2').value = cliente.telefono_2
+            document.getElementById('documento').value = cliente.documento
+            document.getElementById('email').value = cliente.email
+            document.getElementById('idcliente').value = cliente.id
+          } 
+          
+        },
+        error: function(data){
+          console.log("No hay");
+        }
+      });
+    } else {
+      $.ajax({
+        type:"POST",
+        dataType:"html",
+        url: "ventas/clientes_select_telefono_2",
+        data:"telefono="+valor,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(data){
+          let cliente = JSON.parse(data);
+          //console.log(cliente);
+          if (cliente) {
+            
+            document.getElementById('nombre').value = cliente.nombre
+            document.getElementById('telefono').value = cliente.telefono
+            document.getElementById('telefono_2').value = cliente.telefono_2
+            document.getElementById('documento').value = cliente.documento
+            document.getElementById('email').value = cliente.email
+            document.getElementById('idcliente').value = cliente.id
+          } 
+          
+          
+        },
+        error: function(data){
+          console.log("No hay");
+        }
+    });
+    }
+}
+
+$(document).ready(function(){
+  $("#telefono_2").on('change',function(){
+      if($("#telefono_2").val() !=""){
+
+          valor = $("#telefono_2").val();
+          //console.log(valor);
+          $.ajax({
+              type:"POST",
+              dataType:"html",
+              url: "ventas/clientes_select_telefono_2",
+              data:"telefono="+valor,
+              beforeSend: function (f) {
+                  //$('#cliente').html('Cargando ...');
+              },
+              success: function(data){
+                let cliente = JSON.parse(data);
+                //console.log(cliente);
+                if (cliente) {
+                  
+                  document.getElementById('nombre').value = cliente.nombre
+                  document.getElementById('telefono').value = cliente.telefono
+                  document.getElementById('telefono_2').value = cliente.telefono_2
+                  document.getElementById('documento').value = cliente.documento
+                  document.getElementById('email').value = cliente.email
+                  document.getElementById('idcliente').value = cliente.id
+                } else {
+                  //console.log('No hay, debo buscar en el 1 también');
+                  searchPhones(valor, 1)
+                }
+                
+                
+              },
+              error: function(data){
+                console.log("No hay");
+              }
+          });
+      }
+  });
+});
+
+    $(document).ready(function(){
+        $("#documento").on('change',function(){
+            if($("#documento").val() != ""){
+                valor = document.querySelector("#documento").value
+                console.log(valor);
+                $.ajax({
+                    type:"POST",
+                    dataType:"html",
+                    url: "ventas/clientes_select",
+                    data:"documento="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        let cliente = JSON.parse(data);
+                        //console.log(data);
+                        document.getElementById('nombre').value = cliente.nombre
+                        document.getElementById('telefono').value = cliente.telefono
+                        document.getElementById('documento').value = cliente.documento
+                        document.getElementById('email').value = cliente.email
+                        document.getElementById('idcliente').value = cliente.id
+                    },
+                    error: function(data){
+                        console.log("No existe el cliente");
+                    }
+                });
+            }
+        });
+    });
 
     $(document).ready(function(){
         $("#sectores").on('change',function(){
@@ -360,7 +528,7 @@
                     },
                     success: function(resultado){
                         let dato = JSON.parse(resultado);
-                        
+                        alertCambioValor()
                         document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4
                         sumarTotal()
 
@@ -452,10 +620,19 @@
                         
                         let data = JSON.parse(res);
                         //console.log(data.costo);
+                        alertCambioValor()
                         document.getElementById("horario_extra").value = parseFloat(data.costo)
                         sumarTotal()
                     }
                 });
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#valor_mensajero_edit").on('change',function(){
+            if($("#valor_mensajero_edit").val() !=""){
+                alertCambioValorMensajero()
             }
         });
     });
@@ -471,6 +648,7 @@
                 }else{
                     document.getElementById("cargo_domingo").value = 0
                 }
+                alertCambioValor()
                 sumarTotal()
             }
         });
@@ -502,6 +680,7 @@
                 success: function(resultado){
                     if (resultado == 0) {
                     }else{
+                        alertAgregaProducto()
                         //Exito
                         //console.log(`Se insertó el producto`);
                         let detalle = JSON.parse(resultado);
@@ -551,6 +730,7 @@
 
                             document.getElementById("cant").value = 1;
                             let selectProductos = document.getElementById("idproducto");
+                            alertEliminaProducto()
                             selectProductos.value = 0;
                         }else{
                             console.log("Error");
@@ -564,6 +744,108 @@
         calculaValorNeto(cod_pedido);
         sumarTotal()
     }
+
+    
+    const alertAgregaProducto = () => {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "El producto se ha agregado",
+            showConfirmButton: false,
+            timer: 1200
+        });
+    }
+
+    const alertEliminaProducto = () => {
+        Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "El producto se ha eliminado",
+            showConfirmButton: false,
+            timer: 1200
+        });
+    }
+
+    const alertCambioValor = () => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            //timerProgressBar: true,
+            height: '200rem',
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            customClass: {
+                // container: '...',
+                popup: 'popup-class',
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
+                }
+        });
+        toast.fire({
+            position: "top-end",
+            icon: "warning",
+            title: "Se ha realizado un cambio que puede haber alterado el valor final del pedido"
+        });
+    }
+
+    const alertCambioValorMensajero = () => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            height: '200rem',
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            customClass: {
+                // container: '...',
+                popup: 'popup-class',
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
+                }
+        });
+
+        toast.fire({
+            icon: "success",
+            title: "Se ha cambiado el valor del mensajero"
+        });
+    }
+
 
     function limpiarValores(valor) {
         var valor = 0

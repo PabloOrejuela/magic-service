@@ -345,7 +345,7 @@ class Ventas extends BaseController {
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
-            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido );
+            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
         
             $pedido = [
                 'cod_pedido' => $cod_pedido,
@@ -381,7 +381,7 @@ class Ventas extends BaseController {
                 'email' => $this->request->getPostGet('email'),
             ];
 
-            
+            //echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
@@ -400,7 +400,8 @@ class Ventas extends BaseController {
 
                     //Inserto el detalle
                     $this->detallePedidoModel->_insert($detalleTemporal);
-
+                    $mensaje = 1;
+                    $this->session->setFlashdata('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }else{
 
@@ -411,8 +412,8 @@ class Ventas extends BaseController {
                     $this->pedidoModel->_insert($pedido);
 
                     //Inserto el detalle
-                    $this->detallePedidoModel->_insert($detalleTemporal);
-                    
+                    $mensaje = 1;
+                    $this->session->setFlashdata('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }
                 
@@ -453,7 +454,8 @@ class Ventas extends BaseController {
                 'descuento' => $this->request->getPostGet('descuento'),
                 'transporte' => $this->request->getPostGet('transporte'),
                 'horario_extra' => $this->request->getPostGet('horario_extra'),
-                'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
+                'domingo' => $this->request->getPostGet('cargo_domingo'),
+                'cargo_horario' => $this->request->getPostGet('cargo_horario'),
                 'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
@@ -481,6 +483,7 @@ class Ventas extends BaseController {
                 
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
                 $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
+                echo '<pre>'.var_export($pedido, true).'</pre>';exit;
                 if ($clienteExiste) {
 
                     //Inserto el nuevo producto
@@ -526,6 +529,7 @@ class Ventas extends BaseController {
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
             //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
+            $data['mensaje'] = '';
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
             $data['main_content']='ventas/form-pedidos-inicio';
@@ -552,7 +556,7 @@ class Ventas extends BaseController {
             $data['sectores'] = $this->sectoresEntregaModel->findAll();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
 
-            //echo '<pre>'.var_export($data['pedido'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';

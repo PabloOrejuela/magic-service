@@ -165,8 +165,9 @@ class Clientes extends BaseController {
             
             $data['session'] = $this->session;
             $data['pedidos'] = $this->pedidoModel->_getHistorialPedidos($idcliente);
+            $data['cliente'] = $this->clienteModel->find($idcliente);
 
-            //echo '<pre>'.var_export($data['pedidos'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['cliente'], true).'</pre>';exit;
             $data['title']='Clientes';
             $data['subtitle']='Historial del Cliente';
             $data['main_content']='clientes/reporte_historial_cliente';
@@ -178,17 +179,18 @@ class Clientes extends BaseController {
         }
     }
 
-    function pruebaPDF(){
+    function pruebaPDF($cliente){
         //require __DIR__ . '/vendor/autoload.php';
+        $data['cliente'] = $this->pedidoModel->find($idcliente);
         $pdf = new TCPDF();                 // create TCPDF object with default constructor args
 
         //IMPORTANTE ESTA LÍNEA
         $this->response->setHeader('Content-Type', 'application/pdf'); 
 
         $pdf->AddPage();                    // pretty self-explanatory
-        $pdf->Write(1, 'Hello world');      // 1 is line height
+        $pdf->Write(1, 'Aquí va el historial de compras de ese cliente ordenado por fechas');      // 1 is line height
 
-        $pdf->Output('hello_world.pdf');    // send the file inline to the browser (default).
+        $pdf->Output('Historial de compras cliente: '.$cliente->nombre.'.pdf');    // send the file inline to the browser (default).
     }
 
     function pruebaExcel(){

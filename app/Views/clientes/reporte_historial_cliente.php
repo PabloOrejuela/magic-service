@@ -12,7 +12,7 @@
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?></h3>
+                        <h3 class="card-title"><?= $subtitle.': '.$cliente->nombre; ?></h3>
                     </div>
                     <!-- /.card-header -->
                     <label for="cliente"></label>
@@ -84,7 +84,7 @@
             },
             //"lengthChange": false, 
             "autoWidth": false,
-            "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'>>" +
+            "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-12 col-md-6'i><'col-sm-10 col-md-6'p>>"
         });

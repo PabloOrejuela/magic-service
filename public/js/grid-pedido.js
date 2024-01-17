@@ -84,7 +84,10 @@ function actualizarHoraSalidaPedido(){
         },
         success: function(data){
             //console.log(data);
-            location.replace('pedidos');
+            alertActualizaCampo()
+            setTimeout(function(){
+                location.replace('pedidos');
+            }, 3000);
         }
     });
 }
@@ -106,7 +109,11 @@ function actualizaObservacionPedido(){
         },
         success: function(data){
             //console.log(data);
-            location.replace('pedidos');
+            alertActualizaCampo()
+            setTimeout(function(){
+                location.replace('pedidos');
+            }, 3000);
+            
         }
     });
 }

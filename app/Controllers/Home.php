@@ -112,14 +112,6 @@ class Home extends BaseController {
         return $this->configuracionModel->findAll();
     }
 
-    public function mantenimiento() {
-
-        $this->logout();
-        $data['mensaje'] = "El sistema se encuentra en desarrollo, por favor vuelva mas tarde";
-        $data['title']='Magic Service';
-        $data['main_content']='home/mantenimiento_view';
-        return view('includes/template_login', $data);
-    }
 
     public function logout(){
         //destruyo la session  y salgo

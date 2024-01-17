@@ -19,6 +19,10 @@
     .row {
         margin-bottom: 30px;
     }
+
+    .form-check-input{
+        margin: 0 auto
+    }
 </style>
 <!-- Main content -->
 <section class="content mb-3">
@@ -39,6 +43,7 @@
                                 <th>Codigo</th>
                                 <th>Item</th>
                                 <th>Precio</th>
+                                <th>Cuantificable</th>
                                 <th>Estado</th>
                                 <th>Borrar</th>
                             </thead>
@@ -50,6 +55,11 @@
                                                 <td>'.$value->id.'</td>
                                                 <td><a href="'.site_url().'item-edit/'.$value->id.'" id="link-editar">'.$value->item.'</a></td>
                                                 <td>'.$value->precio.'</td>';
+                                                if ($value->cuantificable == 1) {
+                                                    echo '<td><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked></td>';
+                                                }else if($value->cuantificable == 0){
+                                                    echo '<td><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'"></td>';
+                                                }
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){
@@ -77,35 +87,56 @@
     </div>
 </section>
 <script>
-  $(document).ready(function () {
-    $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
-    $('#datatablesSimple').DataTable({
-        "responsive": true, 
-        
-        language: {
-            processing: 'Procesando...',
-            lengthMenu: 'Mostrando _MENU_ registros por página',
-            zeroRecords: 'No hay registros',
-            info: 'Mostrando _START_ a _END_ de _MAX_',
-            infoEmpty: 'No hay registros disponibles',
-            infoFiltered: '(filtrando de _MAX_ total registros)',
-            search: 'Buscar',
-            paginate: {
-            first:      "Primero",
-            previous:   "Anterior",
-            next:       "Siguiente",
-            last:       "Último"
-                },
-                aria: {
-                    sortAscending:  ": activar para ordenar ascendentemente",
-                    sortDescending: ": activar para ordenar descendentemente"
-                }
-        },
-        //"lengthChange": false, 
-        "autoWidth": false,
-        "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
-                "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
+    $(document).ready(function(){
+        $("input:checkbox").change(function() { 
+            let id = $(this).attr("id")
+            let value = 0    
+            if($(this).is(":checked")) { 
+                value = 1
+                $.ajax({
+                    url: 'item-cuantificable-update'+'/'+id+'/'+value,
+                    type: 'GET',
+                    //data: { strID:$(this).attr("id"), strState:"1" }
+                });
+            } else {
+                $.ajax({
+                    url: 'item-cuantificable-update'+'/'+id+'/'+value,
+                    type: 'GET',
+                    //data: { strID:$(this).attr("id"), strState:"0" }
+                });
+            }
+        });         
     });
-});
+
+    $(document).ready(function () {
+        $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
+        $('#datatablesSimple').DataTable({
+            "responsive": true, 
+            
+            language: {
+                processing: 'Procesando...',
+                lengthMenu: 'Mostrando _MENU_ registros por página',
+                zeroRecords: 'No hay registros',
+                info: 'Mostrando _START_ a _END_ de _MAX_',
+                infoEmpty: 'No hay registros disponibles',
+                infoFiltered: '(filtrando de _MAX_ total registros)',
+                search: 'Buscar',
+                paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Último"
+                    },
+                    aria: {
+                        sortAscending:  ": activar para ordenar ascendentemente",
+                        sortDescending: ": activar para ordenar descendentemente"
+                    }
+            },
+            //"lengthChange": false, 
+            "autoWidth": false,
+            "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
+        });
+    });
 </script>

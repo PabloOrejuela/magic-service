@@ -81,6 +81,7 @@ $routes->post('item-update', 'Administracion::item_update');
 $routes->get('getItemsProducto/(:num)', 'Administracion::getItemsProducto/$1');
 $routes->get('frm-item-create', 'Administracion::form_item_create');
 $routes->get('item-delete/(:num)', 'Administracion::item_delete/$1');
+$routes->get('item-cuantificable-update/(:num)/(:num)', 'Administracion::item_cuantificable_update/$1/$2');
 $routes->get('formas-pago', 'Administracion::formas_pago');
 $routes->get('form-pago-create', 'Administracion::form_formas_pago_create');
 $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
@@ -123,10 +124,14 @@ $routes->get('cliente-create', 'Clientes::cliente_create');
 $routes->get('cliente-edit/(:num)', 'Clientes::cliente_edit/$1');
 $routes->post('cliente-insert', 'Clientes::cliente_insert');
 $routes->post('cliente-update', 'Clientes::cliente_update');
-$routes->get('print-client-historial/(:num)', 'Clientes::pruebaPDF');
+$routes->get('print-client-historial/(:num)', 'Clientes::print_client_historial/$1');
+
+//Inventario
+$routes->get('gestion-inventario', 'Clientes::gestion_inventario');
 
 //REPORTES
 $routes->get('reporte', 'Reportes::frmReporte');
+
 
 /*
  * --------------------------------------------------------------------

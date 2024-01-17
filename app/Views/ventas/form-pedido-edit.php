@@ -26,7 +26,7 @@
                     <div class="card-header">
                         <h3 class="card-title titulo-form-pedido">
                             <i class="fas fa-chart-pie mr-1"></i>
-                            <?= $subtitle;?>
+                            <?= $subtitle; ?> <span style="color:red;">EDITANDO</span>
                         </h3>
                     </div><!-- /.card-header -->
                     <div class="card-body edit-pedido">
@@ -261,7 +261,7 @@
                                         <div class="form-group">
                                             <label for="observaciones" >Observación del pedido:</label>
                                             <input 
-                                                type="observaciones" 
+                                                type="text" 
                                                 class="form-control" 
                                                 id="observaciones" 
                                                 name="observaciones" 
@@ -286,6 +286,17 @@
                                                     }
                                                 ?>
                                             </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="ref_pago" >No. Documento del pago:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="ref_pago" 
+                                                name="ref_pago" 
+                                                placeholder="Número de documento" 
+                                                value=""
+                                            >
                                         </div>
                                         <div class="form-group row">
                                             <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
@@ -372,6 +383,32 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
+                                            <label for="valor_mensajero_edit" class="col-sm-4 col-form-label">Valor mensajero:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor" 
+                                                    id="valor_mensajero_edit" 
+                                                    placeholder="0" 
+                                                    style="color:blue;"
+                                                    onchange="sumarTotal()" 
+                                                    name="valor_mensajero_edit"
+                                                    value="<?= $pedido->valor_mensajero_edit; ?>"
+                                                >
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor valorImportante" 
+                                                    id="valor_mensajero" 
+                                                    placeholder="0" 
+                                                    onchange="sumarTotal()" 
+                                                    name="valor_mensajero"
+                                                    value="<?= $pedido->valor_mensajero; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
                                             <label for="total" class="col-sm-8 col-form-label">Total:</label>
                                             <div class="col-sm-4">
                                                 <input 
@@ -400,11 +437,12 @@
     </div>
 </section>
 <script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    window.onbeforeunload = function() {
-        return "¿Desea recargar la página web?";
-    };
-
+    // window.onbeforeunload = function() {
+    //     return "¿Desea recargar la página web?";
+    // };
+    //import Swal from 'sweetalert2';
 
     $(document).ready(function(){
         $("#sectores").on('change',function(){
@@ -415,15 +453,15 @@
                     type:"GET",
                     dataType:"html",
                     url: "<?php echo site_url(); ?>ventas/get_valor_sector/"+valor,
-                    data:"sector="+valor,
                     beforeSend: function (f) {
                         //$('#cliente').html('Cargando ...');
                     },
-                    success: function(data){
-                        //console.log(data);
-                        $('#transporte').html(data);
+                    success: function(resultado){
+                        let dato = JSON.parse(resultado);
+                        alertCambioValor()
+                        document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4
                         sumarTotal()
-                        //document.getElementById("valor_neto").value = "0.01"
+
                     }
                 });
             }
@@ -512,10 +550,19 @@
                         
                         let data = JSON.parse(res);
                         //console.log(data.costo);
+                        alertCambioValor()
                         document.getElementById("horario_extra").value = parseFloat(data.costo)
                         sumarTotal()
                     }
                 });
+            }
+        });
+    });
+
+    $(document).ready(function(){
+        $("#valor_mensajero_edit").on('change',function(){
+            if($("#valor_mensajero_edit").val() !=""){
+                alertCambioValorMensajero()
             }
         });
     });
@@ -531,6 +578,7 @@
                 }else{
                     document.getElementById("cargo_domingo").value = 0
                 }
+                alertCambioValor()
                 sumarTotal()
             }
         });
@@ -562,19 +610,20 @@
                 success: function(resultado){
                     if (resultado == 0) {
                     }else{
+                        alertAgregaProducto()
                         //Exito
                         //console.log(`Se insertó el producto`);
                         let detalle = JSON.parse(resultado);
 
                         if (detalle.error == '') {
-                        $("#tablaProductos tbody").empty();
-                        $("#tablaProductos tbody").append(detalle.datos);
-                        $("#total").val(detalle.total);
-                        document.getElementById('valor_neto').value = detalle.total
-                        document.getElementById("cant").value = 1;
-                        document.getElementById("idproducto").selectedIndex = 0;
-                        // let selectProductos = document.getElementById("idproducto");
-                        // selectProductos.value = 0;
+                            $("#tablaProductos tbody").empty();
+                            $("#tablaProductos tbody").append(detalle.datos);
+                            $("#total").val(detalle.total);
+                            document.getElementById('valor_neto').value = detalle.total
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
+                            // let selectProductos = document.getElementById("idproducto");
+                            // selectProductos.value = 0;
 
                         }
                         
@@ -611,6 +660,7 @@
 
                             document.getElementById("cant").value = 1;
                             let selectProductos = document.getElementById("idproducto");
+                            alertEliminaProducto()
                             selectProductos.value = 0;
                         }else{
                             console.log("Error");
@@ -624,6 +674,108 @@
         calculaValorNeto(cod_pedido);
         sumarTotal()
     }
+
+    
+    const alertAgregaProducto = () => {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "El producto se ha agregado",
+            showConfirmButton: false,
+            timer: 1200
+        });
+    }
+
+    const alertEliminaProducto = () => {
+        Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "El producto se ha eliminado",
+            showConfirmButton: false,
+            timer: 1200
+        });
+    }
+
+    const alertCambioValor = () => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2500,
+            //timerProgressBar: true,
+            height: '200rem',
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            customClass: {
+                // container: '...',
+                popup: 'popup-class',
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
+                }
+        });
+        toast.fire({
+            position: "top-end",
+            icon: "warning",
+            title: "Se ha realizado un cambio que puede haber alterado el valor final del pedido"
+        });
+    }
+
+    const alertCambioValorMensajero = () => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            height: '200rem',
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            customClass: {
+                // container: '...',
+                popup: 'popup-class',
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
+                }
+        });
+
+        toast.fire({
+            icon: "success",
+            title: "Se ha cambiado el valor del mensajero"
+        });
+    }
+
 
     function limpiarValores(valor) {
         var valor = 0
@@ -662,6 +814,8 @@
         let transporte = 0
         let cargoDomingo = 0
         let horarioExtra = 0
+        let valorMensajeroEdit = 0
+        let valorMensajero = 0
         //limpiarValores()
         
 
@@ -671,6 +825,11 @@
         transporte = document.getElementById('transporte').value
         cargoDomingo = document.getElementById('cargo_domingo').value
         horarioExtra = document.getElementById('horario_extra').value
+        valorMensajero = document.getElementById('valor_mensajero').value
+        valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
+
+        
+
         if (isNaN(parseFloat(subtotal)) == true ) {
             subtotal = 0
         }
@@ -700,10 +859,18 @@
         }
         
         total = subtotal - descuento
+        valorMensajero = parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra)
         
         // /* Este es el cálculo. */
-        total = (parseFloat(total) + parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra));
+        if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
+            total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
+        }else{
+            total = (parseFloat(total) + parseFloat(valorMensajero));
+        }
+        
         document.getElementById('total').value = total.toFixed(2);
+
+        document.getElementById('valor_mensajero').value = valorMensajero
 
     }
 

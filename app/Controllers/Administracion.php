@@ -134,7 +134,7 @@ class Administracion extends BaseController {
 
             $data['items'] = $this->itemModel->findAll();
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Items';
             $data['main_content']='administracion/grid_items';
@@ -186,15 +186,15 @@ class Administracion extends BaseController {
         $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
-
+            $id = $this->request->getPostGet('id');
             $item = [
-                'id' => $this->request->getPostGet('id'),
                 'item' => strtoupper($this->request->getPostGet('item')),
                 'precio' => strtoupper($this->request->getPostGet('precio')),
+                'cuantificable' => strtoupper($this->request->getPostGet('cuantificable')),
 
             ];
             //echo '<pre>'.var_export($item, true).'</pre>';exit;
-            $this->itemModel->_update($item);
+            $this->itemModel->_update($id, $item);
             //echo $this->db->getLastQuery();exit;
 
             return redirect()->to('items');
@@ -203,6 +203,17 @@ class Administracion extends BaseController {
             $this->logout();
         }
         
+    }
+
+    public function item_cuantificable_update($id, $valor) {
+
+        $data = [
+            'cuantificable' => $valor
+        ];
+    
+        $this->itemModel->update($id, $data);
+        
+        return redirect()->to('items');
     }
 
     /*

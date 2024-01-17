@@ -288,6 +288,11 @@ a{
   font-weight: bold;
 }
 
+.popup-class{
+  border-radius: 0px;
+  font-size: 1.2em;
+}
+
 
 
 

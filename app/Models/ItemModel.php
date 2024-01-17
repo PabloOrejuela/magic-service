@@ -49,6 +49,9 @@ class ItemModel extends Model {
         if ($data['precio'] != 'NULL') {
             $builder->set('precio', $data['precio']);
         }
+        if ($data['cuantificable'] != 'NULL') {
+            $builder->set('cuantificable', $data['cuantificable']);
+        }
 
         $builder->where('id', $data['id']);
         $builder->update();

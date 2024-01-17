@@ -75,6 +75,8 @@ class PedidoModel extends Model {
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
         //$builder->orderBy('id', 'ASC');
+        //PABLO revisar que si es admin soplo traiga 300 ultimos y si es otro rol máximo 1000
+        $builder->limit(300);
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -134,6 +136,8 @@ class PedidoModel extends Model {
                 sectores_entrega.sector as sector,
                 dir_entrega,
                 mensajero,
+                valor_mensajero,
+                valor_mensajero_edit,
                 transporte,
                 cargo_horario,
                 domingo,
@@ -207,6 +211,14 @@ class PedidoModel extends Model {
         
         if ($data['horario_entrega'] != 'NULL' && $data['horario_entrega'] != '') {
             $builder->set('horario_entrega', $data['horario_entrega']); 
+        }
+
+        if ($data['horario_extra'] != 'NULL' && $data['horario_extra'] != '') {
+            $builder->set('cargo_horario', $data['horario_extra']); 
+        }
+
+        if ($data['cargo_domingo'] != 'NULL' && $data['cargo_domingo'] != '') {
+            $builder->set('domingo', $data['cargo_domingo']); 
         }
 
         if ($data['valor_mensajero'] != 'NULL' && $data['valor_mensajero'] != '') {

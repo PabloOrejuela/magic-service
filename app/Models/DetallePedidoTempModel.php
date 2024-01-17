@@ -58,6 +58,7 @@ class DetallePedidoTempModel extends Model {
     }
 
     public function _getDetallePedido($cod_pedido){
+        //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('*');

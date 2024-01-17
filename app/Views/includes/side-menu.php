@@ -159,15 +159,15 @@
         </a>
         <ul class="nav nav-treeview" id="btnAdmin">
           <li class="nav-item">
-            <a href="'.base_url().'proveedores" class="nav-link">
+            <a href="'.base_url().'gestion-inventario" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Inventario</p>
+              <p>Gestion de Inventario</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="'.base_url().'gastos" class="nav-link">
+            <a href="'.base_url().'inventario" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Gastos</p>
+              <p>Inventario</p>
             </a>
           </li>
         </ul>

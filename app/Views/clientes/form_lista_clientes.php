@@ -10,6 +10,24 @@
     .row {
         margin-bottom: 20px;
     }
+
+    .btnAction{
+        background:transparent;
+        margin:auto;
+        height: auto;
+        width: auto;
+        border: none;
+        padding: 0% 50%;
+    }
+
+    .btnAction:hover{
+        background-color: rgb(124, 124, 124, 0.1);
+        margin:auto;
+        height: auto;
+        width: 5px;
+        border: none;
+        padding: 0% 50%;
+    }
 </style>
 <!-- Main content -->
 <section class="content">
@@ -33,6 +51,7 @@
                                 <th>Dirección</th>
                                 <th>Email</th>
                                 <th>Estado</th>
+                                <th>Historial</th>
                                 <th></th>
                             </thead>
                             <tbody>
@@ -51,14 +70,21 @@
                                                     echo '<td>Inactivo</td>';
                                                 }
                                             echo '<td>
-                                                    <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'cliente-delete/'.$value->id.'" class="edit">
-                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                </tr>';
-                                        }
+                                                <div class="contenedor">
+                                                    <a type="button" id="btn-register" href="'.site_url().'print-client-historial/'.$value->id.'" class="btnAction">
+                                                        <img src="'.site_url().'public/images/btn-print.png" width="30" >
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="contenedor">
+                                                    <a type="button" id="btn-register" href="'.site_url().'cliente-delete/'.$value->id.'" class="btnAction">
+                                                        <img src="'.site_url().'public/images/delete.png" width="30" >
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            </tr>';
+                                    }
                                     }
                                 ?>
                             </tbody>
@@ -75,7 +101,7 @@
     $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
     $('#datatablesSimple').DataTable({
         "responsive": true, 
-        
+        "order": [[ 1, 'dsc' ]],
         language: {
             processing: 'Procesando...',
             lengthMenu: 'Mostrando _MENU_ registros por página',
