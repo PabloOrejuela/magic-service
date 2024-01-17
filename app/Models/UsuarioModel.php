@@ -24,7 +24,8 @@ class UsuarioModel extends Model {
         'idroles',
         'logged',
         'ip',
-        'estado'
+        'estado',
+        'inventarios'
     ];
 
     // Dates
@@ -55,7 +56,7 @@ class UsuarioModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-            'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,clientes,proveedores,reportes,gastos'
+            'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,clientes,proveedores,reportes,gastos,inventarios'
         )->where('user', $usuario['user'])->where('password', md5($usuario['password']));
         $builder->join('roles', 'roles.id=usuarios.idroles');
         $query = $builder->get();

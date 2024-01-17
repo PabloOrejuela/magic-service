@@ -41,6 +41,36 @@ class ItemModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function _getItemsCuantificables(){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*')->where('cuantificable', 1);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getItemCuantificable($nombre){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->like('item', $nombre);
+        $builder->where('cuantificable', 1);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row->item;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     public function _update($data) {
         $builder = $this->db->table($this->table);
         if ($data['item'] != 'NULL') {

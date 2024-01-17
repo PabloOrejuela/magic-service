@@ -127,7 +127,8 @@ $routes->post('cliente-update', 'Clientes::cliente_update');
 $routes->get('print-client-historial/(:num)', 'Clientes::print_client_historial/$1');
 
 //Inventario
-$routes->get('gestion-inventario', 'Clientes::gestion_inventario');
+$routes->get('gestion-inventario', 'Inventarios::index');
+$routes->get('get-item-cuantificable', 'Inventarios::get_item_cuantificable');
 
 //REPORTES
 $routes->get('reporte', 'Reportes::frmReporte');

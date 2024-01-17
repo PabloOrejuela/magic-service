@@ -145,6 +145,26 @@ class Administracion extends BaseController {
         }
     }
 
+    public function gestion_inventario() {
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['items'] = $this->itemModel->_getItemsCuantificables();
+
+            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Items';
+            $data['main_content']='administracion/grid_items';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
     /**
      * Formulario para editar información de los items que conforman los productos
      *

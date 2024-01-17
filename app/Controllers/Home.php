@@ -82,6 +82,7 @@ class Home extends BaseController {
                         'proveedores' => $usuario->proveedores,
                         'gastos' => $usuario->gastos,
                         'reportes' => $usuario->reportes,
+                        'inventarios' => $usuario->inventarios,
                     ];
             
                     $user = [
