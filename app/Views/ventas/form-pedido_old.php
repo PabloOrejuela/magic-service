@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
 <style>
+    #idproducto{
+        width: 80px !important;
+    }
 
     #error-message{
         color:red;
@@ -135,42 +138,53 @@
                                             <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" <?php echo set_checkbox('venta_extra', '0'); ?> >
                                             <label class="form-check-label" for="venta_extra">Venta extra</label>
                                         </div>
-                                        <div class="form-group row">
+                                        <div class="row form-group mb-3 px-2">
                                             <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
-                                            <div class="col-md-2" style="display:none;">
-                                                <input 
-                                                    type="text"
-                                                    class="form-control" 
-                                                    id="idp" 
-                                                    name="idp"
-                                                >
-                                            </div>
-                                            <div class="col-md-8">
-                                                <label for="telefono">Producto:</label>
-                                                <input 
-                                                    type="text"
-                                                    class="form-control" 
-                                                    id="idproducto" 
-                                                    name="producto"
-                                                >
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label for="telefono">Cantidad:</label> 
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputCant number" 
-                                                    id="cant" 
-                                                    name="cant"  
-                                                    value="1"
-                                                >
-                                            </div>
-                                            <div class="col-md-1">
-                                                <label for="telefono"> </label> 
-                                                <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
-                                                <a href="javascript:agregarProducto(idp.value, cant.value, '<?= $cod_pedido; ?>' )" class="btn btn-carrito">
-                                                    <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
-                                                </a>
-                                            </div>
+                                            <table>
+                                                <thead>
+                                                    <th><label for="producto" class="px-3 lbl-producto">Producto: </label></th>
+                                                    <th>Cantidad</th>
+                                                    <th></th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <select 
+                                                                class="col-md-12 selectpicker" 
+                                                                id="idproducto" 
+                                                                name="producto"
+                                                                data-style="form-control" 
+                                                                data-live-search="true" 
+                                                            >
+                                                            <option value="0" selected>--Seleccionar producto--</option>
+                                                            <?php
+                                                                if (isset($productos)) {
+                                                                    $defaultvalue = 1;
+                                                                    foreach ($productos as $key => $value) {
+                                                                        echo "<option value='$value->id' " . set_select('producto', $value->id, false). " >". $value->producto."</option>";
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                        </td>
+                                                        <td>
+                                                            <input 
+                                                                type="text" 
+                                                                class="form-control inputCant number" 
+                                                                id="cant" 
+                                                                name="cant"  
+                                                                value="1"
+                                                            >
+                                                        </td>
+                                                        <td>
+                                                            <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
+                                                            <a href="javascript:agregarProducto(idproducto.value, cant.value, '<?= $cod_pedido; ?>' )" class="btn btn-carrito">
+                                                                <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <p id="error-message"><?= session('errors.producto');?> </p>
                                         <div class="row mb-2">
@@ -325,7 +339,7 @@
         </div>
     </div>
 </section>
-<script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script type="module" src="<?= site_url(); ?>public/js/form-pedido.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // window.onbeforeunload = function() {
@@ -544,7 +558,8 @@ $(document).ready(function(){
                             $("#total").val(detalle.total);
                             $("#valor_neto").val(detalle.subtotal);
 
-                            limpiaLineaProducto()
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
                             calculaValorNeto(cod_pedido);
                             sumarTotal()
                         }
@@ -576,7 +591,8 @@ $(document).ready(function(){
                             $("#total").val(detalle.total);
                             $("#valor_neto").val(detalle.subtotal);
 
-                            limpiaLineaProducto()
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
                             calculaValorNeto(cod_pedido);
                             sumarTotal()
                         }
@@ -655,7 +671,7 @@ $(document).ready(function(){
     });
 
     function agregarProducto(idproducto, cantidad, cod_pedido){
-        console.log(idproducto);
+        
         //let dia = getDayOfWeek();
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
             
@@ -674,8 +690,13 @@ $(document).ready(function(){
                             $("#tablaProductos tbody").append(detalle.datos);
                             $("#total").val(detalle.total);
                             document.getElementById('valor_neto').value = detalle.total
-                            limpiaLineaProducto()
+                            document.getElementById("cant").value = 1;
+                            document.getElementById("idproducto").selectedIndex = 0;
+                            // let selectProductos = document.getElementById("idproducto");
+                            // selectProductos.value = 0;
+
                         }
+                        
                     }
                 }
             });
@@ -707,8 +728,10 @@ $(document).ready(function(){
                             $("#total").val(detalle.total);
                             $("#valor_neto").val(detalle.subtotal);
 
+                            document.getElementById("cant").value = 1;
+                            let selectProductos = document.getElementById("idproducto");
                             alertEliminaProducto()
-                            limpiaLineaProducto()
+                            selectProductos.value = 0;
                         }else{
                             console.log("Error");
                         }
@@ -758,7 +781,22 @@ $(document).ready(function(){
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
                 }
         });
         toast.fire({
@@ -783,7 +821,22 @@ $(document).ready(function(){
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-
+                // header: '...',
+                // title: '...',
+                // closeButton: '...',
+                // icon: '...',
+                // image: '...',
+                // htmlContainer: '...',
+                // input: '...',
+                // inputLabel: '...',
+                // validationMessage: '...',
+                // actions: '...',
+                // confirmButton: '...',
+                // denyButton: '...',
+                // cancelButton: '...',
+                // loader: '...',
+                // footer: '....',
+                // timerProgressBar: '....',
                 }
         });
 
@@ -800,13 +853,6 @@ $(document).ready(function(){
         document.getElementById('descuento').value = valor;
         document.getElementById('transporte').value = valor.toFixed(2);
         document.getElementById('total').value = valor.toFixed(2);
-    }
-
-    function limpiaLineaProducto() {
-
-        document.getElementById("idproducto").value = '';
-        document.getElementById('idp').value = 0;
-        document.getElementById('cant').value = 1;
     }
 
     function descontar(valor) {
@@ -920,34 +966,13 @@ $(document).ready(function(){
             }
         });
     }
-    aData = {}
-    $('#idproducto').autocomplete({
-        source: function(request, response){
-            $.ajax({
-                url: 'getProductosAutocomplete',
-                method: 'GET',
-                dataType: 'json',
-                data: {
-                    producto: request.term
-                },
-                success: function(res) {
-
-                    aData = $.map(res, function(value, key){
-                        return{
-                            id: value.id,
-                            label: value.producto + ' - ' + value.precio
-                        };
-                    });
-                    let results = $.ui.autocomplete.filter(aData, request.term);
-                    response(results)
-                }
-            });
-        },
-        select: function(event, ui){
-            //document.getElementById('idp').value = 10
-            document.getElementById("idp").value = ui.item.id
-            console.log(ui.item.id);
-        }
+   
+    /* Multiple Item Picker */
+    $('.selectpicker').selectpicker({
+        style: 'btn-default'
     });
+
 </script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>

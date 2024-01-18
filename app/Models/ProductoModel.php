@@ -100,6 +100,21 @@ class ProductoModel extends Model {
         return $result;
     }
 
+    function _getProductoAutocomplete($producto){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->like('producto', $producto);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getProductosCategoria($idcategoria){
         
         $result = NULL;

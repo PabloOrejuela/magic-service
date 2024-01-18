@@ -160,6 +160,13 @@ class Ventas extends BaseController {
         echo json_encode($costo_horario);
     }
 
+    function getProductosAutocomplete(){
+        $producto = $this->request->getPostGet('producto');
+        $productos = $this->productoModel->_getProductoAutocomplete($producto);
+
+        echo json_encode($productos);
+    }
+
     function detalle_pedido_insert_temp($idproducto, $cantidad, $cod_pedido){
         $error = '';
 

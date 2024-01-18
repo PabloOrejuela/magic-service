@@ -1,7 +1,3 @@
-
-
-
-
 function limpiarClienteTelefono() {
   document.getElementById('nombre').value = ''
   document.getElementById('documento').value = ''

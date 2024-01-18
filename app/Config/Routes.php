@@ -66,7 +66,9 @@ $routes->get('ventas/detalle_pedido_delete_producto_temp/(:num)/(:any)', 'Ventas
 $routes->get('ventas/detalle_pedido_update_precio_temp/(:num)/(:num)/(:any)/(:num)', 'Ventas::detalle_pedido_update_precio_temp/$1/$2/$3/$4');
 $routes->get('ventas/detalle_pedido_insert_observacion_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion_temp/$1/$2/$3');
 $routes->get('estadistica-ventas', 'Ventas::estadisticaVentas');
+$routes->get('getProductosAutocomplete', 'Ventas::getProductosAutocomplete');
 
+//Administración
 $routes->get('administracion', 'Administracion::index');
 $routes->get('getProductosCategoria/(:num)', 'Administracion::getProductosCategoria/$1');
 $routes->get('productos', 'Administracion::productos');
@@ -101,6 +103,7 @@ $routes->post('sucursal-insert', 'Administracion::sucursal_insert');
 $routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
 $routes->get('updateSucursalSector/(:num)/(:num)/(:num)', 'Administracion::updateSucursalSector/$1/$2/$3');
 $routes->get('getSucursales', 'Administracion::getSucursales');
+
 
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');
