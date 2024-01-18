@@ -145,6 +145,13 @@ a{
   font-size: 1.2em;
 }
 
+.separator{
+  margin: 0 auto;
+  width: 100%;
+  background-color: rgb(168, 168, 168, 0.2);
+  height: 3px;
+}
+
 #idproducto{
   width:100%;
   font-size: 1.1em;

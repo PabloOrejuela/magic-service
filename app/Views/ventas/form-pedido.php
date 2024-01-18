@@ -920,7 +920,9 @@ $(document).ready(function(){
             }
         });
     }
+
     aData = {}
+    
     $('#idproducto').autocomplete({
         source: function(request, response){
             $.ajax({

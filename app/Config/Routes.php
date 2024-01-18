@@ -132,6 +132,8 @@ $routes->get('print-client-historial/(:num)', 'Clientes::print_client_historial/
 //Inventario
 $routes->get('gestion-inventario', 'Inventarios::index');
 $routes->get('get-item-cuantificable', 'Inventarios::get_item_cuantificable');
+$routes->get('getStockActual', 'Inventarios::getStockActual');
+$routes->get('registraMovimientoStock', 'Inventarios::registraMovimientoStock');
 
 //REPORTES
 $routes->get('reporte', 'Reportes::frmReporte');

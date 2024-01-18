@@ -21,6 +21,7 @@ class Inventarios extends BaseController {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
+            $data['movimientos'] = $this->movimientoInventarioModel->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Inventarios';
@@ -38,6 +39,46 @@ class Inventarios extends BaseController {
         $items = $this->itemModel->_getItemCuantificable($name);
         
         echo json_encode($items);
+    }
+
+    function getStockActual(){
+        $item = $this->request->getPostGet('id');
+        $datos = $this->stockActualModel->_getStock($item);
+        if ($datos != NULL) {
+            $stock_actual = $datos->stock_actual;
+        }else{
+            $stock_actual = 0;
+        }
+        
+        echo json_encode($stock_actual);
+    }
+
+    function registraMovimientoStock(){
+
+        $movStock = [
+            'item' => $this->request->getPostGet('id'),
+            'movimiento' => $this->request->getPostGet('movimiento'),
+            'unidades' => $this->request->getPostGet('unidades'),
+            'observacion' => strtoupper($this->request->getPostGet('observacion')),
+        ];
+
+        //Insertar Movimiento en Kardex
+        $this->kardexModel->_insert($movStock);
+
+        //Actualizar Stock Actual
+        $data['item'] = $movStock['item'];
+        $data['totalUnidades'] = $this->kardexModel->_getSumaStockItem($movStock['item']);
+        
+        //Verifico si existe
+        $existe = $this->stockActualModel->_getStock($movStock['item']);
+        if ($existe) {
+            $this->stockActualModel->_update($data);
+        } else {
+            $this->stockActualModel->_insert($data);
+        }
+        
+        
+        
     }
 
     public function logout(){
