@@ -131,7 +131,6 @@ class Administracion extends BaseController {
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
-
             $data['items'] = $this->itemModel->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;

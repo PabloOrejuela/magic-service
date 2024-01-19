@@ -222,4 +222,32 @@ class Validation extends BaseConfig {
             'required' => 'El campo "Valor pagado" es obligatorio',
         ],
     ];
+
+    public $gestionInventario = [
+        'id'   => 'required',
+        'item'   => 'required',
+        'movimiento'   => 'greater_than[0]',
+        'unidades'   => 'required|greater_than[0]',
+        'stock_actual'   => 'required',
+        'precio'   => 'required|greater_than[0]',
+    ];
+    public $gestionInventario_errors = [
+        'id' => [
+            'required' => 'El campo "Item" es obligatorio',
+        ],
+        'item' => [
+            'required' => 'El campo "Item" es obligatorio',
+        ],
+        'movimiento' => [
+            'greater_than' => 'El campo "Tipo de Movimiento" es obligatorio',
+        ],
+        'unidades' => [
+            'required' => 'El campo "Unidades" es obligatorio',
+            'greater_than' => 'El campo "Unidades" debe ser mayor que 0',
+        ],
+        'precio' => [
+            'required' => 'El campo "Precio" es obligatorio',
+            'greater_than' => 'El campo "Precio" debe ser mayor que 0',
+        ],
+    ];
 }

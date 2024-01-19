@@ -52,6 +52,55 @@ class KardexModel extends Model {
         return $result;
     }
 
+    function _getInventario($item){
+        $result[] = null;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row->totalUnidades;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getKardex($item){
+        $result = null;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.precio_actual as precio,'.$this->table.'.id as id,'.$this->table.'.updated_at as fecha,'.$this->table.'.item as codigo,unidades,
+                            items.item as item,mov_inventario.descripcion as tipo_movimiento,observacion');
+        $builder->join('items', ''.$this->table.'.item = items.id','left');
+        $builder->join('mov_inventario', $this->table.'.movimiento = mov_inventario.id', 'left');
+        $builder->where($this->table.'.item', $item);
+        $builder->orderBy('id', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getUltimoPrecio($item){
+        $result = 0;
+        $builder = $this->db->table($this->table);
+        $builder->select('precio_actual')->where('item', $item);
+        $builder->orderBy('id', 'desc');
+        $builder->limit(1);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row->precio_actual;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     public function _insert($data) {
 
         //Inserto el nuevo cliente
@@ -62,6 +111,7 @@ class KardexModel extends Model {
             $data['unidades'] = $data['unidades'] * -1;
         } 
         $builder->set('unidades', $data['unidades']);
+        $builder->set('precio_actual', $data['precio_actual']);
         $builder->set('observacion', $data['observacion']);
         $builder->insert();
         return  $this->db->insertID();

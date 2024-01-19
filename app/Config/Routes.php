@@ -130,10 +130,12 @@ $routes->post('cliente-update', 'Clientes::cliente_update');
 $routes->get('print-client-historial/(:num)', 'Clientes::print_client_historial/$1');
 
 //Inventario
-$routes->get('gestion-inventario', 'Inventarios::index');
+$routes->get('inventario', 'Inventarios::index');
+$routes->get('gestion-inventario', 'Inventarios::gestion_inventario');
 $routes->get('get-item-cuantificable', 'Inventarios::get_item_cuantificable');
 $routes->get('getStockActual', 'Inventarios::getStockActual');
 $routes->get('registraMovimientoStock', 'Inventarios::registraMovimientoStock');
+$routes->get('kardex-item/(:num)', 'Inventarios::kardexItem/$1');
 
 //REPORTES
 $routes->get('reporte', 'Reportes::frmReporte');

@@ -35,30 +35,54 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <div class="card-body">
-                        <form action="#">
+                        <form action="registraMovimientoStock", method="get">
                             
                             <div class="form-group col-12 mb-1 px-3" id="fila-form">
                                 <div class="row id">
                                     <div class="col-sm-2">
-                                        <input type="text" class="form-control" id="id" name="id">
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="id" 
+                                            name="id"
+                                            value="<?= set_value('id'); ?>"
+                                        >
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <label for="item" class="form-label">Item:</label>
-                                        <input type="text" class="form-control" id="item" name="item" placeholder="Item" autofocus >
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="item" 
+                                            name="item" 
+                                            placeholder="Item" 
+                                            value="<?= set_value('item'); ?>"
+                                            autofocus 
+                                        >
                                     </div>
+                                    
                                 </div>
+                                <p id="error-message"><?= session('errors.item');?> </p>
                                 <div class="row" id="info-item">
                                     <div class="col-sm-3">
                                         <label for="stock_actual" class="form-label">Stock actual (unidades):</label>
-                                        <input type="text" class="form-control" id="stock_actual" name="stock_actual" disabled>
+                                        <input 
+                                            type="text" 
+                                            class="form-control" 
+                                            id="stock_actual" 
+                                            name="stock_actual"
+                                            value="<?= old('stock_actual'); ?>"
+                                            disabled
+                                        >
                                     </div>
                                 </div>
+                                <p id="error-message"><?= session('errors.stock_actual');?> </p>
                             </div>
                             <div class="separator mb-3"></div>
                             <h5>Movimiento de inventario</h5>
-                            <div class="form-group col-12 mb-1 px-3" id="fila-form">
+                            <div class="form-group col-9 mb-1 px-3" id="fila-form">
                                 <div class="row">
                                     <div class="col-sm-9">
                                         <label for="movimiento" class="form-label">Tipo movimiento:</label>
@@ -72,23 +96,45 @@
                                             <?php
                                                 if ($movimientos) {
                                                     foreach ($movimientos as $key => $m) {
-                                                        echo '<option value="'.$m->id.'">'.$m->descripcion.'</option>';
+                                                        echo '<option value="'.$m->id.'" '.set_select('movimiento', $m->id, false).'>'.$m->descripcion.'</option>';
                                                     }
                                                 } 
                                             ?>
                                         </select>
                                     </div>
                                 </div>
+                                <p id="error-message"><?= session('errors.movimiento');?> </p>
                                 <div class="row" id="info-item">
                                     <div class="col-sm-3">
                                         <label for="unidades" class="form-label">Unidades:</label>
-                                        <input type="text" class="form-control number" id="unidades" name="unidades" >
+                                        <input 
+                                            type="text" 
+                                            class="form-control number" 
+                                            id="unidades" 
+                                            name="unidades"
+                                            value="<?= old('unidades'); ?>"
+                                        >
                                     </div>
+                                    <p id="error-message"><?= session('errors.unidades');?> </p>
+                                    <div class="col-sm-3">
+                                        <label for="precio" class="form-label">Precio:</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control number" 
+                                            id="precio" 
+                                            name="precio" 
+                                        >
+                                    </div>
+                                    <p id="error-message"><?= session('errors.precio');?> </p>
                                 </div>
                                 <div class="row" id="info-item">
                                     <div class="col-sm-9">
                                         <label class="form-label" for="observacion">Motivo:</label>
-                                        <textarea class="form-control" id="observacion" name="observacion"></textarea>
+                                        <textarea 
+                                            class="form-control" 
+                                            id="observacion" 
+                                            name="observacion"
+                                        ><?= set_value('observacion'); ?></textarea>
                                     </div>
                                 </div>
                                 <div class="row" id="info-item">
@@ -113,7 +159,9 @@
     aData = {}
 
     $('#item').autocomplete({
+        
         source: function(request, response){
+            //limpiarCampos()
             $.ajax({
                 url: 'get-item-cuantificable',
                 method: 'GET',
@@ -129,6 +177,7 @@
                         };
                     });
                     let results = $.ui.autocomplete.filter(aData, request.term);
+                    $('#stock_actual').attr('disabled', false);
                     response(results)
                 }
             });
@@ -163,29 +212,31 @@
         })
     }
 
-    btnActualizar.addEventListener('click', function(e) {
-        //e.preventDefault()
-        let id = document.getElementById("id").value
-        let movimiento = document.getElementById("movimiento").selectedIndex
-        let unidades = document.getElementById("unidades").value
-        let observacion = document.getElementById("observacion").value
+    // btnActualizar.addEventListener('click', function(e) {
+    //     //e.preventDefault()
+    //     let id = document.getElementById("id").value
+    //     let movimiento = document.getElementById("movimiento").selectedIndex
+    //     let unidades = document.getElementById("unidades").value
+    //     let observacion = document.getElementById("observacion").value
+    //     let precio = document.getElementById("precio").value
 
-        $.ajax({
-            url: 'registraMovimientoStock',
-            method: 'GET',
-            dataType: 'json',
-            data: {
-                id: id,
-                movimiento: movimiento,
-                unidades: unidades,
-                observacion: observacion
-            },
-            success: function(res) {
+    //     $.ajax({
+    //         url: 'registraMovimientoStock',
+    //         method: 'GET',
+    //         dataType: 'json',
+    //         data: {
+    //             id: id,
+    //             movimiento: movimiento,
+    //             unidades: unidades,
+    //             observacion: observacion,
+    //             precio: precio,
+    //         },
+    //         success: function(res) {
                 
-                limpiarCampos()
-            }
-        });
-    })
+    //             limpiarCampos()
+    //         }
+    //     });
+    // })
 
     function limpiarCampos(){
         document.getElementById("id").value = 0
@@ -193,6 +244,7 @@
         document.getElementById("movimiento").selectedIndex = 0
         document.getElementById("unidades").value = 0
         document.getElementById("observacion").value = ''
+        document.getElementById("precio").value = '0.00'
     }
 </script>
 

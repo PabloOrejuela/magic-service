@@ -23,10 +23,50 @@ class Inventarios extends BaseController {
             $data['items'] = $this->itemModel->_getItemsCuantificables();
             $data['movimientos'] = $this->movimientoInventarioModel->findAll();
 
+            //echo '<pre>'.var_export($data['items']->id, true).'</pre>';exit;
+            $data['title']='Inventarios';
+            $data['subtitle']='Inventario de Items';
+            $data['main_content']='inventarios/grid_inventarios';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function gestion_inventario(){
+        $data = $this->acl();
+        
+        if ($data['logged'] == 1 && $this->session->inventarios == 1) {
+            
+            $data['session'] = $this->session;
+            $data['items'] = $this->itemModel->_getItemsCuantificables();
+            $data['movimientos'] = $this->movimientoInventarioModel->findAll();
+
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Inventarios';
             $data['subtitle']='Gestión de Inventarios';
             $data['main_content']='inventarios/frm_gestion_inventarios';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function kardexItem($item){
+        $data = $this->acl();
+        
+        if ($data['logged'] == 1 && $this->session->inventarios == 1) {
+            
+            $data['session'] = $this->session;
+            $data['kardex'] = $this->kardexModel->_getKardex($item);
+            $data['item'] = $this->itemModel->find($item);
+
+            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
+            $data['title']='Inventarios';
+            $data['subtitle']='Kardex del item: '.$data['item']->item;
+            $data['main_content']='inventarios/grid_kardex';
             return view('dashboard/index', $data);
         }else{
             $this->logout();
@@ -59,26 +99,33 @@ class Inventarios extends BaseController {
             'item' => $this->request->getPostGet('id'),
             'movimiento' => $this->request->getPostGet('movimiento'),
             'unidades' => $this->request->getPostGet('unidades'),
+            'stock_actual' => $this->request->getPostGet('stock_actual'),
             'observacion' => strtoupper($this->request->getPostGet('observacion')),
+            'precio_actual' => strtoupper($this->request->getPostGet('precio')),
         ];
+        $this->validation->setRuleGroup('gestionInventario');
 
-        //Insertar Movimiento en Kardex
-        $this->kardexModel->_insert($movStock);
+        if (!$this->validation->withRequest($this->request)->run()) {
+            //Depuración
+            //dd($validation->getErrors());
+            return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+        }else{
+            //Insertar Movimiento en Kardex
+            $this->kardexModel->_insert($movStock);
 
-        //Actualizar Stock Actual
-        $data['item'] = $movStock['item'];
-        $data['totalUnidades'] = $this->kardexModel->_getSumaStockItem($movStock['item']);
-        
-        //Verifico si existe
-        $existe = $this->stockActualModel->_getStock($movStock['item']);
-        if ($existe) {
-            $this->stockActualModel->_update($data);
-        } else {
-            $this->stockActualModel->_insert($data);
+            //Actualizar Stock Actual
+            $data['item'] = $movStock['item'];
+            $data['totalUnidades'] = $this->kardexModel->_getSumaStockItem($movStock['item']);
+            
+            //Verifico si existe
+            $existe = $this->stockActualModel->_getStock($movStock['item']);
+            if ($existe) {
+                $this->stockActualModel->_update($data);
+            } else {
+                $this->stockActualModel->_insert($data);
+            }
+            return redirect()->to('gestion-inventario');
         }
-        
-        
-        
     }
 
     public function logout(){

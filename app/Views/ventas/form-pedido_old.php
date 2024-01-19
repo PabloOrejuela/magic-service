@@ -365,16 +365,16 @@
                         let cliente = JSON.parse(data);
 
                         if (cliente) {
-                        //console.log(data);
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('telefono').value = cliente.telefono
-                        document.getElementById('telefono_2').value = cliente.telefono_2
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                        document.getElementById('idcliente').value = cliente.id
+                            //console.log(data);
+                            document.getElementById('nombre').value = cliente.nombre
+                            document.getElementById('telefono').value = cliente.telefono
+                            document.getElementById('telefono_2').value = cliente.telefono_2
+                            document.getElementById('documento').value = cliente.documento
+                            document.getElementById('email').value = cliente.email
+                            document.getElementById('idcliente').value = cliente.id
                         }else {
-                        console.log('No hay, debo buscar en el 1 también');
-                        searchPhones(valor, 2)
+                            console.log('No hay, debo buscar en el 1 también');
+                            searchPhones(valor, 2)
                         }
                     },
                     error: function(data){
@@ -681,8 +681,7 @@ $(document).ready(function(){
                     if (resultado == 0) {
                     }else{
                         alertAgregaProducto()
-                        //Exito
-                        //console.log(`Se insertó el producto`);
+
                         let detalle = JSON.parse(resultado);
 
                         if (detalle.error == '') {
@@ -781,22 +780,6 @@ $(document).ready(function(){
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-                // header: '...',
-                // title: '...',
-                // closeButton: '...',
-                // icon: '...',
-                // image: '...',
-                // htmlContainer: '...',
-                // input: '...',
-                // inputLabel: '...',
-                // validationMessage: '...',
-                // actions: '...',
-                // confirmButton: '...',
-                // denyButton: '...',
-                // cancelButton: '...',
-                // loader: '...',
-                // footer: '....',
-                // timerProgressBar: '....',
                 }
         });
         toast.fire({
@@ -821,22 +804,6 @@ $(document).ready(function(){
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-                // header: '...',
-                // title: '...',
-                // closeButton: '...',
-                // icon: '...',
-                // image: '...',
-                // htmlContainer: '...',
-                // input: '...',
-                // inputLabel: '...',
-                // validationMessage: '...',
-                // actions: '...',
-                // confirmButton: '...',
-                // denyButton: '...',
-                // cancelButton: '...',
-                // loader: '...',
-                // footer: '....',
-                // timerProgressBar: '....',
                 }
         });
 

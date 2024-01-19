@@ -48,7 +48,7 @@ class ItemModel extends Model {
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
-                $result = $row;
+                $result[] = $row;
             }
         }
         //echo $this->db->getLastQuery();
