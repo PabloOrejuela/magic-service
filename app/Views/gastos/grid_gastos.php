@@ -44,9 +44,6 @@
                                             $ceros = 5 - strlen($value->id);
                                             $cadena = '';
                                             switch($ceros){
-                                                case 1: 
-                                                    $cadena = '0';
-                                                    break;
                                                 case 2: 
                                                     $cadena = '00';
                                                     break;
@@ -54,10 +51,10 @@
                                                     $cadena = '000';
                                                     break;
                                                 case 4:
-                                                    $cadena = '00000';
+                                                    $cadena = '0000';
                                                     break;
                                                 default:
-                                                    $cadena = '';
+                                                    $cadena = '0';
                                             }
                                             echo '<tr>
                                                 <td><a href="'.site_url().'gasto-edit/'.$value->id.'" id="link-editar">'.$cadena.$value->id.'</a></td>

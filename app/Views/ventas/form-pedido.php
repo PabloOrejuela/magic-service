@@ -883,7 +883,7 @@ $(document).ready(function(){
         }
         
         total = subtotal - descuento
-        valorMensajero = parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra)
+        valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2)
         
         // /* Este es el cálculo. */
         if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
