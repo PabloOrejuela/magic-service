@@ -562,14 +562,20 @@ $(document).ready(function(){
         if (precio != null && precio != '') {
 
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_update_precio_temp/' + idproducto + '/' + cod_pedido+'/'+precio+'/'+cant,
+                url: '<?php echo base_url(); ?>detalle_pedido_update_precio_temp',
+                data: {
+                    idproducto: idproducto,
+                    cod_pedido: cod_pedido,
+                    precio: precio,
+                    cant: cant
+                },
                 success: function(resultado){
                     if (resultado == 0) {
 
                     }else{
                         //Exito
                         let detalle = JSON.parse(resultado);
-                        //console.log(resultado);
+                        console.log(detalle);
                         if (detalle.error == '') {
                             $("#tablaProductos tbody").empty();
                             $("#tablaProductos tbody").append(detalle.datos);
@@ -660,7 +666,12 @@ $(document).ready(function(){
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
             
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_temp/' + idproducto + '/' + cantidad + '/' + cod_pedido,
+                url: '<?php echo base_url(); ?>detalle_pedido_insert_temp',
+                data: {
+                    idproducto: idproducto,
+                    cantidad: cantidad,
+                    cod_pedido: cod_pedido
+                },
                 success: function(resultado){
                     if (resultado == 0) {
                     }else{

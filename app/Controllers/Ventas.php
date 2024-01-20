@@ -167,7 +167,12 @@ class Ventas extends BaseController {
         echo json_encode($productos);
     }
 
-    function detalle_pedido_insert_temp($idproducto, $cantidad, $cod_pedido){
+    function detalle_pedido_insert_temp(){
+
+        $idproducto = $this->request->getPostGet('idproducto');
+        $cantidad = $this->request->getPostGet('cantidad');
+        $cod_pedido = $this->request->getPostGet('cod_pedido');
+
         $error = '';
 
         $producto = $this->productoModel->find($idproducto);
@@ -227,7 +232,13 @@ class Ventas extends BaseController {
         echo json_encode($res);
     }
 
-    function detalle_pedido_update_precio_temp($idproducto, $cod_pedido, $precio, $cant){
+    function detalle_pedido_update_precio_temp(){
+
+        $idproducto = $this->request->getPostGet('idproducto');
+        $cod_pedido = $this->request->getPostGet('cod_pedido');
+        $precio = $this->request->getPostGet('precio');
+        $cant = $this->request->getPostGet('cant');
+
         $error = '';
         $subtotal = number_format($precio * $cant,2);
 
