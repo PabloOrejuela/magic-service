@@ -661,7 +661,7 @@ $(document).ready(function(){
     });
 
     function agregarProducto(idproducto, cantidad, cod_pedido){
-        console.log(idproducto);
+        //console.log(idproducto);
         //let dia = getDayOfWeek();
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
             
@@ -894,6 +894,8 @@ $(document).ready(function(){
         }
         
         total = subtotal - descuento
+
+        //PABLO aquí va el cálculo del valor del mensajero
         valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2)
         
         // /* Este es el cálculo. */

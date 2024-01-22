@@ -322,14 +322,14 @@ class Ventas extends BaseController {
         if ($resultado) {
             foreach ($resultado as $row) {
                 $numFila++;
-                //$cod_pedido = "231114181156";
+                
                 $fila .= '<tr id="fila_'.$numFila.'">';
                 $fila .= '<td>'.$numFila.'</td>';
                 $fila .= '<td>'.$row->id.'</td>';
                 $fila .= '<td>'.$row->producto.'</td>';
                 $fila .= '<td><input type="text" class="form-control" name="observacion_'.$row->idproducto.'" value="'.$row->observacion.'" onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" id="observa_'.$row->idproducto.'"></td>';
                 $fila .= '<td><input type="text" class="form-control input-precio" name="precio_'.$row->idproducto.'" value="'.$row->pvp.'" onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" id="precio_'.$row->idproducto.'"></td>';
-                //$fila .= '<td>'.$row->precio.'</td>';
+                
                 $fila .= '<td id="cant_'.$row->idproducto.'">'.$row->cantidad.'</td>';
                 
                 $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="btn btn-borrar">

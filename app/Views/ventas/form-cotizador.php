@@ -59,6 +59,16 @@
                                     <option value="" selected>--Seleccionar Producto--</option>
                                 </select>
                             </div>
+                            <div class="form-group col-md-1 mb-3">
+                                <label for="productos">Id:</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control cant" 
+                                    name="idproducto" 
+                                    value="0" 
+                                    id="idproducto"
+                                >
+                            </div>
                             <div class="form-group col-sm-12 mb-3" width:="100%">
                                 <table id="tablaItems" class="table  table-stripped  table-responsive tablaItems" >
                                     <thead >
@@ -74,7 +84,15 @@
                                     <tbody id='tablaCostosBody'>
                                         <tr>
                                             <td class="col-sm-10">TOTAL:</td>
-                                            <td class="col-sm-2"><input type="text" class="form-control cant" name="total" value="0.00"></td>
+                                            <td class="col-sm-2">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control cant" 
+                                                    name="total" 
+                                                    value="0.00" 
+                                                    id="input-total"
+                                                >
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -125,6 +143,7 @@
                 
 
                 if (elementos[valor] == undefined || elementos[valor] == NaN) {
+                console.log(128);
                     //console.log("NO");
                     elementos[valor] = 1
                     // const el = document.createElement('div')
@@ -163,23 +182,7 @@
     }
 
 
-    $('#activar').click(function() {
-
-        if ($('#categoria').val().trim() === '') {
-            alert('Debe seleccionar una CATEGORÍA');
-
-        } else {
-            //console.log('Campo correcto');
-            $("#activar").change(function() {
-                $("#btnGuardar").prop('disabled', false)
-                $("#activar").prop('disabled', true)
-            });
-        }
-    });
+    
 
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
 
