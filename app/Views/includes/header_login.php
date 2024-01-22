@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <link href="<?= site_url(); ?>favicon.ico" rel="icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Magic Service</title>
 
