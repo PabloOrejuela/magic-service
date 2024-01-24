@@ -32,7 +32,6 @@ $(document).ready(function(){
   });
 
 
-
   $(document).ready(function(){
     $("#productos").on('change',function(){
         if($("#productos").val() !=""){
@@ -60,13 +59,14 @@ $(document).ready(function(){
                             <td>${item.id}</td><td>${item.item}</td>
                             <td>
                                 <input 
-                                    type="text" 
+                                    type="number" 
                                     class="form-control cant porcentaje" 
                                     name="porcentaje_${item.id}"
                                     value = ${item.porcentaje}
                                     placeholder="0"
                                     id="porcentaje_${item.id}" 
                                     onchange="calculaPorcentaje(${item.id})"
+                                    min="0.1" max="1.0" step="0.1"
                                 >
                             </td>
                             <td>
@@ -122,6 +122,7 @@ $(document).ready(function(){
   });
   //onchange="observacion('.$row->idproducto. ','.$cod_pedido.')"
 function calculaPorcentaje(idItem){
+    limitaPorcentaje(idItem)
     
     let costo = 0
     let unidades = document.getElementById("cantidad_"+idItem).value
@@ -133,6 +134,15 @@ function calculaPorcentaje(idItem){
     document.getElementById("pvp_"+idItem).value = parseFloat(costo).toFixed(2)
 
     calculaTotal()
+}
+
+function limitaPorcentaje(idItem){
+    let porcentaje = document.getElementById("porcentaje_"+idItem).value
+    if (porcentaje > 1) {
+        document.getElementById("porcentaje_"+idItem).value = 1
+    } else {
+        document.getElementById("porcentaje_"+idItem).value = porcentaje
+    }
 }
 
 
@@ -206,13 +216,14 @@ function agregarItem(idproducto, item){
                                 <td>${element.id}</td><td>${element.item}</td>
                                 <td>
                                     <input 
-                                        type="text" 
+                                        type="number" 
                                         class="form-control cant porcentaje" 
                                         name="porcentaje_${element.id}"
                                         value = "${element.porcentaje}"
                                         placeholder="0"
                                         id="porcentaje_${element.id}" 
                                         onchange="calculaPorcentaje(${element.id})"
+                                        min="0.1" max="1.0" step="0.1"
                                     >
                                 </td>
                                 <td>

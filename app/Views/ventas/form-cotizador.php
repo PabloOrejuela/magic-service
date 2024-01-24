@@ -33,6 +33,13 @@
         margin-left: 40px;
         width: 60%;
     }
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+
+    input[type=number] { -moz-appearance:textfield; }
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
@@ -129,7 +136,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <a href="javascript:agregarItem(document.getElementById('idproducto').value, idp.value)" class="btn btn-carrito-item" id="btn-carrito-item">
-                                            <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
+                                            <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar" onclic="verImagen()"/>
                                         </a>
                                     </div>
                                 </div>
