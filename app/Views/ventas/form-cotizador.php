@@ -45,7 +45,7 @@
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?><span id="mensaje"> Falta la funcionalidad de remover y agregar item</span></h3>
+                        <h3 class="card-title"><?= $subtitle; ?><span id="mensaje"> Falta la funcionalidad de remover item</span></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->

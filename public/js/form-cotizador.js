@@ -122,7 +122,7 @@ $(document).ready(function(){
   });
   //onchange="observacion('.$row->idproducto. ','.$cod_pedido.')"
 function calculaPorcentaje(idItem){
-    console.log("calcula porcentaje");
+    
     let costo = 0
     let unidades = document.getElementById("cantidad_"+idItem).value
     let porcentaje = document.getElementById("porcentaje_"+idItem).value
