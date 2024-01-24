@@ -3,6 +3,7 @@
     <li>Listos los cálculos de porcentajes en el cotizador</li>
     <li>Agregrada tabla de items temporales cotizador</li>
     <li>Agregados modelos de las nuevas tablas</li>
+    <li>Agregado campo de precio final en el cotizador</li>
     <li>Agregadas algunas funcionalidades de los inputs del cotizador</li>
     <li>Falta hacer el submit en cotizador para crear nuevo Arreglo</li>
 </ul>
