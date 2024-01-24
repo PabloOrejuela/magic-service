@@ -146,7 +146,7 @@
                                                 >
                                             </div>
                                             <div class="col-md-8">
-                                                <label for="telefono">Producto:</label>
+                                                <label for="producto">Producto:</label>
                                                 <input 
                                                     type="text"
                                                     class="form-control" 
@@ -155,7 +155,7 @@
                                                 >
                                             </div>
                                             <div class="col-md-3">
-                                                <label for="telefono">Cantidad:</label> 
+                                                <label for="cant">Cantidad:</label> 
                                                 <input 
                                                     type="text" 
                                                     class="form-control inputCant number" 

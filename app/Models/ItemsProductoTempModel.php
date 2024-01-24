@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ItemsProductoModel extends Model {
+class ItemsProductoTempModel extends Model {
 
     protected $DBGroup          = 'default';
-    protected $table            = 'items_productos';
+    protected $table            = 'items_productos_temp';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
@@ -39,36 +39,9 @@ class ItemsProductoModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function _insert($idproducto, $data) {
-
-        //echo '<pre>'.var_export($idproducto, true).'</pre>';exit;
-
-        //Inserto el nuevo producto
-        $builder = $this->db->table($this->table);
-
-        //recorro el arreglo y grabo 
-        foreach ($data as $key => $value) {
-
-            if ($idproducto != 'NULL' && $idproducto != '') {
-                $builder->set('idproducto', $idproducto);
-            }
-
-            if ($value != 'NULL' && $value != '') {
-                $builder->set('item', $key);
-            }
-
-            if ($value != 'NULL' && $value != '') {
-                $builder->set('cantidad', $value);
-            }
-            
-            $builder->insert();
-        }    
-    }
-
     function _getItemsProducto($idproducto){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        //$builder->select('*')->where($this->table.'.idproducto', $idproducto);
         $builder->select(
             'items.id as id, 
             items.item as item, 
@@ -78,9 +51,8 @@ class ItemsProductoModel extends Model {
             estado, 
             cantidad,
             '.$this->table.'.idproducto as idproducto');
-        $builder->join('items', $this->table.'.item = items.id');
         $builder->where($this->table.'.idproducto', $idproducto);
-        //$builder->join('items', 'items_productos.item = items.id');
+        $builder->join('items', $this->table.'.item = items.id');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -89,5 +61,32 @@ class ItemsProductoModel extends Model {
         }
         //echo $this->db->getLastQuery();
         return $result;
+    }
+
+    function _insertItems($idproducto, $items, $item){
+        
+        $builder = $this->db->table($this->table);
+        foreach ($items as $key => $value) {
+            //echo $item->id.'<br>';
+            $builder->set('item', $value->id);
+            $builder->set('idproducto', $idproducto);
+            $builder->set('cantidad', 1);
+            $builder->insert();
+        }
+        $builder->set('item', $item);
+        $builder->set('idproducto', $idproducto);
+        $builder->set('cantidad', 1);
+        $builder->insert();
+        return  $this->db->insertID();
+    }
+
+    function _insertNewItem($idproducto, $item){
+        
+        $builder = $this->db->table($this->table);
+        $builder->set('item', $item);
+        $builder->set('idproducto', $idproducto);
+        $builder->set('cantidad', 1);
+        $builder->insert();
+        return  $this->db->insertID();
     }
 }

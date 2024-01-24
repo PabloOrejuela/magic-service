@@ -67,6 +67,10 @@ $routes->get('detalle_pedido_update_precio_temp', 'Ventas::detalle_pedido_update
 $routes->get('ventas/detalle_pedido_insert_observacion_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion_temp/$1/$2/$3');
 $routes->get('estadistica-ventas', 'Ventas::estadisticaVentas');
 $routes->get('getProductosAutocomplete', 'Ventas::getProductosAutocomplete');
+$routes->get('getItemsAutocomplete', 'Ventas::getItemsAutocomplete');
+$routes->get('getProducto/(:num)', 'Ventas::getProducto/$1');
+$routes->get('detalle-prod-insert_temp', 'Ventas::detalle_prod_insert_temp');
+$routes->get('ventas-getItemsProducto/(:num)', 'Ventas::getItemsProducto/$1');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');

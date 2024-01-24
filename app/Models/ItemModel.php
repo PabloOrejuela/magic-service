@@ -71,6 +71,21 @@ class ItemModel extends Model {
         return $result;
     }
 
+    function _getProductoAutocomplete($item){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->like('item', $item);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     public function _update($data) {
         $builder = $this->db->table($this->table);
         if ($data['item'] != 'NULL') {

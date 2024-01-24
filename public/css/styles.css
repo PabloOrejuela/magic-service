@@ -274,6 +274,13 @@ a{
   background-color: rgb(255, 255, 255, 0.5);
 }
 
+.btn-carrito-item{
+  position: relative;
+  right: 3px;
+  top: 12px;
+  background-color: rgb(255, 255, 255, 0.5);
+}
+
 .btn-carrito:hover{
   position: relative;
   float: right;
@@ -298,6 +305,15 @@ a{
 .popup-class{
   border-radius: 0px;
   font-size: 1.2em;
+}
+
+.image-arreglo{
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin-left:50px;
+  margin-bottom: 30px;
+  border: 1px solid #eded;
 }
 
 

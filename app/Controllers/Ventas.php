@@ -167,6 +167,13 @@ class Ventas extends BaseController {
         echo json_encode($productos);
     }
 
+    function getItemsAutocomplete(){
+        $item = $this->request->getPostGet('item');
+        $items = $this->itemModel->_getProductoAutocomplete($item);
+
+        echo json_encode($items);
+    }
+
     function detalle_pedido_insert_temp(){
 
         $idproducto = $this->request->getPostGet('idproducto');
@@ -229,6 +236,28 @@ class Ventas extends BaseController {
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    function detalle_prod_insert_temp(){
+        $error = '';
+        $idproducto = $this->request->getPostGet('idproducto');
+        $item = $this->request->getPostGet('item');
+
+        $datosTempExiste = $this->itemsProductoTempModel->_getItemsProducto($idproducto);
+
+        if ($datosTempExiste) {
+            $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $item);
+        }else{
+            //Traigo los items de la tabla Items Producto
+            $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
+
+            //Inserto todos los items en la tabla temporal 
+            $result = $this->itemsProductoTempModel->_insertItems($idproducto, $items, $item);
+        }
+        //echo '<pre>'.var_export($result, true).'</pre>';exit;
+        $res['datos'] = $this->itemsProductoTempModel->_getItemsProducto($idproducto);
+        $res['error'] = $result;
         echo json_encode($res);
     }
 
@@ -313,6 +342,29 @@ class Ventas extends BaseController {
         }
         $res['error'] = $error;
         echo json_encode($res);
+    }
+
+    function getProducto($id){
+        $error = "No se encontró el producto";
+        $res['producto'] = $this->productoModel->_getProducto($id);
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    public function getItemsProducto($producto){
+        //Verifico si existe en la tabla temporald e items
+        $itemsTemp = $this->itemsProductoTempModel->_getItemsProducto($producto);
+
+        if ($itemsTemp) {
+            //Retorno los items temporales
+            echo json_encode($itemsTemp);
+        }else{
+            //Extraigo de la tabla de items
+            $items = $this->itemsProductoModel->_getItemsProducto($producto );
+            
+            //Retorno los items
+            echo json_encode($items);
+        }
     }
 
     function cargaProductos_temp($cod_pedido){
@@ -617,7 +669,7 @@ class Ventas extends BaseController {
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
 
-            //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Cotizar producto';
             $data['main_content']='ventas/form-cotizador';
