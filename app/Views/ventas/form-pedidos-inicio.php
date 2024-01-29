@@ -568,22 +568,6 @@
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-                // header: '...',
-                // title: '...',
-                // closeButton: '...',
-                // icon: '...',
-                // image: '...',
-                // htmlContainer: '...',
-                // input: '...',
-                // inputLabel: '...',
-                // validationMessage: '...',
-                // actions: '...',
-                // confirmButton: '...',
-                // denyButton: '...',
-                // cancelButton: '...',
-                // loader: '...',
-                // footer: '....',
-                // timerProgressBar: '....',
                 }
         });
         toast.fire({
@@ -608,22 +592,6 @@
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-                // header: '...',
-                // title: '...',
-                // closeButton: '...',
-                // icon: '...',
-                // image: '...',
-                // htmlContainer: '...',
-                // input: '...',
-                // inputLabel: '...',
-                // validationMessage: '...',
-                // actions: '...',
-                // confirmButton: '...',
-                // denyButton: '...',
-                // cancelButton: '...',
-                // loader: '...',
-                // footer: '....',
-                // timerProgressBar: '....',
                 }
         });
         toast.fire({

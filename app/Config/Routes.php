@@ -71,6 +71,8 @@ $routes->get('getItemsAutocomplete', 'Ventas::getItemsAutocomplete');
 $routes->get('getProducto/(:num)', 'Ventas::getProducto/$1');
 $routes->get('detalle-prod-insert_temp', 'Ventas::detalle_prod_insert_temp');
 $routes->get('ventas-getItemsProducto/(:num)', 'Ventas::getItemsProducto/$1');
+$routes->get('updateItemsTempProduct', 'Ventas::updateItemsTempProduct');
+$routes->get('deleteItemTempProduct', 'Ventas::deleteItemTempProduct');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');
@@ -100,6 +102,7 @@ $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
 $routes->get('desactivar', 'Administracion::desactivar');
 $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');
 $routes->get('cotizador', 'Ventas::cotizador');
+$routes->post('product-personalize', 'Administracion::product_personalize');
 
 $routes->get('sucursales', 'Administracion::sucursales');
 $routes->get('sucursal-create', 'Administracion::form_sucursal_create');

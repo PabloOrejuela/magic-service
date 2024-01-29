@@ -100,6 +100,20 @@ class ProductoModel extends Model {
         return $result;
     }
 
+    function _getLastId(){
+        $result = 0;
+        $builder = $this->db->table($this->table);
+        $builder->selectMax('id');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row->id;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getProductoAutocomplete($producto){
         $result = NULL;
         $builder = $this->db->table($this->table);
@@ -148,6 +162,36 @@ class ProductoModel extends Model {
         if ($data['idusuario'] != 'NULL' && $data['idusuario'] != '') {
             $builder->set('idusuario', $data['idusuario']);
         }
+        $builder->insert();
+        return  $this->db->insertID();
+    }
+
+    public function _insertPersonalizado($data) {
+
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+
+        //Inserto el nuevo producto
+        $builder = $this->db->table($this->table);
+        if ($data['producto'] != 'NULL' && $data['producto'] != '') {
+            $builder->set('producto', $data['producto']);
+        }
+
+        if ($data['categoria'] != 'NULL' && $data['categoria'] != '') {
+            $builder->set('idcategoria', $data['categoria']);
+        }
+
+        if ($data['idusuario'] != 'NULL' && $data['idusuario'] != '') {
+            $builder->set('idusuario', $data['idusuario']);
+        }
+
+        if ($data['precio'] != 'NULL' && $data['precio'] != '') {
+            $builder->set('precio', $data['precio']);
+        }
+
+        if ($data['image'] != 'NULL' && $data['image'] != '') {
+            $builder->set('image', $data['image']);
+        }
+
         $builder->insert();
         return  $this->db->insertID();
     }

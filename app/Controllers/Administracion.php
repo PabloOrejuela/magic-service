@@ -511,6 +511,36 @@ class Administracion extends BaseController {
         }
     }
 
+    public function product_personalize(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $idproductoOld = $this->request->getPostGet('idproducto');
+            $newProducto = [
+                'idusuario' => $data['id'],
+                'producto' => strtoupper($this->request->getPostGet('nombreArregloNuevo')),
+                'categoria' => $this->request->getPostGet('categoria'),
+                'precio' => $this->request->getPostGet('total'),
+                'image' => $this->request->getPostGet('image'),
+            ];
+
+            $items = $this->itemsProductoTempModel->_getItemsProducto($idproductoOld);
+            
+            //Inserto el nuevo producto
+            $idproducto = $this->productoModel->_insertPersonalizado($newProducto);
+            
+            //Recibo el id insertado y hago el insert de los items del producto
+            $this->itemsProductoModel->_insertItemsPersonalizado($idproducto, $items);
+
+            return redirect()->to('productos');
+        }else{
+
+            $this->logout();
+        }
+    }
+
     /**
      * Formulario para registrar una nueva sucursal
      *

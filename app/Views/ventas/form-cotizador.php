@@ -33,6 +33,7 @@
         margin-left: 40px;
         width: 60%;
     }
+
     input[type=number]::-webkit-inner-spin-button, 
     input[type=number]::-webkit-outer-spin-button { 
         -webkit-appearance: none; 
@@ -52,11 +53,11 @@
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?><span id="mensaje"> Falta la funcionalidad de remover item</span></h3>
+                        <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'product-update';?>" method="post">
+                    <form action="<?= site_url().'product-personalize';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-4 mb-3">
@@ -79,7 +80,7 @@
                                     </select>
                                 </div>
                                 
-                                <div class="form-group col-md-1 mb-3" style="display:none;">
+                                <div class="form-group col-md-1 mb-1" style="display:none;">
                                     <label for="productos">Id:</label>
                                     <input 
                                         type="text" 
@@ -89,15 +90,24 @@
                                         id="idproducto"
                                     >
                                 </div>
+                                <div class="form-group" style="display:none;">
+                                    <input 
+                                        type="text" 
+                                        class="form-control cant" 
+                                        name="image" 
+                                        value="0" 
+                                        id="image"
+                                    >
+                                </div>
                                 <div class="form-group col-md-3 mb-3 div-img">
                                     <label for="image-product" id="lbl-image"></label>
-                                    <img 
-                                        src="#" 
-                                        alt="producto" 
-                                        class="rounded mx-auto d-block image-arreglo" 
-                                        id="image-product"
-                                        onclik="abrirImagenModal()"
-                                    >
+                                        <img 
+                                            src="#" 
+                                            alt="producto" 
+                                            class="rounded mx-auto d-block image-arreglo" 
+                                            id="image-product"
+                                        >
+                                        
                                 </div>
                             </div>
 
@@ -112,7 +122,15 @@
                                         id="nombreArregloNuevo"
                                         disabled
                                     >
+                                    <input 
+                                        type="text" 
+                                        class="form-control col-md-2 mt-1" 
+                                        name="new_id" 
+                                        id="new_id"
+                                        style="display:none;"
+                                    >
                                 </div>
+                                
                             </div>
                             <div class="row col-md-9 mt-3">
                                 <div class="form-group row">
@@ -136,7 +154,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <a href="javascript:agregarItem(document.getElementById('idproducto').value, idp.value)" class="btn btn-carrito-item" id="btn-carrito-item">
-                                            <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar" onclic="verImagen()"/>
+                                            <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
                                         </a>
                                     </div>
                                 </div>
@@ -172,11 +190,12 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <button type="button" class="btn btn-light" onclick="activarSubmit()" id="btn-activar">Estoy listo y deseo continuar</button>
                             </div>
-
+                            
                         </div>
                         <!-- /.card-body -->
-                        <?= form_hidden('id', ); ?>
+                        
                         <div class="card-footer">
                         <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
                             <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
@@ -186,12 +205,42 @@
             </div>
         </div>
     </div>
+
+<!-- Modal -->
+<div class="modal dialog" id="imageArregloModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Imágen del arreglo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <script>
+            let image = document.getElementById("image-product")
+            let id = image.getAttribute("src");
+            document.write(id)
+        </script>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </section> <!-- /.card -->
+
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous">
+</script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= site_url(); ?>public/js/form-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
 <script>
+    
     aData = {}
     
     $('#iditem').autocomplete({

@@ -2,7 +2,7 @@ $(document).ready(function(){
     $("#categoria").on('change',function(){
         if($("#categoria").val() !=""){
             valor = $("#categoria").val();
-            //console.log(valor);
+
             $.ajax({
                 type:"GET",
                 dataType:"html",
@@ -13,15 +13,22 @@ $(document).ready(function(){
                 success: function(resultado){
                   
                     let productos = JSON.parse(resultado);
-                    $("#productos").prop('disabled', false);
-
                     let selectProductos = document.getElementById('productos')
-                    selectProductos.innerHTML = ''
-                    selectProductos.innerHTML += `<option value="0">--Seleccionar producto--</option>`
-                    for(let producto of productos){
+                    if (productos) {
+                        $("#productos").prop('disabled', false);
+
                         
-                        selectProductos.innerHTML += `<option value="${producto.id}">${producto.producto}</option>`
+                        selectProductos.innerHTML = ''
+                        selectProductos.innerHTML += `<option value="0">--Seleccionar producto--</option>`
+                        for(let producto of productos){
+                            
+                            selectProductos.innerHTML += `<option value="${producto.id}">${producto.producto}</option>`
+                        }
+                    }else{
+                        $("#productos").prop('disabled', false);
+                        selectProductos.innerHTML = `<option value="0">--No hay productos en esta categoría--</option>`
                     }
+                    
                 },
                 error: function(resultado){
                   console.log('No hay productos de esa categoría');
@@ -36,6 +43,7 @@ $(document).ready(function(){
     $("#productos").on('change',function(){
         if($("#productos").val() !=""){
             valor = $("#productos").val();
+
             getDatosProducto(valor)
             
             $.ajax({
@@ -54,7 +62,7 @@ $(document).ready(function(){
                     tablaItemsBody.innerHTML = ''
                     document.getElementById("idproducto").value = valor
                     for(let item of items){
-                        
+                        document.getElementById("new_id").value = item.new_id
                         tablaItemsBody.innerHTML += `<tr>
                             <td>${item.id}</td><td>${item.item}</td>
                             <td>
@@ -102,16 +110,23 @@ $(document).ready(function(){
                                 >
                             </td>
                             <td>
-                                <a onclick="eliminaItem(${item.id})" class="btn btn-borrar">
+                                <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
                                     <img src="./public/images/delete.png" width="25" >
                                 </a>
                             </td>
                             </tr>`
                         total += parseFloat(item.precio)
                     }
+                    let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
+                    let slctProductos = document.getElementById("productos")
+                    let index = slctProductos.selectedIndex
                     
                     document.getElementById("input-total").value = parseFloat(total).toFixed(2)
-                    document.getElementById("nombreArregloNuevo").removeAttribute('disabled')
+                    
+                    nombreArregloNuevo.removeAttribute('disabled')
+                    let nombretemp = slctProductos.options[index].text
+                    nombreArregloNuevo.value = nombretemp+'_temp'
+
                 },
                 error: function(resultado){
                     console.log('El producto no tiene items');
@@ -128,12 +143,56 @@ function calculaPorcentaje(idItem){
     let unidades = document.getElementById("cantidad_"+idItem).value
     let porcentaje = document.getElementById("porcentaje_"+idItem).value
     let precio = document.getElementById("precio_"+idItem).value
+    let idproducto = document.getElementById("idproducto").value
+    let idNew = document.getElementById("new_id").value
     
     costo = (parseFloat(porcentaje) * parseFloat(precio) * parseInt(unidades))
     document.getElementById("pvp_"+idItem).value = '0'
     document.getElementById("pvp_"+idItem).value = parseFloat(costo).toFixed(2)
 
+    //actualizo el porcentaje y el precio
+    datosActualizar = {
+        idproducto: idproducto,
+        precio: precio,
+        porcentaje: porcentaje,
+        idItem: idItem,
+        idNew: idNew
+    }
+    updatePorcentaje(datosActualizar)
+    //Vuelvo a calvular el total
     calculaTotal()
+}
+
+/**
+ * Hace un update del nuevo porcentaje y precio
+ * usando AJAX
+*/
+
+function updatePorcentaje(datosActualizar){
+    console.log(datosActualizar);
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "updateItemsTempProduct",
+        data:{
+            idproducto: datosActualizar.idproducto,
+            precio: datosActualizar.precio,
+            porcentaje: datosActualizar.porcentaje,
+            idItem: datosActualizar.idItem,
+            idNew: datosActualizar.idNew
+        },
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(resultado){
+          
+            // let res = JSON.parse(resultado);
+            //console.log(res);
+        },
+        error: function(resultado){
+          console.log('No hay productos de esa categoría');
+        }
+    });
 }
 
 function limitaPorcentaje(idItem){
@@ -160,30 +219,124 @@ function calculaTotal(){
 }
 
 function getDatosProducto(idproducto){
+    
     $.ajax({
         type:"GET",
         dataType:"html",
-        url: "getProducto"+'/'+valor,
+        url: "getProducto"+'/'+idproducto,
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
         },
         success: function(resultado){
             let res = JSON.parse(resultado);
+
             let image = document.getElementById("image-product")
             let divImg = document.querySelector(".div-img")
+            document.getElementById("image").value = res.producto.image
 
             divImg.setAttribute("style", "display:block")
             document.getElementById("lbl-image").innerHTML = res.producto.image
             image.setAttribute("src", "public/images/productos/"+res.producto.image+'.jpg');
-            
-            //console.log(res.producto.image);
         }
     })
+}
+
+function deleteItem(idItem){
+    
+    let idNew = document.getElementById("new_id").value
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "deleteItemTempProduct",
+        data:{
+            idproducto: idNew,
+            idItem: idItem,
+        },
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(resultado){
+          
+            let items = JSON.parse(resultado);
+            let total = 0
+            
+            let tablaItemsBody = document.getElementById('tablaItemsBody')
+            tablaItemsBody.innerHTML = ''
+
+            
+            document.getElementById("idproducto").value = valor
+            for(let item of items.datos){
+                document.getElementById("new_id").value = item.new_id
+                tablaItemsBody.innerHTML += `<tr>
+                    <td>${item.id}</td><td>${item.item}</td>
+                    <td>
+                        <input 
+                            type="number" 
+                            class="form-control cant porcentaje" 
+                            name="porcentaje_${item.id}"
+                            value = ${item.porcentaje}
+                            placeholder="0"
+                            id="porcentaje_${item.id}" 
+                            onchange="calculaPorcentaje(${item.id})"
+                            min="0.1" max="1.0" step="0.1"
+                        >
+                    </td>
+                    <td>
+                        <input 
+                            type="text" 
+                            class="form-control cant" 
+                            name="cantidad_${item.id}" 
+                            value="${item.cantidad}" 
+                            id="cantidad_${item.id}"
+                            onchange="calculaPorcentaje(${item.id})"
+                            disabled
+                        >
+                    </td>
+                    <td>
+                        <input 
+                            type="text" 
+                            class="form-control cant precio" 
+                            name="precio_${item.id}" 
+                            value="${item.precio}" 
+                            id="precio_${item.id}"
+                            onchange="calculaPorcentaje(${item.id})"
+                            disabled
+                        >
+                    </td>
+                    <td>
+                        <input 
+                            type="text" 
+                            class="form-control cant pvp" 
+                            name="pvp_${item.id}" 
+                            value="${item.precio}" 
+                            id="pvp_${item.id}"
+                            onchange="calculaPorcentaje(${item.id})"
+                        >
+                    </td>
+                    <td>
+                        <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
+                            <img src="./public/images/delete.png" width="25" >
+                        </a>
+                    </td>
+                    </tr>`
+                total += parseFloat(item.precio)
+            }
+        },
+        error: function(resultado){
+            console.log(`El Item no se encontró o no se pudo eliminar`);
+        }
+    });
 }
 
 function cancelar(){
     
     location.replace('cotizador');
+}
+
+function activarSubmit(){
+    
+    let btnSubmit = document.getElementById("btnGuardar")
+    btnSubmit.removeAttribute('disabled')
 }
 
 function agregarItem(idproducto, item){

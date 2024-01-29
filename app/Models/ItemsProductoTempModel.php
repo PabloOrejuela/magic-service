@@ -48,7 +48,8 @@ class ItemsProductoTempModel extends Model {
             precio, 
             cuantificable,
             porcentaje,
-            estado, 
+            estado,
+            new_id,
             cantidad,
             '.$this->table.'.idproducto as idproducto');
         $builder->where($this->table.'.idproducto', $idproducto);
@@ -88,5 +89,75 @@ class ItemsProductoTempModel extends Model {
         $builder->set('cantidad', 1);
         $builder->insert();
         return  $this->db->insertID();
+    }
+
+    function _insertNewItemTemp($idproducto, $newId, $item){
+        
+        $builder = $this->db->table($this->table);
+        $builder->set('item', $item);
+        $builder->set('new_id', $newId);
+        $builder->set('idproducto', $idproducto);
+        $builder->set('cantidad', 1);
+        $builder->insert();
+        //sreturn  $this->db->insertID();
+    }
+
+    public function _deleteItemsTempOld(){
+        $ayer = date('Y-m-d', time() - 60 * 60 * 24);
+        $builder = $this->db->table($this->table);
+        $builder->where('created_at <=', $ayer);
+        $builder->delete();
+    }
+
+    function _updateDataItems($data){
+        $precio = $data['porcentaje']*$data['precio'];
+        
+        $builder = $this->db->table($this->table);
+        $builder->set('porcentaje', $data['porcentaje']);
+        $builder->set('precio_unitario', $data['precio']);
+        $builder->set('precio_actual', $precio);
+        $builder->where('new_id', $data['idNew']);
+        $builder->where('item', $data['idItem']);
+        $builder->update();
+    }
+
+    public function _deleteItem($item, $newId){
+        $this->db->transStart();
+        $builder = $this->db->table($this->table);
+        $builder->where('item',$item);
+        $builder->where('new_id',$newId);
+        $builder->delete();
+        $this->db->transComplete();
+        if ($this->db->transStatus() === false) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    function _getItemsTempProducto($newId){
+        
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select(
+            'items.id as id, 
+            items.item as item, 
+            precio, 
+            cuantificable,
+            porcentaje,
+            estado,
+            new_id,
+            cantidad,
+            '.$this->table.'.idproducto as idproducto');
+        $builder->where($this->table.'.new_id', $newId);
+        $builder->join('items', $this->table.'.item = items.id');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
     }
 }

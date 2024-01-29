@@ -174,6 +174,20 @@ class Ventas extends BaseController {
         echo json_encode($items);
     }
 
+    function updateItemsTempProduct(){
+
+        $data = [
+            'idproducto' => $this->request->getPostGet('idproducto'),
+            'precio' => $this->request->getPostGet('precio'),
+            'porcentaje' => $this->request->getPostGet('porcentaje'),
+            'idItem' => $this->request->getPostGet('idItem'),
+            'idNew' => $this->request->getPostGet('idNew'),
+        ];
+        $this->itemsProductoTempModel->_updateDataItems($data);
+
+        return true;
+    }
+
     function detalle_pedido_insert_temp(){
 
         $idproducto = $this->request->getPostGet('idproducto');
@@ -347,25 +361,49 @@ class Ventas extends BaseController {
     function getProducto($id){
         $error = "No se encontró el producto";
         $res['producto'] = $this->productoModel->_getProducto($id);
+        if ($res['producto']) {
+            $error = "Exito";
+        }
         $res['error'] = $error;
         echo json_encode($res);
     }
 
-    public function getItemsProducto($producto){
-        //Verifico si existe en la tabla temporald e items
-        $itemsTemp = $this->itemsProductoTempModel->_getItemsProducto($producto);
+    function deleteItemTempProduct(){
+        $itemsTemp = null;
+        $error = "No se pudo borrar el item";
+        $item = $this->request->getPostGet('idItem');
+        $new_id = $this->request->getPostGet('idproducto');
 
-        if ($itemsTemp) {
-            //Retorno los items temporales
-            echo json_encode($itemsTemp);
-        }else{
-            //Extraigo de la tabla de items
-            $items = $this->itemsProductoModel->_getItemsProducto($producto );
-            
-            //Retorno los items
-            echo json_encode($items);
+        $id = $this->itemsProductoTempModel->_deleteItem($item, $new_id);
+        if ($id) {
+            $res['datos'] = $this->itemsProductoTempModel->_getItemsTempProducto($new_id);
         }
+        
+        echo json_encode($res);
     }
+
+    public function getItemsProducto($idproducto){
+
+        $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
+        $itemsTemp = $this->insertProductTemp($idproducto, $items);
+        
+        //Retorno los items
+        echo json_encode($itemsTemp);
+    }
+
+    public function insertProductTemp($idproducto, $items){
+        $itemsTemp = NULL;
+        $lastId = $this->productoModel->_getLastId();
+        $newId = $idproducto.$lastId;
+        foreach ($items as $key => $item) {
+            $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item->id);
+        }
+        $itemsTemp = $this->itemsProductoTempModel->_getItemsProducto($idproducto, $newId);
+        
+        return $itemsTemp;
+    }
+
+
 
     function cargaProductos_temp($cod_pedido){
         $resultado = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
@@ -668,6 +706,9 @@ class Ventas extends BaseController {
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
+
+            //delete de los items de la tabla temporal de hace un día
+            $this->itemsProductoTempModel->_deleteItemsTempOld();
 
             //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Ventas';

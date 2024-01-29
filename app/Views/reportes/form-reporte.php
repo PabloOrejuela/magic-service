@@ -16,13 +16,30 @@
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?> <span id="mensaje"> Esto es un modelo de como podría ser la cabecera de los generadores de reportes</span></h3>
+                        <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form action="<?= site_url().'reporte';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
+                                <div class="form-group col-md-3">
+                                    <label for="negocio">Negocio:</label>
+                                    <select 
+                                        class="form-select form-control-border" 
+                                        id="negocio" 
+                                        name="negocio" 
+                                    >
+                                        <option value="0" selected>--Opciones--</option>
+                                        <?php
+                                            if (isset($negocios)) {
+                                                foreach ($negocios as $key => $negocio) {
+                                                    echo '<option value="'.$negocio->id.'" >'.$negocio->negocio.'</option>';
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                               </div>
                                <div class="form-group col-md-3">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
                                     <input 

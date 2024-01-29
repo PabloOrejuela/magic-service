@@ -9,222 +9,266 @@
     #items{
         text-align: left;
     }
-    a:hover{
-        text-decoration: none;
-    }
     #input-item{
         width: 80%;
         margin-right: 5px;
     }
     .cant{
-        /* width: 20%; */
+        width: 50px;
         text-align: right;
         margin-left: 0px;
     }
 
+    .div-img{
+        display:none;
+    }
+
     #mensaje{
-        color: red;
+        color: #eed5d5;
         font-size: 2.5em;
     }
+    #input-total{
+        position: relative;
+        display: inline;
+        margin-left: 40px;
+        width: 60%;
+    }
+
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+
+    input[type=number] { -moz-appearance:textfield; }
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+
 <section class="content">
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?><span id="mensaje"> Aún trabajando esta parte</span></h3>
+                        <h3 class="card-title"><?= $subtitle; ?> <span id="mensaje"> Aquí deben ir precargados los datos e ITEMS del producto</span></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'product-update';?>" method="post">
+                    <form action="<?= site_url().'product-personalize';?>" method="post">
                         <div class="card-body">
-                            <div class="form-group col-md-7">
-                                <label for="producto">Nombre del producto:</label>
-                                <input type="text" class="form-control" id="producto" name="producto" placeholder="Producto" value="<?= $producto->producto; ?>" required>
-                            </div>
-                            <div class="form-group col-md-4 mb-3">
-                                <label for="categoria">Categoría:</label>
-                                <select class="custom-select form-control" id="categoria" name="categoria">
-                                    <option value="" selected>--Seleccionar categoría--</option>
-                                    <?php
-                                        if (isset($categorias)) {
-                                            foreach ($categorias as $key => $value) {
-                                                if ($value->id == $producto->idcategoria) {
-                                                    echo '<option value="'.$value->id.'" selected>'.$value->categoria.'</option>';
-                                                }
-                                                else{
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="categoria">Categoría:</label>
+                                    <select class="custom-select form-control" id="categoria" name="categoria">
+                                        <option value="" selected>--Seleccionar categoría--</option>
+                                        <?php
+                                            if (isset($categorias)) {
+                                                foreach ($categorias as $key => $value) {
                                                     echo '<option value="'.$value->id.'">'.$value->categoria.'</option>';
                                                 }
-                                                
                                             }
-                                        }
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="row form-group col-md-10 mb-3">
-                                <label for="items">Items:</label>
-                                <select 
-                                    class="selectpicker show-menu-arrow col-md-4" 
-                                    id="items" 
-                                    name="items"
-                                    data-style="form-control" 
-                                    data-live-search="true" 
-                                    title="-- Seleccionar Item --"
-                                >
-                                    <?php
-                                        if (isset($items)) {
-                                            foreach ($items as $key => $value) {
-                                                echo '<option value="'.$value->id.'">'.$value->item.' $ '.$value->precio.'</option>';
-                                            } 
-                                        }
-                                    ?>
-                                </select>
-                                <div for="items" class="col-md-2 col-form-label" >
-                                    <a href="#" class="btn btn-secondary stretched-link" onclick="agregar();">+ Agregar</a>
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="productos">Productos:</label>
+                                    <select class="custom-select form-control" id="productos" name="productos" disabled>
+                                        <option value="" selected>--Seleccionar Producto--</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group col-md-1 mb-1" style="display:none;">
+                                    <label for="productos">Id:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control cant" 
+                                        name="idproducto" 
+                                        value="0" 
+                                        id="idproducto"
+                                    >
+                                </div>
+                                <div class="form-group" style="display:none;">
+                                    <input 
+                                        type="text" 
+                                        class="form-control cant" 
+                                        name="image" 
+                                        value="0" 
+                                        id="image"
+                                    >
+                                </div>
+                                <div class="form-group col-md-3 mb-3 div-img">
+                                    <label for="image-product" id="lbl-image"></label>
+                                        <img 
+                                            src="#" 
+                                            alt="producto" 
+                                            class="rounded mx-auto d-block image-arreglo" 
+                                            id="image-product"
+                                        >
+                                        
                                 </div>
                             </div>
-                            <div class="input-group col-md-8 mb-3" id="item-grid" >
-                                <?php
-                                    $precio = 0;
-                                    //echo '<pre>'.var_export($elementos, true).'</pre>';exit;
-                                    foreach ($elementos as $key => $elemento) {
-                                        $precio += $elemento->precio;
-                                        echo '<input type="text" class="form-control" id="input-item" name="elementos['.$elemento->id.']" value="'.$elemento->item.'" >
-                                                <input class="form-control mb-1 col-sm-2 cant" type="text"  value="'.$elemento->cantidad.'" name="cantidad[]" id="'.$elemento->id.'">';
-                                    }
-                                ?>
-                            </div>
-                            <div class="mb-3 row col-sm-8" id="elementos" hidden>
-                                <ol>
-                                <?php
-                                    foreach ($elementos as $key => $elemento) {
-                                        echo '
-                                            <li><input class="form-control" type="hidden" name="'.$elemento->id.'" value="'.$elemento->cantidad.'" ></li>
-                                        ';
-                                    }
-                                ?>
-                                </ol>
-                            </div>
-                            <div class="mb-3 row col-sm-8">
-                                <label for="precio" class="col-sm-3 col-form-label">Precio:</label>
-                                <div class="col-sm-4">
-                                <input type="text" class="form-control" id="precio" name="precio" placeholder="0.00" value="<?= number_format($precio, 2); ?>" readonly>
+
+                            <div class="row col-md-12 mt-3">
+                                <div class="form-group col-md-4 mb-3">
+                                    <label for="categoria">Nombre del nuevo arreglo:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        name="nombreArregloNuevo" 
+                                        placeholder="Nombre" 
+                                        id="nombreArregloNuevo"
+                                        disabled
+                                    >
+                                    <input 
+                                        type="text" 
+                                        class="form-control col-md-2 mt-1" 
+                                        name="new_id" 
+                                        id="new_id"
+                                        style="display:none;"
+                                    >
                                 </div>
-                            </div> 
+                                
+                            </div>
+                            <div class="row col-md-9 mt-3">
+                                <div class="form-group row">
+                                    <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
+                                    <div class="col-md-2" style="display:none;">
+                                        <input 
+                                            type="text"
+                                            class="form-control" 
+                                            id="idp" 
+                                            name="idp"
+                                        >
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label for="item">Items:</label>
+                                        <input 
+                                            type="text"
+                                            class="form-control" 
+                                            id="iditem" 
+                                            name="item"
+                                        >
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a href="javascript:agregarItem(document.getElementById('idproducto').value, idp.value)" class="btn btn-carrito-item" id="btn-carrito-item">
+                                            <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="form-group col-sm-12 mb-3" width:="100%">
+                                    <table id="tablaItems" class="table  table-stripped  table-responsive tablaItems" >
+                                        <thead >
+                                            <th>#</th>
+                                            <th class="col-sm-4">Item</th>
+                                            <th class="col-sm-2">Porcentaje</th>
+                                            <th class="col-sm-2">Unidades</th>
+                                            <th class="col-sm-2">Precio unitario</th>
+                                            <th class="col-sm-2">Precio final</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody id='tablaItemsBody'></tbody>
+                                    </table>
+                                    <table id="tablaCostos" class="table table-stripped  table-responsive tablaItems" >
+                                        <tbody id='tablaCostosBody'>
+                                            <tr>
+                                                <td class="col-sm-9">TOTAL:</td>
+                                                <td class="col-sm-2" colspan="5">
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control cant" 
+                                                        name="total" 
+                                                        value="0.00" 
+                                                        id="input-total"
+                                                    >
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button type="button" class="btn btn-light" onclick="activarSubmit()" id="btn-activar">Estoy listo y deseo continuar</button>
+                            </div>
                             
                         </div>
                         <!-- /.card-body -->
-                        <?= form_hidden('id', 0); ?>
+                        
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" disabled="true" id="btnGuardar">Guardar</button>
-                            <input type="checkbox" id="activar" value="1"> Activar
-                            <a href="<?= site_url(); ?>productos" class="btn btn-light ml-5" id="btn-cancela">Cancelar</a>
+                        <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
+                            <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+<!-- Modal -->
+<div class="modal dialog" id="imageArregloModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Imágen del arreglo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <script>
+            let image = document.getElementById("image-product")
+            let id = image.getAttribute("src");
+            document.write(id)
+        </script>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </section> <!-- /.card -->
+
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous">
+</script>
+<script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="<?= site_url(); ?>public/js/form-cotizador.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 <script>
+    
+    aData = {}
+    
+    $('#iditem').autocomplete({
+        source: function(request, response){
+            $.ajax({
+                url: 'getItemsAutocomplete',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    item: request.term
+                },
+                success: function(res) {
 
-
-    var elementos = []
-    var id = []
-    var cant = []
-    var precio = 0
-    var total = 0.00
-    var html = ''
-    var html2 = ''
-    var nombre = ''
-    var num = 1
-   
-   
-
-    function agregar(){
-        
-        //$("#items").change(function() {
-            var valor = $("#items").val() // Capturamos el valor del select
-            var texto = $("#items").find('option:selected').text(); // Capturamos el texto del option seleccionado
-            
-            nombre = texto.split('$')[0]
-            precio = texto.split('$')[1]
-            
-
-            if (texto != "-- Seleccionar Item --") {
-                
-                total = total + parseFloat(precio)
-                document.getElementById("precio").value = total.toFixed(2)
-                
-
-                if (elementos[valor] == undefined || elementos[valor] == NaN) {
-                    //console.log("NO");
-                    elementos[valor] = 1
-                    // const el = document.createElement('div')
-                    // el.textContent = elementos[valor]
-                    // div.appendChild(el)
-                    //document.getElementById("input-cant").value = num
-                    html = '<input class="form-control mb-1" name="items[]" value="'+texto+'" id="input-item" readonly>'+
-                            '<input class="form-control mb-1 col-sm-2 cant" type="text"  value="'+num+'" name="cantidad[]" id="'+valor+'">'+
-                            '<input type="button" value="quitar" >'
-                    $('#item-grid').append(html)
-                
-                    //console.log(elementos)
-                    html2 += '<input class="form-control" type="hidden" name="elementos['+valor+']" value="'+num+'" >'+
-                    '<input class="form-control mb-1 cant" type="hidden" name="cant[]" value="'+num+'"  id="input-cant">'
-                    $('#elementos').html(html2)
-                   
-                }else{
-                    elementos[valor] = parseInt(elementos[valor])+1
-
-                    html2 += '<input class="form-control" type="hidden" name="elementos['+valor+']" value="'+elementos[valor]+'" >'+
-                        '<input class="cant form-control mb-1 " type="hidden" name="cant[]" value="'+num+'"  id="input-cant">'+
-                        '<input type="button" value="quitar" >'
-                    $('#elementos').html(html2)
-                    document.getElementById(valor).value = elementos[valor] 
-                    
-                    
-                    
+                    aData = $.map(res, function(value, key){
+                        return{
+                            id: value.id,
+                            label: value.item + ' - ' + value.precio
+                        };
+                    });
+                    let results = $.ui.autocomplete.filter(aData, request.term);
+                    response(results)
                 }
-                
-                //console.log(elementos)
-            }
-            
-            
-            
-        //});
-    }
-
-
-    $('#activar').click(function() {
-
-        if ($('#categoria').val().trim() === '') {
-            alert('Debe seleccionar una CATEGORÍA');
-
-        } else {
-            //console.log('Campo correcto');
-            $("#activar").change(function() {
-                $("#btnGuardar").prop('disabled', false)
-                $("#activar").prop('disabled', true)
             });
+        },
+        select: function(event, ui){
+            //document.getElementById('idp').value = 10
+            document.getElementById("idp").value = ui.item.id
+            
         }
     });
-
 </script>
-
-<script>
-/* Multiple Item Picker */
-$('.selectpicker').selectpicker({
-    style: 'btn-default'
-});
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>
-

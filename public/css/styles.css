@@ -309,11 +309,21 @@ a{
 
 .image-arreglo{
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   margin-left:50px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   border: 1px solid #eded;
+}
+
+#btn-activar{
+  width: auto;
+  background-color: #d3d3d3;
+  font-weight: bold;
+}
+
+.subItem{
+  font-size: 0.9em;
 }
 
 

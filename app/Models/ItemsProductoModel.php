@@ -65,6 +65,36 @@ class ItemsProductoModel extends Model {
         }    
     }
 
+    public function _insertItemsPersonalizado($idproducto, $data) {
+
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+
+        //Inserto el nuevo producto
+        $builder = $this->db->table($this->table);
+
+        //recorro el arreglo y grabo 
+        foreach ($data as $key => $value) {
+
+            if ($idproducto != 'NULL' && $idproducto != '') {
+                $builder->set('idproducto', $idproducto);
+            }
+
+            if ($value->id != 'NULL' && $value->id != '') {
+                $builder->set('item', $value->id);
+            }
+
+            if ($value->porcentaje != 'NULL' && $value->porcentaje != '') {
+                $builder->set('porcentaje', $value->porcentaje);
+            }
+
+            if ($value->cantidad != 'NULL' && $value->cantidad != '') {
+                $builder->set('cantidad', 1);
+            }
+            
+            $builder->insert();
+        }    
+    }
+
     function _getItemsProducto($idproducto){
         $result = NULL;
         $builder = $this->db->table($this->table);

@@ -31,6 +31,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte';
