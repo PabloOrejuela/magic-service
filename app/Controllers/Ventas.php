@@ -331,11 +331,13 @@ class Ventas extends BaseController {
             $res['datos'] = $detalle;
             foreach ($detalle as $key => $value) {
                 $subtotal += $value->subtotal;
+                $cantidad += $value->cantidad;
             }
             
         }else{
             $res['datos'] = 'NO existe ese pedido';
         }
+        $res['cantidad'] = $cantidad;
         $res['subtotal'] = $subtotal;
         $res['error'] = $error;
         echo json_encode($res);
@@ -420,7 +422,7 @@ class Ventas extends BaseController {
                 $fila .= '<td><input type="text" class="form-control" name="observacion_'.$row->idproducto.'" value="'.$row->observacion.'" onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" id="observa_'.$row->idproducto.'"></td>';
                 $fila .= '<td><input type="text" class="form-control input-precio" name="precio_'.$row->idproducto.'" value="'.$row->pvp.'" onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" id="precio_'.$row->idproducto.'"></td>';
                 
-                $fila .= '<td id="cant_'.$row->idproducto.'">'.$row->cantidad.'</td>';
+                $fila .= '<td id="cant_'.$row->idproducto.'" class="cant_arreglo">'.$row->cantidad.'</td>';
                 
                 $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="btn btn-borrar">
                             <img src="'.site_url().'public/images/delete.png" width="25" >
