@@ -1,11 +1,10 @@
 <h4>Cambios:</h4>  
 <ul>   
-    <li>Implementado el cálculo del mensjero cuando tiene que entregar mas de un arreglo</li>
-
+    <li>Mejorado el diseño del formulario de Nuevo usuario</li>
 </ul>
 
 <h4>Correcciones:</h4> 
 <ul>
-
+    <li>Corregido el margin bottom del form Nuevo usuario</li>
 </ul>
 

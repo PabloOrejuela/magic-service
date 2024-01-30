@@ -2,12 +2,18 @@
     #error-message{
         color: red;
     }
+    .content{
+        margin-bottom: 100px;
+    }
+    .card{
+        margin-bottom: 3em !important;
+    }
 </style>
 <section class="content">
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
@@ -15,35 +21,43 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'user-insert';?>" method="post">
-                        <div class="card-body">
-                            <div class="form-group col-md-7">
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="<?= old('nombre'); ?>" >
-                                <p id="error-message"><?= session('errors.nombre');?> </p>
+                    <form action="<?= site_url().'user-insert';?>" method="post" id="form-usuario">
+                        <div class="card-body col-md-12">
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label for="nombre">Nombre:</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="<?= old('nombre'); ?>" >
+                                    <p id="error-message"><?= session('errors.nombre');?> </p>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="user">Usuario:</label>
+                                    <input type="text" class="form-control" id="user" name="user" placeholder="Nombre de usuario" value="<?= old('user'); ?>">
+                                    <p id="error-message"><?= session('errors.user');?> </p>
+                                </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="user">Usuario:</label>
-                                <input type="text" class="form-control" id="user" name="user" placeholder="Nombre de usuario" value="<?= old('user'); ?>">
-                                <p id="error-message"><?= session('errors.user');?> </p>
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label for="password">Contraseña:</label>
+                                    <input type="text" class="form-control" id="password" name="password" placeholder="Password" value="<?= old('password'); ?>" >
+                                    <p id="error-message"><?= session('errors.password');?> </p>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="cedula">Cédula/Documento:</label>
+                                    <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Documento" value="<?= old('cedula'); ?>">
+                                </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="password">Contraseña:</label>
-                                <input type="text" class="form-control" id="password" name="password" placeholder="Password" value="<?= old('password'); ?>" >
-                                <p id="error-message"><?= session('errors.password');?> </p>
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label for="telefono">Teléfono:</label>
+                                    <input type="text" class="form-control number" id="telefono" name="telefono" placeholder="Teléfono" value="<?= old('telefono'); ?>">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com" value="<?= old('email'); ?>">
+                                </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="telefono">Teléfono:</label>
-                                <input type="text" class="form-control number" id="telefono" name="telefono" placeholder="Teléfono" value="<?= old('telefono'); ?>">
-                            </div>
-                            <div class="form-group col-md-7">
-                                <label for="email">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com" value="<?= old('email'); ?>">
-                            </div>
-                            <div class="form-group col-md-7">
-                                <label for="cedula">Cédula/Documento:</label>
-                                <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Documento" value="<?= old('cedula'); ?>">
-                            </div>
+                            
+                                
                             <div class="form-group col-md-9">
                                 <label for="direccion">Dirección:</label>
                                 <textarea class="form-control" id="taDireccion" name="direccion" rows="3"></textarea>
