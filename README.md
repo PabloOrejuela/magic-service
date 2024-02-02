@@ -6,5 +6,6 @@
 <h4>Correcciones:</h4> 
 <ul>
     <li>Corregido el margin bottom del form Nuevo usuario</li>
+    <li>Corregido el margin bottom de todos los formularios</li>
 </ul>
 

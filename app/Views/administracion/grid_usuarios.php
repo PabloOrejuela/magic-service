@@ -19,6 +19,7 @@
     .row {
         margin-bottom: 20px;
     }
+    
 </style>
 <!-- Main content -->
 <section class="content">
