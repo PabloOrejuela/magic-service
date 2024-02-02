@@ -192,7 +192,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor valorImportante" 
+                                                    class="form-control inputValor valorImportante decimal" 
                                                     id="valor_neto" 
                                                     placeholder="0.00" 
                                                     onchange="sumarTotal(this.value);" 
@@ -206,7 +206,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
+                                                    class="form-control inputValor decimal" 
                                                     id="descuento" 
                                                     placeholder="0" 
                                                     onchange="sumarTotal()" 
@@ -231,7 +231,7 @@
                                             <div class="col-md-4" style="margin-rigth:0px;">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor div-cant" 
+                                                    class="form-control inputValor div-cant decimal" 
                                                     id="transporte" 
                                                     placeholder="0.00" 
                                                     onchange="sumarTotal()" 
@@ -245,7 +245,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor"
+                                                    class="form-control inputValor decimal"
                                                     id="horario_extra" 
                                                     placeholder="0" 
                                                     onchange="sumarTotal()" 
@@ -259,7 +259,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
+                                                    class="form-control inputValor decimal" 
                                                     id="cargo_domingo" 
                                                     placeholder="0" 
                                                     onchange="sumarTotal()" 
@@ -273,7 +273,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
+                                                    class="form-control inputValor cant decimal" 
                                                     id="valor_mensajero_edit" 
                                                     placeholder="0" 
                                                     style="color:blue;"
@@ -285,7 +285,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor valorImportante" 
+                                                    class="form-control inputValor valorImportante decimal" 
                                                     id="valor_mensajero" 
                                                     placeholder="0" 
                                                     onchange="sumarTotal()" 
@@ -299,7 +299,7 @@
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
-                                                    class="form-control inputValor" 
+                                                    class="form-control inputValor decimal" 
                                                     id="total" 
                                                     placeholder="0.00" 
                                                     onchange="sumarTotal()" 
@@ -1059,6 +1059,13 @@ $(document).ready(function(){
             document.getElementById("idp").value = ui.item.id
             //console.log(ui.item.id);
         }
+    });
+
+    $(document).ready(function(){
+        $(".decimal").on("input", function() {
+
+            this.value = this.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');
+        });
     });
 </script>
 

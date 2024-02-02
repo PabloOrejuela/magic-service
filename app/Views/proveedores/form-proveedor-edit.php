@@ -88,7 +88,7 @@
 </section> <!-- /.card -->
 <script>
     $(document).ready(function(){
-        $("#celular_contacto").on( "change", function() {
+        $("#celular_contacto").on("change", function() {
             let string = $("#celular_contacto").val();
            
             $("#celular_contacto").val(string.replace(/[^\w]/gi, ''))
@@ -96,7 +96,7 @@
     })
 
     $(document).ready(function(){
-        $("#documento").on( "change", function() {
+        $("#documento").on("change", function() {
             let string = $("#documento").val();
            
             $("#documento").val(string.replace(/ /gi, ''))
