@@ -140,6 +140,24 @@ class Validation extends BaseConfig {
         ],
     ];
 
+    public $usuarioUpdate = [
+        'nombre'   => 'required',
+        'user'   => 'required',
+        'idroles'   => 'greater_than[0]',
+    ]; 
+
+    public $usuarioUpdate_errors = [
+        'idroles' => [
+            'greater_than' => 'El campo "Rol" es obligatorio',
+        ],
+        'nombre' => [
+            'required' => 'El campo "Nombre" es obligatorio',
+        ],
+        'user' => [
+            'required' => 'El campo "Usuario" es obligatorio',
+        ]
+    ];
+
     public $items = [
         'item'   => 'required',
         'precio'   => 'required|decimal',

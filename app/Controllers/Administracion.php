@@ -678,6 +678,45 @@ class Administracion extends BaseController {
         }
     }
 
+    public function user_update(){
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+
+            $user = [
+                'id' => $this->request->getPostGet('id'),
+                'nombre' => strtoupper($this->request->getPostGet('nombre')),
+                'user' => $this->request->getPostGet('user'),
+                'password' => trim($this->request->getPostGet('password')),
+                'password_old' => $this->request->getPostGet('password_old'),
+                'telefono' => $this->request->getPostGet('telefono'),
+                'email' => $this->request->getPostGet('email'),
+                'cedula' => $this->request->getPostGet('cedula'),
+                'direccion' => $this->request->getPostGet('direccion'),
+                'idroles' => $this->request->getPostGet('idroles'),
+            ];
+            
+            $this->validation->setRuleGroup('usuarioUpdate');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+                //echo '<pre>'.var_export($user, true).'</pre>';exit;
+                $this->usuarioModel->_update($user);
+
+                return redirect()->to('usuarios');
+            }
+            
+        }else{
+
+            $this->logout();
+        }
+    }
+
     public function sucursal_insert(){
 
         $data = $this->acl();

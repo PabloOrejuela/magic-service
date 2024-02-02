@@ -19,38 +19,47 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'user-insert';?>" method="post">
-                        <div class="card-body">
-                            <div class="form-group col-md-7">
-                                <label for="nombre">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="<?= $usuario->nombre; ?>" >
-                                <p id="error-message"><?= session('errors.nombre');?> </p>
+                    <form action="<?= site_url().'user-update';?>" method="post">
+                        <div class="card-body col-md-12">
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label for="nombre">Nombre:</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="<?= $usuario->nombre; ?>" >
+                                    <p id="error-message"><?= session('errors.nombre');?> </p>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="user">Usuario:</label>
+                                    <input type="text" class="form-control" id="user" name="user" placeholder="Nombre de usuario" value="<?= $usuario->user; ?>">
+                                    <p id="error-message"><?= session('errors.user');?> </p>
+                                </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="user">Usuario:</label>
-                                <input type="text" class="form-control" id="user" name="user" placeholder="Nombre de usuario" value="<?= $usuario->user; ?>">
-                                <p id="error-message"><?= session('errors.user');?> </p>
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label for="password">Nueva contraseña *:</label>
+                                    <input type="text" class="form-control" id="password" name="password" placeholder="Password" value="<?= old('password'); ?>" >
+                                    <p id="error-message"><?= session('errors.password');?> </p>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="telefono">Teléfono:</label>
+                                    <input type="text" class="form-control number" id="telefono" name="telefono" placeholder="Teléfono" value="<?= $usuario->telefono; ?>">
+                                </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="password">Nueva contraseña *:</label>
-                                <input type="text" class="form-control" id="password" name="password" placeholder="Password" value="<?= old('password'); ?>" >
-                                <p id="error-message"><?= session('errors.password');?> </p>
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-6">
+                                    <label for="email">Email:</label>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com" value="<?= $usuario->email; ?>">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="cedula">Cédula/Documento:</label>
+                                    <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Documento" value="<?= $usuario->cedula; ?>">
+                                </div>
                             </div>
-                            <div class="form-group col-md-7">
-                                <label for="telefono">Teléfono:</label>
-                                <input type="text" class="form-control number" id="telefono" name="telefono" placeholder="Teléfono" value="<?= $usuario->telefono; ?>">
-                            </div>
-                            <div class="form-group col-md-7">
-                                <label for="email">Email:</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com" value="<?= $usuario->email; ?>">
-                            </div>
-                            <div class="form-group col-md-7">
-                                <label for="cedula">Cédula/Documento:</label>
-                                <input type="text" class="form-control" id="cedula" name="cedula" placeholder="Documento" value="<?= $usuario->cedula; ?>">
-                            </div>
-                            <div class="form-group col-md-9">
-                                <label for="direccion">Dirección:</label>
-                                <textarea class="form-control" id="taDireccion" name="direccion" rows="3"><?= $usuario->direccion; ?></textarea>
+
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-9">
+                                    <label for="direccion">Dirección:</label>
+                                    <textarea class="form-control" id="taDireccion" name="direccion" rows="3"><?= $usuario->direccion; ?></textarea>
+                                </div>
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label for="idroles">Rol:</label>
@@ -72,7 +81,8 @@
                                 </select>
                                 <p id="error-message"><?= session('errors.idroles');?> </p>
                             </div>
-                            
+                            <?= form_hidden('id', $usuario->id); ?>
+                            <?= form_hidden('password_old', $usuario->password); ?>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">

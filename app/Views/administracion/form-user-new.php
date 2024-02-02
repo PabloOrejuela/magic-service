@@ -5,9 +5,6 @@
     .content{
         margin-bottom: 100px;
     }
-    .card{
-        margin-bottom: 3em !important;
-    }
 </style>
 <section class="content">
       <div class="container-fluid">
@@ -57,10 +54,11 @@
                                 </div>
                             </div>
                             
-                                
-                            <div class="form-group col-md-9">
-                                <label for="direccion">Dirección:</label>
-                                <textarea class="form-control" id="taDireccion" name="direccion" rows="3"></textarea>
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-9">
+                                    <label for="direccion">Dirección:</label>
+                                    <textarea class="form-control" id="taDireccion" name="direccion" rows="3"></textarea>
+                                </div>
                             </div>
                             <div class="form-group col-md-6 mb-3">
                                 <label for="idroles">Rol:</label>
