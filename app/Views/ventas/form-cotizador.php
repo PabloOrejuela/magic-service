@@ -19,14 +19,11 @@
         margin-left: 0px;
     }
 
-    .div-img{
-        display:none;
-    }
-
     #mensaje{
         color: #eed5d5;
         font-size: 2.5em;
     }
+
     #input-total{
         position: relative;
         display: inline;
@@ -99,15 +96,17 @@
                                         id="image"
                                     >
                                 </div>
-                                <div class="form-group col-md-3 mb-3 div-img">
-                                    <label for="image-product" id="lbl-image"></label>
+                                <div class="form-group col-md-3 mb-3">
+                                    <label for="image-product" id="lbl-image">Imagen</label>
+                                    <div id="div-img">
                                         <img 
                                             src="#" 
                                             alt="producto" 
                                             class="rounded mx-auto d-block image-arreglo" 
                                             id="image-product"
                                         >
-                                        
+                                    </div>
+                                    <input class="form-control" type="file" id="formFileImg" name="file-img" disabled>
                                 </div>
                             </div>
 
@@ -161,11 +160,10 @@
                             </div>
                             <div class="row col-md-12">
                                 <div class="form-group col-sm-12 mb-3" width:="100%">
-                                    <table id="tablaItems" class="table  table-stripped  table-responsive tablaItems" >
+                                    <table id="tablaItems" class="table table-stripped table-responsive tablaItems" >
                                         <thead >
                                             <th>#</th>
                                             <th class="col-sm-4">Item</th>
-                                            <th class="col-sm-2">Porcentaje</th>
                                             <th class="col-sm-2">Unidades</th>
                                             <th class="col-sm-2">Precio unitario</th>
                                             <th class="col-sm-2">Precio final</th>

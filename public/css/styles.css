@@ -142,7 +142,7 @@ a{
   font-size: 1.2em;
 }
 
-#formas_pago{
+#formas_pago, #select-banco {
   width:60%;
   font-size: 1.2em;
 }
@@ -323,6 +323,10 @@ a{
   border: 1px solid #eded;
 }
 
+#div-img{
+  display:none;
+}
+
 #btn-activar{
   width: auto;
   background-color: #d3d3d3;
@@ -341,6 +345,10 @@ a{
 
 .card{
   margin-bottom: 5em !important;
+}
+
+#new-prod-option{
+  color: rgb(8, 8, 83);
 }
 
 

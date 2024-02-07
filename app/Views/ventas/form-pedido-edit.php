@@ -287,6 +287,24 @@
                                                 ?>
                                             </select>
                                         </div>
+                                        <div class="form-group mb-3 mt-5">
+                                            <label for="banco">Institución financiera:</label>
+                                            <select class="form-select form-control-border" id="select-banco" name="banco">
+                                                <option value="0" selected>--Seleccionar --</option>
+                                                <?php
+                                                    if (isset($bancos)) {
+                                                        foreach ($bancos as $key => $banco) {
+                                                            if ($banco->id == $pedido->banco) {
+                                                                echo '<option value="'.$banco->id.'" selected>'.$banco->banco.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$banco->id.'">'.$banco->banco.'</option>';
+                                                            }
+                                                            
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
                                         <div class="form-group">
                                             <label for="ref_pago" >No. Documento del pago:</label>
                                             <input 

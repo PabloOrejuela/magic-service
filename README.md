@@ -1,6 +1,8 @@
 <h4>Cambios:</h4>  
 <ul>   
     <li>Los campos decimal ya solo aceptan números y punto</li>
+    <li>Creado el modelo de procedencias</li>
+    <li>Trabajando el cotizador para que pueda crear nuevo producto</li>
 </ul>
 
 <h4>Correcciones:</h4> 

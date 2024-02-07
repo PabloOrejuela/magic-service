@@ -19,7 +19,8 @@ $(document).ready(function(){
 
                         
                         selectProductos.innerHTML = ''
-                        selectProductos.innerHTML += `<option value="0">--Seleccionar producto--</option>`
+                        selectProductos.innerHTML += `<option value="-1" id="new-prod-option"><a href="#">--Nuevo producto--</a></option>`
+                        selectProductos.innerHTML += `<option value="0" selected>--Seleccionar producto--</option>`
                         for(let producto of productos){
                             
                             selectProductos.innerHTML += `<option value="${producto.id}">${producto.producto}</option>`
@@ -38,106 +39,142 @@ $(document).ready(function(){
     });
   });
 
+function removeRows(table) {
+    try {
+
+        let rowCount = table.rows.length;
+
+        for(let i=0; i<rowCount; i++) {
+            let row = table.rows[i];
+            table.deleteRow(i);
+            rowCount--;
+            i--;
+                
+        }
+    }catch(e) {
+            alert(e);
+    }
+}
+
 
   $(document).ready(function(){
     $("#productos").on('change',function(){
         if($("#productos").val() !=""){
             valor = $("#productos").val();
 
-            getDatosProducto(valor)
             
-            $.ajax({
-                type:"GET",
-                dataType:"html",
-                url: "ventas-getItemsProducto"+'/'+valor,
-                beforeSend: function (f) {
-                    //$('#cliente').html('Cargando ...');
-            },
-                success: function(resultado){
-                  
-                    let items = JSON.parse(resultado);
-                    let total = 0
+            if (valor == -1) {
+                //Nuevo producto
+                
+                let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
+                let inputTotal = document.querySelector("#input-total")
+                let divImg = document.querySelector("#div-img")
+                let tablaItemsBody = document.querySelector("#tablaItemsBody")
+                let image = document.getElementById("image-product")
+                let lblImage = document.getElementById("lbl-image")
+                let impFileImg = document.querySelector("#formFileImg")
+                let inputItems = document.querySelector("#iditem")
 
-                    let tablaItemsBody = document.getElementById('tablaItemsBody')
-                    tablaItemsBody.innerHTML = ''
-                    document.getElementById("idproducto").value = valor
-                    for(let item of items){
-                        document.getElementById("new_id").value = item.new_id
-                        tablaItemsBody.innerHTML += `<tr>
-                            <td>${item.id}</td><td>${item.item}</td>
-                            <td>
-                                <input 
-                                    type="number" 
-                                    class="form-control cant porcentaje" 
-                                    name="porcentaje_${item.id}"
-                                    value = ${item.porcentaje}
-                                    placeholder="0"
-                                    id="porcentaje_${item.id}" 
-                                    onchange="calculaPorcentaje(${item.id})"
-                                    min="0.1" max="1.0" step="0.1"
-                                >
-                            </td>
-                            <td>
-                                <input 
-                                    type="text" 
-                                    class="form-control cant" 
-                                    name="cantidad_${item.id}" 
-                                    value="${item.cantidad}" 
-                                    id="cantidad_${item.id}"
-                                    onchange="calculaPorcentaje(${item.id})"
-                                    disabled
-                                >
-                            </td>
-                            <td>
-                                <input 
-                                    type="text" 
-                                    class="form-control cant precio" 
-                                    name="precio_${item.id}" 
-                                    value="${item.precio}" 
-                                    id="precio_${item.id}"
-                                    onchange="calculaPorcentaje(${item.id})"
-                                    disabled
-                                >
-                            </td>
-                            <td>
-                                <input 
-                                    type="text" 
-                                    class="form-control cant pvp" 
-                                    name="pvp_${item.id}" 
-                                    value="${item.precio}" 
-                                    id="pvp_${item.id}"
-                                    onchange="calculaPorcentaje(${item.id})"
-                                >
-                            </td>
-                            <td>
-                                <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
-                                    <img src="./public/images/delete.png" width="25" >
-                                </a>
-                            </td>
-                            </tr>`
-                        total += parseFloat(item.precio)
-                    }
-                    let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
-                    let slctProductos = document.getElementById("productos")
-                    let index = slctProductos.selectedIndex
-                    
-                    document.getElementById("input-total").value = parseFloat(total).toFixed(2)
-                    
-                    nombreArregloNuevo.removeAttribute('disabled')
-                    let nombretemp = slctProductos.options[index].text
-                    nombreArregloNuevo.value = nombretemp+'_temp'
+                lblImage.innerHTML = "Imagen"
+                image.src = "#"
+                divImg.style.display = "none"
 
+                inputItems.value = ''
+                
+                impFileImg.removeAttribute('disabled')
+                nombreArregloNuevo.removeAttribute('disabled')
+                nombreArregloNuevo.value = "NUEVO PRODUCTO"
+
+                
+                inputTotal.value = "0.00"
+                removeRows(tablaItemsBody)                
+
+                
+            } else {
+                getDatosProducto(valor)
+            
+                $.ajax({
+                    type:"GET",
+                    dataType:"html",
+                    url: "ventas-getItemsProducto"+'/'+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
                 },
-                error: function(resultado){
-                    console.log('El producto no tiene items');
-                }
-            });
+                    success: function(resultado){
+                    
+                        let items = JSON.parse(resultado);
+                        let total = 0
+
+                        let tablaItemsBody = document.getElementById('tablaItemsBody')
+                        tablaItemsBody.innerHTML = ''
+                        document.getElementById("idproducto").value = valor
+                        for(let item of items){
+                            document.getElementById("new_id").value = item.new_id
+                            tablaItemsBody.innerHTML += `<tr>
+                                <td>${item.id}</td><td>${item.item}</td>
+                                <td>
+                                    <input 
+                                        type="number" 
+                                        class="form-control cant porcentaje" 
+                                        name="porcentaje_${item.id}"
+                                        value = ${item.porcentaje}
+                                        placeholder="0"
+                                        id="porcentaje_${item.id}" 
+                                        onchange="calculaPorcentaje(${item.id})"
+                                        min="0.1" step="0.1"
+                                    >
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text" 
+                                        class="form-control cant precio" 
+                                        name="precio_${item.id}" 
+                                        value="${item.precio}" 
+                                        id="precio_${item.id}"
+                                        onchange="calculaPorcentaje(${item.id})"
+                                        disabled
+                                    >
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text" 
+                                        class="form-control cant pvp" 
+                                        name="pvp_${item.id}" 
+                                        value="${item.precio}" 
+                                        id="pvp_${item.id}"
+                                        onchange="calculaPorcentaje(${item.id})"
+                                    >
+                                </td>
+                                <td>
+                                    <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
+                                        <img src="./public/images/delete.png" width="25" >
+                                    </a>
+                                </td>
+                                </tr>`
+                            total += parseFloat(item.precio)
+                        }
+                        let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
+                        let slctProductos = document.getElementById("productos")
+                        let index = slctProductos.selectedIndex
+                        
+                        document.getElementById("input-total").value = parseFloat(total).toFixed(2)
+                        
+                        nombreArregloNuevo.removeAttribute('disabled')
+                        let nombretemp = slctProductos.options[index].text
+                        nombreArregloNuevo.value = nombretemp+'_temp'
+
+                    },
+                    error: function(resultado){
+                        console.log('El producto no tiene items');
+                    }
+                });
+            }
         }
     });
   });
   //onchange="observacion('.$row->idproducto. ','.$cod_pedido.')"
 function calculaPorcentaje(idItem){
-    limitaPorcentaje(idItem)
+    //limitaPorcentaje(idItem)
     
     let costo = 0
     let unidades = document.getElementById("cantidad_"+idItem).value
@@ -169,7 +206,7 @@ function calculaPorcentaje(idItem){
 */
 
 function updatePorcentaje(datosActualizar){
-    console.log(datosActualizar);
+    
     $.ajax({
         type:"GET",
         dataType:"html",
@@ -187,7 +224,7 @@ function updatePorcentaje(datosActualizar){
         success: function(resultado){
           
             // let res = JSON.parse(resultado);
-            //console.log(res);
+            
         },
         error: function(resultado){
           console.log('No hay productos de esa categoría');
@@ -231,9 +268,11 @@ function getDatosProducto(idproducto){
             let res = JSON.parse(resultado);
 
             let image = document.getElementById("image-product")
-            let divImg = document.querySelector(".div-img")
+            let divImg = document.querySelector("#div-img")
+            let impFileImg = document.querySelector("#formFileImg")
             document.getElementById("image").value = res.producto.image
 
+            impFileImg.removeAttribute("disabled")
             divImg.setAttribute("style", "display:block")
             document.getElementById("lbl-image").innerHTML = res.producto.image
             image.setAttribute("src", "public/images/productos/"+res.producto.image+'.jpg');
@@ -278,18 +317,7 @@ function deleteItem(idItem){
                             placeholder="0"
                             id="porcentaje_${item.id}" 
                             onchange="calculaPorcentaje(${item.id})"
-                            min="0.1" max="1.0" step="0.1"
-                        >
-                    </td>
-                    <td>
-                        <input 
-                            type="text" 
-                            class="form-control cant" 
-                            name="cantidad_${item.id}" 
-                            value="${item.cantidad}" 
-                            id="cantidad_${item.id}"
-                            onchange="calculaPorcentaje(${item.id})"
-                            disabled
+                            min="0.1" step="0.1"
                         >
                     </td>
                     <td>
@@ -340,7 +368,6 @@ function activarSubmit(){
 }
 
 function agregarItem(idproducto, item){
-    //console.log(idproducto+' / '+item);
     
     if (idproducto != null && idproducto != 0 && idproducto > 0) {
         
@@ -360,6 +387,7 @@ function agregarItem(idproducto, item){
 
                     alertAgregaItem()
                     let tablaItemsBody = document.getElementById('tablaItemsBody')
+                    
                     tablaItemsBody.innerHTML = ''
                     if (detalle.error != '') {
 
@@ -377,17 +405,6 @@ function agregarItem(idproducto, item){
                                         id="porcentaje_${element.id}" 
                                         onchange="calculaPorcentaje(${element.id})"
                                         min="0.1" max="1.0" step="0.1"
-                                    >
-                                </td>
-                                <td>
-                                    <input 
-                                        type="text" 
-                                        class="form-control cant" 
-                                        name="cantidad_${element.id}" 
-                                        value="${element.cantidad}" 
-                                        id="cantidad_${element.id}"
-                                        onchange="calculaPorcentaje(${element.id})"
-                                        disabled
                                     >
                                 </td>
                                 <td>

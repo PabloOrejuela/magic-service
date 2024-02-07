@@ -62,6 +62,7 @@ class PedidoModel extends Model {
                 observaciones,
                 hora_salida_pedido,
                 formas_pago,
+                banco,
                 fecha,
                 sectores_entrega.sector as sector,
                 dir_entrega,
@@ -130,6 +131,7 @@ class PedidoModel extends Model {
                 hora_salida_pedido,
                 vendedor,
                 formas_pago,
+                banco,
                 ubicacion,
                 observaciones,
                 pedidos.sector as idsector,
@@ -290,6 +292,10 @@ class PedidoModel extends Model {
 
         if ($data['formas_pago'] != 'NULL' && $data['formas_pago'] != '') {
             $builder->set('formas_pago', $data['formas_pago']); 
+        }
+
+        if ($data['banco'] != 'NULL' && $data['banco'] != '') {
+            $builder->set('banco', $data['banco']); 
         }
 
         if ($data['observaciones'] != 'NULL') {

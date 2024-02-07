@@ -33,6 +33,8 @@ use App\Models\KardexModel;
 use App\Models\MovimientoInventarioModel;
 use App\Models\StockActualModel;
 use App\Models\ItemsProductoTempModel;
+use App\Models\BancoModel;
+use App\Models\ProcedenciaModel;
 
 /**
  * Class BaseController
@@ -102,6 +104,8 @@ abstract class BaseController extends Controller {
         $this->movimientoInventarioModel = new MovimientoInventarioModel($this->db);
         $this->stockActualModel = new StockActualModel($this->db);
         $this->itemsProductoTempModel = new ItemsProductoTempModel($this->db);
+        $this->bancoModel = new BancoModel($this->db);
+        $this->procedenciaModel = new ProcedenciaModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

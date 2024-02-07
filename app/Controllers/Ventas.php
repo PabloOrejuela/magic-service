@@ -553,6 +553,7 @@ class Ventas extends BaseController {
                 'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
                 'horario_entrega' => $this->request->getPostGet('horario_entrega'),
                 'formas_pago' => $this->request->getPostGet('formas_pago'),
+                'banco' => $this->request->getPostGet('banco'),
                 'sector' => $this->request->getPostGet('sectores'),
                           
                 'vendedor' => $this->request->getPostGet('vendedor'),
@@ -638,7 +639,8 @@ class Ventas extends BaseController {
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
-            //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
+            
+            //echo '<pre>'.var_export($data['procedencias'], true).'</pre>';exit;
             $data['mensaje'] = '';
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
@@ -665,8 +667,10 @@ class Ventas extends BaseController {
             $data['productos'] = $this->productoModel->findAll();
             $data['sectores'] = $this->sectoresEntregaModel->findAll();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
+            $data['bancos'] = $this->bancoModel->findAll();
+            $data['procedencias'] = $this->procedenciaModel->findAll();
 
-            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
+            echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';
