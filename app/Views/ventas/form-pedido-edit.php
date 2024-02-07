@@ -119,6 +119,26 @@
                                             <label for="email" >Email:</label>
                                             <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= $pedido->email; ?>">
                                         </div>
+                                        <div class="form-group mb-5 mt-5">
+                                            <label for="procedencia">Procedencia *:</label>
+                                            <select class="form-select form-control-border" id="procedencia" name="procedencia" required>
+                                                <option value="0" selected>--Seleccionar--</option>
+                                                <?php
+                                                    if (isset($procedencias)) {
+                                                        foreach ($procedencias as $key => $procedencia) {
+                                                            if ($procedencia->id == $pedido->procedencia) {
+                                                                echo '<option value="'.$procedencia->id.'" selected>'.$procedencia->procedencia.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$procedencia->id.'">'.$procedencia->procedencia.'</option>';
+                                                            }
+                                                            
+                                                        }
+                                                    }
+                                                ?>
+                                                
+                                            </select>
+                                        </div>
+
                                         <div class="form-group" id="campo-extra">
                                             <label for="dir_entrega" >Dirección de entrega *:</label>
                                             <input type="dir_entrega" class="form-control" id="dir_entrega" name="dir_entrega" placeholder="Dirección" value="<?= $pedido->dir_entrega; ?>">

@@ -578,6 +578,7 @@ class Ventas extends BaseController {
                 'telefono' => strtoupper($this->request->getPostGet('telefono')),
                 'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
+                'procedencia' => $this->request->getPostGet('procedencia'),
                 'direccion' => '',
                 'email' => $this->request->getPostGet('email'),
             ];
@@ -670,7 +671,7 @@ class Ventas extends BaseController {
             $data['bancos'] = $this->bancoModel->findAll();
             $data['procedencias'] = $this->procedenciaModel->findAll();
 
-            echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['procedencias'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';

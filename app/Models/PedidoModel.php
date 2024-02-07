@@ -119,6 +119,7 @@ class PedidoModel extends Model {
                 nombre,
                 documento,
                 clientes.id as idcliente,
+                procedencia,
                 direccion,
                 telefono,
                 telefono_2,
