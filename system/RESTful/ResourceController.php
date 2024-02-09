@@ -16,6 +16,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * An extendable controller to provide a RESTful API for a resource.
+ *
+ * @see \CodeIgniter\RESTful\ResourceControllerTest
  */
 class ResourceController extends BaseResource
 {
@@ -103,6 +105,7 @@ class ResourceController extends BaseResource
      * Set/change the expected response representation for returned objects
      *
      * @param string $format json/xml
+     * @phpstan-param 'json'|'xml' $format
      *
      * @return void
      */

@@ -100,7 +100,7 @@
                                     <label for="image-product" id="lbl-image">Imagen</label>
                                     <div id="div-img">
                                         <img 
-                                            src="#" 
+                                            src="public/images/default-img.png" 
                                             alt="producto" 
                                             class="rounded mx-auto d-block image-arreglo" 
                                             id="image-product"
@@ -188,6 +188,12 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="form-check mb-4 mx-2 form-switch">
+                                    <input class="form-check-input" type="checkbox" value="1" id="chk-attr-temp" name="arreglo-temporal">
+                                    <label class="form-check-label" for="chk-attr-temp" id="chk-attr-temp">
+                                        Guardar como arreglo temporal
+                                    </label>
+                                </div>
                                 <button type="button" class="btn btn-light" onclick="activarSubmit()" id="btn-activar">Estoy listo y deseo continuar</button>
                             </div>
                             
@@ -195,7 +201,7 @@
                         <!-- /.card-body -->
                         
                         <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
                             <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
                         </div>
                     </form>
@@ -234,6 +240,7 @@
 </script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= site_url(); ?>public/js/form-cotizador.js"></script>
+<script src="<?= site_url(); ?>public/js/carga-imagen-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 

@@ -341,9 +341,11 @@ class Connection extends BaseConnection
      */
     protected function _fieldData(string $table): array
     {
-        $sql = 'SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, COLUMN_DEFAULT
-			FROM INFORMATION_SCHEMA.COLUMNS
-			WHERE TABLE_NAME= ' . $this->escape(($table));
+        $sql = 'SELECT
+                COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION,
+                COLUMN_DEFAULT, IS_NULLABLE
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_NAME= ' . $this->escape(($table));
 
         if (($query = $this->query($sql)) === false) {
             throw new DatabaseException(lang('Database.failGetFieldData'));
@@ -362,6 +364,8 @@ class Connection extends BaseConnection
             $retVal[$i]->max_length = $query[$i]->CHARACTER_MAXIMUM_LENGTH > 0
                 ? $query[$i]->CHARACTER_MAXIMUM_LENGTH
                 : $query[$i]->NUMERIC_PRECISION;
+
+            $retVal[$i]->nullable = $query[$i]->IS_NULLABLE !== 'NO';
         }
 
         return $retVal;
@@ -440,7 +444,7 @@ class Connection extends BaseConnection
      */
     public function setDatabase(?string $databaseName = null)
     {
-        if (empty($databaseName)) {
+        if ($databaseName === null || $databaseName === '') {
             $databaseName = $this->database;
         }
 
@@ -534,7 +538,7 @@ class Connection extends BaseConnection
             return $this->dataCache['version'];
         }
 
-        if (! $this->connID || empty($info = sqlsrv_server_info($this->connID))) {
+        if (! $this->connID || ($info = sqlsrv_server_info($this->connID)) === []) {
             $this->initialize();
         }
 

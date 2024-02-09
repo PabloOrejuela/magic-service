@@ -324,7 +324,7 @@ a{
 }
 
 #div-img{
-  display:none;
+  display:block;
 }
 
 #btn-activar{
@@ -351,6 +351,9 @@ a{
   color: rgb(8, 8, 83);
 }
 
+#chk-attr-temp{
+  font-size: 1.2em;
+}
 
 
 

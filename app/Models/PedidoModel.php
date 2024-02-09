@@ -113,41 +113,11 @@ class PedidoModel extends Model {
     function _getDatosPedido($idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select(
-                $this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,
-                '.$this->table.'.estado as estado, 
-                nombre,
-                documento,
-                clientes.id as idcliente,
-                procedencia,
-                direccion,
-                telefono,
-                telefono_2,
-                email,
-                fecha_entrega,
-                horario_entrega,
-                venta_extra,
-                hora,
-                fecha,
-                hora_salida_pedido,
-                vendedor,
-                formas_pago,
-                banco,
-                ubicacion,
-                observaciones,
-                pedidos.sector as idsector,
-                sectores_entrega.sector as sector,
-                dir_entrega,
-                mensajero,
-                valor_mensajero,
-                valor_mensajero_edit,
-                transporte,
-                cargo_horario,
-                domingo,
-                valor_neto,
-                descuento,
-                total'
-        );
+        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado, 
+                nombre,documento,clientes.id as idcliente,procedencia,direccion,telefono,telefono_2,email,fecha_entrega,
+                horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,
+                pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,valor_mensajero,
+                valor_mensajero_edit,transporte,cargo_horario,domingo,valor_neto,descuento,total');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id');

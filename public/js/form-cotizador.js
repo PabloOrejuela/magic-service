@@ -76,8 +76,8 @@ function removeRows(table) {
                 let inputItems = document.querySelector("#iditem")
 
                 lblImage.innerHTML = "Imagen"
-                image.src = "#"
-                divImg.style.display = "none"
+                image.src = "./public/images/default-img.png"
+                //divImg.style.display = "none"
 
                 inputItems.value = ''
                 
