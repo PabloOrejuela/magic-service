@@ -1,12 +1,4 @@
-<style>
-    #fila-form{
-        padding:10px;
-    }
-
-    #error-message{
-        margin-top: 4px;
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/cliente-new.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">

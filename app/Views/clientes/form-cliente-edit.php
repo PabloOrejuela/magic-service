@@ -1,19 +1,4 @@
-<style>
-    #fila-form{
-        padding:10px;
-    }
-
-    #error-message{
-        margin-top: 4px;
-    }
-
-    .btn-print{
-        background-color: #EEE;
-        color: #000;
-        position: absolute;
-        right: 20px;
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/cliente-edit.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">

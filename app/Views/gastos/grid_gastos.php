@@ -1,17 +1,4 @@
-<style>
-    .row {
-        margin-bottom: 20px;
-    }
-
-    .div.dataTables_length select{
-        width: 150px; important!;
-    }
-
-    .grid{
-        font-size: 0.8em;
-    }
-
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/grid-gastos.css">
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
