@@ -138,6 +138,17 @@ function removeRows(table) {
                                 <td>
                                     <input 
                                         type="text" 
+                                        class="form-control cant precio_final" 
+                                        name="pvp_${item.id}" 
+                                        value="${item.precio}" 
+                                        id="pvp_${item.id}"
+                                        onchange="calculaPorcentaje(${item.id})"
+                                        disabled
+                                    >
+                                </td>
+                                <td>
+                                    <input 
+                                        type="text" 
                                         class="form-control cant pvp" 
                                         name="pvp_${item.id}" 
                                         value="${item.precio}" 

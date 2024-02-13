@@ -419,8 +419,26 @@ class Ventas extends BaseController {
                 $fila .= '<td>'.$numFila.'</td>';
                 $fila .= '<td>'.$row->id.'</td>';
                 $fila .= '<td>'.$row->producto.'</td>';
-                $fila .= '<td><input type="text" class="form-control" name="observacion_'.$row->idproducto.'" value="'.$row->observacion.'" onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" id="observa_'.$row->idproducto.'"></td>';
-                $fila .= '<td><input type="text" class="form-control input-precio" name="precio_'.$row->idproducto.'" value="'.$row->pvp.'" onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" id="precio_'.$row->idproducto.'"></td>';
+                $fila .= '<td>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                name="observacion_'.$row->idproducto.'" 
+                                value="'.$row->observacion.'" 
+                                onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" 
+                                id="observa_'.$row->idproducto.'"
+                            >
+                        </td>';
+                $fila .= '<td>
+                            <input 
+                                type="text" 
+                                class="form-control input-precio" 
+                                name="precio_'.$row->idproducto.'" 
+                                value="'.$row->pvp.'" 
+                                onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" 
+                                id="precio_'.$row->idproducto.'"
+                            >
+                        </td>';
                 
                 $fila .= '<td id="cant_'.$row->idproducto.'" class="cant_arreglo">'.$row->cantidad.'</td>';
                 

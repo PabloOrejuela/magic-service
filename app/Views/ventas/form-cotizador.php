@@ -112,7 +112,11 @@
                                         >
                                     </div>
                                     <div class="col-md-2">
-                                        <a href="javascript:agregarItem(document.getElementById('idproducto').value, idp.value)" class="btn btn-carrito-item" id="btn-carrito-item">
+                                        <a 
+                                            href="javascript:agregarItem(document.getElementById('idproducto').value, idp.value)" 
+                                            class="btn btn-carrito-item" 
+                                            id="btn-carrito-item"
+                                        >
                                             <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
                                         </a>
                                     </div>
@@ -124,9 +128,10 @@
                                         <thead >
                                             <th>#</th>
                                             <th class="col-sm-4">Item</th>
-                                            <th class="col-sm-2">Unidades</th>
-                                            <th class="col-sm-2">Precio unitario</th>
-                                            <th class="col-sm-2">Precio final</th>
+                                            <th class="col-sm-2" id="label-thead">Unidades</th>
+                                            <th class="col-sm-2" id="label-thead">Precio unitario</th>
+                                            <th class="col-sm-2" id="label-thead">Precio</th>
+                                            <th class="col-sm-2" id="label-thead">PVP</th>
                                             <th></th>
                                         </thead>
                                         <tbody id='tablaItemsBody'></tbody>
@@ -144,6 +149,7 @@
                                                         id="input-total"
                                                     >
                                                 </td>
+                                                <td></td>
                                             </tr>
                                         </tbody>
                                     </table>

@@ -3,10 +3,6 @@
         text-transform: uppercase;
     }
 
-    /* .cancelar{
-        position: absolute;
-        right: 5px;
-    } */
 </style>
 <section class="content">
       <div class="container-fluid">
