@@ -1,27 +1,5 @@
-<style>
-    #fila-form{
-        padding:10px;
-    }
-
-    #error-message{
-        margin-top: 4px;
-    }
-    .card-title{
-        font-size: 1.3em;
-        font-weight: bold;
-    }
-    .row{
-        margin-top:15px;
-    }
-
-    .form-label{
-        margin-bottom: 1px;
-    }
-    .id{
-        display:none !important;
-    }
-</style>
 <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/gestion-inventario.css">
 <section class="content mb-5">
       <div class="container-fluid">
         <div class="row">

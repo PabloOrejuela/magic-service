@@ -1,24 +1,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.css">
-<style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/nuevopedido-styles.css">
 
-    #error-message{
-        color:red;
-    }
-
-    .div-cant{
-        position: relative;
-        float: right;
-        color: red;
-    }
-
-    .card{
-        height:auto !important;
-        padding: 3px !important;
-        margin-bottom: 100px !important;
-    }
-
-</style>
 <section class="content">
       <div class="container-fluid">
         <div class="row">

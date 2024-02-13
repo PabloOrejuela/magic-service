@@ -1,29 +1,4 @@
-<style>
-    .inputValor{
-        text-align: right;
-    }
-
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
-    .input {
-        border-radius: 300px;
-        width: 250px;
-    }
-    .row {
-        margin-bottom: 30px;
-    }
-
-    .form-check-input{
-        margin: 0 auto
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>/public/css/grid-items.css">
 <!-- Main content -->
 <section class="content mb-3">
       <div class="container-fluid">

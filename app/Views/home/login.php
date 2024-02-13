@@ -1,10 +1,4 @@
-<style>
-  #wrap {
-      margin: 0 auto 0 auto;
-      width: 30%;
-      min-width: 350px;
-  }
-</style>
+<link rel="stylesheet" href="./public/css/login-style.css">
 <div class="col-md-12 mt-5" id="wrap">
   <div class="login-box">
     <div class="login-logo">

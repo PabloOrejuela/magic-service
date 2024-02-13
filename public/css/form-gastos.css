@@ -1,0 +1,14 @@
+.text {
+    text-transform: uppercase;
+}
+.frm-gastos{
+    font-size: 0.7em;
+    margin-bottom: 100px !important;
+}
+label{
+    margin-bottom: 0.1rem !important;
+}
+
+.content-header{
+    padding: 3px 0.5rem;
+}

@@ -1,0 +1,15 @@
+#error-message{
+    color:red;
+}
+
+.div-cant{
+    position: relative;
+    float: right;
+    color: red;
+}
+
+.card{
+    height:auto !important;
+    padding: 3px !important;
+    margin-bottom: 100px !important;
+}

@@ -1,46 +1,6 @@
-<style>
-    #precio{
-        text-align: right;
-    }
-    #item-grid{
-        margin-left: 20px;
-        /*float: left;*/
-    }
-    #items{
-        text-align: left;
-    }
-    #input-item{
-        width: 80%;
-        margin-right: 5px;
-    }
-    .cant{
-        width: 50px;
-        text-align: right;
-        margin-left: 0px;
-    }
-
-    #mensaje{
-        color: #eed5d5;
-        font-size: 2.5em;
-    }
-
-    #input-total{
-        position: relative;
-        display: inline;
-        margin-left: 40px;
-        width: 60%;
-    }
-
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
-
-    input[type=number] { -moz-appearance:textfield; }
-</style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/cotizador-styles.css">
 
 <section class="content">
       <div class="container-fluid">

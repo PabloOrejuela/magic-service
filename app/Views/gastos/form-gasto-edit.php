@@ -1,19 +1,4 @@
-<style>
-    .text {
-        text-transform: uppercase;
-    }
-    .frm-gastos{
-        font-size: 0.7em;
-        margin-bottom: 100px !important;
-    }
-    label{
-        margin-bottom: 0.1rem !important;
-    }
-
-    .content-header{
-        padding: 3px 0.5rem;
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>/public/css/form-gastos.css">
 <section class="content mb-5 frm-gastos">
       <div class="container-fluid">
         <div class="row">
