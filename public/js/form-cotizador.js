@@ -141,7 +141,7 @@ function removeRows(table) {
                                         class="form-control cant precio_final" 
                                         name="pvp_${item.id}" 
                                         value="${item.precio}" 
-                                        id="pvp_${item.id}"
+                                        id="precio_final_${item.id}"
                                         onchange="calculaPorcentaje(${item.id})"
                                         disabled
                                     >
@@ -153,7 +153,7 @@ function removeRows(table) {
                                         name="pvp_${item.id}" 
                                         value="${item.precio}" 
                                         id="pvp_${item.id}"
-                                        onchange="calculaPorcentaje(${item.id})"
+                                        onchange="calculaTotal()"
                                     >
                                 </td>
                                 <td>
@@ -188,15 +188,17 @@ function calculaPorcentaje(idItem){
     //limitaPorcentaje(idItem)
     
     let costo = 0
-    let unidades = document.getElementById("cantidad_"+idItem).value
     let porcentaje = document.getElementById("porcentaje_"+idItem).value
     let precio = document.getElementById("precio_"+idItem).value
     let idproducto = document.getElementById("idproducto").value
     let idNew = document.getElementById("new_id").value
+    let precioFinal = document.getElementById("precio_final_"+idItem)
+    let pvp = document.getElementById("pvp_"+idItem)
     
-    costo = (parseFloat(porcentaje) * parseFloat(precio) * parseInt(unidades))
-    document.getElementById("pvp_"+idItem).value = '0'
-    document.getElementById("pvp_"+idItem).value = parseFloat(costo).toFixed(2)
+    precioVenta = (parseFloat(porcentaje) * parseFloat(precio))
+    precioFinal.value = '0'
+    precioFinal.value = parseFloat(precioVenta).toFixed(2)
+    pvp.value = parseFloat(precioVenta).toFixed(2)
 
     //actualizo el porcentaje y el precio
     datosActualizar = {

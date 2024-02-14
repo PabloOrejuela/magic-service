@@ -2,7 +2,8 @@
 <ul>
     <li>Se optimizó el header del login para mejorar la carga inicial del sitio</li>
     <li>Implementado inpute PVP en Cotizador</li>
-    <li>Cambio en estilos del Cotizador</li>    
+    <li>Cambio en estilos del Cotizador</li>
+    <li>El campo PVP es editable, se implementó el nuevo cálculo de los totales en el cotizador</li> 
 </ul>
 
 <h4>Correcciones:</h4> 
