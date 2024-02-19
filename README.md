@@ -1,4 +1,5 @@
 <h3>Cambios</h3>
-<li>Implementado el form de edición de variables del sistema</li>
-
+<ul>
+    <li>Implementado el form de edición de variables del sistema</li>
+</ul>
 <h3>Correcciones:</h3>
