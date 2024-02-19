@@ -21,6 +21,12 @@ class Home extends BaseController {
         if ($data['logged'] == 1 ) {
             
             $data['session'] = $this->session;
+
+            /*
+             * Verificar si hay productos temporales con mas de 30 días de haber sido creados y los desactiva
+             */
+            $this->productoModel->_desactivaProductosTemporales();
+
             return redirect()->to('pedidos');
         }else{
             $this->logout();

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Models\DateTime;
 
 class ProductoModel extends Model {
 
@@ -90,6 +91,21 @@ class ProductoModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria');
         $builder->join('categorias', $this->table.'.idcategoria = categorias.id');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getProductosTemp(){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select("*");
+        $builder->where('attr_temporal', 1);
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -194,5 +210,29 @@ class ProductoModel extends Model {
 
         $builder->insert();
         return  $this->db->insertID();
+    }
+
+    function _desactivaProductosTemporales() {
+        $builder = $this->db->table($this->table);
+        $now = new \DateTime(date("Y-m-d"));
+        $dias = 0;
+        $diferencia = 0;
+
+        //Traigo los productos que tienen Attr temporal
+        $prodTemporales = $this->_getProductosTemp();
+
+        foreach ($prodTemporales as $key => $value) {
+            
+            $fechaActualizacion = new \DateTime(date($value->updated_at));
+            $diferencia = date_diff($fechaActualizacion, $now);
+            $dias = $diferencia->format('%R%a');
+            //echo '<pre>'.var_export($dias, true).'</pre>';exit;
+            if ($dias > '+30') {
+                
+                $builder->set('estado', 0);
+                $builder->where('id', $value->id);
+                $builder->update();
+            }
+        }
     }
 }
