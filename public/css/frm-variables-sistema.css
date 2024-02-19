@@ -1,0 +1,9 @@
+.card {
+    padding: 20px;
+    width: 50%;
+}
+
+input[type=text]{
+    font-size: 0.9em;
+    text-align: right;
+}

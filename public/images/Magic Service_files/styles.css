@@ -1,0 +1,25 @@
+.abs-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .form {
+    width: 450px;
+  }
+
+  #wrap {
+	margin: 0 auto 0 auto;
+	width: 30%;
+	min-width: 350px;
+}
+
+.btn{
+  background-color: #00514E;
+}
+
+a{
+  text-decoration: none;
+  color: #00514E;
+}

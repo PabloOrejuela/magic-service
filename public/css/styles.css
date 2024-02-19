@@ -1,0 +1,359 @@
+.abs-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.form {
+    width: 480px;
+}
+
+#wrap {
+	margin: 0 auto 0 auto;
+	width: 30%;
+	min-width: 350px;
+}
+
+.btn-collapse{
+  font-size:x-large;
+  margin: 0px 10px;
+}
+
+.btn{
+  background-color: #00514E;
+}
+
+.btnAction{
+  background:transparent;
+  margin:auto;
+  border: none;
+}
+
+.btnAction:hover{
+  background-color: rgb(124, 124, 124, 0.2);
+  margin:auto;
+  border: none;
+}
+
+a{
+  text-decoration: none;
+  color: #00514E;
+}
+
+#a{
+  text-decoration: none;
+  float:left;
+}
+
+#a:hover{
+  text-decoration: none;
+}
+
+#error-message{
+  color: red;
+}
+
+#btn-pedido{
+  color: antiquewhite;
+  margin-top: 5px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: rgb(184, 45, 27, 1);
+}
+
+#btn-pedido:hover{
+  color:#000;
+  margin-top: 5px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: rgb(239, 192, 155, 1);
+}
+
+#btn-cotizador{
+  color: antiquewhite;
+  margin-top: 5px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: rgb(255, 128, 0, 1);
+}
+
+#btn-cotizador:hover{
+  color:#000;
+  margin-top: 5px;
+  font-weight: bold;
+  padding: 10px;
+  background-color: rgb(255, 128, 0, 1);
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #000;
+  font-size:1.3em;
+}
+
+#btn-cancela{
+  background-color: #e8c39e;
+  border: none;
+}
+
+#btn-cancela:hover{
+  border: 1px solid #072a29;
+  background-color: #70665b;
+  color: blanchedalmond;
+}
+
+#form-pedido{
+  width:600px;
+}
+
+#form-usuario{
+  font-size: 0.8em;
+  padding: 10px;
+  width:100%;
+  margin-bottom: 10px;
+}
+
+#inputfecha{
+  text-align: right;
+}
+
+#inputProducto{
+  width:30%;
+}
+
+.inputValor{
+  text-align: right;
+  width: 5%;
+}
+
+.inputCant{
+  margin-left: 20px;
+  margin-right: 0px;
+  text-align: right;
+  width: 70px !important;
+}
+
+#link-edita-producto{
+  margin-left:10px;
+}
+
+#sectores{
+  width:40%;
+  font-size: 1.2em;
+}
+
+#formas_pago, #select-banco {
+  width:60%;
+  font-size: 1.2em;
+}
+
+#vendedor{
+  width:50%;
+  font-size: 1.2em;
+}
+
+.separator{
+  margin: 0 auto;
+  width: 100%;
+  background-color: rgb(168, 168, 168, 0.2);
+  height: 3px;
+}
+
+#idproducto{
+  width:100%;
+  font-size: 1.1em;
+}
+
+#horario_entrega{
+  width:100%;
+  font-size: 1.1em;
+}
+
+#btn-copy{
+  display: flex;
+  justify-content: center;
+}
+
+#div-pedido label{
+  display: inline-flex;
+}
+
+.span-pedido{
+  margin-left: 5px;
+  font-size: 0.8em;
+}
+
+#mensaje-campos-requeridos{
+  color:#B82D1B;
+  margin-bottom: 20px;
+  font-size: 1em;;
+}
+
+#span-incompleto{
+  color:#B82D1B;
+  text-align: center;
+  font-weight: bold;
+}
+
+#span-completo{
+  color: #00514E;
+  text-align: center;
+  font-weight: bold;
+}
+
+#id-hidden{
+  display: none;
+}
+
+
+#link-editar{
+  text-decoration: underline !important;
+  font-weight: bold;
+  font-size: 1em;
+  color:#00514E;
+}
+
+#link-editar:hover{
+  color: #000;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+#link-clear-fields{
+  position: absolute;
+  right: 10px;
+  text-decoration: underline !important;
+  font-weight: bold;
+  font-size: 1em;
+  color:#00514E;
+}
+
+#link-clear-fields:hover{
+  position: absolute;
+  right: 10px;
+  text-decoration: underline !important;
+  color: #000;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.input-precio{
+  text-align: right;
+}
+
+.input-cantidad{
+  text-align: right;
+  width: 50px;
+}
+
+.titulo-form-pedido{
+  font-size: 2em;
+  font-weight: bold;
+  padding: 2px;
+  color:#00514E;
+}
+
+.edit-pedido{
+  background-color: rgba(165, 189, 176, 0.3);
+}
+
+#business-logo{
+  width: 12%;
+}
+
+.brand-link{
+  font-size: 1.2em;
+  padding: 20 10 !important;
+}
+
+
+.main-footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.btn-carrito{
+  position: relative;
+  float: right;
+  right: 3px;
+  top: 0px;
+  background-color: rgb(255, 255, 255, 0.5);
+}
+
+.btn-carrito-item{
+  position: relative;
+  right: 3px;
+  top: 12px;
+  background-color: rgb(255, 255, 255, 0.5);
+}
+
+.btn-carrito:hover{
+  position: relative;
+  float: right;
+  right: 3px;
+  top: 0px;
+  background-color: rgb(0, 0, 0, 0.1);
+}
+
+.btn-borrar{
+  background-color: rgb(255, 255, 255, 1);
+}
+
+.btn-borrar:hover{
+  background-color: rgb(0, 0, 0, 0.1);
+  box-shadow: rgb(0, 0, 0, 0.1);
+}
+
+.valorImportante{
+  font-weight: bold;
+}
+
+.popup-class{
+  border-radius: 0px;
+  font-size: 1.2em;
+}
+
+.image-arreglo{
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-left:50px;
+  margin-bottom: 10px;
+  border: 1px solid #eded;
+}
+
+#div-img{
+  display:block;
+}
+
+#btn-activar{
+  width: auto;
+  background-color: #d3d3d3;
+  font-weight: bold;
+}
+
+.subItem{
+  font-size: 0.9em;
+}
+
+.card-title{
+  font-size: 1.5em;
+  color: #FF8000;
+  padding-top: 5px;
+}
+
+.card{
+  margin-bottom: 5em !important;
+}
+
+#new-prod-option{
+  color: rgb(8, 8, 83);
+}
+
+#chk-attr-temp{
+  font-size: 1.2em;
+}
+
+
+

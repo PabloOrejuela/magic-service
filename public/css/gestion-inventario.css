@@ -1,0 +1,21 @@
+#fila-form{
+    padding:10px;
+}
+
+#error-message{
+    margin-top: 4px;
+}
+.card-title{
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.row{
+    margin-top:15px;
+}
+
+.form-label{
+    margin-bottom: 1px;
+}
+.id{
+    display:none !important;
+}

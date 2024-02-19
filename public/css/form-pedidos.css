@@ -1,0 +1,40 @@
+.inputValor{
+    text-align: right;
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+#datatablesSimple{
+    font-size: 0.7em;
+}
+
+.handle:hover{
+    cursor: move;
+    caret-color: red;
+    box-shadow: 0px 0px 20px rgba(149, 153, 159, 0.3)
+}
+
+.lista .item-list.fantasma{
+    border: 2px dotted #000;
+}
+
+.clipboard:focus{
+    outline:none;
+}
+
+#mensaje{
+    background-color:transparent;
+    color: #000;
+    border: none;
+    outline:none;
+    overflow:hidden;
+    font-size: 0.01em;
+}
+
+#mensaje::selection{
+    background-color:transparent;
+    color: #000;
+    border: none;
+}

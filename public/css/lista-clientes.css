@@ -1,0 +1,29 @@
+.inputValor{
+    text-align: right;
+}
+
+.input {
+    border-radius: 300px;
+    width: 250px;
+}
+.row {
+    margin-bottom: 20px;
+}
+
+.btnAction{
+    background:transparent;
+    margin:auto;
+    height: auto;
+    width: auto;
+    border: none;
+    padding: 0% 50%;
+}
+
+.btnAction:hover{
+    background-color: rgb(124, 124, 124, 0.1);
+    margin:auto;
+    height: auto;
+    width: 5px;
+    border: none;
+    padding: 0% 50%;
+}
