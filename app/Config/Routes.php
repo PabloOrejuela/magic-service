@@ -47,6 +47,7 @@ $routes->get('getProducto/(:num)', 'Ventas::getProducto/$1');
 $routes->get('detalle-prod-insert_temp', 'Ventas::detalle_prod_insert_temp');
 $routes->get('ventas-getItemsProducto/(:num)', 'Ventas::getItemsProducto/$1');
 $routes->get('updateItemsTempProduct', 'Ventas::updateItemsTempProduct');
+$routes->get('updatePvpTempProduct', 'Ventas::updatePvpTempProduct');
 $routes->get('deleteItemTempProduct', 'Ventas::deleteItemTempProduct');
 $routes->get('cotizador', 'Ventas::cotizador');
 

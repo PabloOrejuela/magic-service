@@ -99,10 +99,10 @@ function removeRows(table) {
                         alertProcesando()
                 },
                     success: function(resultado){
-                    //console.log(resultado);
+                    
                         let items = JSON.parse(resultado);
                         let total = 0
-
+                        //console.log(items);
                         let tablaItemsBody = document.getElementById('tablaItemsBody')
                         tablaItemsBody.innerHTML = ''
                         document.getElementById("idproducto").value = valor
@@ -149,7 +149,7 @@ function removeRows(table) {
                                         name="pvp_${item.id}" 
                                         value="${item.precio}" 
                                         id="pvp_${item.id}"
-                                        onchange="calculaTotal()"
+                                        onchange="updatePvp(${item.id})"
                                     >
                                 </td>
                                 <td>
@@ -184,10 +184,10 @@ function calculaPorcentaje(idItem){
     //limitaPorcentaje(idItem)
     
     let precioVenta = 0
-    let porcentaje = document.getElementById("porcentaje_"+idItem).value
-    let precio = document.getElementById("precio_"+idItem).value
     let idproducto = document.getElementById("idproducto").value
     let idNew = document.getElementById("new_id").value
+    let porcentaje = document.getElementById("porcentaje_"+idItem).value
+    let precio = document.getElementById("precio_"+idItem).value
     let precioFinal = document.getElementById("precio_final_"+idItem)
     let pvp = document.getElementById("pvp_"+idItem)
     
@@ -224,12 +224,38 @@ function updatePorcentaje(datosActualizar){
         url: "updateItemsTempProduct",
         data:{
             idproducto: datosActualizar.idproducto,
-            precio: datosActualizar.precio,
-            precio: datosActualizar.precioFinal,
+            precio_unitario: datosActualizar.precio,
+            precio_actual: datosActualizar.precioFinal,
             pvp: datosActualizar.pvp,
             porcentaje: datosActualizar.porcentaje,
             idItem: datosActualizar.idItem,
             idNew: datosActualizar.idNew
+        },
+        beforeSend: function (f) {
+            alertProcesando()
+        },
+        success: function(resultado){
+            return 1;
+        },
+        error: function(resultado){
+          console.log('No hay productos de esa categoría');
+        }
+    });
+    calculaTotal()
+}
+
+function updatePvp(idItem){
+    let pvp = document.getElementById("pvp_"+idItem)
+    let idNew = document.getElementById("new_id").value
+    console.log(idItem);
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "updatePvpTempProduct",
+        data:{
+            pvp: pvp.value,
+            idItem: idItem,
+            idNew: idNew
         },
         beforeSend: function (f) {
             alertProcesando()

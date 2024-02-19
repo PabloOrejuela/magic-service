@@ -122,9 +122,13 @@ class ItemsProductoTempModel extends Model {
     function _insertNewItemTemp($idproducto, $newId, $item){
         
         $builder = $this->db->table($this->table);
-        $builder->set('item', $item);
+        $builder->set('item', $item->id);
         $builder->set('new_id', $newId);
         $builder->set('idproducto', $idproducto);
+        $builder->set('precio_unitario', $item->precio);
+        $builder->set('precio_actual', $item->precio);
+        $builder->set('pvp', $item->precio);
+        $builder->set('porcentaje', $item->porcentaje);
         $builder->set('cantidad', 1);
         $builder->insert();
         //sreturn  $this->db->insertID();
@@ -138,14 +142,25 @@ class ItemsProductoTempModel extends Model {
     }
 
     function _updateDataItems($data){
-        echo '<pre>'.var_export($data, true).'</pre>';exit;
-        $precio = $data['porcentaje']*$data['precio'];
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        // $precio = $data['porcentaje']*$data['precio'];
         
         $builder = $this->db->table($this->table);
         $builder->set('porcentaje', $data['porcentaje']);
+        $builder->set('precio_unitario', $data['precio_unitario']);
+        $builder->set('precio_actual', $data['precio_actual']);
         $builder->set('pvp', $data['pvp']);
-        $builder->set('precio_unitario', $data['precio']);
-        $builder->set('precio_actual', $precio);
+        $builder->where('new_id', $data['idNew']);
+        $builder->where('item', $data['idItem']);
+        $builder->update();
+    }
+
+    function _updatePvp($data){
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        // $precio = $data['porcentaje']*$data['precio'];
+        
+        $builder = $this->db->table($this->table);
+        $builder->set('pvp', $data['pvp']);
         $builder->where('new_id', $data['idNew']);
         $builder->where('item', $data['idItem']);
         $builder->update();

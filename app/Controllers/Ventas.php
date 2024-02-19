@@ -178,13 +178,26 @@ class Ventas extends BaseController {
 
         $data = [
             'idproducto' => $this->request->getPostGet('idproducto'),
-            'precio' => $this->request->getPostGet('precio'),
-            'porcentaje' => $this->request->getPostGet('porcentaje'),
+            'precio_unitario' => $this->request->getPostGet('precio_unitario'),
+            'precio_actual' => $this->request->getPostGet('precio_actual'),
             'pvp' => $this->request->getPostGet('pvp'),
+            'porcentaje' => $this->request->getPostGet('porcentaje'),
             'idItem' => $this->request->getPostGet('idItem'),
             'idNew' => $this->request->getPostGet('idNew'),
         ];
         $this->itemsProductoTempModel->_updateDataItems($data);
+
+        return true;
+    }
+
+    function updatePvpTempProduct(){
+
+        $data = [
+            'pvp' => $this->request->getPostGet('pvp'),
+            'idItem' => $this->request->getPostGet('idItem'),
+            'idNew' => $this->request->getPostGet('idNew'),
+        ];
+        $this->itemsProductoTempModel->_updatePvp($data);
 
         return true;
     }
@@ -390,6 +403,7 @@ class Ventas extends BaseController {
     public function getItemsProducto($idproducto){
 
         $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
+        //echo '<pre>'.var_export($items, true).'</pre>';exit;
         $itemsTemp = $this->insertProductTemp($idproducto, $items);
         
         //Retorno los items
@@ -401,7 +415,7 @@ class Ventas extends BaseController {
         $lastId = $this->productoModel->_getLastId();
         $newId = $idproducto.$lastId;
         foreach ($items as $key => $item) {
-            $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item->id);
+            $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item);
         }
         $itemsTemp = $this->itemsProductoTempModel->_getItemsProducto($idproducto, $newId);
         
