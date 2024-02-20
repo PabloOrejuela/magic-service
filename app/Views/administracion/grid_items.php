@@ -29,7 +29,14 @@
                                             echo '<tr>
                                                 <td>'.$value->id.'</td>
                                                 <td><a href="'.site_url().'item-edit/'.$value->id.'" id="link-editar">'.$value->item.'</a></td>
-                                                <td>'.$value->precio.'</td>';
+                                                <td>
+                                                    <input 
+                                                        value="'.$value->precio.'"
+                                                        class="input-precio"
+                                                        id="input-precio_'.$value->id.'" 
+                                                        onchange="changeData('.$value->id.')" 
+                                                    >
+                                                </td>';
                                                 if ($value->cuantificable == 1) {
                                                     echo '<td><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked></td>';
                                                 }else if($value->cuantificable == 0){
@@ -61,6 +68,8 @@
         </div>
     </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/grid-items.js"></script>
 <script>
     $(document).ready(function(){
         $("input:checkbox").change(function() { 

@@ -228,7 +228,7 @@ class ProductoModel extends Model {
             $dias = $diferencia->format('%R%a');
             //echo '<pre>'.var_export($dias, true).'</pre>';exit;
             if ($dias > '+30') {
-                
+                //revisar
                 $builder->set('estado', 0);
                 $builder->where('id', $value->id);
                 $builder->update();

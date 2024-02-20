@@ -102,7 +102,7 @@ function removeRows(table) {
                     
                         let items = JSON.parse(resultado);
                         let total = 0
-                        //console.log(items);
+                        
                         let tablaItemsBody = document.getElementById('tablaItemsBody')
                         tablaItemsBody.innerHTML = ''
                         document.getElementById("idproducto").value = valor
@@ -362,7 +362,7 @@ function deleteItem(idItem){
                             type="text" 
                             class="form-control cant precio" 
                             name="precio_${item.id}" 
-                            value="${item.precio}" 
+                            value="${item.precio_unitario}" 
                             id="precio_${item.id}"
                             onchange="calculaPorcentaje(${item.id})"
                             disabled
@@ -372,10 +372,9 @@ function deleteItem(idItem){
                         <input 
                             type="text" 
                             class="form-control cant precio_final" 
-                            name="pvp_${item.id}" 
-                            value="${item.precio}" 
+                            name="precio_final_${item.id}" 
+                            value="${item.precio_actual}" 
                             id="precio_final_${item.id}"
-                            onchange="calculaPorcentaje(${item.id})"
                             disabled
                         >
                     </td>
@@ -384,9 +383,9 @@ function deleteItem(idItem){
                             type="text" 
                             class="form-control cant pvp" 
                             name="pvp_${item.id}" 
-                            value="${item.precio}" 
+                            value="${item.pvp}" 
                             id="pvp_${item.id}"
-                            onchange="calculaTotal()"
+                            onchange="updatePvp(${item.id})"
                         >
                     </td>
                     <td>
@@ -395,8 +394,9 @@ function deleteItem(idItem){
                         </a>
                     </td>
                     </tr>`
-                total += parseFloat(item.precio)
+                total += parseFloat(item.pvp)
             }
+            document.getElementById("input-total").value = parseFloat(total).toFixed(2)
         },
         error: function(resultado){
             console.log(`El Item no se encontró o no se pudo eliminar`);
@@ -417,6 +417,7 @@ function activarSubmit(){
 
 function agregarItem(idproducto, item){
     let idNew = document.getElementById("new_id").value
+    let inputItem = document.getElementById("iditem")
     
     if (idproducto != null && idproducto != 0 && idproducto > 0) {
         
@@ -435,26 +436,28 @@ function agregarItem(idproducto, item){
                     let detalle = JSON.parse(resultado);
                     let total = 0
 
+                    //Alerta que se ha agregado un item y limpio el input de items
                     alertAgregaItem()
+                    inputItem.value = ""
                     
                     let tablaItemsBody = document.getElementById('tablaItemsBody')
                     
                     tablaItemsBody.innerHTML = ''
                     if (detalle.error != '') {
 
-                        for(element of detalle.datos){
+                        for(item of detalle.datos){
                             
                             tablaItemsBody.innerHTML += `<tr>
-                                <td>${element.id}</td><td>${element.item}</td>
+                                <td>${item.id}</td><td>${item.item}</td>
                                 <td>
                                     <input 
                                         type="number" 
                                         class="form-control cant porcentaje" 
-                                        name="porcentaje_${element.id}"
-                                        value = "${element.porcentaje}"
+                                        name="porcentaje_${item.id}"
+                                        value = "${item.porcentaje}"
                                         placeholder="0"
-                                        id="porcentaje_${element.id}" 
-                                        onchange="calculaPorcentaje(${element.id})"
+                                        id="porcentaje_${item.id}" 
+                                        onchange="calculaPorcentaje(${item.id})"
                                         min="0.1" max="1.0" step="0.1"
                                     >
                                 </td>
@@ -462,9 +465,9 @@ function agregarItem(idproducto, item){
                                     <input 
                                         type="text" 
                                         class="form-control cant precio" 
-                                        name="precio_${element.id}" 
-                                        value="${element.precio}" 
-                                        id="precio_${element.id}"
+                                        name="precio_${item.id}" 
+                                        value="${item.precio_unitario}" 
+                                        id="precio_${item.id}"
                                         disabled
                                     >
                                 </td>
@@ -472,9 +475,9 @@ function agregarItem(idproducto, item){
                                     <input 
                                         type="text" 
                                         class="form-control cant precio_final" 
-                                        name="precio_final_${element.id}" 
-                                        value="${element.precio}" 
-                                        id="precio_final_${element.id}"
+                                        name="precio_final_${item.id}" 
+                                        value="${item.precio_actual}" 
+                                        id="precio_final_${item.id}"
                                         disabled
                                     >
                                 </td>
@@ -482,19 +485,19 @@ function agregarItem(idproducto, item){
                                     <input 
                                         type="text" 
                                         class="form-control cant pvp" 
-                                        name="pvp_${element.id}" 
-                                        value="${element.precio}" 
-                                        id="pvp_${element.id}"
-                                        onchange="calculaTotal()"
+                                        name="pvp_${item.id}" 
+                                        value="${item.pvp}" 
+                                        id="pvp_${item.id}"
+                                        onchange="updatePvp(${item.id})"
                                     >
                                 </td>
                                 <td>
-                                    <a onclick="eliminaItem(${element.id})" class="btn btn-borrar">
+                                    <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
                                         <img src="./public/images/delete.png" width="25" >
                                     </a>
                                 </td>
                                 </tr>`
-                            total += parseFloat(element.precio)
+                            total += parseFloat(item.pvp)
                         }
                         document.getElementById("input-total").value = parseFloat(total).toFixed(2)
                     }else{

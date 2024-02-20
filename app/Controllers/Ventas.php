@@ -276,7 +276,9 @@ class Ventas extends BaseController {
         $datosTempExiste = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
 
         if ($datosTempExiste) {
-            $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $item, $idNew);
+            //Traigo los datos del item a insertar
+            $dataItem = $this->itemModel->find($item);
+            $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
 
         }else{
             //Traigo los items de la tabla Items Producto
@@ -394,7 +396,7 @@ class Ventas extends BaseController {
 
         $id = $this->itemsProductoTempModel->_deleteItem($item, $new_id);
         if ($id) {
-            $res['datos'] = $this->itemsProductoTempModel->_getItemsTempProducto($new_id);
+            $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($new_id);
         }
         
         echo json_encode($res);

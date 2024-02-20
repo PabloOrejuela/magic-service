@@ -102,6 +102,16 @@ class ItemModel extends Model {
         $builder->update();
     }
 
+    public function _updatePrecio($item) {
+        $builder = $this->db->table($this->table);
+        if ($item['precio'] != 'NULL' && $item['precio'] != '') {
+            $builder->set('precio', $item['precio']);
+        }
+
+        $builder->where('id', $item['id']);
+        $builder->update();
+    }
+
     public function _updateEstado($data) {
         $builder = $this->db->table($this->table);
 

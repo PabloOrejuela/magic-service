@@ -5,6 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
+$routes->setAutoRoute(false);
+
 $routes->get('/', 'Login::index');
 $routes->post('validate_login', 'Home::validate_login');
 $routes->get('inicio', 'Home::index');
@@ -83,6 +85,7 @@ $routes->get('desactivar', 'Administracion::desactivar');
 $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');
 $routes->post('product-personalize', 'Administracion::product_personalize');
 $routes->get('updateVariableSistema', 'Administracion::updateVariableSistema');
+$routes->get('actualizaPrecioItem', 'Administracion::actualizaPrecioItem');
 
 $routes->get('sucursales', 'Administracion::sucursales');
 $routes->get('sucursal-create', 'Administracion::form_sucursal_create');

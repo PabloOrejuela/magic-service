@@ -247,6 +247,17 @@ class Administracion extends BaseController {
         
     }
 
+    public function actualizaPrecioItem() {
+        $item = [
+            'id' => $this->request->getPostGet('id'),
+            'precio' => strtoupper($this->request->getPostGet('precio')),
+
+        ];
+        //echo '<pre>'.var_export($item, true).'</pre>';exit;
+        $id = $this->itemModel->_updatePrecio($item);
+        return $id;
+    }
+
     public function updateVariableSistema() {
     
         $data = $this->acl();

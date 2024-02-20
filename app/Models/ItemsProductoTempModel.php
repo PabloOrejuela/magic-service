@@ -70,7 +70,9 @@ class ItemsProductoTempModel extends Model {
         $builder->select(
             'items.id as id, 
             items.item as item, 
-            precio, 
+            precio_unitario,
+            precio_actual,
+            pvp,
             cuantificable,
             porcentaje,
             estado,
@@ -111,9 +113,13 @@ class ItemsProductoTempModel extends Model {
     function _insertNewItem($idproducto, $item, $idNew){
         
         $builder = $this->db->table($this->table);
-        $builder->set('item', $item);
-        $builder->set('idproducto', $idproducto);
+        $builder->set('item', $item->id);
         $builder->set('new_id', $idNew);
+        $builder->set('idproducto', $idproducto);
+        $builder->set('precio_unitario', $item->precio);
+        $builder->set('precio_actual', $item->precio);
+        $builder->set('pvp', $item->precio);
+        $builder->set('porcentaje', 1);
         $builder->set('cantidad', 1);
         $builder->insert();
         return  $this->db->insertID();

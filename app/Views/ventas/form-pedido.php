@@ -471,7 +471,7 @@ $(document).ready(function(){
         $("#documento").on('change',function(){
             if($("#documento").val() != ""){
                 valor = document.querySelector("#documento").value
-                console.log(valor);
+                //console.log(valor);
                 $.ajax({
                     type:"POST",
                     dataType:"html",

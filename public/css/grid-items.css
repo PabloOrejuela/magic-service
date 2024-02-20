@@ -20,5 +20,10 @@
 }
 
 .form-check-input{
-    margin: 0 auto
+    margin: 0 auto;
+}
+
+.input-precio{
+    border:none;
+    background: transparent;
 }
