@@ -38,12 +38,4 @@ class VariablesSistemaModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function _update($data) {
-        if (isset($data['valor']) && $data['valor'] != '') {
-            $builder = $this->db->table($this->table);
-            $builder->set('valor', $data['valor']);
-            $builder->where('id', $data['id']);
-            $builder->update();
-        }
-    }
 }

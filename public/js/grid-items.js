@@ -1,21 +1,25 @@
 let inputPrice = document.getElementById("input-precio")
 
 function changeData(id){
-    
-    let nuevoValor = document.getElementById("input-precio_"+id).value;
+    let inputPrecio = document.getElementById("input-precio_"+id)
 
     $.ajax({
         type:"get",
         dataType:"html",
         url: 'actualizaPrecioItem',
         data: { 
-            precio: nuevoValor,
+            precio: inputPrecio.value,
             id: id
         },
         beforeSend: function (f) {
             alertProcesando("Procesando..." , "warning")
         },
         success: function(data){
+
+            let valor = inputPrecio.value
+            inputPrecio.value = parseFloat(valor).toFixed(2)
+            inputPrecio.setAttribute("style", "color:blue")
+            inputPrecio.blur()
             alertProcesando("El precio se ha actualizado de manera exitosa" , "success")
         },
         error: function(data){
@@ -30,7 +34,7 @@ const alertProcesando = (msg, icono) => {
         position: "top-end",
         showConfirmButton: false,
         timer: 1500,
-        //timerProgressBar: true,
+        timerProgressBar: true,
         //height: '200rem',
         didOpen: (toast) => {
             toast.onmouseenter = Swal.stopTimer;

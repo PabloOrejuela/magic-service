@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="<?= site_url() ?>public/css/side-menu.css">
 <nav class="mt-2">
   <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
     <!-- Add icons to the links using the .nav-icon class
@@ -9,7 +10,7 @@
       echo '
         <li class="nav-item">
         <a href="#" class="nav-link" id="btnVentas">
-          <i class="ion ion-bag"></i>
+          <i class="fa-brands fa-shopify menu-icon"></i>
           <p>
             Ventas
             <i class="right fas fa-angle-left"></i>
@@ -41,7 +42,7 @@
       echo '
         <li class="nav-item">
         <a href="#" class="nav-link" id="btnVentas">
-          <i class="ion ion-bag"></i>
+          <i class="fa-solid fa-users menu-icon"></i>
           <p>
             Clientes
             <i class="right fas fa-angle-left"></i>
@@ -61,9 +62,9 @@
       echo '
       <li class="nav-item">
         <a href="#" class="nav-link" >
-          <i class="ion ion-bag"></i>
+          <i class="fa-solid fa-toolbox menu-icon"></i>
           <p>
-            Administración
+             Administración
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
@@ -130,7 +131,7 @@
       echo '
       <li class="nav-item" onclick="activeFunc()">
         <a href="#" class="nav-link">
-          <i class="ion ion-bag"></i>
+          <i class="fa-solid fa-truck-field menu-icon"></i>
           <p>
             Proveedores
             <i class="right fas fa-angle-left"></i>
@@ -157,7 +158,7 @@
       echo '
       <li class="nav-item" onclick="activeFunc()">
         <a href="#" class="nav-link">
-          <i class="ion ion-bag"></i>
+          <i class="fa-solid fa-warehouse menu-icon"></i>
           <p>
             Inventario
             <i class="right fas fa-angle-left"></i>
@@ -184,7 +185,7 @@
       echo '
       <li class="nav-item" onclick="activeFunc()">
         <a href="#" class="nav-link">
-          <i class="ion ion-bag"></i>
+          <i class="fa-solid fa-chart-simple menu-icon"></i>
           <p>
             Reportes
             <i class="right fas fa-angle-left"></i>
@@ -209,3 +210,4 @@
   ?>
   </ul>
 </nav>
+<script src="https://kit.fontawesome.com/90e597c088.js" crossorigin="anonymous"></script>

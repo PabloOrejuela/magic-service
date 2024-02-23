@@ -13,14 +13,13 @@
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
-                            
                             <thead>
-                                <th>Codigo</th>
+                                <th class="col-md-1">Codigo</th>
                                 <th>Item</th>
-                                <th>Precio</th>
-                                <th>Cuantificable</th>
-                                <th>Estado</th>
-                                <th>Borrar</th>
+                                <th class="col-md-1">Precio</th>
+                                <th class="col-md-1">Cuantificable</th>
+                                <th class="col-md-1">Estado</th>
+                                <th class="col-md-1">Borrar</th>
                             </thead>
                             <tbody>
                                 <?php
@@ -32,24 +31,24 @@
                                                 <td>
                                                     <input 
                                                         value="'.$value->precio.'"
-                                                        class="input-precio"
+                                                        class="form-control input-precio"
                                                         id="input-precio_'.$value->id.'" 
                                                         onchange="changeData('.$value->id.')" 
                                                     >
                                                 </td>';
                                                 if ($value->cuantificable == 1) {
-                                                    echo '<td><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked></td>';
+                                                    echo '<td class="centrado"><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked></td>';
                                                 }else if($value->cuantificable == 0){
-                                                    echo '<td><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'"></td>';
+                                                    echo '<td class="centrado"><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'"></td>';
                                                 }
                                                 if ($value->estado == 1) {
-                                                    echo '<td>Activo</td>';
+                                                    echo '<td class="centrado">Activo</td>';
                                                 }else if($value->estado == 0){
-                                                    echo '<td>Inactivo</td>';
+                                                    echo '<td class="centrado">Inactivo</td>';
                                                 }
                                             echo '
                                                 <td>
-                                                    <div class="contenedor">
+                                                    <div class="contenedor centrado">
                                                         <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>

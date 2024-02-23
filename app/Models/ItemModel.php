@@ -22,7 +22,7 @@ class ItemModel extends Model {
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    //protected $deletedField  = 'deleted_at';
 
     // Validation
     protected $validationRules      = [];
@@ -84,32 +84,6 @@ class ItemModel extends Model {
         }
         //echo $this->db->getLastQuery();
         return $result;
-    }
-
-    public function _update($data) {
-        $builder = $this->db->table($this->table);
-        if ($data['item'] != 'NULL') {
-            $builder->set('item', $data['item']);
-        }
-        if ($data['precio'] != 'NULL') {
-            $builder->set('precio', $data['precio']);
-        }
-        if ($data['cuantificable'] != 'NULL') {
-            $builder->set('cuantificable', $data['cuantificable']);
-        }
-
-        $builder->where('id', $data['id']);
-        $builder->update();
-    }
-
-    public function _updatePrecio($item) {
-        $builder = $this->db->table($this->table);
-        if ($item['precio'] != 'NULL' && $item['precio'] != '') {
-            $builder->set('precio', $item['precio']);
-        }
-
-        $builder->where('id', $item['id']);
-        $builder->update();
     }
 
     public function _updateEstado($data) {

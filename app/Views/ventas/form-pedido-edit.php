@@ -465,6 +465,7 @@
                                         <?= form_hidden('cod_pedido', $pedido->cod_pedido); ?>
                                         <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Enviar</button>
+                                        <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
                                     </div>
                                 </form>
                             </div>

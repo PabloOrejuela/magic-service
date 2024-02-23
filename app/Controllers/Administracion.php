@@ -232,11 +232,10 @@ class Administracion extends BaseController {
             $item = [
                 'item' => strtoupper($this->request->getPostGet('item')),
                 'precio' => strtoupper($this->request->getPostGet('precio')),
-                'cuantificable' => strtoupper($this->request->getPostGet('cuantificable')),
 
             ];
             //echo '<pre>'.var_export($item, true).'</pre>';exit;
-            $this->itemModel->_update($id, $item);
+            $this->itemModel->update($id, $item);
             //echo $this->db->getLastQuery();exit;
 
             return redirect()->to('items');
@@ -248,13 +247,13 @@ class Administracion extends BaseController {
     }
 
     public function actualizaPrecioItem() {
+        $id = $this->request->getPostGet('id');
         $item = [
-            'id' => $this->request->getPostGet('id'),
             'precio' => strtoupper($this->request->getPostGet('precio')),
 
         ];
         //echo '<pre>'.var_export($item, true).'</pre>';exit;
-        $id = $this->itemModel->_updatePrecio($item);
+        $id = $this->itemModel->update($id, $item);
         return $id;
     }
 
@@ -264,14 +263,14 @@ class Administracion extends BaseController {
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
+            $id = $this->request->getPostGet('id');
 
             $variable = [
-                'id' => $this->request->getPostGet('id'),
                 'valor' => $this->request->getPostGet('value'),
 
             ];
             //echo '<pre>'.var_export($variable, true).'</pre>';exit;
-            $this->variablesSistemaModel->_update($variable);
+            $this->variablesSistemaModel->update($id, $variable);
             //echo $this->db->getLastQuery();exit;
 
             return redirect()->to('variables-sistema');

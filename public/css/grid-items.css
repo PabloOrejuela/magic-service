@@ -25,5 +25,18 @@
 
 .input-precio{
     border:none;
+    border-radius: 0%;
     background: transparent;
+}
+
+.input-precio:focus{
+    border:none;
+    border-radius: 0%;
+    color: #ffffff;
+    background: #5f5959;
+    font-weight: bold;
+}
+
+.centrado{
+    text-align: center;
 }
