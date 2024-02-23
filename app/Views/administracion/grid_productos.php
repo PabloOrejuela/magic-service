@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/style.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/grid-productos.css">
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
@@ -18,24 +18,50 @@
                                 <th>No.</th>
                                 <th>Producto</th>
                                 <th>Categoria</th>
-                                <th>Estado</th>
-                                <th>Borrar</th>
+                                <th class="centrado">Estado</th>
+                                <th class="centrado">Arreglo definitivo</th>
+                                <th class="centrado">Habilitado hasta</th>
+                                <th class="centrado">Borrar</th>
                             </thead>
                             <tbody>
                                 <?php
                                     if (isset($productos) && $productos != NULL) {
+                                        
                                         foreach ($productos as $key => $value) {
+                                            
                                             echo '<tr>
                                                 <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'product-edit/'.$value->id.'" id="link-editar">'.$value->producto.'</a></td>
+                                                <td>
+                                                    <a href="'.site_url().'product-edit/'.$value->id.'" 
+                                                        id="link-editar"
+                                                    >'.$value->producto.'</a>
+                                                </td>
                                                 <td>'.$value->categoria.'</td>';
                                                 if ($value->estado == 1) {
-                                                    echo '<td>Activo</td>';
+                                                    echo '<td class="centrado">Activo</td>';
                                                 }else if($value->estado == 0){
-                                                    echo '<td>Inactivo</td>';
+                                                    echo '<td class="centrado">Inactivo</td>';
                                                 }
+                                                if ($value->attr_temporal == 0) {
+                                                    echo '<td class="centrado" id="temp_'.$value->id.'">Definitivo</td>';
+                                                }else if($value->attr_temporal == 1){
+                                                    echo '<td class="centrado" id="temp_'.$value->id.'">
+                                                            <a href="javascript:cambiaAttrTemp('.$value->id.')" 
+                                                                id="link-edit-attr"
+                                                            >Temporal</a>
+                                                        </td>';
+                                                }
+                                                if ($value->attr_temporal == 0) {
+                                                    echo '<td class="centrado" id="temp_'.$value->id.'"></td>';
+                                                }else if($value->attr_temporal == 1){
+                                                    $updatedAt = date($value->updated_at);
+                                                    $timeHasta = strtotime($updatedAt."+ 30 days");
+                                                    $fechaHasta = date('Y-m-d',$timeHasta);
+                                                    echo '<td class="centrado">'.$fechaHasta.'</td>';
+                                                }
+                                            
                                             echo '<td>
-                                                    <div class="contenedor">
+                                                    <div class="contenedor centrado">
                                                         <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
@@ -54,6 +80,8 @@
         </div>
     </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/grid-productos.js"></script>
 <script>
   $(document).ready(function () {
     $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";

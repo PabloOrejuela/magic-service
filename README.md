@@ -5,6 +5,7 @@
     <li>Mejorada la interfase del input de precio del item en el grid de items</li>
     <li>Mejorado el proceso de edición del precio del item </li>
     <li>Creado el archivo de estilos del menú lateral</li>
+    <li>Implementadas las columnas de arreglo definitivo y fecha hasta del grid de productos</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>

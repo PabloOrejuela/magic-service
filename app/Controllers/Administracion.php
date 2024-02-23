@@ -257,6 +257,18 @@ class Administracion extends BaseController {
         return $id;
     }
 
+    public function cambia_attr_temp_producto() {
+        $id = $this->request->getPostGet('id');
+        $producto = [
+            'attr_temporal' => 0,
+
+        ];
+        //echo '<pre>'.var_export($item, true).'</pre>';exit;
+        $this->productoModel->update($id, $producto);
+        $data['id'] = $id;
+        return json_encode($data);
+    }
+
     public function updateVariableSistema() {
     
         $data = $this->acl();

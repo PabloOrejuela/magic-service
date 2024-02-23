@@ -59,6 +59,7 @@ $routes->get('estado', 'Administracion::estado');
 $routes->get('variables-sistema', 'Administracion::variablesSistema');
 $routes->get('getProductosCategoria/(:num)', 'Administracion::getProductosCategoria/$1');
 $routes->get('productos', 'Administracion::productos');
+$routes->get('cambia-attr-temp-producto', 'Administracion::cambia_attr_temp_producto');
 $routes->get('producto-create', 'Administracion::form_producto_create');
 $routes->post('product-insert', 'Administracion::product_insert');
 $routes->post('product-update', 'Administracion::product_update');

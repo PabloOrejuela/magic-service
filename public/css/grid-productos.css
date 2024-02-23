@@ -18,3 +18,11 @@
 .row {
     margin-bottom: 20px;
 }
+
+.centrado{
+    text-align: center;
+}
+
+.checkbox{
+    margin-left: 10px;
+}
