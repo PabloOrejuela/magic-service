@@ -1,46 +1,30 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
-<?php
-    // date_default_timezone_set('America/Guayaquil');
-    // $date = date('ymdHis');
-    // $cod_pedido = 'P'.$session->id.$date;
-    //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
-?>
-<style>
-    #idproducto{
-        width: 80px !important;
-    }
+<link rel="stylesheet" href="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/edit-pedido-styles.css">
 
-    #carrito{
-        margin: auto;
-        padding: auto;
-        width: 20px;
-    }
-</style>
 <section class="content">
       <div class="container-fluid">
         <div class="row">
-            <section class="col-lg-8 connectedSortable">
+            <section class="col-lg-8  connectedSortable">
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card" id="form-pedido">
                     <div class="card-header">
                         <h3 class="card-title titulo-form-pedido">
                             <i class="fas fa-chart-pie mr-1"></i>
-                            <?= $subtitle; ?> <span style="color:red;">EDITANDO</span>
+                            <?= $subtitle.' Este form está en proceso';?>
                         </h3>
                     </div><!-- /.card-header -->
-                    <div class="card-body edit-pedido">
+                    <div class="card-body">
                         <div class="tab-content p-0" >
                             <!-- Morris chart - Sales -->
                             <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
                                 <form action="<?= site_url().'pedido-update';?>" method="post">
-                                    <div class="card-body">
+                                    
                                         <div id="div-pedido">
-                                            <label for="cod_pedido">Pedido: </label><span class="span-pedido"><?= $pedido->cod_pedido ?></span>
+                                            <label for="cod_pedido">Pedido: </label><span class="span-pedido"><?= $pedido->cod_pedido; ?></span>
                                         </div>
                                         <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
-                                        <?= validation_list_errors() ?>
                                         <div class="form-group row">
                                             <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
                                             <div class="col-sm-6">
@@ -56,18 +40,37 @@
                                                     <?php
                                                         if (isset($horariosEntrega)) {
                                                             foreach ($horariosEntrega as $key => $hora) {
-                                                                if ($hora->id < 5 || $hora->id > 24) {
-                                                                    if ($hora->id == $pedido->horario_entrega) {
-                                                                        echo '<option value="'.$hora->id.'"  style="color: #B82D1B;" selected>'.$hora->hora.' Horario extra</option>';
+                                                                if ($hora->id == $pedido->horario_entrega) {
+                                                                    if ($hora->id < 5 || $hora->id > 24) {
+                                                                            echo '<option 
+                                                                                    value="'.$hora->id.'" 
+                                                                                    '.set_select('vendedor', $hora->id, false).' 
+                                                                                    id="horario-extra-red"
+                                                                                    selected
+                                                                                >'.$hora->hora.' Horario extra</option>';
                                                                     }else{
-                                                                        echo '<option value="'.$hora->id.'"  style="color: #B82D1B;">'.$hora->hora.' Horario extra</option>';
+                                                                        echo '<option 
+                                                                                    value="'.$hora->id.'" 
+                                                                                    '.set_select('vendedor', $hora->id, false).' 
+                                                                                    id="horario-extra-black"
+                                                                                    selected
+                                                                                >'.$hora->hora.' Horario extra</option>';
                                                                     }
-                                                                    
+                                        
                                                                 }else{
-                                                                    if ($hora->id == $pedido->horario_entrega) {
-                                                                        echo '<option value="'.$hora->id.'" selected>'.$hora->hora.'</option>';
+                                                                    if ($hora->id < 5 || $hora->id > 24) {
+                                                                        echo '<option 
+                                                                                value="'.$hora->id.'" 
+                                                                                '.set_select('vendedor', $hora->id, false).' 
+                                                                                id="horario-extra-red"
+                                                                                
+                                                                            >'.$hora->hora.' Horario extra</option>';
                                                                     }else{
-                                                                        echo '<option value="'.$hora->id.'">'.$hora->hora.'</option>';
+                                                                        echo '<option 
+                                                                                value="'.$hora->id.'" 
+                                                                                '.set_select('vendedor', $hora->id, false).' 
+                                                                                id="horario-extra-black"
+                                                                            >'.$hora->hora.' Horario extra</option>';
                                                                     }
                                                                 }
                                                             }
@@ -78,8 +81,9 @@
                                         </div>
                                         <div class="form-group"  style="display: none;">
                                             <label for="nombre">Id Cliente:</label>
-                                            <input type="hidden" class="form-control" id="idcliente" name="idcliente" >
+                                            <input type="hidden" class="form-control" id="idcliente" name="idcliente" value="<?= $pedido->idcliente; ?>"  >
                                         </div>
+                                        <p id="error-message"><?= session('errors.idcliente');?> </p>
                                         <div class="form-group">
                                             <label for="nombre">Nombre cliente *:</label>
                                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= $pedido->nombre; ?>"  required>
@@ -112,13 +116,16 @@
                                                     id="telefono_2" 
                                                     name="telefono_2" 
                                                     placeholder="Celular" 
-                                                    value="<?= $pedido->telefono_2;?>"
+                                                    value="<?= $pedido->telefono_2; ?>"
                                                 >
                                             </div>
                                         </div>
                                         <div class="form-group" id="campo-extra">
                                             <label for="email" >Email:</label>
                                             <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= $pedido->email; ?>">
+                                        </div>
+                                        <div class="form-group mt-2 mb-3">
+                                            <a href="javascript:limpiaCamposCliente()" class="nav-link mb-3" id="link-clear-fields">Limpiar campos</a>
                                         </div>
                                         <div class="form-group mb-5 mt-5">
                                             <label for="procedencia">Procedencia *:</label>
@@ -139,10 +146,16 @@
                                                 
                                             </select>
                                         </div>
-
                                         <div class="form-group" id="campo-extra">
                                             <label for="dir_entrega" >Dirección de entrega *:</label>
-                                            <input type="dir_entrega" class="form-control" id="dir_entrega" name="dir_entrega" placeholder="Dirección" value="<?= $pedido->dir_entrega; ?>">
+                                            <input 
+                                                type="dir_entrega" 
+                                                class="form-control" 
+                                                id="dir_entrega" 
+                                                name="dir_entrega" 
+                                                placeholder="Dirección" 
+                                                value="<?= $pedido->dir_entrega; ?>"
+                                            >
                                         </div>
                                         <div class="form-group" id="campo-extra">
                                             <label for="ubicacion" >Ubicación (Mapa) *:</label>
@@ -161,7 +174,6 @@
                                                             }else{
                                                                 echo '<option value="'.$value->id.'">'.$value->nombre.'</option>';
                                                             }
-                                                            
                                                         }
                                                     }
                                                 ?>
@@ -195,57 +207,46 @@
                                             ?>
                                             <label class="form-check-label" for="venta_extra">Venta extra</label>
                                         </div>
-                                        <div class="row form-group mb-3 px-2">
+                                        <div class="form-group row">
                                             <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
-                                            <table>
-                                                <thead>
-                                                    <th><label for="producto" class="px-3 lbl-producto">Producto: </label></th>
-                                                    <th>Cantidad</th>
-                                                    <th></th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <select 
-                                                                class="col-md-12 selectpicker" 
-                                                                id="idproducto" 
-                                                                name="producto"
-                                                                data-style="form-control" 
-                                                                data-live-search="true" 
-                                                            >
-                                                            <option value="0" selected>--Seleccionar producto--</option>
-                                                            <?php
-                                                                if (isset($productos)) {
-                                                                    $defaultvalue = 1;
-                                                                    foreach ($productos as $key => $value) {
-                                                                        echo "<option value='$value->id' >". $value->producto."</option>";
-                                                                    }
-                                                                }
-                                                            ?>
-                                                        </select>
-                                                        </td>
-                                                        <td>
-                                                            <input 
-                                                                type="text" 
-                                                                class="form-control inputCant number" 
-                                                                id="cant" 
-                                                                name="cant"  
-                                                                value="1"
-                                                            >
-                                                        </td>
-                                                        <td id="carrito">
-                                                            <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
-                                                            <a href="javascript:agregarProducto(idproducto.value, cant.value, '<?= $pedido->cod_pedido; ?>' )" class="link-opacity-75" id="a">
-                                                                <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar" id="img-agregar" />
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                            <div class="col-md-2" style="display:none;">
+                                                <input 
+                                                    type="text"
+                                                    class="form-control" 
+                                                    id="idp" 
+                                                    name="idp"
+                                                >
+                                            </div>
+                                            <div class="col-md-8">
+                                                <label for="producto">Producto:</label>
+                                                <input 
+                                                    type="text"
+                                                    class="form-control" 
+                                                    id="idproducto" 
+                                                    name="producto"
+                                                >
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="cant">Cantidad:</label> 
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputCant number" 
+                                                    id="cant" 
+                                                    name="cant"  
+                                                    value="1"
+                                                >
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label for="telefono"> </label> 
+                                                <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
+                                                <a href="javascript:agregarProducto(idp.value, cant.value, '<?= $pedido->cod_pedido; ?>' )" class="btn btn-carrito">
+                                                    <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
+                                                </a>
+                                            </div>
                                         </div>
                                         <p id="error-message"><?= session('errors.producto');?> </p>
                                         <div class="row mb-2">
-                                            <table id="tablaProductos" class="table table-hover table-stripped table-sm table-responsive tablaProductos" width:="100%">
+                                            <table id="tablaProductos" class="table table-stripped table-sm table-responsive tablaProductos" width:="100%">
                                                 <thead class="thead-light">
                                                     <th>#</th>
                                                     <th>Código</th>
@@ -290,7 +291,151 @@
                                                 value="<?= $pedido->observaciones; ?>"
                                             >
                                         </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor valorImportante decimal" 
+                                                    id="valor_neto" 
+                                                    placeholder="0.00" 
+                                                    onchange="sumarTotal(this.value);" 
+                                                    name="valor_neto"
+                                                    value="<?= $pedido->valor_neto; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="descuento" class="col-sm-8 col-form-label">Descuento (%):</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor decimal" 
+                                                    id="descuento" 
+                                                    placeholder="0" 
+                                                    onchange="sumarTotal()" 
+                                                    name="descuento"
+                                                    value="<?= $pedido->descuento; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="sectores" class="col-md-3 col-form-label">Transporte *:</label>
+                                            <select class="form-select col-md-4 px-2 mx-2" id="sectores" name="sectores">
+                                                <option value="0" selected>--Seleccionar sector--</option>
+                                                <?php
+                                                    if (isset($sectores)) {
+                                                        foreach ($sectores as $key => $sector) {
+                                                            if ($sector->id == $pedido->idsector) {
+                                                                echo '<option value="'.$sector->id.'" selected>'.$sector->sector.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$sector->id.'">'.$sector->sector.'</option>';
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                            <div class="col-md-4" style="margin-rigth:0px;">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor div-cant decimal" 
+                                                    id="transporte" 
+                                                    placeholder="0.00" 
+                                                    onchange="sumarTotal()" 
+                                                    name="transporte"
+                                                    value="<?= $pedido->transporte; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="horario_extra" class="col-sm-8 col-form-label">Cargo Horario:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor decimal"
+                                                    id="horario_extra" 
+                                                    placeholder="0" 
+                                                    onchange="sumarTotal()" 
+                                                    name="horario_extra"
+                                                    value="<?= $pedido->cargo_horario; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="cargo_domingo" class="col-sm-8 col-form-label">Cargo por entrega domingo:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor decimal" 
+                                                    id="cargo_domingo" 
+                                                    placeholder="0" 
+                                                    onchange="sumarTotal()" 
+                                                    name="cargo_domingo"
+                                                    value="<?= $pedido->domingo; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="valor_mensajero_edit" class="col-sm-4 col-form-label">Valor mensajero:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor cant decimal" 
+                                                    id="valor_mensajero_edit" 
+                                                    placeholder="0" 
+                                                    style="color:blue;"
+                                                    onchange="sumarTotal()" 
+                                                    name="valor_mensajero_edit"
+                                                    value="<?= $pedido->valor_mensajero_edit; ?>"
+                                                >
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor valorImportante decimal" 
+                                                    id="valor_mensajero" 
+                                                    placeholder="0" 
+                                                    onchange="sumarTotal()" 
+                                                    name="valor_mensajero"
+                                                    value="<?= $pedido->valor_mensajero; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="total" class="col-sm-8 col-form-label">Total:</label>
+                                            <div class="col-sm-4">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor decimal" 
+                                                    id="total" 
+                                                    placeholder="0.00" 
+                                                    onchange="sumarTotal()" 
+                                                    name="total"
+                                                    value="<?= $pedido->total ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-3 mt-2">
+                                            <label for="vendedor">Mensajero *:</label>
+                                            <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
+                                                <option value="0" selected>--Seleccionar mensajero--</option>
+                                                <?php
+                                                    if (isset($mensajeros)) {
+                                                        foreach ($mensajeros as $key => $mensajero) {
+                                                            if ($mensajero->id == $pedido->mensajero) {
+                                                                echo '<option value="'.$mensajero->id.'" selected>'.$mensajero->nombre.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$mensajero->id.'">'.$mensajero->nombre.'</option>';
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
+
                                         <div class="form-group mb-3 mt-5">
+                                            <h4 class="mt-3">Información financiera</h4>
                                             <label for="formas_pago">Forma de pago *:</label>
                                             <select class="form-select form-control-border" id="formas_pago" name="formas_pago" required>
                                                 <option value="0" selected>--Seleccionar la forma de pago--</option>
@@ -308,7 +453,8 @@
                                                 ?>
                                             </select>
                                         </div>
-                                        <div class="form-group mb-3 mt-5">
+                                        
+                                        <div class="form-group mb-3 mt-2" id="div-bancos">
                                             <label for="banco">Institución financiera:</label>
                                             <select class="form-select form-control-border" id="select-banco" name="banco">
                                                 <option value="0" selected>--Seleccionar --</option>
@@ -334,161 +480,82 @@
                                                 id="ref_pago" 
                                                 name="ref_pago" 
                                                 placeholder="Número de documento" 
-                                                value=""
+                                                value="<?= $pedido->ref_pago; ?>"
                                             >
                                         </div>
+
                                         <div class="form-group row">
-                                            <label for="valor_neto" class="col-sm-8 col-form-label">Valor neto:</label>
-                                            <div class="col-sm-4">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor" 
-                                                    id="valor_neto" 
-                                                    placeholder="0.00" 
-                                                    onchange="sumarTotal(this.value);" 
-                                                    name="valor_neto"
-                                                    value="<?= number_format($pedido->valor_neto, 2) ?>"
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="descuento" class="col-sm-8 col-form-label">Descuento (%):</label>
-                                            <div class="col-sm-4">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor" 
-                                                    id="descuento" 
-                                                    placeholder="0" 
-                                                    onchange="sumarTotal()" 
-                                                    name="descuento"
-                                                    value="<?= $pedido->descuento; ?>"
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="sectores" class="col-md-3 col-form-label">Transporte *:</label>
-                                            <select class="form-select form-control-border" id="sectores" name="sectores">
-                                                <option value="0" selected>--Seleccionar sector--</option>
-                                                <?php
-                                                    if (isset($sectores)) {
-                                                        foreach ($sectores as $key => $value) {
-                                                            if ($value->id == $pedido->idsector) {
-                                                                echo '<option value="'.$value->id.'" selected>'.$value->sector.'</option>';
-                                                            }else{
-                                                                echo '<option value="'.$value->id.'" >'.$value->sector.'</option>';
-                                                            } 
-                                                        }
-                                                    }
-                                                ?>
-                                            </select>
-                                            <div class="col-md-4 px-2" id="div-cant">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor" 
-                                                    id="transporte" 
-                                                    placeholder="0.00" 
-                                                    onchange="sumarTotal()" 
-                                                    name="transporte"
-                                                    value="<?= $pedido->transporte; ?>"
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="horario_extra" class="col-sm-8 col-form-label">Cargo Horario:</label>
-                                            <div class="col-sm-4">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor"
-                                                    id="horario_extra" 
-                                                    placeholder="0" 
-                                                    onchange="sumarTotal()" 
-                                                    name="horario_extra"
-                                                    value="<?= $pedido->cargo_horario; ?>"
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="cargo_domingo" class="col-sm-8 col-form-label">Cargo por entrega domingo:</label>
-                                            <div class="col-sm-4">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor" 
-                                                    id="cargo_domingo" 
-                                                    placeholder="0" 
-                                                    onchange="sumarTotal()" 
-                                                    name="cargo_domingo"
-                                                    value="<?= $pedido->domingo; ?>"
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="valor_mensajero_edit" class="col-sm-4 col-form-label">Valor mensajero:</label>
-                                            <div class="col-sm-4">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor" 
-                                                    id="valor_mensajero_edit" 
-                                                    placeholder="0" 
-                                                    style="color:blue;"
-                                                    onchange="sumarTotal()" 
-                                                    name="valor_mensajero_edit"
-                                                    value="<?= $pedido->valor_mensajero_edit; ?>"
-                                                >
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor valorImportante" 
-                                                    id="valor_mensajero" 
-                                                    placeholder="0" 
-                                                    onchange="sumarTotal()" 
-                                                    name="valor_mensajero"
-                                                    value="<?= $pedido->valor_mensajero; ?>"
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="total" class="col-sm-8 col-form-label">Total:</label>
-                                            <div class="col-sm-4">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control inputValor" 
-                                                    id="total" 
-                                                    placeholder="0.00" 
-                                                    onchange="sumarTotal()" 
-                                                    name="total"
-                                                    value="<?= $pedido->total; ?>"
-                                                >
-                                            </div>
+                                            <p id="error-message"><?= session('errors.sectores');?> </p>
                                         </div>
                                         <!-- /.card-body -->
-                                        <?= form_hidden('cod_pedido', $pedido->cod_pedido); ?>
-                                        <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">Enviar</button>
-                                        <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
-                                    </div>
+                                        <div class="form-group row">
+                                            <input 
+                                                type="hidden" 
+                                                class="form-control inputValor" 
+                                                id="cod_pedido" 
+                                                name="cod_pedido"
+                                                value="<?= $pedido->cod_pedido;; ?>"
+                                            >
+                                            <input 
+                                                type="hidden" 
+                                                class="form-control inputValor" 
+                                                id="cant_arreglos" 
+                                                name="cant_arreglos"
+                                            >
+                                        </div>
+                                        <div class="card-footer mt-3">
+                                            <button type="submit" class="btn btn-primary" >Enviar</button>
+                                            <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
+                                        </div>           
                                 </form>
                             </div>
                         </div>
-                    </div></div><!-- /.card-body -->
+                    </div><!-- /.card-body -->
                 </div><!-- /.card-->
             </section>
         </div>
     </div>
 </section>
-<script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
+<script src="<?= site_url(); ?>public/js/form-edit-pedido.js"></script>
+<script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // window.onbeforeunload = function() {
-    //     return "¿Desea recargar la página web?";
-    // };
-    //import Swal from 'sweetalert2';
+
+    $(document).ready(function(){
+        $("#documento").on('change',function(){
+            if($("#documento").val() != ""){
+                valor = document.querySelector("#documento").value
+                //console.log(valor);
+                $.ajax({
+                    type:"POST",
+                    dataType:"html",
+                    url: "ventas/clientes_select",
+                    data:"documento="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        let cliente = JSON.parse(data);
+                        
+                        document.getElementById('nombre').value = cliente.nombre
+                        document.getElementById('telefono').value = cliente.telefono
+                        document.getElementById('documento').value = cliente.documento
+                        document.getElementById('email').value = cliente.email
+                        document.getElementById('idcliente').value = cliente.id
+                    },
+                    error: function(data){
+                        console.log("No existe el cliente");
+                    }
+                });
+            }
+        });
+    });
 
     $(document).ready(function(){
         $("#sectores").on('change',function(){
             if($("#sectores").val() !=""){
                 valor = $("#sectores").val();
-                //console.log(valor);
+                
                 $.ajax({
                     type:"GET",
                     dataType:"html",
@@ -528,8 +595,7 @@
                             $("#total").val(detalle.total);
                             $("#valor_neto").val(detalle.subtotal);
 
-                            document.getElementById("cant").value = 1;
-                            document.getElementById("idproducto").selectedIndex = 0;
+                            limpiaLineaProducto()
                             calculaValorNeto(cod_pedido);
                             sumarTotal()
                         }
@@ -543,26 +609,31 @@
     function actualizaPrecio(idproducto, cod_pedido){
         let precio = document.getElementById("precio_"+idproducto).value
         let cant = document.getElementById("cant_"+idproducto).innerHTML
-        //console.log(cant);
+        
         if (precio != null && precio != '') {
 
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_update_precio_temp/' + idproducto + '/' + cod_pedido+'/'+precio+'/'+cant,
+                url: '<?php echo base_url(); ?>detalle_pedido_update_precio_temp',
+                data: {
+                    idproducto: idproducto,
+                    cod_pedido: cod_pedido,
+                    precio: precio,
+                    cant: cant
+                },
                 success: function(resultado){
                     if (resultado == 0) {
 
                     }else{
                         //Exito
                         let detalle = JSON.parse(resultado);
-                        //console.log(resultado);
+                        //console.log(detalle);
                         if (detalle.error == '') {
                             $("#tablaProductos tbody").empty();
                             $("#tablaProductos tbody").append(detalle.datos);
                             $("#total").val(detalle.total);
                             $("#valor_neto").val(detalle.subtotal);
 
-                            document.getElementById("cant").value = 1;
-                            document.getElementById("idproducto").selectedIndex = 0;
+                            limpiaLineaProducto()
                             calculaValorNeto(cod_pedido);
                             sumarTotal()
                         }
@@ -589,7 +660,7 @@
                     success: function(res){
                         
                         let data = JSON.parse(res);
-                        //console.log(data.costo);
+                        
                         alertCambioValor()
                         document.getElementById("horario_extra").value = parseFloat(data.costo)
                         sumarTotal()
@@ -611,7 +682,7 @@
         $("#inputFecha").on('change',function(){
             if($("#inputFecha").val() !=""){
                 valor = $("#inputFecha").val();
-                //console.log(valor);
+                
                 diaSemana = getDayOfWeek(valor)
                 if (diaSemana == 6) {
                     document.getElementById("cargo_domingo").value = 2
@@ -641,41 +712,39 @@
     });
 
     function agregarProducto(idproducto, cantidad, cod_pedido){
-        
+
         //let dia = getDayOfWeek();
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
             
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_temp/' + idproducto + '/' + cantidad + '/' + cod_pedido,
+                url: '<?php echo base_url(); ?>detalle_pedido_insert_temp',
+                data: {
+                    idproducto: idproducto,
+                    cantidad: cantidad,
+                    cod_pedido: cod_pedido
+                },
                 success: function(resultado){
                     if (resultado == 0) {
                     }else{
                         alertAgregaProducto()
                         //Exito
-                        //console.log(`Se insertó el producto`);
-                        let detalle = JSON.parse(resultado);
 
+                        let detalle = JSON.parse(resultado);
+                        
                         if (detalle.error == '') {
                             $("#tablaProductos tbody").empty();
                             $("#tablaProductos tbody").append(detalle.datos);
                             $("#total").val(detalle.total);
                             document.getElementById('valor_neto').value = detalle.total
-                            document.getElementById("cant").value = 1;
-                            document.getElementById("idproducto").selectedIndex = 0;
-                            // let selectProductos = document.getElementById("idproducto");
-                            // selectProductos.value = 0;
-
+                            limpiaLineaProducto()
                         }
-                        
                     }
                 }
             });
-            //console.log(cod_pedido);
             
         }
         calculaValorNeto(cod_pedido);
         sumarTotal()
-        
     }
 
     function eliminaProducto(idproducto, cod_pedido){
@@ -689,7 +758,7 @@
 
                     }else{
                         //Exito
-                        //console.log("Se eliminó el producto");
+    
                         let detalle = JSON.parse(resultado);
 
                         if (detalle.error == '') {
@@ -698,10 +767,8 @@
                             $("#total").val(detalle.total);
                             $("#valor_neto").val(detalle.subtotal);
 
-                            document.getElementById("cant").value = 1;
-                            let selectProductos = document.getElementById("idproducto");
                             alertEliminaProducto()
-                            selectProductos.value = 0;
+                            limpiaLineaProducto()
                         }else{
                             console.log("Error");
                         }
@@ -743,7 +810,7 @@
             showConfirmButton: false,
             timer: 2500,
             //timerProgressBar: true,
-            height: '200rem',
+            //height: '200rem',
             didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
@@ -751,22 +818,7 @@
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-                // header: '...',
-                // title: '...',
-                // closeButton: '...',
-                // icon: '...',
-                // image: '...',
-                // htmlContainer: '...',
-                // input: '...',
-                // inputLabel: '...',
-                // validationMessage: '...',
-                // actions: '...',
-                // confirmButton: '...',
-                // denyButton: '...',
-                // cancelButton: '...',
-                // loader: '...',
-                // footer: '....',
-                // timerProgressBar: '....',
+
                 }
         });
         toast.fire({
@@ -783,7 +835,7 @@
             showConfirmButton: false,
             timer: 1500,
             timerProgressBar: true,
-            height: '200rem',
+            //height: '200rem',
             didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
@@ -791,22 +843,7 @@
             customClass: {
                 // container: '...',
                 popup: 'popup-class',
-                // header: '...',
-                // title: '...',
-                // closeButton: '...',
-                // icon: '...',
-                // image: '...',
-                // htmlContainer: '...',
-                // input: '...',
-                // inputLabel: '...',
-                // validationMessage: '...',
-                // actions: '...',
-                // confirmButton: '...',
-                // denyButton: '...',
-                // cancelButton: '...',
-                // loader: '...',
-                // footer: '....',
-                // timerProgressBar: '....',
+
                 }
         });
 
@@ -825,6 +862,13 @@
         document.getElementById('total').value = valor.toFixed(2);
     }
 
+    function limpiaLineaProducto() {
+
+        document.getElementById("idproducto").value = '';
+        document.getElementById('idp').value = 0;
+        document.getElementById('cant').value = 1;
+    }
+
     function descontar(valor) {
         var total = 0;
         var descuento = 0;
@@ -839,45 +883,19 @@
         /* Este es el cálculo. */
         descuento = (parseFloat(total) * parseFloat(valor))/100
         total = (parseFloat(total) - parseFloat(descuento));
-        // console.log("Valor: " + valor);
-        // console.log("Descuento: " +descuento);
+
         document.getElementById('total').value = total.toFixed(2);
         sumarTotal()
     }
 
-    function sumarTotal() {
-
-        let descuento = 0
-        let total = 0
-        let subtotal = 0
-        let porcentajeDescuento = 0
-        let transporte = 0
-        let cargoDomingo = 0
-        let horarioExtra = 0
-        let valorMensajeroEdit = 0
-        let valorMensajero = 0
-        //limpiarValores()
-        
-
-        //Obtengo todos los valores de las casillas
-        subtotal = document.getElementById('valor_neto').value
-        porcentajeDescuento = document.getElementById('descuento').value
-        transporte = document.getElementById('transporte').value
-        cargoDomingo = document.getElementById('cargo_domingo').value
-        horarioExtra = document.getElementById('horario_extra').value
-        valorMensajero = document.getElementById('valor_mensajero').value
-        valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
-
-        
-
-        if (isNaN(parseFloat(subtotal)) == true ) {
-            subtotal = 0
-        }
-        
-        if (isNaN(parseFloat(porcentajeDescuento)) == true ) {
-            porcentajeDescuento = 0
-        }
-
+    function calcularMensajero(){
+        let sectores = document.getElementById("sectores").value
+        let transporte = document.getElementById('transporte').value
+        let cargoDomingo = document.getElementById('cargo_domingo').value
+        let horarioExtra = document.getElementById('horario_extra').value
+        let valorMensajero = document.getElementById('valor_mensajero').value
+        let valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
+        let cantProd = document.getElementById("cant_arreglos").value;
         if (isNaN(parseFloat(transporte)) == true) {
             transporte = 0
         }
@@ -889,29 +907,79 @@
         if (isNaN(parseFloat(horarioExtra)) == true) {
             horarioExtra = 0
         }
-        
-        
+        let extraMensajero = 0
+        let cantProdExtra = (cantProd - 1)
 
-        if (porcentajeDescuento != 0) {
-            descuento = (parseFloat(subtotal) * parseFloat(porcentajeDescuento))/100
-        }else{
-            descuento = 0
+        if (cantProdExtra >= 1) {
+            console.log("cant: " + cantProdExtra);
+            if (sectores == 1) {
+                
+                //Se agrega 50% de Transporte mas 50% mas de carga horario mas 50% mas de domingo por cada arreglo extra
+                for (let i = 1; i <= cantProdExtra; i++) {
+                    extraMensajero += (parseFloat(transporte)*0.5) + (parseFloat(horarioExtra)*0.5) + (parseFloat(cargoDomingo)*0.5)
+                }
+
+                valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
+
+            }else if(sectores > 1){
+                
+                //Se agrega 35% de Transporte mas 35% mas de carga horario mas 35% mas de domingo por arreglo
+                for (let i = 1; i <= cantProdExtra; i++) {
+                    extraMensajero += (parseFloat(transporte)*0.35) + (parseFloat(horarioExtra)*0.35) + (parseFloat(cargoDomingo)*0.35)
+                    console.log("Trans: " + (parseFloat(transporte)*0.35) );
+                    console.log("Horario: " + (parseFloat(horarioExtra)*0.35) );
+                    console.log("Domingo: " + (parseFloat(cargoDomingo)*0.35) );
+                    console.log(extraMensajero);
+                }
+
+                valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
+            }else{
+                console.log("No se ha elegio un sector poner una validación");
+            }
+        } else {
+            //Si solo es un arreglo no hay extra
+            valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2)
+
         }
-        
-        total = subtotal - descuento
-        valorMensajero = parseFloat(cargoDomingo) + parseFloat(transporte) + parseFloat(horarioExtra)
-        
+
         // /* Este es el cálculo. */
         if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
             total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
         }else{
             total = (parseFloat(total) + parseFloat(valorMensajero));
         }
-        
-        document.getElementById('total').value = total.toFixed(2);
 
         document.getElementById('valor_mensajero').value = valorMensajero
 
+    }
+
+
+    function getDetalletemporal(codigoPedido){
+        
+        return $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "ventas/getDetallePedido_temp/"+codigoPedido,
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                // limpiarClienteDocumento();
+                let detalle = JSON.parse(data);
+                let datos = detalle.datos
+                let cant = 0;
+                
+                for (const i of datos) {
+                    cant += parseInt(i.cantidad)
+                }
+
+                document.getElementById("cant_arreglos").value = cant
+            },
+            error: function(data){
+                console.log("No hay detalle");
+            }
+        });
+        
     }
 
 
@@ -930,19 +998,50 @@
             url: "<?php echo site_url(); ?>ventas/getDetallePedido_temp/"+cod_pedido,
             success: function(resultado){
                 let detalle = JSON.parse(resultado);
-                //console.log("Detalle: " + detalle.subtotal);
+                //console.log("Detalle: " + detalle.cantidad);
                 document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
+                document.getElementById('cant_arreglos').value = detalle.cantidad;
                 sumarTotal()
             }
         });
     }
-   
-    /* Multiple Item Picker */
-    $('.selectpicker').selectpicker({
-        style: 'btn-default'
+
+    aData = {}
+    
+    $('#idproducto').autocomplete({
+        source: function(request, response){
+            $.ajax({
+                url: '<?php echo site_url(); ?>getProductosAutocomplete',
+                method: 'GET',
+                dataType: 'json',
+                data: {
+                    producto: request.term
+                },
+                success: function(res) {
+
+                    aData = $.map(res, function(value, key){
+                        return{
+                            id: value.id,
+                            label: value.producto + ' - ' + value.precio
+                        };
+                    });
+                    let results = $.ui.autocomplete.filter(aData, request.term);
+                    response(results)
+                }
+            });
+        },
+        select: function(event, ui){
+            //document.getElementById('idp').value = 10
+            document.getElementById("idp").value = ui.item.id
+            //console.log(ui.item.id);
+        }
     });
 
+    $(document).ready(function(){
+        $(".decimal").on("input", function() {
+
+            this.value = this.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');
+        });
+    });
 </script>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/js/bootstrap-select.min.js"></script>

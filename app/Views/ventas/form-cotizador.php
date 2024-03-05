@@ -155,6 +155,12 @@
                                         </tbody>
                                     </table>
                                 </div>
+                            </div>
+                            <div class="row col-md-12 mb-3">
+                                <label for="floatingTextarea2">Observaciones:</label>
+                                <textarea class="form-control" placeholder="Observaciones" id="observaciones" name="observaciones" style="height: 100px; resize: none;"></textarea>
+                            </div>
+                            <div class="row col-md-12">
                                 <div class="form-check mb-4 mx-2 form-switch">
                                     <input class="form-check-input" type="checkbox" value="1" id="chk-attr-temp" name="arreglo-temporal">
                                     <label class="form-check-label" for="chk-attr-temp" id="chk-attr-temp">
@@ -163,7 +169,6 @@
                                 </div>
                                 <button type="button" class="btn btn-light" onclick="activarSubmit()" id="btn-activar">Estoy listo y deseo continuar</button>
                             </div>
-                            
                         </div>
                         <!-- /.card-body -->
                         
@@ -203,40 +208,6 @@
 <script src="<?= site_url(); ?>public/plugins/jquery/jquery.js"></script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= site_url(); ?>public/js/form-cotizador.js"></script>
+<script src="<?= site_url(); ?>public/js/form-cotizador-autocomplete.js"></script>
 <script src="<?= site_url(); ?>public/js/carga-imagen-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
-<script>
-    
-    aData = {}
-    
-    $('#iditem').autocomplete({
-        source: function(request, response){
-            $.ajax({
-                url: 'getItemsAutocomplete',
-                method: 'GET',
-                dataType: 'json',
-                data: {
-                    item: request.term
-                },
-                success: function(res) {
-
-                    aData = $.map(res, function(value, key){
-                        return{
-                            id: value.id,
-                            label: value.item + ' - ' + value.precio
-                        };
-                    });
-                    let results = $.ui.autocomplete.filter(aData, request.term);
-                    response(results)
-                }
-            });
-        },
-        select: function(event, ui){
-            //document.getElementById('idp').value = 10
-            document.getElementById("idp").value = ui.item.id
-            
-        }
-    });
-</script>

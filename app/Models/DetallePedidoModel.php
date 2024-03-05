@@ -95,7 +95,7 @@ class DetallePedidoModel extends Model {
 
     public function _insert($detalle) {
 
-        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
+        echo '<pre>'.var_export($detalle, true).'</pre>';exit;
 
         foreach ($detalle as $key => $value) {
             //Inserto el nuevo producto

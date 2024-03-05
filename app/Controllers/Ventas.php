@@ -700,6 +700,7 @@ class Ventas extends BaseController {
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($pedido);
             $data['detalle'] = $this->detallePedidoModel->_getDetallePedido($data['pedido']->cod_pedido);
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
@@ -708,7 +709,7 @@ class Ventas extends BaseController {
             $data['bancos'] = $this->bancoModel->findAll();
             $data['procedencias'] = $this->procedenciaModel->findAll();
 
-            //echo '<pre>'.var_export($data['procedencias'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';
