@@ -372,6 +372,8 @@
     });
 
     
+
+    
     function actualizarMensajero(mensajero, codigo_pedido){
 
         $.ajax({
@@ -493,11 +495,6 @@
                     "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
         });
     });
-
-    setInterval(function(){   
-        location.reload();
-    }, 60000);
-
 
     const confirmSaveAlert = () => {
         Swal.fire({

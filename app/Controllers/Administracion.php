@@ -484,16 +484,18 @@ class Administracion extends BaseController {
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
-            echo 'sección en construcción';
-            // $data['session'] = $this->session;
-            // $data['categorias'] = $this->categoriaModel->findAll();
-            // $data['items'] = $this->itemModel->findAll();
+            $data['session'] = $this->session;
+            $data['categorias'] = $this->categoriaModel->findAll();
+            $data['productos'] = $this->productoModel->findAll();
 
-            // //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
-            // $data['title']='Administración';
-            // $data['subtitle']='Crear producto';
-            // $data['main_content']='administracion/form-product-new';
-            // return view('dashboard/index', $data);
+            //delete de los items de la tabla temporal de hace un día
+            $this->itemsProductoTempModel->_deleteItemsTempOld();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Nuevo producto  EN PROCESO NO ESTÁ 100% TERMINADO';
+            $data['main_content']='administracion/form-new-product';
+            return view('dashboard/index', $data);
         }else{
             $this->logout();
             return redirect()->to('/');

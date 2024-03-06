@@ -1,43 +1,3 @@
-$(document).ready(function(){
-    $("#categoria").on('change',function(){
-        if($("#categoria").val() !=""){
-            valor = $("#categoria").val();
-
-            $.ajax({
-                type:"GET",
-                dataType:"html",
-                url: "getProductosCategoria"+'/'+valor,
-                beforeSend: function (f) {
-                    alertProcesando()
-                },
-                success: function(resultado){
-                  
-                    let productos = JSON.parse(resultado);
-                    let selectProductos = document.getElementById('productos')
-                    if (productos) {
-                        $("#productos").prop('disabled', false);
-
-                        
-                        selectProductos.innerHTML = ''
-                        selectProductos.innerHTML += `<option value="0" selected>--Seleccionar producto--</option>`
-                        for(let producto of productos){
-                            
-                            selectProductos.innerHTML += `<option value="${producto.id}">${producto.producto}</option>`
-                        }
-                    }else{
-                        $("#productos").prop('disabled', false);
-                        selectProductos.innerHTML = `<option value="0">--No hay productos en esta categoría--</option>`
-                    }
-                    
-                },
-                error: function(resultado){
-                  console.log('No hay productos de esa categoría');
-                }
-            });
-        }
-    });
-  });
-
 function removeRows(table) {
     try {
 
@@ -56,12 +16,39 @@ function removeRows(table) {
 }
 
 
-$(document).ready(function(){
+  $(document).ready(function(){
     $("#productos").on('change',function(){
         if($("#productos").val() !=""){
             valor = $("#productos").val();
             
-            getDatosProducto(valor)
+            if (valor == -1) {
+                //Nuevo producto
+                
+                let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
+                let inputTotal = document.querySelector("#input-total")
+                let divImg = document.querySelector("#div-img")
+                let tablaItemsBody = document.querySelector("#tablaItemsBody")
+                let image = document.getElementById("image-product")
+                let lblImage = document.getElementById("lbl-image")
+                let impFileImg = document.querySelector("#formFileImg")
+                let inputItems = document.querySelector("#iditem")
+
+                lblImage.innerHTML = "Imagen"
+                image.src = "./public/images/default-img.png"
+                //divImg.style.display = "none"
+
+                inputItems.value = ''
+                
+                impFileImg.removeAttribute('disabled')
+                nombreArregloNuevo.removeAttribute('disabled')
+                nombreArregloNuevo.value = "NUEVO PRODUCTO"
+
+                
+                inputTotal.value = "0.00"
+                removeRows(tablaItemsBody)                
+
+            } else {
+                getDatosProducto(valor)
                 
                 $.ajax({
                     type:"GET",
@@ -147,12 +134,13 @@ $(document).ready(function(){
                         console.log('El producto no tiene items');
                     }
                 });
+            }
         }
     });
-});
-
-
+  });
+  //onchange="observacion('.$row->idproducto. ','.$cod_pedido.')"
 function calculaPorcentaje(idItem){
+    //limitaPorcentaje(idItem)
     
     let precioVenta = 0
     let idproducto = document.getElementById("idproducto").value
@@ -240,6 +228,16 @@ function updatePvp(idItem){
     });
     calculaTotal()
 }
+
+function limitaPorcentaje(idItem){
+    let porcentaje = document.getElementById("porcentaje_"+idItem).value
+    if (porcentaje > 1) {
+        document.getElementById("porcentaje_"+idItem).value = 1
+    } else {
+        document.getElementById("porcentaje_"+idItem).value = porcentaje
+    }
+}
+
 
 function calculaTotal(){
 

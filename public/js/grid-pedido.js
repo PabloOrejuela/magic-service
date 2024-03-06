@@ -1,3 +1,27 @@
+const mensajePedidosPendientes = () => {
+    let now = new Date();
+    let hora = now.getHours()
+    let minutes = now.getMinutes()
+ 
+    if (hora >= 12 && hora < 13) {
+        if (minutes >= 30 && minutes <= 59) {
+            alerta("Puede tener pedidos pedientes, por favor revisar", 5000, "warning")
+        }
+    }else if (hora >= 17 && hora < 18) {
+        if (minutes >= 30 && minutes <= 59) {
+            alerta("Puede tener pedidos pedientes, por favor revisar", 5000, "warning")
+        }
+    }
+}
+
+setInterval(function(){   
+    
+    location.reload();
+    
+}, 60000)
+
+
+
 function copyData(id){
     let cod_arreglo = ''
     let observacion = ''
@@ -42,7 +66,7 @@ function copyData(id){
                         + "\nCódigos: " + cod_arreglo 
                         + "\nHora de entrega: " + horaEntrega + "\nObservación: " + observacion)
                     }
-                    alert('La información se ha copiado!!!')
+                    alertaMensaje("La información se ha copiado!!!", 1500, 'info')
 
                 } else {
                     if (observacion == '') {
@@ -60,12 +84,11 @@ function copyData(id){
                     mensaje.select()
                     mensaje.setSelectionRange(0, 9999999)
                     document.execCommand('copy')
-                    alert('La información se ha copiado!!!')
+                    alertaMensaje("La información se ha copiado!!!", 1500, 'info')
                 }
         }
     });
 }
-
 
 function actualizarHoraSalidaPedido(){
 
@@ -121,3 +144,55 @@ function actualizaObservacionPedido(){
 function print(id){
     alert('Imprimiendo '+id)
 }
+
+const alerta = (msg, time, icon) => {
+    const toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        //timer: time,
+        //timerProgressBar: true,
+        //height: '200rem',
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+        customClass: {
+            // container: '...',
+            popup: 'popup-class',
+        }
+    });
+    toast.fire({
+        position: "top-end",
+        icon: icon,
+        title: msg,
+        showCancelButton: true,
+        cancelButtonText: "Cerrar"
+    });
+}
+
+const alertaMensaje = (msg, time, icon) => {
+    const toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: time,
+        //timerProgressBar: true,
+        //height: '200rem',
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+        customClass: {
+            // container: '...',
+            popup: 'popup-class',
+        }
+    });
+    toast.fire({
+        position: "top-end",
+        icon: icon,
+        title: msg,
+    });
+}
+
+mensajePedidosPendientes()
