@@ -84,15 +84,23 @@
                                             }
                                             
                                             echo '<td id="hora_entrega'.$value->id.'">
-                                                    <a type="button" id="horaEntrega_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
+                                                    <a 
+                                                        type="button" 
+                                                        id="horaEntrega_'.$value->id.'" 
+                                                        href="#" 
+                                                        data-id="'.$value->cod_pedido.'" 
+                                                        data-value="'.$value->hora.'" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
                                                 </td>';
+
                                             if ($value->mensajero) {
                                                 echo '<td id="mensajero'.$value->id.'">
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
                                                 </td>';
                                             }else{
                                                 echo '<td id="mensajero'.$value->id.'">
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
                                                 </td>';
                                             }
                                         
@@ -235,28 +243,20 @@
       <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
         <select 
             class="form-select" 
-            id="hora_entrega" 
+            id="selectHoraEntrega" 
             name="hora_entrega"
             data-style="form-control" 
             data-live-search="true" 
         >
-        <option value="0" selected>--Seleccionar un horario de entrega--</option>
-        <?php 
-            $defaultvalue = 1;
-            if (isset($horariosEntrega)) {
-                foreach ($horariosEntrega as $key => $hora) {
-                    if ($hora->id < 5 || $hora->id > 24) {
-                        echo '<option value="'.$hora->id.'"  style="color:red;">'.$hora->hora.' Horario extra</option>';
-                    }else{
-                        echo '<option value="'.$hora->id.'" >'.$hora->hora.'</option>';
-                    }
-                }
-            }
-        ?>
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarHorarioEntrega(document.getElementById('hora_entrega').value, document.getElementById('codigo_pedido').value)">Actualizar</button>
+        <button 
+            type="button" 
+            class="btn btn-secondary" 
+            data-bs-dismiss="modal" 
+            onClick="actualizarHorarioEntrega(document.getElementById('selectHoraEntrega').value, document.getElementById('codigo_pedido').value)"
+        >Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -276,28 +276,20 @@
       <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
         <select 
             class="form-select" 
-            id="mensajero" 
+            id="select-mensajero" 
             name="mensajero"
             data-style="form-control" 
             data-live-search="true" 
         >
-        <option value="0" selected>--Seleccionar un mensajero--</option>
-        <?php 
-            $defaultvalue = 1;
-            if (isset($mensajeros)) {
-                foreach ($mensajeros as $key => $m) {
-                    if ($m->id == $defaultvalue) {
-                        echo "<option value='$m->id' " . set_select('mensajero', $m->id, false). " selected>". $m->nombre."</option>";
-                    }else{
-                        echo "<option value='$m->id' " . set_select('mensajero', $m->id, false). " >". $m->nombre."</option>";
-                    }
-                }
-            }
-        ?>
         </select>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarMensajero(document.getElementById('mensajero').value, document.getElementById('codigo_pedido').value)">Actualizar</button>
+        <button 
+            type="button" 
+            class="btn btn-secondary" 
+            data-bs-dismiss="modal" 
+            onClick="actualizarMensajero(document.getElementById('select-mensajero').value, document.getElementById('codigo_pedido').value)"
+        >Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -311,151 +303,6 @@
 <script src="https://kit.fontawesome.com/964a730002.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
-
-    let botones = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
-    let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEntregaModal"]');
-    let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');
-    let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
-    let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
-
-    botones.forEach(btn => {
-        btn.addEventListener('click', function() {
-            let id = this.dataset.id;
-            //console.log(id);
-            document.querySelector('#codigo_pedido').value = id;
-            //console.log('abrir modal');
-            $('#mensajeroModal').modal();
-        });
-    });
-
-    botonesHorariosEntrega.forEach(btn => {
-        btn.addEventListener('click', function() {
-            let id = this.dataset.id;
-            //console.log(id);
-            document.querySelector('#codigo_pedido').value = id;
-            //console.log('abrir modal');
-            $('#horaEntregaModal').modal();
-        });
-    });
-
-    botonesEstadoPedido.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation()
-            let id = this.dataset.id;
-            let estado = this.dataset.value;
-            let selectEstadoModal = document.getElementById('select-estado_pedido')
-
-            $.ajax({
-                type:"GET",
-                dataType:"html",
-                url: "<?php echo site_url(); ?>ventas/getEstadosPedido/",
-                //data:"codigo="+valor,
-                beforeSend: function (f) {
-                    //$('#cliente').html('Cargando ...');
-                },
-                success: function(data){
-                    let datos = JSON.parse(data)
-                    if (datos) {
-                        for (const dato of datos) {
-                            if (dato.estado == estado) {
-                                selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
-                            }else{
-                                selectEstadoModal.innerHTML += `<option value="${dato.id}">${dato.estado}</option>`
-                            }
-                        }
-                    }
-                    
-                    
-                }
-            });
-            document.querySelector('#codigo_pedido').value = id;
-            $('#estadoPedidoModal').modal();
-        });
-    });
-
-    botonesHoraSalidaPedido.forEach(btn => {
-        btn.addEventListener('click', function() {
-            let id = this.dataset.id;
-            //console.log(id);
-            document.querySelector('#codigo_pedido').value = id;
-            //console.log('abrir modal');
-            $('#horaSalidaModal').modal();
-        });
-    });
-
-    btnObservacionPedido.forEach(btn => {
-        btn.addEventListener('click', function() {
-            let id = this.dataset.id;
-            //console.log(id);
-            document.querySelector('#codigo_pedido').value = id;
-            //console.log('abrir modal');
-            $('#observacionPedidoModal').modal();
-        });
-    });
-
-    function actualizarMensajero(mensajero, codigo_pedido){
-
-        $.ajax({
-            type:"GET",
-            dataType:"html",
-            url: "<?php echo site_url(); ?>ventas/actualizaMensajero/"+mensajero+'/'+codigo_pedido,
-            //data:"codigo="+valor,
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(data){
-                console.log(data);
-                location.replace('pedidos');
-            }
-        });
-    }
-
-    function actualizarEstadoPedido(estado_pedido, codigo_pedido){
-        
-        // console.log(codigo_pedido);
-        $.ajax({
-            type:"GET",
-            dataType:"html",
-            url: "<?php echo site_url(); ?>ventas/actualizarEstadoPedido/"+estado_pedido+'/'+codigo_pedido,
-            //data:"codigo="+valor,
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(data){
-                //console.log(data);
-                location.replace('pedidos');
-            }
-        });
-    }
-
-    function actualizarHorarioEntrega(horario_entrega, codigo_pedido){
-        
-        $.ajax({
-            type:"GET",
-            dataType:"html",
-            url: "<?php echo site_url(); ?>ventas/actualizarHorarioEntrega/"+horario_entrega+'/'+codigo_pedido,
-            //data:"codigo="+valor,
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(data){
-                let datos = JSON.parse(data);
-                //console.log(datos.horario);
-                if (datos.horario < 5 || datos.horario > 24) {
-                    alertActualizaCampoCambio()
-                    setTimeout(function(){
-                        location.replace('pedidos');
-                    }, 3000);
-                }else{
-                    alertActualizaCampo()
-                    setTimeout(function(){
-                        location.replace('pedidos');
-                    }, 3000);
-                }
-            }
-                
-        });
-    }
 
     const lista = document.getElementById('lista')
     Sortable.create(lista, {

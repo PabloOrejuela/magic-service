@@ -1,3 +1,146 @@
+let botonesMensajero = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
+let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEntregaModal"]');
+let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');
+let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
+let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
+
+botonesMensajero.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation()
+        let id = this.dataset.id;
+        let mensajero = this.dataset.value;
+        let selectMensajeroModal = document.getElementById('select-mensajero')
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "ventas/getMensajeros",
+            
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                let datos = JSON.parse(data)
+                selectMensajeroModal.innerHTML = ''
+                if (datos) {
+                    for (const dato of datos) {
+                        if (dato.nombre == mensajero) {
+                            selectMensajeroModal.innerHTML += `<option value="${dato.id}" selected>${dato.nombre}</option>`
+                        }else{
+                            selectMensajeroModal.innerHTML += `<option value="${dato.id}">${dato.nombre}</option>`
+                        }
+                    }
+                }
+            }
+        });
+        //console.log(id);
+        document.querySelector('#codigo_pedido').value = id;
+        //console.log('abrir modal');
+        $('#mensajeroModal').modal();
+    });
+});
+
+botonesEstadoPedido.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation()
+        let id = this.dataset.id;
+        let estado = this.dataset.value;
+        let selectEstadoModal = document.getElementById('select-estado_pedido')
+
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "ventas/getEstadosPedido/",
+            //data:"codigo="+valor,
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                let datos = JSON.parse(data)
+                selectEstadoModal.innerHTML = ''
+                if (datos) {
+                    for (const dato of datos) {
+                        if (dato.estado == estado) {
+                            selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
+                        }else{
+                            selectEstadoModal.innerHTML += `<option value="${dato.id}">${dato.estado}</option>`
+                        }
+                    }
+                }
+                
+                
+            }
+        });
+        document.querySelector('#codigo_pedido').value = id;
+        $('#estadoPedidoModal').modal();
+    });
+});
+
+botonesHorariosEntrega.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation()
+        let id = this.dataset.id
+        let hora = this.dataset.value
+        let selectHoraEntrega = document.getElementById('selectHoraEntrega')
+
+        $.ajax({
+            type:"GET",
+            dataType:"html",
+            url: "getHorasEntrega",
+            //data:"codigo="+valor,
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                let datos = JSON.parse(data)
+                selectHoraEntrega.innerHTML = ''
+                if (datos) {
+                    for (let dato of datos) {
+                        if (dato.id < 5 || dato.id > 24) {
+                            if (dato.hora == hora) {
+                                selectHoraEntrega.innerHTML += `<option value="${dato.id}" style="color:red;" selected>${dato.hora}</option>`
+                            } else {
+                                selectHoraEntrega.innerHTML += `<option value="${dato.id}" style="color:red;">${dato.hora}</option>`
+                            }
+                        }else{
+                            if (dato.hora == hora) {
+                                selectHoraEntrega.innerHTML += `<option value="${dato.id}" selected>${dato.hora}</option>`
+                            }else{
+                                selectHoraEntrega.innerHTML += `<option value="${dato.id}">${dato.hora}</option>`
+                            }
+                            
+                        }
+                    }
+                }
+                
+            }
+        });
+
+        document.querySelector('#codigo_pedido').value = id;
+        //console.log('abrir modal');
+        $('#horaEntregaModal').modal();
+    });
+});
+
+botonesHoraSalidaPedido.forEach(btn => {
+    btn.addEventListener('click', function() {
+        let id = this.dataset.id;
+        //console.log(id);
+        document.querySelector('#codigo_pedido').value = id;
+        //console.log('abrir modal');
+        $('#horaSalidaModal').modal();
+    });
+});
+
+btnObservacionPedido.forEach(btn => {
+    btn.addEventListener('click', function() {
+        let id = this.dataset.id;
+        //console.log(id);
+        document.querySelector('#codigo_pedido').value = id;
+        //console.log('abrir modal');
+        $('#observacionPedidoModal').modal();
+    });
+});
+
 const mensajePedidosPendientes = () => {
     let now = new Date();
     let hora = now.getHours()
@@ -138,6 +281,70 @@ function actualizaObservacionPedido(){
             }, 3000);
             
         }
+    });
+}
+
+function actualizarMensajero(mensajero, codigo_pedido){
+
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "ventas/actualizaMensajero/"+mensajero+'/'+codigo_pedido,
+        //data:"codigo="+valor,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(data){
+            console.log(data);
+            location.replace('pedidos');
+        }
+    });
+}
+
+function actualizarEstadoPedido(estado_pedido, codigo_pedido){
+    
+    // console.log(codigo_pedido);
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "ventas/actualizarEstadoPedido/"+estado_pedido+'/'+codigo_pedido,
+        //data:"codigo="+valor,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(data){
+            //console.log(data);
+            location.replace('pedidos');
+        }
+    });
+}
+
+function actualizarHorarioEntrega(horario_entrega, codigo_pedido){
+    
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "ventas/actualizarHorarioEntrega/"+horario_entrega+'/'+codigo_pedido,
+        //data:"codigo="+valor,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(data){
+            let datos = JSON.parse(data);
+            //console.log(datos.horario);
+            if (datos.horario < 5 || datos.horario > 24) {
+                alertActualizaCampoCambio()
+                setTimeout(function(){
+                    location.replace('pedidos');
+                }, 3000);
+            }else{
+                alertActualizaCampo()
+                setTimeout(function(){
+                    location.replace('pedidos');
+                }, 3000);
+            }
+        }
+            
     });
 }
 

@@ -5,6 +5,8 @@
     <li>En el form edit pedido la sección de Inforamción financiera  se la puso al final del form</li>
     <li>Implementado el mensaje que avisa que puede haber pedidos pendientes en el grid de pedidos</li>
     <li>El modal de edición de estado en el grid de pedido ya carga el valor actual</li>
+    <li>El modal de edición de mensajero en el grid de pedido ya carga el valor actual</li>
+    <li>El modal de edición de Hora de entrega en el grid de pedido ya carga el valor actual</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>

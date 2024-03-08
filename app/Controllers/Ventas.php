@@ -670,6 +670,18 @@ class Ventas extends BaseController {
         echo json_encode($estadosPedido);
     }
 
+    function getMensajeros(){
+        $mensajeros = $this->usuarioModel->_getUsuariosRol(5);
+
+        echo json_encode($mensajeros);
+    }
+
+    function getHorasEntrega(){
+        $horasEntrega = $this->horariosEntregaModel->findAll();
+
+        echo json_encode($horasEntrega);
+    }
+
     public function pedidos() {
         
         $data = $this->acl();
