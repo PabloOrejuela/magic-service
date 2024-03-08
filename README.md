@@ -7,6 +7,7 @@
     <li>El modal de edición de estado en el grid de pedido ya carga el valor actual</li>
     <li>El modal de edición de mensajero en el grid de pedido ya carga el valor actual</li>
     <li>El modal de edición de Hora de entrega en el grid de pedido ya carga el valor actual</li>
+    <li>Se ha eliminado la columna de borrar del grid de items</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>

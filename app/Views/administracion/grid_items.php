@@ -19,7 +19,6 @@
                                 <th class="col-md-1">Precio</th>
                                 <th class="col-md-1">Cuantificable</th>
                                 <th class="col-md-1">Estado</th>
-                                <th class="col-md-1">Borrar</th>
                             </thead>
                             <tbody>
                                 <?php
@@ -46,15 +45,7 @@
                                                 }else if($value->estado == 0){
                                                     echo '<td class="centrado">Inactivo</td>';
                                                 }
-                                            echo '
-                                                <td>
-                                                    <div class="contenedor centrado">
-                                                        <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'" class="edit">
-                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                </tr>';
+                                            echo '</tr>';
                                         }
                                     }
                                 ?>
