@@ -45,11 +45,7 @@
                                                 if ($value->attr_temporal == 0) {
                                                     echo '<td class="centrado" id="temp_'.$value->id.'">Definitivo</td>';
                                                 }else if($value->attr_temporal == 1){
-                                                    echo '<td class="centrado" id="temp_'.$value->id.'">
-                                                            <a href="javascript:cambiaAttrTemp('.$value->id.')" 
-                                                                id="link-edit-attr"
-                                                            >Temporal</a>
-                                                        </td>';
+                                                    echo '<td class="centrado" id="temp_'.$value->id.'">Temporal</td>';
                                                 }
                                                 if ($value->attr_temporal == 0) {
                                                     echo '<td class="centrado" id="temp_'.$value->id.'"></td>';

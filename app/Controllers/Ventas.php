@@ -124,7 +124,7 @@ class Ventas extends BaseController {
     }
 
     function actualizarEstadoPedido($estado_pedido, $cod_pedido){
-
+        
         if ($estado_pedido != 0) {
             $this->pedidoModel->_actualizarEstadoPedido($estado_pedido, $cod_pedido);
         }
@@ -662,6 +662,12 @@ class Ventas extends BaseController {
 
             $this->logout();
         }
+    }
+
+    function getEstadosPedido(){
+        $estadosPedido = $this->estadoPedidoModel->findAll();
+
+        echo json_encode($estadosPedido);
     }
 
     public function pedidos() {

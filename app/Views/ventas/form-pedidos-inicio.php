@@ -47,8 +47,8 @@
                                             $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
                                             //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                             echo '<tr class="item-list" data-id="'.$value->id.'">
-                                                <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
-                                                <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
+                                                    <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
+                                                    <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                 if ($value->fecha_entrega) {
                                                     echo '<td id="fechaEntrega_'.$value->id.'">'.$value->fecha_entrega.'</td>';
                                                 }else{
@@ -69,7 +69,7 @@
                                             echo '<td id="cod_arreglo_'.$value->id.'">';
                                             if (isset($detalle)) {
                                                 foreach ($detalle as $key => $d) {
-                                                    echo $d->producto.' / ';
+                                                    echo $d->producto.' <br> ';
                                                 }
                                             }
                                             echo '</td>';
@@ -97,11 +97,10 @@
                                             }
                                         
                                             echo '<td >
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
+                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->estado.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
                                                 </td>';
                                             if ($verificaCampos == 0) {
                                                 echo '<td id="informacion"><span id="span-completo">Completo</span></td>';
-                                                
                                             }else{
                                                 echo '<td id="informacion"><span id="span-incompleto">Incompleto: '.$verificaCampos.'</span></td>';
                                             }
@@ -201,24 +200,22 @@
       <h5 class="modal-title" id="staticBackdropLabel">Estados</h5>
       <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
         <select 
-            class="form-select" 
-            id="estado_pedido" 
-            name="estado_pedido"
-            data-style="form-control" 
-            data-live-search="true" 
-        >
-        <option value="0" selected>--Seleccionar un estado--</option>
-        <?php 
-            if (isset($estadosPedido)) {
-                foreach ($estadosPedido as $key => $e) {
-                    echo "<option value='$e->id' >". $e->estado."</option>";
-                }
-            }
-        ?>
-        </select>
+                class="form-select" 
+                id="select-estado_pedido" 
+                name="estado_pedido"
+                data-style="form-control" 
+                data-live-search="true" 
+            >
+            <option value="0" selected>--Seleccionar un estado--</option>
+        </select>    
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizarEstadoPedido(document.getElementById('estado_pedido').value, document.getElementById('codigo_pedido').value)">Actualizar</button>
+        <button 
+            type="button" 
+            class="btn btn-secondary" 
+            data-bs-dismiss="modal" 
+            onClick="actualizarEstadoPedido(document.getElementById('select-estado_pedido').value, document.getElementById('codigo_pedido').value)"
+        >Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -342,11 +339,36 @@
     });
 
     botonesEstadoPedido.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation()
             let id = this.dataset.id;
-            //console.log(id);
+            let estado = this.dataset.value;
+            let selectEstadoModal = document.getElementById('select-estado_pedido')
+
+            $.ajax({
+                type:"GET",
+                dataType:"html",
+                url: "<?php echo site_url(); ?>ventas/getEstadosPedido/",
+                //data:"codigo="+valor,
+                beforeSend: function (f) {
+                    //$('#cliente').html('Cargando ...');
+                },
+                success: function(data){
+                    let datos = JSON.parse(data)
+                    if (datos) {
+                        for (const dato of datos) {
+                            if (dato.estado == estado) {
+                                selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
+                            }else{
+                                selectEstadoModal.innerHTML += `<option value="${dato.id}">${dato.estado}</option>`
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            });
             document.querySelector('#codigo_pedido').value = id;
-            //console.log('abrir modal');
             $('#estadoPedidoModal').modal();
         });
     });
@@ -371,9 +393,6 @@
         });
     });
 
-    
-
-    
     function actualizarMensajero(mensajero, codigo_pedido){
 
         $.ajax({
@@ -392,7 +411,7 @@
     }
 
     function actualizarEstadoPedido(estado_pedido, codigo_pedido){
-        console.log(mensajero);
+        
         // console.log(codigo_pedido);
         $.ajax({
             type:"GET",

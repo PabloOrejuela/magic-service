@@ -18,7 +18,7 @@ setInterval(function(){
     
     location.reload();
     
-}, 60000)
+}, 100000)
 
 
 
