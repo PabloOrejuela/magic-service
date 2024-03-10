@@ -12,10 +12,12 @@ function cambiaAttrTemp(id){
         },
         success: function(res){
             //let id =  JSON.parse(res);
-            console.log(id);
-            let td = document.querySelector(`#temp_${id}`)
+            //console.log(id);
+            let tdtempral = document.querySelector(`#temp_${id}`)
+            let tdEstado = document.querySelector(`#estado_${id}`)
             
-            td.innerHTML = "Definitivo"
+            tdtempral.innerHTML = "Definitivo"
+            tdEstado.innerHTML = "Activo"
             alertProcesando("Se ha actualizado de manera exitosa" , "success")
         },
         error: function(res){

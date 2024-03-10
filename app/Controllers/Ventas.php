@@ -700,7 +700,7 @@ class Ventas extends BaseController {
             $data['mensaje'] = '';
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
-            $data['main_content']='ventas/form-pedidos-inicio';
+            $data['main_content']='ventas/grid-pedidos';
             return view('dashboard/index', $data);
         }else{
             $this->logout();
@@ -752,7 +752,7 @@ class Ventas extends BaseController {
             //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Pedidos';
-            $data['main_content']='ventas/form-pedidos-inicio';
+            $data['main_content']='ventas/grid-pedidos';
             return view('dashboard/index_ventana', $data);
         }else{
             $this->logout();

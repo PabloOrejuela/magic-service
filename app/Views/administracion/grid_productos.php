@@ -38,9 +38,9 @@
                                                 </td>
                                                 <td>'.$value->categoria.'</td>';
                                                 if ($value->estado == 1) {
-                                                    echo '<td class="centrado">Activo</td>';
+                                                    echo '<td class="centrado" id="estado_'.$value->id.'">Activo</td>';
                                                 }else if($value->estado == 0){
-                                                    echo '<td class="centrado">Inactivo</td>';
+                                                    echo '<td class="centrado" id="estado_'.$value->id.'">Inactivo</td>';
                                                 }
                                                 if ($value->attr_temporal == 0) {
                                                     echo '<td class="centrado" id="temp_'.$value->id.'">Definitivo</td>';

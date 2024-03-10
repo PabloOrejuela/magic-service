@@ -261,7 +261,7 @@ class Administracion extends BaseController {
         $id = $this->request->getPostGet('id');
         $producto = [
             'attr_temporal' => 0,
-
+            'estado' => 1
         ];
         //echo '<pre>'.var_export($item, true).'</pre>';exit;
         $this->productoModel->update($id, $producto);

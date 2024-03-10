@@ -12,4 +12,5 @@
 <h3>Correcciones:</h3>
 <ul>
     <li>Eliminado el campo de arreglo temporal que estaba en la tabla de pedidos</li>
+    <li>Corregido el error que no cambiaba el estado activo al cambiar de temporal a definitivos los arreglos</li>
 </ul>

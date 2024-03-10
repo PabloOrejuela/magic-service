@@ -4,6 +4,9 @@ let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPed
 let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
 let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
 
+let linkArregloDetalle = document.querySelectorAll('#link-arreglo-pedido')
+
+
 botonesMensajero.forEach(btn => {
     btn.addEventListener('click', function(e) {
         e.stopPropagation()
@@ -140,6 +143,15 @@ btnObservacionPedido.forEach(btn => {
         $('#observacionPedidoModal').modal();
     });
 });
+
+linkArregloDetalle.forEach(link => {
+    link.addEventListener('click', function(e){
+        e.preventDefault()
+        e.stopPropagation()
+        let id = this.dataset.id;
+        console.log(id);
+    })
+})
 
 const mensajePedidosPendientes = () => {
     let now = new Date();

@@ -66,20 +66,37 @@
                                             }else{
                                                 echo '<td>Registrar dirección</td>';
                                             }
-                                            echo '<td id="cod_arreglo_'.$value->id.'">';
+                                            echo '<td id="cod_arreglo_'.$value->id.'"><ul>';
                                             if (isset($detalle)) {
                                                 foreach ($detalle as $key => $d) {
-                                                    echo $d->producto.' <br> ';
+                                                    echo '<li>
+                                                            <a 
+                                                                href="#" 
+                                                                id="link-arreglo-pedido" 
+                                                                data-id="'.$d->id.'">'.$d->producto.'</a>
+                                                        </li>';
                                                 }
                                             }
-                                            echo '</td>';
+                                            echo '</ul></td>';
                                             if ($value->hora_salida_pedido) {
                                                 echo '<td>
-                                                    <a type="button" id="sector_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
+                                                    <a 
+                                                        type="button" 
+                                                        id="sector_'.$value->id.'" 
+                                                        href="#" 
+                                                        data-id="'.$value->cod_pedido.'" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
                                                 </td>';
                                             }else{
                                                 echo '<td>
-                                                    <a type="button" id="sector_'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#horaSalidaModal">Registrar</a>
+                                                    <a 
+                                                        type="button" 
+                                                        id="sector_'.$value->id.'" 
+                                                        href="#" 
+                                                        data-id="'.$value->cod_pedido.'" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#horaSalidaModal">Registrar</a>
                                                 </td>';
                                             }
                                             
