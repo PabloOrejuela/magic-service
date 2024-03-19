@@ -3,9 +3,337 @@ let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEn
 let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');
 let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
 let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
+let btnNombreArreglo = document.querySelectorAll('[data-bs-target="#linkArregloPedido"]');
+let formAttrModal = document.querySelector('#form-modal-attr')
 
-let linkArregloDetalle = document.querySelectorAll('#link-arreglo-pedido')
 
+btnNombreArreglo.forEach(link => {
+    link.addEventListener('click', function(e){
+        e.stopPropagation()
+        let iddetalle = this.dataset.id
+        let category = this.dataset.category
+        let arreglo = this.dataset.arreglo
+        let pedido = this.dataset.pedido
+        let formulario = document.querySelector('#formulario')
+        formulario.innerHTML = ""
+        // console.log(iddetalle);
+        document.querySelector('#idarreglo').value = iddetalle;
+        document.querySelector('#idcategoria').value = category;
+        document.querySelector('#lblForm').value = arreglo;
+        document.querySelector('#lblPedido').value = pedido;
+        
+        $('#linkArregloPedido').modal();
+        if (category == 1) {
+            formulario.innerHTML += `
+                <div class="mb-3 mt-3">
+                    <label for="para" class="form-label">Para:</label>
+                    <input type="text" class="form-control" id="para" placeholder="para" required>
+                </div>
+                <div class="mb-3">
+                    <label for="celular" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="celular" placeholder="celular" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mensaje_fresas" class="form-label">Mensaje Fresas</label>
+                    <input type="text" class="form-control" id="mensaje_fresas" placeholder="mensaje">
+                </div>
+                <div class="mb-3">
+                    <label for="peluche" class="form-label">Peluche</label>
+                    <input type="text" class="form-control" id="peluche" placeholder="peluche">
+                </div>
+                <div class="mb-3">
+                    <label for="globo" class="form-label">Globo</label>
+                    <input type="text" class="form-control" id="globo" placeholder="globo">
+                </div>
+
+                <button 
+                    type="button"
+                    id="btnSubmit"
+                    class="btn btn-secondary" 
+                    data-bs-dismiss="modal" 
+                    onClick="insertAttrArreglo()"
+                    disabled
+                >Guardar</button>
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            `
+            $(document).ready(function(){
+                $("#para").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                        
+                    
+                });
+
+                $("#celular").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                    
+                });
+            });
+        }
+        if (category == 2) {
+            formulario.innerHTML += `
+                <div class="mb-3 mt-3">
+                    <label for="para" class="form-label">Para:</label>
+                    <input type="text" class="form-control" id="para" placeholder="para" required>
+                </div>
+                <div class="mb-3">
+                    <label for="celular" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="celular" placeholder="celular" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mensaje_fresas" class="form-label">Mensaje Fresas</label>
+                    <input type="text" class="form-control" id="mensaje_fresas" placeholder="mensaje">
+                </div>
+                <div class="mb-3">
+                    <label for="peluche" class="form-label">Peluche</label>
+                    <input type="text" class="form-control" id="peluche" placeholder="peluche">
+                </div>
+                <div class="mb-3">
+                    <label for="globo" class="form-label">Globo</label>
+                    <input type="text" class="form-control" id="globo" placeholder="globo">
+                </div>
+                <div class="mb-3">
+                    <label for="tarjeta" class="form-label">Tarjeta</label>
+                    <input type="text" class="form-control" id="tarjeta" placeholder="tarjeta">
+                </div>
+                <button 
+                    type="button"
+                    id="btnSubmit"
+                    class="btn btn-secondary" 
+                    data-bs-dismiss="modal" 
+                    onClick="insertAttrArreglo()"
+                    disabled
+                >Guardar</button>
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            `
+            $(document).ready(function(){
+                $("#para").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                        
+                    
+                });
+
+                $("#celular").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                    
+                });
+            });
+        }
+        if (category == 3) {
+            formulario.innerHTML += `
+                <div class="mb-3 mt-3">
+                    <label for="para" class="form-label">Para:</label>
+                    <input type="text" class="form-control" id="para" placeholder="para" required>
+                </div>
+                <div class="mb-3">
+                    <label for="celular" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="celular" placeholder="celular" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mensaje_fresas" class="form-label">Mensaje Fresas</label>
+                    <input type="text" class="form-control" id="mensaje_fresas" placeholder="mensaje">
+                </div>
+                <div class="mb-3">
+                    <label for="peluche" class="form-label">Peluche</label>
+                    <input type="text" class="form-control" id="peluche" placeholder="peluche">
+                </div>
+                <div class="mb-3">
+                    <label for="globo" class="form-label">Globo</label>
+                    <input type="text" class="form-control" id="globo" placeholder="globo">
+                </div>
+                <div class="mb-3">
+                    <label for="bebida" class="form-label">Bebida</label>
+                    <input type="text" class="form-control" id="bebida" placeholder="bebida">
+                </div>
+                <div class="mb-3">
+                    <label for="huevo" class="form-label">Huevo</label>
+                    <input type="text" class="form-control" id="huevo" placeholder="huevo">
+                </div>
+                <button 
+                    type="button"
+                    id="btnSubmit"
+                    class="btn btn-secondary" 
+                    data-bs-dismiss="modal" 
+                    onClick="insertAttrArreglo()"
+                    disabled
+                >Guardar</button>
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            `
+            $(document).ready(function(){
+                $("#para").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                        
+                    
+                });
+
+                $("#celular").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                    
+                });
+            });
+        }
+        if (category == 4) {
+            formulario.innerHTML += `
+                <div class="mb-3 mt-3">
+                    <label for="para" class="form-label">Para:</label>
+                    <input type="text" class="form-control" id="para" placeholder="para" required>
+                </div>
+                <div class="mb-3">
+                    <label for="celular" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="celular" placeholder="celular" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mensaje_fresas" class="form-label">Mensaje Fresas</label>
+                    <input type="text" class="form-control" id="mensaje_fresas" placeholder="mensaje">
+                </div>
+                <div class="mb-3">
+                    <label for="peluche" class="form-label">Peluche</label>
+                    <input type="text" class="form-control" id="peluche" placeholder="peluche">
+                </div>
+                <div class="mb-3">
+                    <label for="globo" class="form-label">Globo</label>
+                    <input type="text" class="form-control" id="globo" placeholder="globo">
+                </div>
+                <div class="mb-3">
+                    <label for="frases_paredes" class="form-label">Frases paredes</label>
+                    <input type="text" class="form-control" id="frases_paredes" placeholder="frases_paredes">
+                </div>
+                <div class="mb-3">
+                    <label for="fotos" class="form-label">Fotos</label>
+                    <input type="text" class="form-control" id="fotos" placeholder="fotos">
+                </div>
+                <button 
+                    type="button"
+                    id="btnSubmit"
+                    class="btn btn-secondary" 
+                    data-bs-dismiss="modal" 
+                    onClick="insertAttrArreglo()"
+                    disabled
+                >Guardar</button>
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            `
+            $(document).ready(function(){
+                $("#para").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                        
+                    
+                });
+
+                $("#celular").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                    
+                });
+            });
+        }
+        if (category == 5) {
+            formulario.innerHTML += `
+                <div class="mb-3 mt-3">
+                    <label for="para" class="form-label">Recibe:</label>
+                    <input type="text" class="form-control" id="para" placeholder="para" required>
+                </div>
+                <div class="mb-3">
+                    <label for="celular" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="celular" placeholder="celular" required>
+                </div>
+                <div class="mb-3">
+                    <label for="opciones" class="form-label">Opciones</label>
+                    <input type="text" class="form-control" id="opciones" placeholder="opciones">
+                </div>
+                <button 
+                    type="button"
+                    id="btnSubmit"
+                    class="btn btn-secondary" 
+                    data-bs-dismiss="modal" 
+                    onClick="insertAttrArreglo()"
+                    disabled
+                >Guardar</button>
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            `
+            $(document).ready(function(){
+                $("#para").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                        
+                    
+                });
+
+                $("#celular").on('change',function(){
+                    let celular = document.getElementById('celular')
+                    let btnSubmit = document.querySelector('#btnSubmit')
+                    let para = document.querySelector('#para')
+                    // console.log(para.value);
+                    // console.log(celular.value);
+                    if (para.value != '' && celular.value != '') {
+                        btnSubmit.removeAttribute('disabled')
+                    }
+                    
+                });
+            });
+            
+        }
+    })
+})
 
 botonesMensajero.forEach(btn => {
     btn.addEventListener('click', function(e) {
@@ -144,14 +472,6 @@ btnObservacionPedido.forEach(btn => {
     });
 });
 
-linkArregloDetalle.forEach(link => {
-    link.addEventListener('click', function(e){
-        e.preventDefault()
-        e.stopPropagation()
-        let id = this.dataset.id;
-        console.log(id);
-    })
-})
 
 const mensajePedidosPendientes = () => {
     let now = new Date();
@@ -241,6 +561,124 @@ function copyData(id){
                     document.execCommand('copy')
                     alertaMensaje("La información se ha copiado!!!", 1500, 'info')
                 }
+        }
+    });
+}
+
+function insertAttrArreglo(){
+    let idDetalle = document.getElementById('idarreglo').value
+    let idCategoria = document.getElementById('idcategoria').value
+    let para = document.getElementById('para')
+    let celular = document.getElementById('celular')
+    let mensajeFresas = document.getElementById('mensaje_fresas')
+    let peluche = document.getElementById('peluche')
+    let globo = document.getElementById('globo')
+    let tarjeta = document.getElementById('tarjeta')
+    let opciones = document.getElementById('opciones')
+    let bebida = document.getElementById('bebida')
+    let huevo = document.getElementById('huevo')
+    let frasesParedes = document.getElementById('frases_paredes')
+    let fotos = document.getElementById('fotos')
+
+    if (para !== null) {
+        para = document.getElementById('para').value
+    } else {
+        para = ''
+    }
+
+    if (celular !== null) {
+        celular = document.getElementById('celular').value
+    } else {
+        celular = ''
+    }
+
+    if (mensajeFresas !== null) {
+        mensajeFresas = document.getElementById('mensaje_fresas').value
+    } else {
+        mensajeFresas = ''
+    }
+
+    if (peluche !== null) {
+        peluche = document.getElementById('peluche').value
+    } else {
+        peluche = ''
+    }
+
+    if (globo !== null) {
+        globo = document.getElementById('globo').value
+    } else {
+        globo = ''
+    }
+
+    if (tarjeta !== null) {
+        tarjeta = document.getElementById('tarjeta').value
+    } else {
+        tarjeta = ''
+    }
+    
+    if (opciones !== null) {
+        opciones = document.getElementById('opciones').value
+    } else {
+        opciones = ''
+    }
+
+    if (bebida !== null) {
+        bebida = document.getElementById('bebida').value
+    } else {
+        bebida = ''
+    }
+
+    if (huevo !== null) {
+        huevo = document.getElementById('huevo').value
+    } else {
+        huevo = ''
+    }
+
+    if (frasesParedes !== null) {
+        frasesParedes = document.getElementById('frasesParedes').value
+    } else {
+        frasesParedes = ''
+    }
+
+    if (fotos !== null) {
+        fotos = document.getElementById('fotos').value
+    } else {
+        fotos = ''
+    }
+
+    $.ajax({
+        type:"get",
+        dataType:"html",
+        data: { 
+            iddetalle: idDetalle,
+            idcategoria: idCategoria,
+            para: para,
+            celular: celular, 
+            mensaje_fresas: mensajeFresas,
+            peluche: peluche, 
+            globo: globo,
+            tarjeta: tarjeta,
+            opciones: opciones,
+            bebida: bebida,
+            huevo: huevo,
+            frases_paredes: frasesParedes,
+            fotos: fotos,
+        },
+        url: "insertAttrArreglo",
+        
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(res){
+            let respuesta = JSON.parse(res);
+            if (respuesta.mensaje == 'Exito') {
+                alertaMensaje("La información se ha guardado exitosamente", 3000, "success")
+            }else{
+                alertaMensaje("Ha habido un error. Puede que falten campos importantes, la información no se pudo guardar", 3000, "error")
+            }
+            setTimeout(function(){
+                location.replace('pedidos');
+            }, 3000);
         }
     });
 }

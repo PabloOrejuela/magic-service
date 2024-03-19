@@ -1,16 +1,10 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Igualado el form edit pedido al de nuevo pedido</li>
-    <li>Implementados los campos que faltaban en el form edit pedido</li>
-    <li>En el form edit pedido la sección de Inforamción financiera  se la puso al final del form</li>
-    <li>Implementado el mensaje que avisa que puede haber pedidos pendientes en el grid de pedidos</li>
-    <li>El modal de edición de estado en el grid de pedido ya carga el valor actual</li>
-    <li>El modal de edición de mensajero en el grid de pedido ya carga el valor actual</li>
-    <li>El modal de edición de Hora de entrega en el grid de pedido ya carga el valor actual</li>
-    <li>Se ha eliminado la columna de borrar del grid de items</li>
+    <li>Los arreglos de cada pedido ahora salen en forma de lista</li>
+    <li>Los arreglos de cada pedido son links que muestran un formulario modal para ingresar los atributos del ticket de cada arreglo</li>
+    <li>Los arreglos de cada pedido se muestran en rojo si es que no tienen un registro de atributos extras con por lo menos Celular y Para</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>
-    <li>Eliminado el campo de arreglo temporal que estaba en la tabla de pedidos</li>
-    <li>Corregido el error que no cambiaba el estado activo al cambiar de temporal a definitivos los arreglos</li>
+    <li>Se eliminó las tablas de atributos separadas y ahora es una sola que tiene todos los atributos de cada categoría de arreglo</li>
 </ul>

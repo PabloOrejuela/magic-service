@@ -142,6 +142,38 @@ class Ventas extends BaseController {
         return true;
     }
 
+    function insertAttrArreglo(){
+        
+        $data['iddetalle'] =  $this->request->getPostGet('iddetalle');
+        $data['idcategoria'] =  $this->request->getPostGet('idcategoria');
+        $data['para'] =  strtoupper($this->request->getPostGet('para'));
+        $data['celular'] =  strtoupper($this->request->getPostGet('celular'));
+        $data['mensaje_fresas'] =  strtoupper($this->request->getPostGet('mensaje_fresas'));
+        $data['peluche'] =  strtoupper($this->request->getPostGet('peluche'));
+        $data['globo'] =  strtoupper($this->request->getPostGet('globo'));
+        $data['tarjeta'] =  strtoupper($this->request->getPostGet('tarjeta'));
+        $data['opciones'] =  strtoupper($this->request->getPostGet('opciones'));
+        $data['bebida'] =  strtoupper($this->request->getPostGet('bebida'));
+        $data['huevo'] =  strtoupper($this->request->getPostGet('huevo'));
+        $data['frases_paredes'] =  strtoupper($this->request->getPostGet('frases_paredes'));
+        $data['fotos'] =  strtoupper($this->request->getPostGet('fotos'));
+
+        //Valido los campos requeridos y hago el insert en la tabla
+        if ($data['para'] != '' && $data['celular'] != '') {
+            $res['response'] = $this->attrExtArregModel->insert($data);
+        }else{
+            $res['response'] = null;
+        }
+
+        if ($res['response'] && $res['response'] != null) {
+            $res['mensaje'] = "Exito";
+        }else{
+            $res['mensaje'] = "Error";
+        }
+
+        echo json_encode($res);
+    }
+
     function actualizaObservacionPedido(){
 
         $observacionPedido =  strtoupper($this->request->getPostGet('observacionPedido'));

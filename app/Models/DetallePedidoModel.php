@@ -53,7 +53,20 @@ class DetallePedidoModel extends Model {
     public function _getDetallePedido($cod_pedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select('*');
+        $builder->select(
+            'cod_pedido,
+            idproducto,
+            cantidad,
+            '.$this->table.'.precio as precio,
+            '.$this->table.'.id as iddetalle,
+            producto,
+            idcategoria,
+            pvp,
+            subtotal,
+            observacion,
+            '.$this->table.'.created_at as created_at,
+            '.$this->table.'.updated_at as updated_at'
+        );
         $builder->join('productos', 'productos.id = '.$this->table.'.idproducto');
         $builder->where('cod_pedido', $cod_pedido);
         $query = $builder->get();

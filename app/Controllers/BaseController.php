@@ -35,6 +35,7 @@ use App\Models\StockActualModel;
 use App\Models\ItemsProductoTempModel;
 use App\Models\BancoModel;
 use App\Models\ProcedenciaModel;
+use App\Models\AttrExtArregModel;
 
 /**
  * Class BaseController
@@ -106,6 +107,7 @@ abstract class BaseController extends Controller {
         $this->itemsProductoTempModel = new ItemsProductoTempModel($this->db);
         $this->bancoModel = new BancoModel($this->db);
         $this->procedenciaModel = new ProcedenciaModel($this->db);
+        $this->attrExtArregModel = new AttrExtArregModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
