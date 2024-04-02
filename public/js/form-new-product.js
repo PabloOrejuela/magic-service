@@ -285,6 +285,12 @@ function deleteItem(idNew, idItem){
     });
 }
 
+function activarSubmit(){
+    
+    let btnSubmit = document.getElementById("btnGuardar")
+    btnSubmit.removeAttribute('disabled')
+}
+
 function cancelar(){
     
     location.replace('producto-create');

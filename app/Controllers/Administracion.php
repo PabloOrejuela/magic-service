@@ -519,7 +519,7 @@ class Administracion extends BaseController {
                 'elementos' => $this->request->getPostGet('elementos'),
                 'cantidad' => $this->request->getPostGet('cantidad'),
             ];
-            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+            echo '<pre>'.var_export($producto, true).'</pre>';exit;
             //Inserto el nuevo producto
             $idproducto = $this->productoModel->_insert($producto);
             
