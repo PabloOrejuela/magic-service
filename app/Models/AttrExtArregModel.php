@@ -55,4 +55,19 @@ class AttrExtArregModel extends Model {
         //echo $this->db->getLastQuery();
         return $result;
     }
+
+    public function _getAttrArreg($iddetalle){
+        $result = null;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->where('iddetalle', $iddetalle);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
 }

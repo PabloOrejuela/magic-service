@@ -123,4 +123,6 @@ class DetallePedidoTempModel extends Model {
         $builder->where('idproducto', $idproducto);
         $builder->update();
     }
+
+    
 }

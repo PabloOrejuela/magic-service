@@ -325,6 +325,24 @@ class Ventas extends BaseController {
         echo json_encode($res);
     }
 
+    function detalle_prodnew_insert_temp(){
+        
+        $error = '';
+        $idproducto = $this->request->getPostGet('idproducto');
+        $item = $this->request->getPostGet('item');
+        $idNew = $this->request->getPostGet('idNew');
+
+        //$datosTempExiste = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
+
+        $dataItem = $this->itemModel->find($item);
+        $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
+        
+        //echo '<pre>'.var_export($result, true).'</pre>';exit;
+        $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
+        $res['error'] = $result;
+        echo json_encode($res);
+    }
+
     function detalle_pedido_update_precio_temp(){
 
         $idproducto = $this->request->getPostGet('idproducto');

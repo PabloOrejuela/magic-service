@@ -40,6 +40,7 @@ $routes->get('insertAttrArreglo', 'Ventas::insertAttrArreglo');
 $routes->get('ventas/getEstadosPedido', 'Ventas::getEstadosPedido');
 $routes->get('ventas/getMensajeros', 'Ventas::getMensajeros');
 $routes->get('getHorasEntrega', 'Ventas::getHorasEntrega');
+$routes->get('imprimirTicket/(:num)/(:any)', 'Tickets::imprimirTicket/$1/$2');
 
 $routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
 $routes->get('detalle_pedido_insert_temp', 'Ventas::detalle_pedido_insert_temp');
@@ -51,6 +52,7 @@ $routes->get('getProductosAutocomplete', 'Ventas::getProductosAutocomplete');
 $routes->get('getItemsAutocomplete', 'Ventas::getItemsAutocomplete');
 $routes->get('getProducto/(:num)', 'Ventas::getProducto/$1');
 $routes->get('detalle-prod-insert_temp', 'Ventas::detalle_prod_insert_temp');
+$routes->get('detalle-prodnew-insert-temp', 'Ventas::detalle_prodnew_insert_temp');
 $routes->get('ventas-getItemsProducto/(:num)', 'Ventas::getItemsProducto/$1');
 $routes->get('updateItemsTempProduct', 'Ventas::updateItemsTempProduct');
 $routes->get('updatePvpTempProduct', 'Ventas::updatePvpTempProduct');

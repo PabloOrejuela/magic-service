@@ -745,7 +745,7 @@ function actualizarMensajero(mensajero, codigo_pedido){
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
-            console.log(data);
+            //console.log(data);
             location.replace('pedidos');
         }
     });
@@ -796,10 +796,6 @@ function actualizarHorarioEntrega(horario_entrega, codigo_pedido){
         }
             
     });
-}
-
-function print(id){
-    alert('Imprimiendo '+id)
 }
 
 const alerta = (msg, time, icon) => {

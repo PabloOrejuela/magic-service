@@ -1,43 +1,6 @@
-<style>
-    #precio{
-        text-align: right;
-    }
-    #item-grid{
-        margin-left: 20px;
-        /*float: left;*/
-    }
-    #items{
-        text-align: left;
-    }
-    a:hover{
-        text-decoration: none;
-    }
-    #input-item{
-        width: 65%;
-        margin-right: 5px;
-    }
-    .cant{
-        /* width: 20%; */
-        text-align: right;
-        margin-left: 1px;
-    }
-
-    #ion-delete{
-        
-        margin-left: 7px;
-        padding: 2px;
-        padding-top: 3px;
-        font-size: 1.5em;
-        color: red;
-    }
-</style>
-<script>
-    $(document).ready( 
-        
-    );
-</script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/form-product-new.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -117,6 +80,7 @@
         </div>
     </div>
 </section> <!-- /.card -->
+<script src="<?= site_url(); ?>public/js/form-product-new.js"></script>
 <script type="text/javascript">
 
 var elementos = []

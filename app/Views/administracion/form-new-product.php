@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/cotizador-styles.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/form-new-product.css">
+
 
 <section class="content">
       <div class="container-fluid">
@@ -30,17 +31,6 @@
                                         ?>
                                     </select>
                                 </div>
-                                
-                                <div class="form-group col-md-1 mb-1" style="display:none;">
-                                    <label for="productos">Id:</label>
-                                    <input 
-                                        type="text" 
-                                        class="form-control cant" 
-                                        name="idproducto" 
-                                        value="0" 
-                                        id="idproducto"
-                                    >
-                                </div>
                                 <div class="form-group" style="display:none;">
                                     <input 
                                         type="text" 
@@ -60,30 +50,32 @@
                                             id="image-product"
                                         >
                                     </div>
-                                    <input class="form-control" type="file" id="formFileImg" name="file-img" disabled>
+                                    <input class="form-control" type="file" id="formFileImg" name="file-img"0>
                                 </div>
                             </div>
 
-                            <div class="row col-md-12 mt-3">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="categoria">Nombre del nuevo arreglo:</label>
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        name="nombreArregloNuevo" 
-                                        placeholder="Nombre" 
-                                        id="nombreArregloNuevo"
-                                    >
-                                    <input 
-                                        type="text" 
-                                        class="form-control col-md-2 mt-1" 
-                                        name="new_id" 
-                                        id="new_id"
-                                        style="display:none;"
-                                    >
+                            <div class="row col-md-9 mt-3">
+                                <div class="form-group row">
+                                    <div class="col-md-8">
+                                        <label for="categoria">Nombre del nuevo arreglo:</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control  col-md-9 mt-1" 
+                                            name="nombreArregloNuevo" 
+                                            placeholder="Nombre" 
+                                            id="nombreArregloNuevo"
+                                        >
+                                        <input 
+                                            type="text" 
+                                            class="form-control  col-md-1 mt-1" 
+                                            name="new_id" 
+                                            id="new_id"
+                                            style="display:block;"
+                                            value="<?= $newId; ?>"
+                                        >
+                                    </div>
                                 </div>
                                 <div><span id="mensaje"></span></div>
-                                
                             </div>
                             <div class="row col-md-9 mt-3">
                                 <div class="form-group row">
@@ -107,7 +99,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <a 
-                                            href="javascript:agregarItem(document.getElementById('idproducto').value, idp.value)" 
+                                            href="javascript:agregarItem(<?= $newId; ?>,idp.value)" 
                                             class="btn btn-carrito-item" 
                                             id="btn-carrito-item"
                                         >
@@ -195,6 +187,6 @@
 <script src="<?= site_url(); ?>public/plugins/jquery/jquery.js"></script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= site_url(); ?>public/js/form-new-product.js"></script>
-<script src="<?= site_url(); ?>public/js/form-cotizador-autocomplete.js"></script>
+<script src="<?= site_url(); ?>public/js/form-new-product-autocomplete.js"></script>
 <script src="<?= site_url(); ?>public/js/carga-imagen-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

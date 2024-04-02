@@ -1,10 +1,12 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Los arreglos de cada pedido ahora salen en forma de lista</li>
-    <li>Los arreglos de cada pedido son links que muestran un formulario modal para ingresar los atributos del ticket de cada arreglo</li>
-    <li>Los arreglos de cada pedido se muestran en rojo si es que no tienen un registro de atributos extras con por lo menos Celular y Para</li>
+    <li>Trabajando el form de nuevo producto</li>
+    <li>Ya genera el nuevo ID de producto</li>
+    <li>Ya agrega nuevos items al grid nuevo producto</li>
+    <li>ya actualiza porcentaje y totales</li>
+    <li>Ya funciona el botón delete Item</li>
+    
 </ul>
 <h3>Correcciones:</h3>
 <ul>
-    <li>Se eliminó las tablas de atributos separadas y ahora es una sola que tiene todos los atributos de cada categoría de arreglo</li>
 </ul>

@@ -264,7 +264,7 @@
                                                                 echo '
                                                                 <tr id="fila_'.$numFila.'">
                                                                 <td>'.$numFila.'</td>
-                                                                <td>'.$row->id.'</td>
+                                                                <td>'.$row->iddetalle.'</td>
                                                                 <td>'.$row->producto.'</td>
                                                                 <td><input type="text" class="form-control" name="observacion_'.$row->idproducto.'" value="'.$row->observacion.'" onchange="observacion('.$row->idproducto. ','.$pedido->cod_pedido.')" id="observa_'.$row->idproducto.'"></td>
                                                                 <td><input type="text" class="form-control input-precio" name="precio_'.$row->idproducto.'" value="'.$row->pvp.'" onchange="actualizaPrecio('.$row->idproducto. ','.$pedido->cod_pedido.')" id="precio_'.$row->idproducto.'"></td>

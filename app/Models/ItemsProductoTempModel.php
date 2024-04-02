@@ -173,6 +173,7 @@ class ItemsProductoTempModel extends Model {
     }
 
     public function _deleteItem($item, $newId){
+        
         $this->db->transStart();
         $builder = $this->db->table($this->table);
         $builder->where('item',$item);
@@ -209,6 +210,21 @@ class ItemsProductoTempModel extends Model {
             }
         }
         //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    public function _getLastId(){
+        //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
+        $result = 0;
+        $builder = $this->db->table($this->table);
+        $builder->select('id')->orderBy('id',"desc")->limit(1);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row->id;
+            }
+        }
+        echo $this->db->getLastQuery();
         return $result;
     }
 }

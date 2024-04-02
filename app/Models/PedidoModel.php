@@ -132,6 +132,26 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getDatosPedidoTicket($idpedido){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,
+                nombre as cliente,direccion,telefono,telefono_2,fecha_entrega,
+                hora,fecha,observaciones,pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
+        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id');
+        $builder->where($this->table.'.id', $idpedido);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     public function _insert($data) {
 
         //echo '<pre>'.var_export($data, true).'</pre>';exit;

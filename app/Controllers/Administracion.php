@@ -491,7 +491,9 @@ class Administracion extends BaseController {
             //delete de los items de la tabla temporal de hace un día
             $this->itemsProductoTempModel->_deleteItemsTempOld();
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['lastId'] = $this->productoModel->_getLastId();
+            $data['newId'] = $data['lastId'] + 1;
+
             $data['title']='Administración';
             $data['subtitle']='Nuevo producto  EN PROCESO NO ESTÁ 100% TERMINADO';
             $data['main_content']='administracion/form-new-product';
