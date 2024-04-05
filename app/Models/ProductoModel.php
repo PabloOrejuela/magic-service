@@ -212,6 +212,40 @@ class ProductoModel extends Model {
         return  $this->db->insertID();
     }
 
+    public function _insertNewProduct($data) {
+
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+
+        //Inserto el nuevo producto
+        $builder = $this->db->table($this->table);
+        if ($data['producto'] != 'NULL' && $data['producto'] != '') {
+            $builder->set('producto', $data['producto']);
+        }
+
+        if ($data['idcategoria'] != 'NULL' && $data['idcategoria'] != '') {
+            $builder->set('idcategoria', $data['idcategoria']);
+        }
+
+        if ($data['precio'] != 'NULL' && $data['precio'] != '') {
+            $builder->set('precio', $data['precio']);
+        }
+
+        if ($data['image'] != 'NULL' && $data['image'] != '') {
+            $builder->set('image', $data['image']);
+        }
+
+        if ($data['observaciones'] != 'NULL' && $data['observaciones'] != '') {
+            $builder->set('observaciones', $data['observaciones']);
+        }
+
+        if ($data['idusuario'] != 'NULL' && $data['idusuario'] != '') {
+            $builder->set('idusuario', $data['idusuario']);
+        }
+
+        $builder->insert();
+        return  $this->db->insertID();
+    }
+
     function _desactivaProductosTemporales() {
         $builder = $this->db->table($this->table);
         $now = new \DateTime(date("Y-m-d"));

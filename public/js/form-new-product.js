@@ -40,7 +40,7 @@ function agregarItem(idNew, item){
                                         placeholder="0"
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
-                                        min="0.1" max="1.0" step="0.1"
+                                        min="0.1" step="0.1"
                                     >
                                 </td>
                                 <td>
@@ -159,7 +159,7 @@ function updatePorcentaje(datosActualizar){
 function updatePvp(idItem){
     let pvp = document.getElementById("pvp_"+idItem)
     let idNew = document.getElementById("new_id").value
-    console.log(idItem);
+    
     $.ajax({
         type:"GET",
         dataType:"html",

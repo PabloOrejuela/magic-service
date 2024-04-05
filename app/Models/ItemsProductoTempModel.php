@@ -187,6 +187,20 @@ class ItemsProductoTempModel extends Model {
         }
     }
 
+    public function _deleteItems($idproducto){
+        
+        $this->db->transStart();
+        $builder = $this->db->table($this->table);
+        $builder->where('idproducto',$idproducto);
+        $builder->delete();
+        $this->db->transComplete();
+        if ($this->db->transStatus() === false) {
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     function _getItemsTempProducto($newId){
         
         $result = NULL;

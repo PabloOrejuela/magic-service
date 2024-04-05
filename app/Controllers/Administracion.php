@@ -489,13 +489,13 @@ class Administracion extends BaseController {
             $data['productos'] = $this->productoModel->findAll();
 
             //delete de los items de la tabla temporal de hace un día
-            $this->itemsProductoTempModel->_deleteItemsTempOld();
+            //$this->itemsProductoTempModel->_deleteItemsTempOld();
 
             $data['lastId'] = $this->productoModel->_getLastId();
             $data['newId'] = $data['lastId'] + 1;
 
             $data['title']='Administración';
-            $data['subtitle']='Nuevo producto  EN PROCESO NO ESTÁ 100% TERMINADO';
+            $data['subtitle']='Nuevo producto  Trabajando en la subida de la imágen';
             $data['main_content']='administracion/form-new-product';
             return view('dashboard/index', $data);
         }else{
@@ -518,13 +518,111 @@ class Administracion extends BaseController {
                 'items' => $this->request->getPostGet('items'),
                 'elementos' => $this->request->getPostGet('elementos'),
                 'cantidad' => $this->request->getPostGet('cantidad'),
+                'imagen' => 'nombre de la imagen'
             ];
+
+            //Creo la ruta alas imágenes
+            $ruta = './public/images/productos/'.$producto['imagen'].'/';
+
+            //Recibo la imagen
+            $imagen = $this->request->getFile('imagen');
+            $img_name = '';
+
+            if (!$imagen->isValid()) {
+                //SI NO ES VÁLIDO PASO VACÍO AL NOMBRE
+                $img_name = '';
+
+            }else{
+                //AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
+                
+                //Muevo el archivo del temporal a la carpeta
+                $img_name = $producto['imagen']."_prod.jpg";
+                $imagen->move($ruta, $img_name, true);
+                
+
+                $this->image->withFile($ruta.$img_name)
+                    ->convert(IMAGETYPE_JPEG)
+                    ->save($ruta.$img_name);
+
+                if ($imagen->hasMoved()) {
+                    //Si se copió al server obtengo el nombre del archivo, lo renombro y mando el nombre para que sea guardado
+                    $img_name = $img_name;
+                }else{
+                    //Si NO se copió le asigno vacío al nombre
+                    $img_name = '';
+                }
+            }
+
             echo '<pre>'.var_export($producto, true).'</pre>';exit;
             //Inserto el nuevo producto
             $idproducto = $this->productoModel->_insert($producto);
             
             //Recibo el id insertado y hago el insert de los items del producto
             $this->itemsProductoModel->_insert($idproducto, $producto['elementos']);
+
+            return redirect()->to('productos');
+        }else{
+
+            $this->logout();
+        }
+    }
+
+    public function product_new_insert(){
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $producto = [
+                'idusuario' => $data['id'],
+                'producto' => strtoupper($this->request->getPostGet('nombreArregloNuevo')),
+                'idcategoria' => $this->request->getPostGet('categoria'),
+                'new_id' => $this->request->getPostGet('new_id'),
+                'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
+                'precio' => strtoupper($this->request->getPostGet('total')),
+            ];
+
+            //Creo la ruta alas imágenes
+            $ruta = './public/images/productos/';
+
+            //Recibo la imagen
+            $imagen = $this->request->getFile('file-img');
+            $producto['image'] = '';
+            
+            if (!$imagen->isValid()) {
+                //SI NO ES VÁLIDO PASO VACÍO AL NOMBRE
+                $producto['image'] = '';
+
+            }else{
+                //AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
+                
+                //Muevo el archivo del temporal a la carpeta
+                $producto['image'] = $producto['producto'];
+                $imagen->move($ruta, $producto['image'], true);
+                
+                $this->image->withFile($ruta.$producto['image'])
+                    ->convert(IMAGETYPE_JPEG)
+                    ->resize(450, 450, false, 'height')
+                    ->save($ruta.$producto['image'].'.jpg');
+
+                if (!$imagen->hasMoved()) {
+                    //Si la imágen NO se copió al server el nombre del archivo va vacío
+                    $producto['image'] = '';
+                }
+            }
+
+            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+            //Inserto el nuevo producto
+            $idproducto = $this->productoModel->_insertNewProduct($producto);
+
+            //Obtengo los items del producto que estoy creando
+            $items = $this->itemsProductoTempModel->_getItemsNewProducto($producto['new_id']);
+            
+            //Recibo el id insertado y hago el insert de los items del producto
+            $this->itemsProductoModel->_insertItemsPersonalizado($idproducto, $items);
+
+            //Borro los items del producto de la tabla temporal
+            $this->itemsProductoTempModel->_deleteItems($producto['new_id']);
 
             return redirect()->to('productos');
         }else{

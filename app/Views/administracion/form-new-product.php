@@ -15,7 +15,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'new-product';?>" method="post" enctype="multipart/form-data">
+                    <form action="<?= site_url().'product-new-insert';?>" method="post" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-5 mb-3">
@@ -31,7 +31,7 @@
                                         ?>
                                     </select>
                                 </div>
-                                <div class="form-group" style="display:none;">
+                                <div class="form-group col-md-1" style="visibility:hidden;">
                                     <input 
                                         type="text" 
                                         class="form-control cant" 
@@ -64,6 +64,7 @@
                                             name="nombreArregloNuevo" 
                                             placeholder="Nombre" 
                                             id="nombreArregloNuevo"
+                                            required
                                         >
                                         <input 
                                             type="text" 
@@ -143,7 +144,13 @@
                             </div>
                             <div class="row col-md-12 mb-3">
                                 <label for="floatingTextarea2">Observaciones:</label>
-                                <textarea class="form-control" placeholder="Observaciones" id="observaciones" name="observaciones" style="height: 100px; resize: none;"></textarea>
+                                <textarea 
+                                    class="form-control" 
+                                    placeholder="Observaciones" 
+                                    id="observaciones" 
+                                    name="observaciones" 
+                                    style="height: 100px; resize: none;"
+                                ></textarea>
                             </div>
                             <div class="row col-md-12">
                                 <button type="button" class="btn btn-light" onclick="activarSubmit()" id="btn-activar">Estoy listo y deseo continuar</button>

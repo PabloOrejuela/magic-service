@@ -267,4 +267,24 @@ class Validation extends BaseConfig
             'greater_than' => 'El campo "Precio" debe ser mayor que 0',
         ],
     ];
+
+    public $product = [
+        'idusuario'   => 'required',
+        'nombreArregloNuevo'   => 'required',
+        'categoria'   => 'required|greater_than[0]',
+        'new_id'   => 'required|greater_than[0]',
+    ]; 
+
+    public $product_errors = [
+        'nombreArregloNuevo' => [
+            'required' => 'El campo "Nombre del nuevo arreglo" es obligatorio',
+        ],
+        'categoria' => [
+            'required' => 'El campo "Categoría" es obligatorio',
+            'greater_than' => 'El campo "Categoría" es obligatorio',
+        ],
+        'new_id' => [
+            'required' => 'El campo "ID" es obligatorio',
+        ],
+    ];
 }
