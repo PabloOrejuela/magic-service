@@ -87,9 +87,24 @@ class ItemsProductoModel extends Model {
                 $builder->set('porcentaje', $value->porcentaje);
             }
 
+            if ($value->precio_unitario != 'NULL' && $value->precio_unitario != '') {
+                $builder->set('precio_unitario', $value->precio_unitario);
+            }
+
+            if ($value->precio_actual != 'NULL' && $value->precio_actual != '') {
+                $builder->set('precio_actual', $value->precio_actual);
+            }
+
+            if ($value->pvp	 != 'NULL' && $value->pvp	 != '') {
+                $builder->set('pvp	', $value->pvp	);
+            }
+
             if ($value->cantidad != 'NULL' && $value->cantidad != '') {
                 $builder->set('cantidad', 1);
             }
+
+            $builder->set('created_at', date('Y-m-d h:m:s'));
+            $builder->set('updated_at', date('Y-m-d h:m:s'));
             
             $builder->insert();
         }    
@@ -102,14 +117,21 @@ class ItemsProductoModel extends Model {
         $builder->select(
             'items.id as id, 
             items.item as item, 
-            precio, 
+            productos.precio as precio,
             cuantificable,
             porcentaje,
-            estado, 
+            precio_unitario,
+            precio_actual,
+            pvp,
+            observaciones,
+            cantidad,
+            items.estado as estado, 
             cantidad,
             '.$this->table.'.idproducto as idproducto');
         $builder->join('items', $this->table.'.item = items.id');
+        $builder->join('productos', $this->table.'.idproducto = productos.id');
         $builder->where($this->table.'.idproducto', $idproducto);
+        
         //$builder->join('items', 'items_productos.item = items.id');
         $query = $builder->get();
         if ($query->getResult() != null) {

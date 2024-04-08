@@ -5,5 +5,5 @@
 </ul>
 <h3>Correcciones:</h3>
 <ul>
-    <li>Corregido el tamño de input de imágen</li>
+    <li>Corregido el error que tenía en cotizador pues no grababa ni la observación ni el attr temporal</li>
 </ul>

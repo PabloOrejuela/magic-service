@@ -695,6 +695,8 @@ class Administracion extends BaseController {
                 'categoria' => $this->request->getPostGet('categoria'),
                 'precio' => $this->request->getPostGet('total'),
                 'image' => $this->request->getPostGet('image'),
+                'arreglo_temporal' => $this->request->getPostGet('arreglo_temporal'),
+                'observaciones' => $this->request->getPostGet('observaciones'),
             ];
 
             $items = $this->itemsProductoTempModel->_getItemsProducto($idproductoOld);

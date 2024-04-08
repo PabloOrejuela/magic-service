@@ -162,7 +162,7 @@
                             </div>
                             <div class="row col-md-12">
                                 <div class="form-check mb-4 mx-2 form-switch">
-                                    <input class="form-check-input" type="checkbox" value="1" id="chk-attr-temp" name="arreglo-temporal">
+                                    <input class="form-check-input" type="checkbox" value="1" id="chk-attr-temp" name="arreglo_temporal">
                                     <label class="form-check-label" for="chk-attr-temp" id="chk-attr-temp">
                                         Guardar como arreglo temporal
                                     </label>

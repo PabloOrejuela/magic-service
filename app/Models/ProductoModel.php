@@ -60,8 +60,6 @@ class ProductoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('precio')->where($this->table.'.id', $id);
-        //$builder->join('items_productos', $this->table.'.id = items_productos.idproducto');
-        //$builder->join('items', 'items_productos.item = items.id');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -206,6 +204,14 @@ class ProductoModel extends Model {
 
         if ($data['image'] != 'NULL' && $data['image'] != '') {
             $builder->set('image', $data['image']);
+        }
+
+        if ($data['observaciones'] != 'NULL' && $data['arreglo_temporal'] != '') {
+            $builder->set('attr_temporal', $data['arreglo_temporal']);
+        }
+
+        if ($data['observaciones'] != 'NULL' && $data['observaciones'] != '') {
+            $builder->set('observaciones', $data['observaciones']);
         }
 
         $builder->insert();

@@ -185,6 +185,15 @@ class Ventas extends BaseController {
         return true;
     }
 
+    function deleteItemsTempProduct(){
+
+        $idproducto = $this->request->getPostGet('idproducto');
+
+        $this->itemsProductoTempModel->_deleteItems($idproducto);
+
+        return true;
+    }
+
     function get_costo_horario($horario){
         //$producto = $this->request->getPostGet('producto');
         $costo_horario = $this->horariosEntregaModel->find($horario);
@@ -456,10 +465,17 @@ class Ventas extends BaseController {
 
         $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
         //echo '<pre>'.var_export($items, true).'</pre>';exit;
-        $itemsTemp = $this->insertProductTemp($idproducto, $items);
+
+        //Inserto en la tabla temporal los items que traigo de la tabla de items producto
+        $this->insertProductTemp($idproducto, $items);
+
+        //Por seguridad traigo los items que están en la tabla temporal
+        $info['itemsTemp'] = $this->itemsProductoTempModel->_getItemsProducto($idproducto);
+        $precio = $this->productoModel->_getPrecioProducto($idproducto);
+        $info['precio'] = $precio->precio;
         
         //Retorno los items
-        echo json_encode($itemsTemp);
+        echo json_encode($info);
     }
 
     public function insertProductTemp($idproducto, $items){
@@ -822,8 +838,9 @@ class Ventas extends BaseController {
 
             //delete de los items de la tabla temporal de hace un día
             $this->itemsProductoTempModel->_deleteItemsTempOld();
+            $items = $this->itemsProductoModel->_getItemsProducto(12);
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($items, true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Cotizar producto';
             $data['main_content']='ventas/form-cotizador';

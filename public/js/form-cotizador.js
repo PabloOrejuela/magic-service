@@ -55,13 +55,36 @@ function removeRows(table) {
     }
 }
 
+function borraItemstemp(idproducto){
+    
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "deleteItemsTempProduct",
+        data:{
+            idproducto: idproducto,
+        },
+        beforeSend: function (f) {
+            alertProcesando()
+        },
+        success: function(resultado){
+            return 1;
+        },
+        error: function(resultado){
+          console.log('Se produjo un error');
+        }
+    });
+    calculaTotal()
+}
+
 
 $(document).ready(function(){
     $("#productos").on('change',function(){
         if($("#productos").val() !=""){
             valor = $("#productos").val();
-            
+            //console.log(valor);
             getDatosProducto(valor)
+            borraItemstemp(valor)
                 
                 $.ajax({
                     type:"GET",
@@ -72,13 +95,14 @@ $(document).ready(function(){
                 },
                     success: function(resultado){
                     
-                        let items = JSON.parse(resultado);
-                        let total = 0
+                        let res = JSON.parse(resultado);
+                        let sumaTotal = 0
                         
                         let tablaItemsBody = document.getElementById('tablaItemsBody')
                         tablaItemsBody.innerHTML = ''
                         document.getElementById("idproducto").value = valor
-                        for(let item of items){
+
+                        for(let item of res.itemsTemp){
                             document.getElementById("new_id").value = item.new_id
                             tablaItemsBody.innerHTML += `<tr>
                                 <td>${item.id}</td><td>${item.item}</td>
@@ -99,7 +123,7 @@ $(document).ready(function(){
                                         type="text" 
                                         class="form-control cant precio" 
                                         name="precio_${item.id}" 
-                                        value="${item.precio}" 
+                                        value="${item.precio_unitario}" 
                                         id="precio_${item.id}"
                                         disabled
                                     >
@@ -109,7 +133,7 @@ $(document).ready(function(){
                                         type="text" 
                                         class="form-control cant precio_final" 
                                         name="precio_final_${item.id}" 
-                                        value="${item.precio}" 
+                                        value="${item.precio_actual}" 
                                         id="precio_final_${item.id}"
                                         disabled
                                     >
@@ -119,7 +143,7 @@ $(document).ready(function(){
                                         type="text" 
                                         class="form-control cant pvp" 
                                         name="pvp_${item.id}" 
-                                        value="${item.precio}" 
+                                        value="${item.pvp}" 
                                         id="pvp_${item.id}"
                                         onchange="updatePvp(${item.id})"
                                     >
@@ -130,13 +154,20 @@ $(document).ready(function(){
                                     </a>
                                 </td>
                                 </tr>`
-                            total += parseFloat(item.precio)
+                            sumaTotal += parseFloat(item.pvp)
                         }
                         let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
                         let slctProductos = document.getElementById("productos")
                         let index = slctProductos.selectedIndex
                         
-                        document.getElementById("input-total").value = parseFloat(total).toFixed(2)
+                        //Verifico si se cambió el precio total
+                        if (res.precio != sumaTotal) {
+                            document.getElementById("input-total").value = parseFloat(res.precio).toFixed(2)
+                        }else{
+                            //Si no se ha cambiado le cargo la suma total al input
+                            document.getElementById("input-total").value = parseFloat(sumaTotal).toFixed(2)
+                        }
+                        
                         
                         nombreArregloNuevo.removeAttribute('disabled')
                         let nombretemp = slctProductos.options[index].text
@@ -218,7 +249,7 @@ function updatePorcentaje(datosActualizar){
 function updatePvp(idItem){
     let pvp = document.getElementById("pvp_"+idItem)
     let idNew = document.getElementById("new_id").value
-    console.log(idItem);
+    
     $.ajax({
         type:"GET",
         dataType:"html",
@@ -419,7 +450,7 @@ function agregarItem(idproducto, item){
                                         placeholder="0"
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
-                                        min="0.1" max="1.0" step="0.1"
+                                        min="0.1" step="0.1"
                                     >
                                 </td>
                                 <td>

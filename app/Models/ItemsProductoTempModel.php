@@ -45,15 +45,21 @@ class ItemsProductoTempModel extends Model {
         $builder->select(
             'items.id as id, 
             items.item as item, 
-            precio, 
+            new_id,
+            productos.precio as precio,
             cuantificable,
             porcentaje,
-            estado,
-            new_id,
+            precio_unitario,
+            precio_actual,
+            pvp,
+            observaciones,
+            cantidad,
+            items.estado as estado, 
             cantidad,
             '.$this->table.'.idproducto as idproducto');
         $builder->where($this->table.'.idproducto', $idproducto);
         $builder->join('items', $this->table.'.item = items.id');
+        $builder->join('productos', $this->table.'.idproducto = productos.id');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -126,14 +132,14 @@ class ItemsProductoTempModel extends Model {
     }
 
     function _insertNewItemTemp($idproducto, $newId, $item){
-        
+        //echo '<pre>'.var_export($item, true).'</pre>';exit;
         $builder = $this->db->table($this->table);
         $builder->set('item', $item->id);
         $builder->set('new_id', $newId);
         $builder->set('idproducto', $idproducto);
-        $builder->set('precio_unitario', $item->precio);
-        $builder->set('precio_actual', $item->precio);
-        $builder->set('pvp', $item->precio);
+        $builder->set('precio_unitario', $item->precio_unitario);
+        $builder->set('precio_actual', $item->precio_actual);
+        $builder->set('pvp', $item->pvp);
         $builder->set('porcentaje', $item->porcentaje);
         $builder->set('cantidad', 1);
         $builder->insert();
