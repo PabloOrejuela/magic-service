@@ -56,7 +56,7 @@
 
                             <div class="row col-md-9 mt-3">
                                 <div class="form-group row">
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <label for="categoria">Nombre del nuevo arreglo:</label>
                                         <input 
                                             type="text" 

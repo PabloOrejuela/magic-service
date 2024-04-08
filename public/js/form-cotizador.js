@@ -2,7 +2,6 @@ $(document).ready(function(){
     $("#categoria").on('change',function(){
         if($("#categoria").val() !=""){
             valor = $("#categoria").val();
-
             $.ajax({
                 type:"GET",
                 dataType:"html",
@@ -85,7 +84,7 @@ $(document).ready(function(){
             //console.log(valor);
             getDatosProducto(valor)
             borraItemstemp(valor)
-                
+                console.log(valor);
                 $.ajax({
                     type:"GET",
                     dataType:"html",

@@ -39,6 +39,22 @@ class ItemsProductoTempModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function _verificaItem($idNew, $item){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('id');
+        $builder->where('new_id', $idNew);
+        $builder->where('item', $item);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getItemsProducto($idproducto){
         $result = NULL;
         $builder = $this->db->table($this->table);
@@ -106,6 +122,7 @@ class ItemsProductoTempModel extends Model {
             $builder->set('idproducto', $idproducto);
             $builder->set('new_id', $idnew);
             $builder->set('cantidad', 1);
+            $builder->set('created_at', date('Y-m-d h:m:s'));
             $builder->insert();
         }
         $builder->set('item', $item);
@@ -127,6 +144,7 @@ class ItemsProductoTempModel extends Model {
         $builder->set('pvp', $item->precio);
         $builder->set('porcentaje', 1);
         $builder->set('cantidad', 1);
+        $builder->set('created_at', date('Y-m-d h:m:s'));
         $builder->insert();
         return  $this->db->insertID();
     }
@@ -142,6 +160,7 @@ class ItemsProductoTempModel extends Model {
         $builder->set('pvp', $item->pvp);
         $builder->set('porcentaje', $item->porcentaje);
         $builder->set('cantidad', 1);
+        $builder->set('created_at', date('Y-m-d h:m:s'));
         $builder->insert();
         //sreturn  $this->db->insertID();
     }
@@ -149,8 +168,9 @@ class ItemsProductoTempModel extends Model {
     public function _deleteItemsTempOld(){
         $ayer = date('Y-m-d', time() - 60 * 60 * 24);
         $builder = $this->db->table($this->table);
-        $builder->where('created_at <=', $ayer);
+        $builder->where('updated_at <=', $ayer);
         $builder->delete();
+        //echo $this->db->getLastQuery();
     }
 
     function _updateDataItems($data){
@@ -197,7 +217,7 @@ class ItemsProductoTempModel extends Model {
         
         $this->db->transStart();
         $builder = $this->db->table($this->table);
-        $builder->where('idproducto',$idproducto);
+        $builder->where('idproducto', $idproducto);
         $builder->delete();
         $this->db->transComplete();
         if ($this->db->transStatus() === false) {

@@ -1,7 +1,7 @@
 function agregarItem(idNew, item){
     let inputItem = document.getElementById("iditem")
 
-    if (idNew != null && idNew != 0 && idNew > 0) {
+    if (idNew != null && idNew != 0 && idNew > 0) {        
         
         $.ajax({
             url: 'detalle-prodnew-insert-temp',
@@ -17,7 +17,7 @@ function agregarItem(idNew, item){
                     
                     let detalle = JSON.parse(resultado);
                     let total = 0
-
+                    
                     //Alerta que se ha agregado un item y limpio el input de items
                     alertAgregaItem()
                     inputItem.value = ""
@@ -91,7 +91,28 @@ function agregarItem(idNew, item){
         //console.log(cod_pedido);
         
     }
+}
+
+function borraItemstemp(idproducto){
     
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "deleteItemsTempProduct",
+        data:{
+            idproducto: idproducto,
+        },
+        beforeSend: function (f) {
+            alertProcesando()
+        },
+        success: function(resultado){
+            return 1;
+        },
+        error: function(resultado){
+          console.log('Se produjo un error');
+        }
+    });
+    calculaTotal()
 }
 
 function calculaPorcentaje(idItem){

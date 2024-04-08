@@ -490,9 +490,12 @@ class Administracion extends BaseController {
 
             //delete de los items de la tabla temporal de hace un día
             //$this->itemsProductoTempModel->_deleteItemsTempOld();
-
+            $this->itemsProductoTempModel->_deleteItemsTempOld();
             $data['lastId'] = $this->productoModel->_getLastId();
-            $data['newId'] = $data['lastId'] + 1;
+            $data['newId'] = $data['lastId'].rand(0, 19);
+
+            //En caso de haber items temporales asignados a ese id los borro
+            $this->itemsProductoTempModel->_deleteItems($data['newId']);
 
             $data['title']='Administración';
             $data['subtitle']='Nuevo producto  Trabajando en la subida de la imágen';

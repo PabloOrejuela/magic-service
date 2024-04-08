@@ -309,7 +309,8 @@ class Ventas extends BaseController {
     }
 
     function detalle_prod_insert_temp(){
-        $error = '';
+        $error = 'No se pudo insertar';
+        $result = 'No se pudo insertar';
         $idproducto = $this->request->getPostGet('idproducto');
         $item = $this->request->getPostGet('item');
         $idNew = $this->request->getPostGet('idNew');
@@ -319,7 +320,13 @@ class Ventas extends BaseController {
         if ($datosTempExiste) {
             //Traigo los datos del item a insertar
             $dataItem = $this->itemModel->find($item);
-            $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
+
+            //Verifico que el item no exista en la tabla
+            $verifica = $this->itemsProductoTempModel->_verificaItem($idNew, $item);
+            if (!isset($verifica) || $verifica == 0 || $verifica == NULL) {
+                $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
+            }
+            
 
         }else{
             //Traigo los items de la tabla Items Producto
@@ -336,7 +343,8 @@ class Ventas extends BaseController {
 
     function detalle_prodnew_insert_temp(){
         
-        $error = '';
+        $error = 'No se pudo insertar';
+        $result = 'No se pudo insertar';
         $idproducto = $this->request->getPostGet('idproducto');
         $item = $this->request->getPostGet('item');
         $idNew = $this->request->getPostGet('idNew');
@@ -344,11 +352,17 @@ class Ventas extends BaseController {
         //$datosTempExiste = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
 
         $dataItem = $this->itemModel->find($item);
-        $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
+
+        //Verifico que no haya sido ya agregado
+        $verifica = $this->itemsProductoTempModel->_verificaItem($idNew, $item);
+        if (!isset($verifica) || $verifica == 0 || $verifica == NULL) {
+            $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
+        }
         
         //echo '<pre>'.var_export($result, true).'</pre>';exit;
         $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
         $res['error'] = $result;
+        $res['verifica'] = $result;
         echo json_encode($res);
     }
 
@@ -838,7 +852,6 @@ class Ventas extends BaseController {
 
             //delete de los items de la tabla temporal de hace un día
             $this->itemsProductoTempModel->_deleteItemsTempOld();
-            $items = $this->itemsProductoModel->_getItemsProducto(12);
 
             //echo '<pre>'.var_export($items, true).'</pre>';exit;
             $data['title']='Ventas';
