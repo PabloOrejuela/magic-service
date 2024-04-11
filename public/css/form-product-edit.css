@@ -1,0 +1,58 @@
+#precio{
+    text-align: right;
+}
+
+#item-grid{
+    margin-left: 20px;
+    /*float: left;*/
+}
+
+#items{
+    text-align: left;
+}
+
+#input-item{
+    width: 90%;
+    margin-right: 5px;
+}
+.cant{
+    width: 60%;
+    text-align: right;
+    margin-left: 0px;
+}
+
+#mensaje{
+    color: #eed5d5;
+    font-size: 2.5em;
+}
+
+#label-thead{
+    text-align: center;
+}
+
+#input-total{
+    position: relative;
+    display: inline;
+    margin-left: 50px;
+    width: 60%;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+input[type=number] { -moz-appearance:textfield; }
+
+@media only screen and (max-width: 600px) {
+    td{
+        font-size: 0.8em;
+    }
+    .cant{
+        width: 90%;
+        text-align: right;
+        margin-left: 0px;
+        font-size: 0.8em;
+    }
+}

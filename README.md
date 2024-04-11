@@ -1,9 +1,8 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Trabajando el form de nuevo producto y Citizador</li>
+    <li>Agregada la columna de precio en el grid de productos</li>
     
 </ul>
 <h3>Correcciones:</h3>
 <ul>
-    <li>Corregidos errores de los formularios Cotizador y nuevo producto</li>
 </ul>

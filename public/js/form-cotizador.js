@@ -84,7 +84,7 @@ $(document).ready(function(){
             //console.log(valor);
             getDatosProducto(valor)
             borraItemstemp(valor)
-                console.log(valor);
+                
                 $.ajax({
                     type:"GET",
                     dataType:"html",
@@ -108,7 +108,7 @@ $(document).ready(function(){
                                 <td>
                                     <input 
                                         type="number" 
-                                        class="form-control cant porcentaje" 
+                                        class="form-control cant number porcentaje" 
                                         name="porcentaje_${item.id}"
                                         value = ${item.porcentaje}
                                         placeholder="0"
@@ -120,7 +120,7 @@ $(document).ready(function(){
                                 <td>
                                     <input 
                                         type="text" 
-                                        class="form-control cant precio" 
+                                        class="form-control cant number precio" 
                                         name="precio_${item.id}" 
                                         value="${item.precio_unitario}" 
                                         id="precio_${item.id}"
@@ -130,7 +130,7 @@ $(document).ready(function(){
                                 <td>
                                     <input 
                                         type="text" 
-                                        class="form-control cant precio_final" 
+                                        class="form-control cant number precio_final" 
                                         name="precio_final_${item.id}" 
                                         value="${item.precio_actual}" 
                                         id="precio_final_${item.id}"
@@ -140,7 +140,7 @@ $(document).ready(function(){
                                 <td>
                                     <input 
                                         type="text" 
-                                        class="form-control cant pvp" 
+                                        class="form-control cant number pvp" 
                                         name="pvp_${item.id}" 
                                         value="${item.pvp}" 
                                         id="pvp_${item.id}"
@@ -180,6 +180,18 @@ $(document).ready(function(){
         }
     });
 });
+
+$(document).ready(function(){
+
+    jQuery('.number').keypress(function(tecla){
+        console.log(tecla.charCode);
+
+        if(tecla.charCode != 46 && tecla.charCode < 48 || tecla.charCode > 57 ){
+          return false
+        }
+    });
+});
+
 
 
 function calculaPorcentaje(idItem){
@@ -339,7 +351,7 @@ function deleteItem(idItem){
                     <td>
                         <input 
                             type="number" 
-                            class="form-control cant porcentaje" 
+                            class="form-control cant number porcentaje" 
                             name="porcentaje_${item.id}"
                             value = ${item.porcentaje}
                             placeholder="0"
@@ -351,7 +363,7 @@ function deleteItem(idItem){
                     <td>
                         <input 
                             type="text" 
-                            class="form-control cant precio" 
+                            class="form-control cant number precio" 
                             name="precio_${item.id}" 
                             value="${item.precio_unitario}" 
                             id="precio_${item.id}"
@@ -362,7 +374,7 @@ function deleteItem(idItem){
                     <td>
                         <input 
                             type="text" 
-                            class="form-control cant precio_final" 
+                            class="form-control cant number precio_final" 
                             name="precio_final_${item.id}" 
                             value="${item.precio_actual}" 
                             id="precio_final_${item.id}"
@@ -372,7 +384,7 @@ function deleteItem(idItem){
                     <td>
                         <input 
                             type="text" 
-                            class="form-control cant pvp" 
+                            class="form-control cant number pvp" 
                             name="pvp_${item.id}" 
                             value="${item.pvp}" 
                             id="pvp_${item.id}"
@@ -397,7 +409,7 @@ function deleteItem(idItem){
 
 function cancelar(){
     
-    location.replace('cotizador');
+    location.replace('./inicio');
 }
 
 function activarSubmit(){
@@ -443,7 +455,7 @@ function agregarItem(idproducto, item){
                                 <td>
                                     <input 
                                         type="number" 
-                                        class="form-control cant porcentaje" 
+                                        class="form-control cant number porcentaje" 
                                         name="porcentaje_${item.id}"
                                         value = "${item.porcentaje}"
                                         placeholder="0"
@@ -455,7 +467,7 @@ function agregarItem(idproducto, item){
                                 <td>
                                     <input 
                                         type="text" 
-                                        class="form-control cant precio" 
+                                        class="form-control cant number precio" 
                                         name="precio_${item.id}" 
                                         value="${item.precio_unitario}" 
                                         id="precio_${item.id}"
@@ -465,7 +477,7 @@ function agregarItem(idproducto, item){
                                 <td>
                                     <input 
                                         type="text" 
-                                        class="form-control cant precio_final" 
+                                        class="form-control cant number precio_final" 
                                         name="precio_final_${item.id}" 
                                         value="${item.precio_actual}" 
                                         id="precio_final_${item.id}"
@@ -475,7 +487,7 @@ function agregarItem(idproducto, item){
                                 <td>
                                     <input 
                                         type="text" 
-                                        class="form-control cant pvp" 
+                                        class="form-control cant number pvp" 
                                         name="pvp_${item.id}" 
                                         value="${item.pvp}" 
                                         id="pvp_${item.id}"

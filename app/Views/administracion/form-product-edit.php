@@ -1,49 +1,6 @@
-<style>
-    #precio{
-        text-align: right;
-    }
-    #item-grid{
-        margin-left: 20px;
-        /*float: left;*/
-    }
-    #items{
-        text-align: left;
-    }
-    #input-item{
-        width: 80%;
-        margin-right: 5px;
-    }
-    .cant{
-        width: 50px;
-        text-align: right;
-        margin-left: 0px;
-    }
-
-    .div-img{
-        display:none;
-    }
-
-    #mensaje{
-        color: #eed5d5;
-        font-size: 2.5em;
-    }
-    #input-total{
-        position: relative;
-        display: inline;
-        margin-left: 40px;
-        width: 60%;
-    }
-
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-        -webkit-appearance: none; 
-        margin: 0; 
-    }
-
-    input[type=number] { -moz-appearance:textfield; }
-</style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/form-product-edit.css">
 
 <section class="content">
       <div class="container-fluid">
@@ -53,7 +10,7 @@
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?> <span id="mensaje"> Aquí deben ir precargados los datos e ITEMS del producto</span></h3>
+                        <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -62,22 +19,30 @@
                             <div class="row col-md-12">
                                 <div class="form-group col-md-4 mb-3">
                                     <label for="categoria">Categoría:</label>
-                                    <select class="custom-select form-control" id="categoria" name="categoria">
+                                    <select class="custom-select form-control" id="categoria" name="categoria" disabled>
                                         <option value="" selected>--Seleccionar categoría--</option>
                                         <?php
                                             if (isset($categorias)) {
                                                 foreach ($categorias as $key => $value) {
-                                                    echo '<option value="'.$value->id.'">'.$value->categoria.'</option>';
+                                                    if ($value->id == $producto->idcategoria) {
+                                                        echo '<option value="'.$value->id.'" selected>'.$value->categoria.'</option>';
+                                                    } else {
+                                                        echo '<option value="'.$value->id.'">'.$value->categoria.'</option>';
+                                                    }
                                                 }
                                             }
                                         ?>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-4 mb-3">
-                                    <label for="productos">Productos:</label>
-                                    <select class="custom-select form-control" id="productos" name="productos" disabled>
-                                        <option value="" selected>--Seleccionar Producto--</option>
-                                    </select>
+                                    <label for="productos">Producto:</label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        name="producto" 
+                                        value="<?= $producto->producto; ?>" 
+                                        id="image"
+                                    >
                                 </div>
                                 
                                 <div class="form-group col-md-1 mb-1" style="display:none;">
@@ -86,7 +51,7 @@
                                         type="text" 
                                         class="form-control cant" 
                                         name="idproducto" 
-                                        value="0" 
+                                        value="<?= $producto->id; ?>" 
                                         id="idproducto"
                                     >
                                 </div>
@@ -99,38 +64,18 @@
                                         id="image"
                                     >
                                 </div>
-                                <div class="form-group col-md-3 mb-3 div-img">
-                                    <label for="image-product" id="lbl-image"></label>
+                                <div class="form-group col-md-3 mb-3">
+                                    <label for="image-product" id="lbl-image">Imagen</label>
+                                    <div id="div-img">
                                         <img 
-                                            src="#" 
+                                            src="<?= site_url().'public/images/productos/'.$producto->image; ?>.jpg" 
                                             alt="producto" 
                                             class="rounded mx-auto d-block image-arreglo" 
                                             id="image-product"
                                         >
-                                        
+                                    </div>
+                                    <input class="form-control" type="file" id="formFileImg" name="file-img" disabled>
                                 </div>
-                            </div>
-
-                            <div class="row col-md-12 mt-3">
-                                <div class="form-group col-md-4 mb-3">
-                                    <label for="categoria">Nombre del nuevo arreglo:</label>
-                                    <input 
-                                        type="text" 
-                                        class="form-control" 
-                                        name="nombreArregloNuevo" 
-                                        placeholder="Nombre" 
-                                        id="nombreArregloNuevo"
-                                        disabled
-                                    >
-                                    <input 
-                                        type="text" 
-                                        class="form-control col-md-2 mt-1" 
-                                        name="new_id" 
-                                        id="new_id"
-                                        style="display:none;"
-                                    >
-                                </div>
-                                
                             </div>
                             <div class="row col-md-9 mt-3">
                                 <div class="form-group row">
@@ -153,7 +98,11 @@
                                         >
                                     </div>
                                     <div class="col-md-2">
-                                        <a href="javascript:agregarItem(document.getElementById('idproducto').value, idp.value)" class="btn btn-carrito-item" id="btn-carrito-item">
+                                        <a 
+                                            href="javascript:agregarItem(<?= $producto->id; ?>,idp.value)" 
+                                            class="btn btn-carrito-item" 
+                                            id="btn-carrito-item"
+                                        >
                                             <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
                                         </a>
                                     </div>
@@ -171,7 +120,64 @@
                                             <th class="col-sm-2">Precio final</th>
                                             <th></th>
                                         </thead>
-                                        <tbody id='tablaItemsBody'></tbody>
+                                        <tbody id='tablaItemsBody'>
+                                            <?php
+                                                foreach ($elementos as $key => $item) {
+                                                    echo '<tr>
+                                                            <td>'.$item->id.'</td><td>'.$item->item.'</td>
+                                                            <td>
+                                                                <input 
+                                                                    type="number" 
+                                                                    class="form-control cant porcentaje" 
+                                                                    name="porcentaje_'.$item->id.'"
+                                                                    value = "'.$item->porcentaje.'"
+                                                                    placeholder="0"
+                                                                    id="porcentaje_'.$item->id.'" 
+                                                                    onchange="calculaPorcentaje('.$item->id.')"
+                                                                    min="0.1" step="0.1"
+                                                                >
+                                                            </td>
+                                                            <td>
+                                                                <input 
+                                                                    type="text" 
+                                                                    class="form-control cant precio" 
+                                                                    name="precio_'.$item->id.'" 
+                                                                    value="'.$item->precio_unitario.'" 
+                                                                    id="precio_'.$item->id.'"
+                                                                    disabled
+                                                                >
+                                                            </td>
+                                                            <td>
+                                                                <input 
+                                                                    type="text" 
+                                                                    class="form-control cant precio_final" 
+                                                                    name="precio_final_'.$item->id.'" 
+                                                                    value="'.$item->precio_actual.'" 
+                                                                    id="precio_final_'.$item->id.'"
+                                                                    disabled
+                                                                >
+                                                            </td>
+                                                            <td>
+                                                                <input 
+                                                                    type="text" 
+                                                                    class="form-control cant pvp" 
+                                                                    name="pvp_'.$item->id.'"
+                                                                    value="'.$item->pvp.'" 
+                                                                    id="pvp_'.$item->id.'"
+                                                                    onchange="updatePvp('.$item->id.')"
+                                                                >
+                                                            </td>
+                                                            <td>
+                                                                <a onclick="deleteItem(${idNew}, ${item.id})" class="btn btn-borrar">
+                                                                    <img src="./public/images/delete.png" width="25" >
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    ';
+                                                }
+                                            ?>
+                                        
+                                        </tbody>
                                     </table>
                                     <table id="tablaCostos" class="table table-stripped  table-responsive tablaItems" >
                                         <tbody id='tablaCostosBody'>
@@ -182,7 +188,7 @@
                                                         type="text" 
                                                         class="form-control cant" 
                                                         name="total" 
-                                                        value="0.00" 
+                                                        value="<?= $producto->precio; ?>" 
                                                         id="input-total"
                                                     >
                                                 </td>
@@ -197,7 +203,7 @@
                         <!-- /.card-body -->
                         
                         <div class="card-footer">
-                        <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
                             <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
                         </div>
                     </form>
@@ -206,69 +212,10 @@
         </div>
     </div>
 
-<!-- Modal -->
-<div class="modal dialog" id="imageArregloModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Imágen del arreglo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <script>
-            let image = document.getElementById("image-product")
-            let id = image.getAttribute("src");
-            document.write(id)
-        </script>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-</section> <!-- /.card -->
-
-<script
-  src="https://code.jquery.com/jquery-3.7.1.min.js"
-  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-  crossorigin="anonymous">
-</script>
+<script src="<?= site_url(); ?>public/plugins/jquery/jquery.js"></script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
-<script src="<?= site_url(); ?>public/js/form-cotizador.js"></script>
+<script src="<?= site_url(); ?>public/js/form-product-edit.js"></script>
+<script src="<?= site_url(); ?>public/js/form-new-product-autocomplete.js"></script>
+<script src="<?= site_url(); ?>public/js/carga-imagen-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-<script>
-    
-    aData = {}
-    
-    $('#iditem').autocomplete({
-        source: function(request, response){
-            $.ajax({
-                url: 'getItemsAutocomplete',
-                method: 'GET',
-                dataType: 'json',
-                data: {
-                    item: request.term
-                },
-                success: function(res) {
-
-                    aData = $.map(res, function(value, key){
-                        return{
-                            id: value.id,
-                            label: value.item + ' - ' + value.precio
-                        };
-                    });
-                    let results = $.ui.autocomplete.filter(aData, request.term);
-                    response(results)
-                }
-            });
-        },
-        select: function(event, ui){
-            //document.getElementById('idp').value = 10
-            document.getElementById("idp").value = ui.item.id
-            
-        }
-    });
-</script>

@@ -60,98 +60,98 @@ class Tickets extends BaseController {
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
-                        width:40%;
+                        width:35%;
                         font-size: 0.7em;"
                     >No. Pedido: </td>
                     <td 
                         style="font-weight: bold;
                         border: 0.5px solid #000;
-                        width:60%;
-                        font-size: 0.6em;"
+                        width:65%;
+                        font-size: 0.7em;"
                     >'.$datosPedido->cod_pedido.'</td>
                 </tr>
                 <tr>
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
-                        width:40%;
+                        width:35%;
                         font-size: 0.7em;"
                     >Fecha: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
-                        width:60%;
-                        font-size: 0.6em;"
+                        width:65%;
+                        font-size: 0.7em;"
                     >'.$datosPedido->fecha_entrega.'</td>
                 </tr>
                 <tr>
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
-                        width:40%;
+                        width:35%;
                         font-size: 0.7em;"
                     >Cliente: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
-                        width:60%;
-                        font-size: 0.6em;"
+                        width:65%;
+                        font-size: 0.7em;"
                     >'.$datosPedido->cliente.'</td>
                 </tr>
                 <tr>
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
-                        width:40%;
+                        width:35%;
                         font-size: 0.7em;"
                     >Hora de entrega: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
-                        width:60%;
-                        font-size: 0.6em;"
+                        width:65%;
+                        font-size: 0.7em;"
                     >'.$datosPedido->hora.'</td>
                 </tr>
                 <tr>
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
-                        width:40%;
+                        width:35%;
                         font-size: 0.7em;"
                     >Dirección: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
-                        width:60%;
-                        font-size: 0.6em;"
+                        width:65%;
+                        font-size: 0.7em;"
                     >'.$datosPedido->dir_entrega.'</td>
                 </tr>
                 <tr>
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
-                        width:40%;
+                        width:35%;
                         font-size: 0.7em;"
                     >Sector: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
-                        width:60%;
-                        font-size: 0.6em;"
+                        width:65%;
+                        font-size: 0.7em;"
                     >'.$datosPedido->sector.'</td>
                 </tr>
                 <tr>
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
-                        width:40%;
+                        width:35%;
                         font-size: 0.7em;"
                     >Observación del pedido: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
-                        width:60%;
-                        font-size: 0.6em;"
+                        width:65%;
+                        font-size: 0.7em;"
                     >'.$datosPedido->observaciones.'</td>
                 </tr>
             </table>

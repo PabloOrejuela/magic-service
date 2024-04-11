@@ -18,6 +18,7 @@
                                 <th>No.</th>
                                 <th>Producto</th>
                                 <th>Categoria</th>
+                                <th>Precio</th>
                                 <th class="centrado">Estado</th>
                                 <th class="centrado">Arreglo definitivo</th>
                                 <th class="centrado">Habilitado hasta</th>
@@ -36,7 +37,8 @@
                                                         id="link-editar"
                                                     >'.$value->producto.'</a>
                                                 </td>
-                                                <td>'.$value->categoria.'</td>';
+                                                <td>'.$value->categoria.'</td>
+                                                <td class="right">'.$value->precio.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td class="centrado" id="estado_'.$value->id.'">Activo</td>';
                                                 }else if($value->estado == 0){

@@ -314,7 +314,7 @@ function activarSubmit(){
 
 function cancelar(){
     
-    location.replace('productos');
+    location.replace('../productos');
 }
 
 const alertAgregaItem = () => {

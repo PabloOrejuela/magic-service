@@ -50,6 +50,7 @@ $routes->get('ventas/detalle_pedido_insert_observacion_temp/(:num)/(:num)/(:any)
 $routes->get('estadistica-ventas', 'Ventas::estadisticaVentas');
 $routes->get('getProductosAutocomplete', 'Ventas::getProductosAutocomplete');
 $routes->get('getItemsAutocomplete', 'Ventas::getItemsAutocomplete');
+$routes->get('product-edit/getItemsAutocomplete', 'Ventas::getItemsAutocomplete');
 $routes->get('getProducto/(:num)', 'Ventas::getProducto/$1');
 $routes->get('detalle-prod-insert_temp', 'Ventas::detalle_prod_insert_temp');
 $routes->get('detalle-prodnew-insert-temp', 'Ventas::detalle_prodnew_insert_temp');

@@ -645,6 +645,8 @@ class Administracion extends BaseController {
             $data['producto'] = $this->productoModel->_getProducto($idproducto);
             $data['elementos'] = $this->itemsProductoModel->_getItemsProducto($idproducto);
 
+            //PABLO  enviar los items a la tabla temporal y traerlos para cargarlos
+
             //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Editar producto';

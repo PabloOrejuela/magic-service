@@ -87,7 +87,7 @@ class ProductoModel extends Model {
     function _getProductos(){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria,'.$this->table.'.updated_at, attr_temporal');
+        $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria,'.$this->table.'.updated_at, attr_temporal, precio');
         $builder->join('categorias', $this->table.'.idcategoria = categorias.id');
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -261,17 +261,19 @@ class ProductoModel extends Model {
         //Traigo los productos que tienen Attr temporal
         $prodTemporales = $this->_getProductosTemp();
 
-        foreach ($prodTemporales as $key => $value) {
+        if ($prodTemporales) {
+            foreach ($prodTemporales as $key => $value) {
             
-            $fechaActualizacion = new \DateTime(date($value->updated_at));
-            $diferencia = date_diff($fechaActualizacion, $now);
-            $dias = $diferencia->format('%R%a');
-            //echo '<pre>'.var_export($dias, true).'</pre>';exit;
-            if ($dias > '+30') {
-                //revisar
-                $builder->set('estado', 0);
-                $builder->where('id', $value->id);
-                $builder->update();
+                $fechaActualizacion = new \DateTime(date($value->updated_at));
+                $diferencia = date_diff($fechaActualizacion, $now);
+                $dias = $diferencia->format('%R%a');
+                //echo '<pre>'.var_export($dias, true).'</pre>';exit;
+                if ($dias > '+30') {
+                    //revisar
+                    $builder->set('estado', 0);
+                    $builder->where('id', $value->id);
+                    $builder->update();
+                }
             }
         }
     }
