@@ -114,10 +114,10 @@
                                         <thead >
                                             <th>#</th>
                                             <th class="col-sm-4">Item</th>
-                                            <th class="col-sm-2">Porcentaje</th>
                                             <th class="col-sm-2">Unidades</th>
                                             <th class="col-sm-2">Precio unitario</th>
-                                            <th class="col-sm-2">Precio final</th>
+                                            <th class="col-sm-2">Precio</th>
+                                            <th class="col-sm-2">PVP</th>
                                             <th></th>
                                         </thead>
                                         <tbody id='tablaItemsBody'>

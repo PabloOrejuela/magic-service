@@ -525,7 +525,7 @@ class Administracion extends BaseController {
                 'cantidad' => $this->request->getPostGet('cantidad'),
                 'imagen' => 'nombre de la imagen'
             ];
-
+            
             //Creo la ruta alas imágenes
             $ruta = './public/images/productos/'.$producto['imagen'].'/';
 
@@ -558,7 +558,7 @@ class Administracion extends BaseController {
                 }
             }
 
-            echo '<pre>'.var_export($producto, true).'</pre>';exit;
+            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
             //Inserto el nuevo producto
             $idproducto = $this->productoModel->_insert($producto);
             
@@ -589,7 +589,7 @@ class Administracion extends BaseController {
             ];
 
             //Creo la ruta alas imágenes
-            $ruta = './public/images/productos/';
+            $ruta = '../public/images/productos/';
 
             //Recibo la imagen
             $imagen = $this->request->getFile('file-img');
@@ -675,18 +675,19 @@ class Administracion extends BaseController {
         $data = $this->acl();
         
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
-            
+            //Recibo la imagen
+            $imagen = $this->request->getFile('file-img');
             $producto = [
                 'idusuario' => $data['id'],
                 'producto' => strtoupper($this->request->getPostGet('producto')),
                 'idproducto' => $this->request->getPostGet('idproducto'),
                 'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
                 'precio' => $this->request->getPostGet('total'),
-                'image' => strtoupper($this->request->getPostGet('imagenOld')),
-                'imagenNew' => strtoupper($this->request->getPostGet('file-img')),
+                'image' => $this->request->getPostGet('imagenOld'),
+                'imagenNew' => $imagen->getName(),
             ];
-            echo '<pre>'.var_export($producto, true).'</pre>';exit;
-
+            
+            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
             //Verifico si se sube otra imagen o no
             if ($producto['imagenNew'] != '') {
                 //Se ha elegido una nueva imágen
@@ -694,14 +695,11 @@ class Administracion extends BaseController {
                 //Creo la ruta a las imágenes
                 $ruta = './public/images/productos/';
 
-                //Recibo la imagen
-                $imagen = $this->request->getFile('file-img');
-                
                 $producto['image'] = '';
-
+                
                 if (!$imagen->isValid()) {
-                    //SI NO ES VÁLIDO PASO VACÍO AL NOMBRE
-                    $producto['image'] = '';
+                    //SI NO ES VÁLIDO PASO VACÍO AL NOMBRE O LA IMAGEN DEFAULT
+                    $producto['image'] = 'default-img';
     
                 }else{
                     //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
@@ -717,25 +715,36 @@ class Administracion extends BaseController {
     
                     if (!$imagen->hasMoved()) {
                         //Si la imágen NO se copió al server el nombre del archivo va vacío
-                        $producto['image'] = '';
+                        $producto['image'] = 'default-img';
                     }
                 }
             }
-            
-            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+
             //Actualizo el producto
             $this->productoModel->_updateProducto($producto);
 
             //Obtengo los items del producto que estoy editando
             $items = $this->itemsProductoTempModel->_getItemsProducto($producto['idproducto']);
             
-            //Recibo el id insertado y hago el insert de los items del producto
-            $this->itemsProductoModel->_updateItemsProducto($producto['idproducto'], $items);
+            foreach ($items as $key => $item) {
+                //verifico si ya existe en la tabla de items
+                $existe = $this->itemsProductoModel->_getItemProducto($producto['idproducto'], $item->id);
+
+                if ($existe == 1) {
+                    //Si existe actualizo
+                    $this->itemsProductoModel->_updateItemProducto($producto['idproducto'], $item);
+                    
+                }else if($existe == 0){
+                    //Si no existe inserto
+                    $this->itemsProductoModel->_insertItemProducto($producto['idproducto'], $item);
+                }
+            }
 
             //Borro los items del producto de la tabla temporal
             $this->itemsProductoTempModel->_deleteItems($producto['idproducto']);
 
             return redirect()->to('productos');
+            
         }else{
             $this->logout();
         }

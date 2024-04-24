@@ -374,12 +374,12 @@ const alertProcesando = () => {
 }
 
 
-
 linkBorraImagen.addEventListener('click', function(e) {
     e.stopPropagation()
     let divImagen = document.getElementById('image-product')
-    divImagen.src = "../public/images/default-img.png"
-
+    //let imagenNew = document.querySelector('input[name="file-img"]')
+    divImagen.src = "../public/images/productos/default-img.jpg"
+    //imagenNew.value = "default-img.png"
     // $.ajax({
     //     type:"GET",
     //     dataType:"html",

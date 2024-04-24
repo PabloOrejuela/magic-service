@@ -112,7 +112,7 @@ class ItemsProductoModel extends Model {
 
     public function _updateItemsProducto($idproducto, $data) {
 
-        //Inserto el nuevo producto
+        
         $builder = $this->db->table($this->table);
 
         //recorro el arreglo y grabo 
@@ -177,5 +177,91 @@ class ItemsProductoModel extends Model {
         }
         //echo $this->db->getLastQuery();
         return $result;
+    }
+
+    function _getItemProducto($idproducto, $item){
+        $result = 0;
+        $builder = $this->db->table($this->table);
+        $builder->select('id');
+        $builder->where('idproducto', $idproducto);
+        $builder->where('item', $item);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            $result = 1;
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    public function _updateItemProducto($idproducto, $item) {
+
+        
+        $builder = $this->db->table($this->table);
+
+        if ($item->porcentaje != 'NULL' && $item->porcentaje != '') {
+            $builder->set('porcentaje', $item->porcentaje);
+        }
+
+        if ($item->precio_unitario != 'NULL' && $item->precio_unitario != '') {
+            $builder->set('precio_unitario', $item->precio_unitario);
+        }
+
+        if ($item->precio_actual != 'NULL' && $item->precio_actual != '') {
+            $builder->set('precio_actual', $item->precio_actual);
+        }
+
+        if ($item->pvp	 != 'NULL' && $item->pvp	 != '') {
+            $builder->set('pvp	', $item->pvp	);
+        }
+
+        if ($item->cantidad != 'NULL' && $item->cantidad != '') {
+            $builder->set('cantidad', 1);
+        }
+
+        $builder->set('updated_at', date('Y-m-d h:m:s'));
+        
+        $builder->where('idproducto', $idproducto);
+        $builder->where('item', $item->id);
+        $builder->update();   
+    }
+
+    public function _insertItemProducto($idproducto, $item) {
+
+        //Inserto el nuevo producto
+        $builder = $this->db->table($this->table);
+
+        if ($idproducto != 'NULL' && $idproducto != '') {
+            $builder->set('idproducto', $idproducto);
+        }
+
+        if ($item->id != 'NULL' && $item->id != '') {
+            $builder->set('item', $item->id);
+        }
+
+        if ($item->porcentaje != 'NULL' && $item->porcentaje != '') {
+            $builder->set('porcentaje', $item->porcentaje);
+        }
+
+        if ($item->precio_unitario != 'NULL' && $item->precio_unitario != '') {
+            $builder->set('precio_unitario', $item->precio_unitario);
+        }
+
+        if ($item->precio_actual != 'NULL' && $item->precio_actual != '') {
+            $builder->set('precio_actual', $item->precio_actual);
+        }
+
+        if ($item->pvp != 'NULL' && $item->pvp != '') {
+            $builder->set('pvp	', $item->pvp);
+        }
+
+        if ($item->cantidad != 'NULL' && $item->cantidad != '') {
+            $builder->set('cantidad', 1);
+        }
+
+        $builder->set('created_at', date('Y-m-d h:m:s'));
+        $builder->set('updated_at', date('Y-m-d h:m:s'));
+        
+        $builder->insert();
+    
     }
 }

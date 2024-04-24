@@ -1,9 +1,9 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Habilitado el form de editar producto</li>
-    <li>El botón de submit del form de editar producto ahora dice "Guardar cambios"</li>
+    <li>Habilitada toda la funcionalidad de el form de editar producto</li>
+    <li>Cambiados los nombres de las columnas del form editar producto"</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>
-<li>En el form de edit producto se eliminó el botón de "Deseo continuar"</li>
+<li>En el form de editar producto se corrigió lo que no se guardaban los items agregados"</li>
 </ul>
