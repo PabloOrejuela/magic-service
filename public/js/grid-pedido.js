@@ -4,7 +4,7 @@ let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPed
 let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
 let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
 let btnNombreArreglo = document.querySelectorAll('[data-bs-target="#linkArregloPedido"]');
-let formAttrModal = document.querySelector('#form-modal-attr')
+let formAttrModal = document.querySelector('#link-borra-imagen')
 
 
 btnNombreArreglo.forEach(link => {

@@ -253,6 +253,55 @@ class ItemsProductoTempModel extends Model {
         return $result;
     }
 
+    public function _insertItemsProdEditado($idproducto, $data) {
+
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+
+        //Inserto el producto que se va a editar
+        $builder = $this->db->table($this->table);
+
+        //recorro el arreglo y grabo 
+        foreach ($data as $key => $value) {
+
+            if ($idproducto != 'NULL' && $idproducto != '') {
+                $builder->set('idproducto', $idproducto);
+            }
+
+            if ($idproducto != 'NULL' && $idproducto != '') {
+                $builder->set('new_id', $idproducto);
+            }
+
+            if ($value->id != 'NULL' && $value->id != '') {
+                $builder->set('item', $value->id);
+            }
+
+            if ($value->porcentaje != 'NULL' && $value->porcentaje != '') {
+                $builder->set('porcentaje', $value->porcentaje);
+            }
+
+            if ($value->precio_unitario != 'NULL' && $value->precio_unitario != '') {
+                $builder->set('precio_unitario', $value->precio_unitario);
+            }
+
+            if ($value->precio_actual != 'NULL' && $value->precio_actual != '') {
+                $builder->set('precio_actual', $value->precio_actual);
+            }
+
+            if ($value->pvp	 != 'NULL' && $value->pvp	 != '') {
+                $builder->set('pvp	', $value->pvp	);
+            }
+
+            if ($value->cantidad != 'NULL' && $value->cantidad != '') {
+                $builder->set('cantidad', 1);
+            }
+
+            $builder->set('created_at', date('Y-m-d h:m:s'));
+            $builder->set('updated_at', date('Y-m-d h:m:s'));
+            
+            $builder->insert();
+        }    
+    }
+
     public function _getLastId(){
         //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
         $result = 0;
@@ -264,7 +313,7 @@ class ItemsProductoTempModel extends Model {
                 $result = $row->id;
             }
         }
-        echo $this->db->getLastQuery();
+        //echo $this->db->getLastQuery();
         return $result;
     }
 }

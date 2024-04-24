@@ -10,6 +10,10 @@
                         <h3><?= $subtitle; ?></h3>
                         <div>
                             <a type="button" href="<?= site_url().'frm-item-create/'; ?>"  class="btn btn-success mb-2" >Registrar un nuevo Item</a>
+                            <a type="button" href="<?= site_url().'list-items/'; ?>"  class="btn btn-outline-secondary mb-2" target="_blank">
+                                <i class="fa-solid fa-print"></i>
+                                Descargar lista de items
+                            </a>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">

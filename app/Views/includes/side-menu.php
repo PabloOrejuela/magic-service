@@ -35,6 +35,12 @@
               <p>Estadística de ventas</p>
             </a>
           </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'productos" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Productos</p>
+            </a>
+          </li>
         </ul>
       </li>';
     }
@@ -69,12 +75,6 @@
           </p>
         </a>
         <ul class="nav nav-treeview">
-          <li class="nav-item subItem">
-            <a href="'.base_url().'productos" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Productos</p>
-            </a>
-          </li>
           <li class="nav-item subItem">
             <a href="'.base_url().'items" class="nav-link">
               <i class="far fa-circle nav-icon"></i>

@@ -67,7 +67,7 @@
                                             echo '
                                                 <td>
                                                     <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'item-delete/'.$value->id.'/'.$value->estado.'" class="edit">
+                                                        <a type="button" id="btn-register" href="'.site_url().'user-delete/'.$value->id.'/'.$value->estado.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>

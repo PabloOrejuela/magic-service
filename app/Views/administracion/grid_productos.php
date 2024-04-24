@@ -9,7 +9,12 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" href="<?= site_url().'producto-create/'; ?>"  class="btn btn-success mb-2" >Registrar Nuevo Producto</a>
+                            <?php
+                                if ($session->ventas == 1) {
+                                    echo '<a type="button" href="'.site_url().'producto-create/"  class="btn btn-success mb-2" >Registrar Nuevo Producto</a>';
+                                }
+                            ?>
+                            
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">

@@ -1,10 +1,13 @@
+let linkBorraImagen = document.querySelector('#link-borra-imagen')
+
+
 function agregarItem(idNew, item){
     let inputItem = document.getElementById("iditem")
 
     if (idNew != null && idNew != 0 && idNew > 0) {        
         
         $.ajax({
-            url: 'detalle-prodnew-insert-temp',
+            url: '../detalle-prodnew-insert-temp',
             method: 'get',
             data: {
                 idproducto: idNew,
@@ -75,7 +78,7 @@ function agregarItem(idNew, item){
                                 </td>
                                 <td>
                                     <a onclick="deleteItem(${idNew}, ${item.id})" class="btn btn-borrar">
-                                        <img src="./public/images/delete.png" width="25" >
+                                        <img src="../public/images/delete.png" width="25" >
                                     </a>
                                 </td>
                                 </tr>`
@@ -118,7 +121,7 @@ function borraItemstemp(idproducto){
 function calculaPorcentaje(idItem){
     
     let precioVenta = 0
-    let idNew = document.getElementById("new_id").value
+    let idNew = document.getElementById("idproducto").value
     let porcentaje = document.getElementById("porcentaje_"+idItem).value
     let precio = document.getElementById("precio_"+idItem).value
     let precioFinal = document.getElementById("precio_final_"+idItem)
@@ -154,7 +157,7 @@ function updatePorcentaje(datosActualizar){
     $.ajax({
         type:"GET",
         dataType:"html",
-        url: "updateItemsTempProduct",
+        url: "../updateItemsTempProduct",
         data:{
             idproducto: datosActualizar.idproducto,
             precio_unitario: datosActualizar.precio,
@@ -221,7 +224,7 @@ function deleteItem(idNew, idItem){
     $.ajax({
         type:"GET",
         dataType:"html",
-        url: "deleteItemTempProduct",
+        url: "../deleteItemTempProduct",
         data:{
             idproducto: idNew,
             idItem: idItem,
@@ -287,7 +290,7 @@ function deleteItem(idNew, idItem){
                         </td>
                         <td>
                             <a onclick="deleteItem(${idNew}, ${item.id})" class="btn btn-borrar">
-                                <img src="./public/images/delete.png" width="25" >
+                                <img src="../public/images/delete.png" width="25" >
                             </a>
                         </td>
                         </tr>`
@@ -304,12 +307,6 @@ function deleteItem(idNew, idItem){
             console.log(`El Item no se encontró o no se pudo eliminar`);
         }
     });
-}
-
-function activarSubmit(){
-    
-    let btnSubmit = document.getElementById("btnGuardar")
-    btnSubmit.removeAttribute('disabled')
 }
 
 function cancelar(){
@@ -375,3 +372,36 @@ const alertProcesando = () => {
         title: "procesando ..."
     });
 }
+
+
+
+linkBorraImagen.addEventListener('click', function(e) {
+    e.stopPropagation()
+    let divImagen = document.getElementById('image-product')
+    divImagen.src = "../public/images/default-img.png"
+
+    // $.ajax({
+    //     type:"GET",
+    //     dataType:"html",
+    //     url: "ventas/getEstadosPedido/",
+    //     //data:"codigo="+valor,
+    //     beforeSend: function (f) {
+    //         //$('#cliente').html('Cargando ...');
+    //     },
+    //     success: function(data){
+    //         let datos = JSON.parse(data)
+    //         selectEstadoModal.innerHTML = ''
+    //         if (datos) {
+    //             for (const dato of datos) {
+    //                 if (dato.estado == estado) {
+    //                     selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
+    //                 }else{
+    //                     selectEstadoModal.innerHTML += `<option value="${dato.id}">${dato.estado}</option>`
+    //                 }
+    //             }
+    //         }
+            
+            
+    //     }
+    // });
+});

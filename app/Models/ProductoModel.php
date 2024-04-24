@@ -206,7 +206,7 @@ class ProductoModel extends Model {
             $builder->set('image', $data['image']);
         }
 
-        if ($data['observaciones'] != 'NULL' && $data['arreglo_temporal'] != '') {
+        if ($data['arreglo_temporal'] != 'NULL' && $data['arreglo_temporal'] != '') {
             $builder->set('attr_temporal', $data['arreglo_temporal']);
         }
 
@@ -240,15 +240,46 @@ class ProductoModel extends Model {
             $builder->set('image', $data['image']);
         }
 
-        if ($data['observaciones'] != 'NULL' && $data['observaciones'] != '') {
-            $builder->set('observaciones', $data['observaciones']);
-        }
-
         if ($data['idusuario'] != 'NULL' && $data['idusuario'] != '') {
             $builder->set('idusuario', $data['idusuario']);
         }
 
+        if ($data['observaciones'] != 'NULL' && $data['observaciones'] != '') {
+            $builder->set('observaciones', $data['observaciones']);
+        }
+
         $builder->insert();
+        return  $this->db->insertID();
+    }
+
+    public function _updateProducto($producto) {
+
+        //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+
+        //Inserto el nuevo producto
+        $builder = $this->db->table($this->table);
+        if ($producto['producto'] != 'NULL' && $producto['producto'] != '') {
+            $builder->set('producto', $producto['producto']);
+        }
+
+        if ($producto['idusuario'] != 'NULL' && $producto['idusuario'] != '') {
+            $builder->set('idusuario', $producto['idusuario']);
+        }
+
+        if ($producto['precio'] != 'NULL' && $producto['precio'] != '') {
+            $builder->set('precio', $producto['precio']);
+        }
+
+        if ($producto['image'] != 'NULL' && $producto['image'] != '') {
+            $builder->set('image', $producto['image']);
+        }
+
+        if ($producto['observaciones'] != 'NULL' && $producto['observaciones'] != '') {
+            $builder->set('observaciones', $producto['observaciones']);
+        }
+
+        $builder->where('id', $producto['idproducto']);
+        $builder->update();
         return  $this->db->insertID();
     }
 

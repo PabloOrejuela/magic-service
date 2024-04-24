@@ -40,3 +40,8 @@
 .centrado{
     text-align: center;
 }
+
+.btn-outline-secondary{
+    color: #00514E;
+    background-color: #ffffff;
+}

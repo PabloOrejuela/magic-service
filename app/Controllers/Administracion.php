@@ -47,11 +47,13 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
-
             $data['productos'] = $this->productoModel->_getProductos();
+
+            //delete de los items de la tabla temporal de hace un día
+            $this->itemsProductoTempModel->_deleteItemsTempOld();
 
             //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Administración';
@@ -482,7 +484,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->findAll();
@@ -511,7 +513,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
 
             $producto = [
                 'idusuario' => $data['id'],
@@ -573,8 +575,9 @@ class Administracion extends BaseController {
     public function product_new_insert(){
 
         $data = $this->acl();
+        //PABLO Poner las validaciones de categoria, producto,
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
 
             $producto = [
                 'idusuario' => $data['id'],
@@ -629,7 +632,6 @@ class Administracion extends BaseController {
 
             return redirect()->to('productos');
         }else{
-
             $this->logout();
         }
     }
@@ -638,16 +640,26 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['producto'] = $this->productoModel->_getProducto($idproducto);
-            $data['elementos'] = $this->itemsProductoModel->_getItemsProducto($idproducto);
+            $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
+            $newId = $idproducto;
+            //Verifico si ya están en la tabla sino están los guardo
+            foreach ($items as $key => $item) {
+                
+                $verifica = $this->itemsProductoTempModel->_verificaItem($newId, $item->id);
+                //echo '<pre>'.var_export($verifica, true).'</pre>';exit;
+                if (!isset($verifica) || $verifica == 0 || $verifica == NULL) {
+                    $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item);
+                }
+            }
+            
+            //Traigo los items de la tabla temporal, el idproducto y el idnew son el mismo
+            $data['items'] = $this->itemsProductoTempModel->_getItemsNewProducto($newId);
 
-            //PABLO  enviar los items a la tabla temporal y traerlos para cargarlos
-
-            //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Editar producto';
             $data['main_content']='administracion/form-product-edit';
@@ -659,30 +671,72 @@ class Administracion extends BaseController {
     }
 
     public function product_update(){
-        
+
         $data = $this->acl();
-
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
-
+        
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+            
             $producto = [
                 'idusuario' => $data['id'],
                 'producto' => strtoupper($this->request->getPostGet('producto')),
-                'categoria' => strtoupper($this->request->getPostGet('categoria')),
-                'precio' => strtoupper($this->request->getPostGet('precio')),
-                'items' => $this->request->getPostGet('items'),
-                'elementos' => $this->request->getPostGet('elementos'),
-                'cantidad' => $this->request->getPostGet('cantidad'),
+                'idproducto' => $this->request->getPostGet('idproducto'),
+                'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
+                'precio' => $this->request->getPostGet('total'),
+                'image' => strtoupper($this->request->getPostGet('imagenOld')),
+                'imagenNew' => strtoupper($this->request->getPostGet('file-img')),
             ];
             echo '<pre>'.var_export($producto, true).'</pre>';exit;
-            //Inserto el nuevo producto
-            $idproducto = $this->productoModel->_insert($producto);
+
+            //Verifico si se sube otra imagen o no
+            if ($producto['imagenNew'] != '') {
+                //Se ha elegido una nueva imágen
+                
+                //Creo la ruta a las imágenes
+                $ruta = './public/images/productos/';
+
+                //Recibo la imagen
+                $imagen = $this->request->getFile('file-img');
+                
+                $producto['image'] = '';
+
+                if (!$imagen->isValid()) {
+                    //SI NO ES VÁLIDO PASO VACÍO AL NOMBRE
+                    $producto['image'] = '';
+    
+                }else{
+                    //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
+                    
+                    //Muevo el archivo del temporal a la carpeta
+                    $producto['image'] = $producto['producto'];
+                    $imagen->move($ruta, $producto['image'], true);
+                    
+                    $this->image->withFile($ruta.$producto['image'])
+                        ->convert(IMAGETYPE_JPEG)
+                        ->resize(450, 450, false, 'height')
+                        ->save($ruta.$producto['image'].'.jpg');
+    
+                    if (!$imagen->hasMoved()) {
+                        //Si la imágen NO se copió al server el nombre del archivo va vacío
+                        $producto['image'] = '';
+                    }
+                }
+            }
+            
+            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+            //Actualizo el producto
+            $this->productoModel->_updateProducto($producto);
+
+            //Obtengo los items del producto que estoy editando
+            $items = $this->itemsProductoTempModel->_getItemsProducto($producto['idproducto']);
             
             //Recibo el id insertado y hago el insert de los items del producto
-            $this->itemsProductoModel->_insert($idproducto, $producto['elementos']);
+            $this->itemsProductoModel->_updateItemsProducto($producto['idproducto'], $items);
+
+            //Borro los items del producto de la tabla temporal
+            $this->itemsProductoTempModel->_deleteItems($producto['idproducto']);
 
             return redirect()->to('productos');
         }else{
-
             $this->logout();
         }
     }
@@ -691,7 +745,7 @@ class Administracion extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
 
             $idproductoOld = $this->request->getPostGet('idproducto');
             $newProducto = [
@@ -980,5 +1034,9 @@ class Administracion extends BaseController {
         $this->usuarioModel->_updateLoggin($user);
         $this->session->destroy();
         return redirect()->to('/');
+    }
+
+    public function list_items(){
+        return redirect()->to('reporte-list-items');
     }
 }

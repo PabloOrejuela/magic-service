@@ -14,13 +14,12 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'product-personalize';?>" method="post">
+                    <form action="<?= site_url().'product-update';?>" method="post" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-4 mb-3">
                                     <label for="categoria">Categoría:</label>
                                     <select class="custom-select form-control" id="categoria" name="categoria" disabled>
-                                        <option value="" selected>--Seleccionar categoría--</option>
                                         <?php
                                             if (isset($categorias)) {
                                                 foreach ($categorias as $key => $value) {
@@ -74,7 +73,8 @@
                                             id="image-product"
                                         >
                                     </div>
-                                    <input class="form-control" type="file" id="formFileImg" name="file-img" disabled>
+                                    <input class="form-control" type="file" id="formFileImg" name="file-img">
+                                    <a href="#" class="flex-shrink-0 me-3" id="link-borra-imagen"><i class="fa-solid fa-ban"></i> Borrar imágen</a>
                                 </div>
                             </div>
                             <div class="row col-md-9 mt-3">
@@ -122,58 +122,62 @@
                                         </thead>
                                         <tbody id='tablaItemsBody'>
                                             <?php
-                                                foreach ($elementos as $key => $item) {
-                                                    echo '<tr>
-                                                            <td>'.$item->id.'</td><td>'.$item->item.'</td>
-                                                            <td>
-                                                                <input 
-                                                                    type="number" 
-                                                                    class="form-control cant porcentaje" 
-                                                                    name="porcentaje_'.$item->id.'"
-                                                                    value = "'.$item->porcentaje.'"
-                                                                    placeholder="0"
-                                                                    id="porcentaje_'.$item->id.'" 
-                                                                    onchange="calculaPorcentaje('.$item->id.')"
-                                                                    min="0.1" step="0.1"
-                                                                >
-                                                            </td>
-                                                            <td>
-                                                                <input 
-                                                                    type="text" 
-                                                                    class="form-control cant precio" 
-                                                                    name="precio_'.$item->id.'" 
-                                                                    value="'.$item->precio_unitario.'" 
-                                                                    id="precio_'.$item->id.'"
-                                                                    disabled
-                                                                >
-                                                            </td>
-                                                            <td>
-                                                                <input 
-                                                                    type="text" 
-                                                                    class="form-control cant precio_final" 
-                                                                    name="precio_final_'.$item->id.'" 
-                                                                    value="'.$item->precio_actual.'" 
-                                                                    id="precio_final_'.$item->id.'"
-                                                                    disabled
-                                                                >
-                                                            </td>
-                                                            <td>
-                                                                <input 
-                                                                    type="text" 
-                                                                    class="form-control cant pvp" 
-                                                                    name="pvp_'.$item->id.'"
-                                                                    value="'.$item->pvp.'" 
-                                                                    id="pvp_'.$item->id.'"
-                                                                    onchange="updatePvp('.$item->id.')"
-                                                                >
-                                                            </td>
-                                                            <td>
-                                                                <a onclick="deleteItem(${idNew}, ${item.id})" class="btn btn-borrar">
-                                                                    <img src="./public/images/delete.png" width="25" >
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    ';
+                                                if ($items) {
+                                                    foreach ($items as $key => $item) {
+                                                        echo '<tr>
+                                                                <td>'.$item->id.'</td><td>'.$item->item.'</td>
+                                                                <td>
+                                                                    <input 
+                                                                        type="number" 
+                                                                        class="form-control cant porcentaje" 
+                                                                        name="porcentaje_'.$item->id.'"
+                                                                        value = "'.$item->porcentaje.'"
+                                                                        placeholder="0"
+                                                                        id="porcentaje_'.$item->id.'" 
+                                                                        onchange="calculaPorcentaje('.$item->id.')"
+                                                                        min="0.1" step="0.1"
+                                                                    >
+                                                                </td>
+                                                                <td>
+                                                                    <input 
+                                                                        type="text" 
+                                                                        class="form-control cant precio" 
+                                                                        name="precio_'.$item->id.'" 
+                                                                        value="'.$item->precio_unitario.'" 
+                                                                        id="precio_'.$item->id.'"
+                                                                        disabled
+                                                                    >
+                                                                </td>
+                                                                <td>
+                                                                    <input 
+                                                                        type="text" 
+                                                                        class="form-control cant precio_final" 
+                                                                        name="precio_final_'.$item->id.'" 
+                                                                        value="'.$item->precio_actual.'" 
+                                                                        id="precio_final_'.$item->id.'"
+                                                                        disabled
+                                                                    >
+                                                                </td>
+                                                                <td>
+                                                                    <input 
+                                                                        type="text" 
+                                                                        class="form-control cant pvp" 
+                                                                        name="pvp_'.$item->id.'"
+                                                                        value="'.$item->pvp.'" 
+                                                                        id="pvp_'.$item->id.'"
+                                                                        onchange="updatePvp('.$item->id.')"
+                                                                    >
+                                                                </td>
+                                                                <td>
+                                                                    <a onclick="deleteItem('.$producto->id.', '.$item->id.')" class="btn btn-borrar">
+                                                                        <img src="'.site_url().'public/images/delete.png" width="25" >
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        ';
+                                                    }
+                                                }else{
+                                                    echo '<tr><td colspan="4">El producto no tiene items, puede haber un error</td></tr>';
                                                 }
                                             ?>
                                         
@@ -196,14 +200,24 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button type="button" class="btn btn-light" onclick="activarSubmit()" id="btn-activar">Estoy listo y deseo continuar</button>
+                                <div class="row col-md-12 mb-3">
+                                    <label for="floatingTextarea2">Observaciones:</label>
+                                    <textarea 
+                                        class="form-control" 
+                                        placeholder="Observaciones" 
+                                        id="observaciones" 
+                                        name="observaciones" 
+                                        style="height: 100px; resize: none;"
+                                    ><?= $producto->observaciones; ?></textarea>
+                                </div>
+                                <?= form_hidden('imagenOld', $producto->image); ?>
                             </div>
                             
                         </div>
                         <!-- /.card-body -->
                         
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar cambios</button>
                             <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
                         </div>
                     </form>

@@ -110,6 +110,42 @@ class ItemsProductoModel extends Model {
         }    
     }
 
+    public function _updateItemsProducto($idproducto, $data) {
+
+        //Inserto el nuevo producto
+        $builder = $this->db->table($this->table);
+
+        //recorro el arreglo y grabo 
+        foreach ($data as $key => $value) {
+
+            if ($value->porcentaje != 'NULL' && $value->porcentaje != '') {
+                $builder->set('porcentaje', $value->porcentaje);
+            }
+
+            if ($value->precio_unitario != 'NULL' && $value->precio_unitario != '') {
+                $builder->set('precio_unitario', $value->precio_unitario);
+            }
+
+            if ($value->precio_actual != 'NULL' && $value->precio_actual != '') {
+                $builder->set('precio_actual', $value->precio_actual);
+            }
+
+            if ($value->pvp	 != 'NULL' && $value->pvp	 != '') {
+                $builder->set('pvp	', $value->pvp	);
+            }
+
+            if ($value->cantidad != 'NULL' && $value->cantidad != '') {
+                $builder->set('cantidad', 1);
+            }
+
+            $builder->set('updated_at', date('Y-m-d h:m:s'));
+            
+            $builder->where('idproducto', $idproducto);
+            $builder->where('item', $value->id);
+            $builder->update();
+        }    
+    }
+
     function _getItemsProducto($idproducto){
         $result = NULL;
         $builder = $this->db->table($this->table);

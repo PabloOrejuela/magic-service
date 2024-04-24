@@ -96,6 +96,7 @@ $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');
 $routes->post('product-personalize', 'Administracion::product_personalize');
 $routes->get('updateVariableSistema', 'Administracion::updateVariableSistema');
 $routes->get('actualizaPrecioItem', 'Administracion::actualizaPrecioItem');
+$routes->get('list-items', 'Administracion::list_items');
 
 $routes->get('sucursales', 'Administracion::sucursales');
 $routes->get('sucursal-create', 'Administracion::form_sucursal_create');
@@ -139,3 +140,4 @@ $routes->get('kardex-item/(:num)', 'Inventarios::kardexItem/$1');
 
 //REPORTES
 $routes->get('reporte', 'Reportes::frmReporte');
+$routes->get('reporte-list-items', 'Reportes::reporteListItems');

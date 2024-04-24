@@ -50,7 +50,7 @@
                                             id="image-product"
                                         >
                                     </div>
-                                    <input class="form-control" type="file" id="formFileImg" name="file-img"0>
+                                    <input class="form-control" type="file" id="formFileImg" name="file-img">
                                 </div>
                             </div>
 

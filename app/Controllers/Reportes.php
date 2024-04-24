@@ -119,4 +119,135 @@ class Reportes extends BaseController {
         //     return redirect()->to('cargar_info_view');
         // }        
     }
+
+    public function reporteListItems(){
+
+        $items = $this->itemModel->findAll();
+
+        $fila = 3;
+
+        //Creo la hoja
+        $phpExcel = new Spreadsheet();
+        $phpExcel
+            ->getProperties()
+            ->setCreator("Magic service")
+            ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
+            ->setTitle('Resportes')
+            ->setSubject('Lista de Items')
+            ->setDescription('Lista de Items')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('Reportes');
+
+        $nombreDelDocumento = "Lista_items.xlsx";
+
+        //Selecciono la pestaña
+        $hoja = $phpExcel->getActiveSheet();
+
+        $styleTitulo = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                    'color' => ['argb' => '00000000'],
+                ],
+            ],
+        ];
+
+        $styleCabecera = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+            'borders' => [
+                'outline' => [
+                    'bottom' => ['borderStyle' => 'thick', 'color' => ['argb' => '00000000']],
+                    'top' => ['borderStyle' => 'thick', 'color' => ['argb' => '00000000']],
+                    'right' => ['borderStyle' => 'thick', 'color' => ['argb' => '00000000']],
+                    'left' => ['borderStyle' => 'thick', 'color' => ['argb' => '00000000']],
+                ],
+            ],
+        ];
+
+        $styleFilaLeft = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $styleFilaRight = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleFilaCenter = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+        $phpExcel->getActiveSheet()->getStyle('A1:C1')->applyFromArray($styleTitulo);
+        $phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(20, 'pt');
+        $phpExcel->getActiveSheet()->mergeCells('A1:C1');
+
+
+
+        $phpExcel->getActiveSheet()->getStyle('A2:C2')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $phpExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $phpExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+
+        //Edito la info que va a ir en el archivo excel
+
+        $hoja->setCellValue('A1', "LISTA DE ITEMS");
+
+        $hoja->setCellValue('A2', "ITEM");
+        $hoja->setCellValue('B2', "PRECIO");
+        $hoja->setCellValue('C2', "CUANTIFICABLE");
+
+
+        foreach ($items as $key => $item) {
+            $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleFilaLeft);
+            $phpExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+            $phpExcel->getActiveSheet()->getStyle('B'.$fila)->applyFromArray($styleFilaRight);
+            $phpExcel->getActiveSheet()->getStyle('C'.$fila)->applyFromArray($styleFilaCenter);
+
+            $hoja->setCellValue('A'.$fila, $item->item);
+            $hoja->setCellValue('B'.$fila, number_format($item->precio, 2));
+            $hoja->setCellValue('C'.$fila, $item->cuantificable);
+
+            $fila++;
+        }
+    
+        //Creo el writter y guardo la hoja
+        $writter = new XlsxWriter($phpExcel, 'Xlsx');
+        
+        //Cabeceras para descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
+        
+        $r = $writter->save('php://output');exit;
+        // if ($r) {
+        //     return redirect()->to('cargar_info_view');
+        // }else{
+        //     $error = 'Hubo un error u no se pudo descargar';
+        //     return redirect()->to('cargar_info_view');
+        // }        
+    }
 }

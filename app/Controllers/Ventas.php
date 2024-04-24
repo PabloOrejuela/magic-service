@@ -843,8 +843,8 @@ class Ventas extends BaseController {
     public function cotizador(){
 
         $data = $this->acl();
-        
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->findAll();

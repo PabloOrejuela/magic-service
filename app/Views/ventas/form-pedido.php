@@ -10,8 +10,8 @@
                 <div class="card" id="form-pedido">
                     <div class="card-header">
                         <h3 class="card-title titulo-form-pedido">
-                            <i class="fas fa-chart-pie mr-1"></i>
-                            <?= $subtitle;?>
+                            <i class="fas fa-table mr-1"></i>
+                            <?= $subtitle . ' Aún no está listo este formulario';?>
                         </h3>
                     </div><!-- /.card-header -->
                     <div class="card-body">
