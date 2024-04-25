@@ -1,3 +1,6 @@
+//Variables
+let linkBorraImagen = document.querySelector('#link-borra-imagen')
+
 $(document).ready(function(){
     $("#categoria").on('change',function(){
         if($("#categoria").val() !=""){
@@ -549,3 +552,11 @@ const alertProcesando = () => {
         title: "procesando ..."
     });
 }
+
+linkBorraImagen.addEventListener('click', function(e) {
+    e.stopPropagation()
+    let divImagen = document.getElementById('image-product')
+    //let imagenNew = document.querySelector('input[name="file-img"]')
+    divImagen.src = "./public/images/productos/default-img.jpg"
+
+});

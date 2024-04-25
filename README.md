@@ -1,9 +1,8 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Habilitada toda la funcionalidad de el form de editar producto</li>
-    <li>Cambiados los nombres de las columnas del form editar producto"</li>
+    <li>Revisado el Form de Nuevo producto</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>
-<li>En el form de editar producto se corrigió lo que no se guardaban los items agregados"</li>
+    <li>Corregida la subida de imágen en nuevo producto</li>
 </ul>

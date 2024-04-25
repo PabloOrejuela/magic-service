@@ -500,7 +500,7 @@ class Administracion extends BaseController {
             $this->itemsProductoTempModel->_deleteItems($data['newId']);
 
             $data['title']='Administración';
-            $data['subtitle']='Nuevo producto  Trabajando en la subida de la imágen';
+            $data['subtitle']='Nuevo producto';
             $data['main_content']='administracion/form-new-product';
             return view('dashboard/index', $data);
         }else{
@@ -589,7 +589,7 @@ class Administracion extends BaseController {
             ];
 
             //Creo la ruta alas imágenes
-            $ruta = '../public/images/productos/';
+            $ruta = './public/images/productos/';
 
             //Recibo la imagen
             $imagen = $this->request->getFile('file-img');

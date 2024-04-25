@@ -67,6 +67,7 @@
                                         >
                                     </div>
                                     <input class="form-control" type="file" id="formFileImg" name="file-img" disabled>
+                                    <a href="#" class="flex-shrink-0 me-3" id="link-borra-imagen"><i class="fa-solid fa-ban"></i> Borrar imágen</a>
                                 </div>
                             </div>
 
