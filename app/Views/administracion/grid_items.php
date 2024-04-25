@@ -40,9 +40,9 @@
                                                     >
                                                 </td>';
                                                 if ($value->cuantificable == 1) {
-                                                    echo '<td class="centrado"><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked></td>';
+                                                    echo '<td class="centrado"><span id="span-cuantificable">Si</span><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked></td>';
                                                 }else if($value->cuantificable == 0){
-                                                    echo '<td class="centrado"><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'"></td>';
+                                                    echo '<td class="centrado"><span id="span-cuantificable">No</span><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'"></td>';
                                                 }
                                                 if ($value->estado == 1) {
                                                     echo '<td class="centrado">Activo</td>';
@@ -90,7 +90,7 @@
         $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
         $('#datatablesSimple').DataTable({
             "responsive": true, 
-            
+            "order": [[ 3, 'dsc']],
             language: {
                 processing: 'Procesando...',
                 lengthMenu: 'Mostrando _MENU_ registros por página',

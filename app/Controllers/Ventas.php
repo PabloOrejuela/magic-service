@@ -620,8 +620,9 @@ class Ventas extends BaseController {
                 
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
                 $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
+                
                 if ($clienteExiste) {
-
+                    
                     //Inserto el nuevo producto
                     $this->pedidoModel->_insert($pedido);
 
