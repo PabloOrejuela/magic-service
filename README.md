@@ -1,6 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Ya se puede ordenar por cuantificables en el grid de items</li>
+    <li>En los grid la cantidad de items por default ahora es 25</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>

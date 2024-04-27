@@ -90,7 +90,11 @@
         $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
         $('#datatablesSimple').DataTable({
             "responsive": true, 
-            "order": [[ 3, 'dsc']],
+            "order": [[1, 'asc']],
+            lengthMenu: [
+                [25, 50, -1],
+                [25, 50, 'Todos']
+            ],
             language: {
                 processing: 'Procesando...',
                 lengthMenu: 'Mostrando _MENU_ registros por página',

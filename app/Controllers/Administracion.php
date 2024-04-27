@@ -587,7 +587,7 @@ class Administracion extends BaseController {
                 'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
                 'precio' => strtoupper($this->request->getPostGet('total')),
             ];
-
+            
             //Creo la ruta alas imágenes
             $ruta = './public/images/productos/';
 

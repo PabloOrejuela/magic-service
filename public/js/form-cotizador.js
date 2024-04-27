@@ -110,14 +110,13 @@ $(document).ready(function(){
                                 <td>${item.id}</td><td>${item.item}</td>
                                 <td>
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         class="form-control cant number porcentaje" 
                                         name="porcentaje_${item.id}"
                                         value = ${item.porcentaje}
                                         placeholder="0"
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
-                                        min="0.1" step="0.1"
                                     >
                                 </td>
                                 <td>
@@ -353,14 +352,13 @@ function deleteItem(idItem){
                     <td>${item.id}</td><td>${item.item}</td>
                     <td>
                         <input 
-                            type="number" 
+                            type="text" 
                             class="form-control cant number porcentaje" 
                             name="porcentaje_${item.id}"
                             value = ${item.porcentaje}
                             placeholder="0"
                             id="porcentaje_${item.id}" 
                             onchange="calculaPorcentaje(${item.id})"
-                            min="0.1" step="0.1"
                         >
                     </td>
                     <td>
@@ -457,14 +455,14 @@ function agregarItem(idproducto, item){
                                 <td>${item.id}</td><td>${item.item}</td>
                                 <td>
                                     <input 
-                                        type="number" 
+                                        type="text" 
                                         class="form-control cant number porcentaje" 
                                         name="porcentaje_${item.id}"
                                         value = "${item.porcentaje}"
                                         placeholder="0"
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
-                                        min="0.1" step="0.1"
+                                        
                                     >
                                 </td>
                                 <td>

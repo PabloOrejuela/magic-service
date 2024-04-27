@@ -73,6 +73,7 @@
                                             id="new_id"
                                             style="display:block;"
                                             value="<?= $newId; ?>"
+                                            disabled
                                         >
                                     </div>
                                 </div>

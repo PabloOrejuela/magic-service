@@ -174,7 +174,7 @@
                         <!-- /.card-body -->
                         
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar nuevo Arreglo</button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar</button>
                             <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
                         </div>
                     </form>
