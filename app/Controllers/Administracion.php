@@ -668,7 +668,7 @@ class Administracion extends BaseController {
                     $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item);
                 }
             }
-            
+            //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
             //Traigo los items de la tabla temporal, el idproducto y el idnew son el mismo
             $data['items'] = $this->itemsProductoTempModel->_getItemsNewProducto($newId);
 
@@ -695,11 +695,11 @@ class Administracion extends BaseController {
                 'idproducto' => $this->request->getPostGet('idproducto'),
                 'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
                 'precio' => $this->request->getPostGet('total'),
-                'image' => $this->request->getPostGet('imagenOld'),
+                'image' => $this->request->getPostGet('image'),
                 'imagenNew' => $imagen->getName(),
             ];
             
-            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+            
             //Verifico si se sube otra imagen o no
             if ($producto['imagenNew'] != '') {
                 //Se ha elegido una nueva imágen
@@ -730,6 +730,11 @@ class Administracion extends BaseController {
                         $producto['image'] = 'default-img';
                     }
                 }
+            }else{
+                //No se ha elegido una nueva imagen
+                //Verifico si se ha borrado la imágen
+                //echo "se borró la imagen";
+                
             }
 
             //Actualizo el producto

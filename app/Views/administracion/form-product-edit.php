@@ -40,7 +40,7 @@
                                         class="form-control" 
                                         name="producto" 
                                         value="<?= $producto->producto; ?>" 
-                                        id="image"
+                                        id="producto"
                                     >
                                 </div>
                                 
@@ -59,7 +59,7 @@
                                         type="text" 
                                         class="form-control cant" 
                                         name="image" 
-                                        value="0" 
+                                        value="" 
                                         id="image"
                                     >
                                 </div>

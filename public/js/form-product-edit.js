@@ -353,35 +353,11 @@ const alertaMensaje = (msg, time, icon) => {
 
 
 linkBorraImagen.addEventListener('click', function(e) {
-    e.stopPropagation()
+    //e.stopPropagation()
     let divImagen = document.getElementById('image-product')
-    //let imagenNew = document.querySelector('input[name="file-img"]')
+    let imagen = document.getElementById('image')
     divImagen.src = "../public/images/productos/default-img.jpg"
-    //imagenNew.value = "default-img.png"
-    // $.ajax({
-    //     type:"GET",
-    //     dataType:"html",
-    //     url: "ventas/getEstadosPedido/",
-    //     //data:"codigo="+valor,
-    //     beforeSend: function (f) {
-    //         //$('#cliente').html('Cargando ...');
-    //     },
-    //     success: function(data){
-    //         let datos = JSON.parse(data)
-    //         selectEstadoModal.innerHTML = ''
-    //         if (datos) {
-    //             for (const dato of datos) {
-    //                 if (dato.estado == estado) {
-    //                     selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
-    //                 }else{
-    //                     selectEstadoModal.innerHTML += `<option value="${dato.id}">${dato.estado}</option>`
-    //                 }
-    //             }
-    //         }
-            
-            
-    //     }
-    // });
+    imagen.value = "default-img"
 });
 
 linkAregloTemporal.addEventListener('click', function(e) {
