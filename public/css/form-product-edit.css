@@ -56,3 +56,24 @@ input[type=number] { -moz-appearance:textfield; }
         font-size: 0.8em;
     }
 }
+
+#btn-temporal{
+    color: antiquewhite;
+    background-color: rgb(184, 45, 27, 1);
+
+}
+
+.btn{
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+}
+
+#btn-cancela{
+    background-color: #e8c39e;
+}
+
+#input-tipo{
+    font-weight: bold;
+    color: brown;
+}

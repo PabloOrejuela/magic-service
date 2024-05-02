@@ -480,11 +480,11 @@ const mensajePedidosPendientes = () => {
  
     if (hora >= 12 && hora < 13) {
         if (minutes >= 30 && minutes <= 59) {
-            alerta("Puede tener pedidos pedientes, por favor revisar", 5000, "warning")
+            alerta("Puede tener pedidos pendientes, por favor revisar", 5000, "warning")
         }
     }else if (hora >= 17 && hora < 18) {
         if (minutes >= 30 && minutes <= 59) {
-            alerta("Puede tener pedidos pedientes, por favor revisar", 5000, "warning")
+            alerta("Puede tener pedidos pendientes, por favor revisar", 5000, "warning")
         }
     }
 }

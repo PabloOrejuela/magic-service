@@ -1,4 +1,5 @@
 let linkBorraImagen = document.querySelector('#link-borra-imagen')
+let linkAregloTemporal = document.querySelector('#btn-temporal')
 
 
 function agregarItem(idNew, item){
@@ -348,30 +349,7 @@ const alertaMensaje = (msg, time, icon) => {
     });
 }
 
-const alertProcesando = () => {
-    const toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 500,
-        //timerProgressBar: true,
-        //height: '200rem',
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
-        customClass: {
-            // container: '...',
-            popup: 'popup-class',
 
-            }
-    });
-    toast.fire({
-        position: "top-end",
-        icon: "warning",
-        title: "procesando ..."
-    });
-}
 
 
 linkBorraImagen.addEventListener('click', function(e) {
@@ -405,3 +383,47 @@ linkBorraImagen.addEventListener('click', function(e) {
     //     }
     // });
 });
+
+linkAregloTemporal.addEventListener('click', function(e) {
+    //e.stopPropagation()
+    idproducto = document.getElementById('idproducto').value
+    
+    $.ajax({
+        method: 'get',
+        url: '../set-arreg-temp-definitivo/'+idproducto,
+        beforeSend: function (f) {
+            alertProcesando("Procesando", "info")
+        },
+        success: function(res){
+            alertProcesando("El proceso se ha realizado con éxito, el arreglo ahora es definitivo", "success")
+            let inputTipo = document.getElementById('input-tipo')
+            inputTipo.value = "Arreglo Definitivo"
+            //inputTipo.style.display="none"
+        }
+    });   
+})
+
+const alertProcesando = (msg, icono) => {
+    const toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        //timerProgressBar: true,
+        //height: '200rem',
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+        customClass: {
+            // container: '...',
+            popup: 'popup-class',
+
+            }
+    });
+    toast.fire({
+        position: "top-end",
+        icon: icono,
+        title: msg
+    });
+}

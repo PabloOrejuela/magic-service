@@ -76,6 +76,38 @@
                                     <input class="form-control" type="file" id="formFileImg" name="file-img">
                                     <a href="#" class="flex-shrink-0 me-3" id="link-borra-imagen"><i class="fa-solid fa-ban"></i> Borrar imágen</a>
                                 </div>
+                                <?php
+                                    if ($producto->attr_temporal == 1) {
+                                        echo '
+                                            <div class="form-group col-md-2 mb-3">
+                                                <label for="tipo">Tipo:</label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    name="tipo"
+                                                    value="Arreglo Temporal"
+                                                    id="input-tipo"
+                                                    disabled
+                                                >
+                                            </div>
+                                        ';
+                                    }else{
+                                        echo '
+                                            <div class="form-group col-md-2 mb-3">
+                                                <label for="tipo">Tipo:</label>
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control" 
+                                                    name="tipo"
+                                                    value="Arreglo Definitivo"
+                                                    id="input-tipo"
+                                                    disabled
+                                                >
+                                            </div>
+                                        ';
+                                    }
+                                ?>
+                                
                             </div>
                             <div class="row col-md-9 mt-3">
                                 <div class="form-group row">
@@ -218,6 +250,7 @@
                         
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar cambios</button>
+                            <a href="#" class="btn btn-light temporal" id="btn-temporal">Guardar como arreglo definitivo</a>
                             <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
                         </div>
                     </form>
