@@ -19,7 +19,7 @@
                             <div class="row col-md-12">
                                 <div class="form-group col-md-4 mb-3">
                                     <label for="categoria">Categoría:</label>
-                                    <select class="custom-select form-control" id="categoria" name="categoria" disabled>
+                                    <select class="custom-select form-control" id="categoria" name="categoria">
                                         <?php
                                             if (isset($categorias)) {
                                                 foreach ($categorias as $key => $value) {

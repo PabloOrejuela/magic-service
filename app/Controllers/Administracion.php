@@ -691,6 +691,7 @@ class Administracion extends BaseController {
             $imagen = $this->request->getFile('file-img');
             $producto = [
                 'idusuario' => $data['id'],
+                'idcategoria' => $this->request->getPostGet('categoria'),
                 'producto' => strtoupper($this->request->getPostGet('producto')),
                 'idproducto' => $this->request->getPostGet('idproducto'),
                 'observaciones' => strtoupper($this->request->getPostGet('observaciones')),

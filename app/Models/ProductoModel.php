@@ -262,6 +262,10 @@ class ProductoModel extends Model {
             $builder->set('producto', $producto['producto']);
         }
 
+        if ($producto['idcategoria'] != 'NULL' && $producto['idcategoria'] != '') {
+            $builder->set('idcategoria', $producto['idcategoria']);
+        }
+
         if ($producto['idusuario'] != 'NULL' && $producto['idusuario'] != '') {
             $builder->set('idusuario', $producto['idusuario']);
         }
