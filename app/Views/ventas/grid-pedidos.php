@@ -414,6 +414,10 @@
         $('#datatablesSimple').DataTable({
             "responsive": true, 
             "order": [[ 0, 'dsc' ]],
+            lengthMenu: [
+                [25, 50, -1],
+                [25, 50, 'Todos']
+            ],
             language: {
                 processing: 'Procesando...',
                 lengthMenu: 'Mostrando _MENU_ registros por página',

@@ -10,7 +10,7 @@ $(document).ready(function(){
                 dataType:"html",
                 url: "getProductosCategoria"+'/'+valor,
                 beforeSend: function (f) {
-                    alertProcesando()
+                    alertProcesando("Procesando", "info")
                 },
                 success: function(resultado){
                   
@@ -67,13 +67,13 @@ function borraItemstemp(idproducto){
             idproducto: idproducto,
         },
         beforeSend: function (f) {
-            alertProcesando()
+            alertProcesando("Procesando, eliminando item", "info")
         },
         success: function(resultado){
             return 1;
         },
         error: function(resultado){
-          console.log('Se produjo un error');
+            alertProcesando("Hubo un error, el item no pudo ser eliminado", "error")
         }
     });
     calculaTotal()
@@ -88,22 +88,23 @@ $(document).ready(function(){
             getDatosProducto(valor)
             borraItemstemp(valor)
                 
-                $.ajax({
-                    type:"GET",
-                    dataType:"html",
-                    url: "ventas-getItemsProducto"+'/'+valor,
-                    beforeSend: function (f) {
-                        alertProcesando()
-                },
-                    success: function(resultado){
+            $.ajax({
+                type:"GET",
+                dataType:"html",
+                url: "ventas-getItemsProducto"+'/'+valor,
+                beforeSend: function (f) {
+                    alertProcesando("Procesando", "info")
+            },
+                success: function(resultado){
+                
+                    let res = JSON.parse(resultado);
+                    let sumaTotal = 0
                     
-                        let res = JSON.parse(resultado);
-                        let sumaTotal = 0
-                        
-                        let tablaItemsBody = document.getElementById('tablaItemsBody')
-                        tablaItemsBody.innerHTML = ''
-                        document.getElementById("idproducto").value = valor
-
+                    let tablaItemsBody = document.getElementById('tablaItemsBody')
+                    tablaItemsBody.innerHTML = ''
+                    document.getElementById("idproducto").value = valor
+                    
+                    if (res.itemsTemp) {
                         for(let item of res.itemsTemp){
                             document.getElementById("new_id").value = item.new_id
                             tablaItemsBody.innerHTML += `<tr>
@@ -157,28 +158,30 @@ $(document).ready(function(){
                                 </tr>`
                             sumaTotal += parseFloat(item.pvp)
                         }
-                        let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
-                        let slctProductos = document.getElementById("productos")
-                        let index = slctProductos.selectedIndex
-                        
-                        //Verifico si se cambió el precio total
-                        if (res.precio != sumaTotal) {
-                            document.getElementById("input-total").value = parseFloat(res.precio).toFixed(2)
-                        }else{
-                            //Si no se ha cambiado le cargo la suma total al input
-                            document.getElementById("input-total").value = parseFloat(sumaTotal).toFixed(2)
-                        }
-                        
-                        
-                        nombreArregloNuevo.removeAttribute('disabled')
-                        let nombretemp = slctProductos.options[index].text
-                        nombreArregloNuevo.value = nombretemp+'_temp'
-
-                    },
-                    error: function(resultado){
-                        console.log('El producto no tiene items');
                     }
-                });
+                    
+                    let nombreArregloNuevo = document.getElementById("nombreArregloNuevo")
+                    let slctProductos = document.getElementById("productos")
+                    let index = slctProductos.selectedIndex
+                    
+                    //Verifico si se cambió el precio total
+                    if (res.precio != sumaTotal) {
+                        document.getElementById("input-total").value = parseFloat(res.precio).toFixed(2)
+                    }else{
+                        //Si no se ha cambiado le cargo la suma total al input
+                        document.getElementById("input-total").value = parseFloat(sumaTotal).toFixed(2)
+                    }
+                    
+                    
+                    nombreArregloNuevo.removeAttribute('disabled')
+                    let nombretemp = slctProductos.options[index].text
+                    nombreArregloNuevo.value = nombretemp+'_temp'
+
+                },
+                error: function(resultado){
+                    console.log('El producto no tiene items');
+                }
+            });
         }
     });
 });
@@ -247,13 +250,13 @@ function updatePorcentaje(datosActualizar){
             idNew: datosActualizar.idNew
         },
         beforeSend: function (f) {
-            alertProcesando()
+            alertProcesando("Actualizando valores", "info")
         },
         success: function(resultado){
             return 1;
         },
         error: function(resultado){
-          console.log('No hay productos de esa categoría');
+            alertProcesando("Hubo un error, no se pudo actualizar los valores totales", "error")
         }
     });
     calculaTotal()
@@ -273,13 +276,13 @@ function updatePvp(idItem){
             idNew: idNew
         },
         beforeSend: function (f) {
-            alertProcesando()
+            alertProcesando("Actualizando valores", "info")
         },
         success: function(resultado){
             return 1;
         },
         error: function(resultado){
-          console.log('No hay productos de esa categoría');
+            alertProcesando("Hubo un error, no se pudo actualizar los valores", "error")
         }
     });
     calculaTotal()
@@ -305,7 +308,7 @@ function getDatosProducto(idproducto){
         dataType:"html",
         url: "getProducto"+'/'+idproducto,
         beforeSend: function (f) {
-            alertProcesando()
+            alertProcesando("Procesando", "info")
         },
         success: function(resultado){
             let res = JSON.parse(resultado);
@@ -335,7 +338,7 @@ function deleteItem(idItem){
             idItem: idItem,
         },
         beforeSend: function (f) {
-            alertProcesando()
+            alertProcesando("Procesando, eliminando item", "info")
         },
         success: function(resultado){
           
@@ -346,64 +349,68 @@ function deleteItem(idItem){
             tablaItemsBody.innerHTML = ''
 
             document.getElementById("idproducto").value = valor
-            for(let item of items.datos){
-                document.getElementById("new_id").value = item.new_id
-                tablaItemsBody.innerHTML += `<tr>
-                    <td>${item.id}</td><td>${item.item}</td>
-                    <td>
-                        <input 
-                            type="text" 
-                            class="form-control cant number porcentaje" 
-                            name="porcentaje_${item.id}"
-                            value = ${item.porcentaje}
-                            placeholder="0"
-                            id="porcentaje_${item.id}" 
-                            onchange="calculaPorcentaje(${item.id})"
-                        >
-                    </td>
-                    <td>
-                        <input 
-                            type="text" 
-                            class="form-control cant number precio" 
-                            name="precio_${item.id}" 
-                            value="${item.precio_unitario}" 
-                            id="precio_${item.id}"
-                            onchange="calculaPorcentaje(${item.id})"
-                            disabled
-                        >
-                    </td>
-                    <td>
-                        <input 
-                            type="text" 
-                            class="form-control cant number precio_final" 
-                            name="precio_final_${item.id}" 
-                            value="${item.precio_actual}" 
-                            id="precio_final_${item.id}"
-                            disabled
-                        >
-                    </td>
-                    <td>
-                        <input 
-                            type="text" 
-                            class="form-control cant number pvp" 
-                            name="pvp_${item.id}" 
-                            value="${item.pvp}" 
-                            id="pvp_${item.id}"
-                            onchange="updatePvp(${item.id})"
-                        >
-                    </td>
-                    <td>
-                        <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
-                            <img src="./public/images/delete.png" width="25" >
-                        </a>
-                    </td>
-                    </tr>`
-                total += parseFloat(item.pvp)
+            
+            if (items.datos) {
+                for(let item of items.datos){
+                    document.getElementById("new_id").value = item.new_id
+                    tablaItemsBody.innerHTML += `<tr>
+                        <td>${item.id}</td><td>${item.item}</td>
+                        <td>
+                            <input 
+                                type="text" 
+                                class="form-control cant number porcentaje" 
+                                name="porcentaje_${item.id}"
+                                value = ${item.porcentaje}
+                                placeholder="0"
+                                id="porcentaje_${item.id}" 
+                                onchange="calculaPorcentaje(${item.id})"
+                            >
+                        </td>
+                        <td>
+                            <input 
+                                type="text" 
+                                class="form-control cant number precio" 
+                                name="precio_${item.id}" 
+                                value="${item.precio_unitario}" 
+                                id="precio_${item.id}"
+                                onchange="calculaPorcentaje(${item.id})"
+                                disabled
+                            >
+                        </td>
+                        <td>
+                            <input 
+                                type="text" 
+                                class="form-control cant number precio_final" 
+                                name="precio_final_${item.id}" 
+                                value="${item.precio_actual}" 
+                                id="precio_final_${item.id}"
+                                disabled
+                            >
+                        </td>
+                        <td>
+                            <input 
+                                type="text" 
+                                class="form-control cant number pvp" 
+                                name="pvp_${item.id}" 
+                                value="${item.pvp}" 
+                                id="pvp_${item.id}"
+                                onchange="updatePvp(${item.id})"
+                            >
+                        </td>
+                        <td>
+                            <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
+                                <img src="./public/images/delete.png" width="25" >
+                            </a>
+                        </td>
+                        </tr>`
+                    total += parseFloat(item.pvp)
+                }
             }
+            
             document.getElementById("input-total").value = parseFloat(total).toFixed(2)
         },
         error: function(resultado){
-            console.log(`El Item no se encontró o no se pudo eliminar`);
+            alertProcesando("ERROR:  El Item no se encontró o no se pudo eliminar", "error")
         }
     });
 }
@@ -434,12 +441,13 @@ function agregarItem(idproducto, item){
                 idNew: idNew
             },
             success: function(resultado){
+                
                 if (resultado == 0) {
                 }else{
                     
                     let detalle = JSON.parse(resultado);
                     let total = 0
-
+                    console.log(detalle);
                     //Alerta que se ha agregado un item y limpio el input de items
                     alertAgregaItem()
                     inputItem.value = ""
@@ -505,7 +513,7 @@ function agregarItem(idproducto, item){
                         }
                         document.getElementById("input-total").value = parseFloat(total).toFixed(2)
                     }else{
-                        console.log('El producto no tiene items');
+                        alertProcesando("ERROR: Hubo un error y el item no se pudo agregar", "error")
                     }
                 }
             }
@@ -526,30 +534,29 @@ const alertAgregaItem = () => {
     });
 }
 
-const alertProcesando = () => {
+const alertProcesando = (msg, icono) => {
     const toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 500,
-        //timerProgressBar: true,
-        //height: '200rem',
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
-        customClass: {
-            // container: '...',
-            popup: 'popup-class',
-
-            }
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: 1500,
+      //timerProgressBar: true,
+      //height: '200rem',
+      didOpen: (toast) => {
+        toast.onmouseenter = Swal.stopTimer;
+        toast.onmouseleave = Swal.resumeTimer;
+      },
+      customClass: {
+        // container: '...',
+        popup: "popup-class",
+      },
     });
     toast.fire({
-        position: "top-end",
-        icon: "warning",
-        title: "procesando ..."
+      position: "top-end",
+      icon: icono,
+      title: msg,
     });
-}
+  };
 
 linkBorraImagen.addEventListener('click', function(e) {
     e.stopPropagation()

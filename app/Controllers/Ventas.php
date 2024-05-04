@@ -308,7 +308,7 @@ class Ventas extends BaseController {
         echo json_encode($res);
     }
 
-    function detalle_prod_insert_temp(){
+    function detalle_prod_insert_temp_EDIT(){
         $error = 'No se pudo insertar';
         $result = 'No se pudo insertar';
         $idproducto = $this->request->getPostGet('idproducto');
@@ -335,6 +335,28 @@ class Ventas extends BaseController {
             //Inserto todos los items en la tabla temporal 
             $result = $this->itemsProductoTempModel->_insertItems($idproducto, $items, $item, $idNew);
         }
+        //echo '<pre>'.var_export($result, true).'</pre>';exit;
+        $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
+        $res['error'] = $result;
+        echo json_encode($res);
+    }
+
+    function detalle_prod_insert_temp(){
+        $error = 'No se pudo insertar';
+        $result = 'No se pudo insertar';
+        $idproducto = $this->request->getPostGet('idproducto');
+        $item = $this->request->getPostGet('item');
+        $idNew = $this->request->getPostGet('idNew');
+
+        //Traigo los datos del item a insertar
+        $dataItem = $this->itemModel->find($item);
+
+        //Verifico que el item no exista en la tabla
+        $verifica = $this->itemsProductoTempModel->_verificaItem($idNew, $item);
+        if (!isset($verifica) || $verifica == 0 || $verifica == NULL) {
+            $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
+        }
+        
         //echo '<pre>'.var_export($result, true).'</pre>';exit;
         $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
         $res['error'] = $result;
@@ -854,7 +876,7 @@ class Ventas extends BaseController {
             //delete de los items de la tabla temporal de hace un día
             $this->itemsProductoTempModel->_deleteItemsTempOld();
 
-            //echo '<pre>'.var_export($items, true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['productos'] , true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Cotizar producto';
             $data['main_content']='ventas/form-cotizador';
