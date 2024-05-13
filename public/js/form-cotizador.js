@@ -87,7 +87,7 @@ $(document).ready(function(){
             //console.log(valor);
             getDatosProducto(valor)
             borraItemstemp(valor)
-                
+            
             $.ajax({
                 type:"GET",
                 dataType:"html",
@@ -111,13 +111,17 @@ $(document).ready(function(){
                                 <td>${item.id}</td><td>${item.item}</td>
                                 <td>
                                     <input 
-                                        type="text" 
+                                        type="numeric" 
                                         class="form-control cant number porcentaje" 
                                         name="porcentaje_${item.id}"
                                         value = ${item.porcentaje}
                                         placeholder="0"
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
+                                        oninput="validarInput2(${item.id})"
+                                        min="0"
+                                        
+                                      
                                     >
                                 </td>
                                 <td>
@@ -142,12 +146,14 @@ $(document).ready(function(){
                                 </td>
                                 <td>
                                     <input 
-                                        type="text" 
+                                        type="numeric" 
                                         class="form-control cant number pvp" 
                                         name="pvp_${item.id}" 
                                         value="${item.pvp}" 
                                         id="pvp_${item.id}"
                                         onchange="updatePvp(${item.id})"
+                                        oninput="validarInputPvp(${item.id})"
+                                        min="0"
                                     >
                                 </td>
                                 <td>
@@ -172,7 +178,6 @@ $(document).ready(function(){
                         document.getElementById("input-total").value = parseFloat(sumaTotal).toFixed(2)
                     }
                     
-                    
                     nombreArregloNuevo.removeAttribute('disabled')
                     let nombretemp = slctProductos.options[index].text
                     nombreArregloNuevo.value = nombretemp+'_temp'
@@ -186,18 +191,6 @@ $(document).ready(function(){
     });
 });
 
-$(document).ready(function(){
-
-    jQuery('.number').keypress(function(tecla){
-        console.log(tecla.charCode);
-
-        if(tecla.charCode != 46 && tecla.charCode < 48 || tecla.charCode > 57 ){
-          return false
-        }
-    });
-});
-
-
 
 function calculaPorcentaje(idItem){
     
@@ -208,8 +201,17 @@ function calculaPorcentaje(idItem){
     let precio = document.getElementById("precio_"+idItem).value
     let precioFinal = document.getElementById("precio_final_"+idItem)
     let pvp = document.getElementById("pvp_"+idItem)
-    
-    precioVenta = (parseFloat(porcentaje) * parseFloat(precio))
+
+
+    if (porcentaje == '' || porcentaje == 0) {
+
+        porcenteje = 1
+        document.getElementById("porcentaje_"+idItem).value = 1
+        precioVenta = (parseFloat('1') * parseFloat(precio))
+    }else{
+        precioVenta = (parseFloat(porcentaje) * parseFloat(precio))
+    }
+ 
     precioFinal.value = '0'
     precioFinal.value = parseFloat(precioVenta).toFixed(2)
     pvp.value = parseFloat(precioVenta).toFixed(2)
@@ -357,13 +359,15 @@ function deleteItem(idItem){
                         <td>${item.id}</td><td>${item.item}</td>
                         <td>
                             <input 
-                                type="text" 
+                                type="numeric" 
                                 class="form-control cant number porcentaje" 
                                 name="porcentaje_${item.id}"
                                 value = ${item.porcentaje}
                                 placeholder="0"
                                 id="porcentaje_${item.id}" 
                                 onchange="calculaPorcentaje(${item.id})"
+                                oninput="validarInput2(${item.id})"
+                                min="0"
                             >
                         </td>
                         <td>
@@ -389,12 +393,14 @@ function deleteItem(idItem){
                         </td>
                         <td>
                             <input 
-                                type="text" 
+                                type="numeric" 
                                 class="form-control cant number pvp" 
                                 name="pvp_${item.id}" 
                                 value="${item.pvp}" 
                                 id="pvp_${item.id}"
                                 onchange="updatePvp(${item.id})"
+                                oninput="validarInputPvp(${item.id})"
+                                min="0"
                             >
                         </td>
                         <td>
@@ -447,7 +453,7 @@ function agregarItem(idproducto, item){
                     
                     let detalle = JSON.parse(resultado);
                     let total = 0
-                    console.log(detalle);
+                    //console.log(detalle);
                     //Alerta que se ha agregado un item y limpio el input de items
                     alertAgregaItem()
                     inputItem.value = ""
@@ -463,14 +469,15 @@ function agregarItem(idproducto, item){
                                 <td>${item.id}</td><td>${item.item}</td>
                                 <td>
                                     <input 
-                                        type="text" 
+                                        type="numeric" 
                                         class="form-control cant number porcentaje" 
                                         name="porcentaje_${item.id}"
                                         value = "${item.porcentaje}"
                                         placeholder="0"
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
-                                        
+                                        oninput="validarInput2(${item.id})"
+                                        min="0"
                                     >
                                 </td>
                                 <td>
@@ -495,12 +502,14 @@ function agregarItem(idproducto, item){
                                 </td>
                                 <td>
                                     <input 
-                                        type="text" 
+                                        type="numeric" 
                                         class="form-control cant number pvp" 
                                         name="pvp_${item.id}" 
                                         value="${item.pvp}" 
                                         id="pvp_${item.id}"
                                         onchange="updatePvp(${item.id})"
+                                        oninput="validarInputPvp(${item.id})"
+                                        min="0"
                                     >
                                 </td>
                                 <td>
@@ -511,6 +520,7 @@ function agregarItem(idproducto, item){
                                 </tr>`
                             total += parseFloat(item.pvp)
                         }
+                        
                         document.getElementById("input-total").value = parseFloat(total).toFixed(2)
                     }else{
                         alertProcesando("ERROR: Hubo un error y el item no se pudo agregar", "error")
@@ -523,6 +533,7 @@ function agregarItem(idproducto, item){
     }
     
 }
+
 
 const alertAgregaItem = () => {
     Swal.fire({

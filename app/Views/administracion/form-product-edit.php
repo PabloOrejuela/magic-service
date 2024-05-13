@@ -160,14 +160,15 @@
                                                                 <td>'.$item->id.'</td><td>'.$item->item.'</td>
                                                                 <td>
                                                                     <input 
-                                                                        type="number" 
+                                                                        type="numeric" 
                                                                         class="form-control cant porcentaje" 
                                                                         name="porcentaje_'.$item->id.'"
                                                                         value = "'.$item->porcentaje.'"
                                                                         placeholder="0"
                                                                         id="porcentaje_'.$item->id.'" 
                                                                         onchange="calculaPorcentaje('.$item->id.')"
-                                                                        min="0.1" step="0.1"
+                                                                        oninput="validarInput2('.$item->id.')"
+                                                                        min="0"
                                                                     >
                                                                 </td>
                                                                 <td>
@@ -192,12 +193,15 @@
                                                                 </td>
                                                                 <td>
                                                                     <input 
-                                                                        type="text" 
+                                                                        type="numeric" 
                                                                         class="form-control cant pvp" 
                                                                         name="pvp_'.$item->id.'"
                                                                         value="'.$item->pvp.'" 
                                                                         id="pvp_'.$item->id.'"
                                                                         onchange="updatePvp('.$item->id.')"
+                                                                        oninput="validarInputPvp('.$item->id.')"
+                                                                        min="0"
+
                                                                     >
                                                                 </td>
                                                                 <td>
@@ -262,6 +266,7 @@
 <script src="<?= site_url(); ?>public/plugins/jquery/jquery.js"></script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= site_url(); ?>public/js/form-product-edit.js"></script>
+<script src="<?= site_url(); ?>public/js/validar-input.js"></script>
 <script src="<?= site_url(); ?>public/js/form-new-product-autocomplete.js"></script>
 <script src="<?= site_url(); ?>public/js/carga-imagen-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

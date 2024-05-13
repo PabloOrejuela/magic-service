@@ -195,6 +195,7 @@
 <script src="<?= site_url(); ?>public/plugins/jquery/jquery.js"></script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= site_url(); ?>public/js/form-new-product.js"></script>
+<script src="<?= site_url(); ?>public/js/validar-input.js"></script>
 <script src="<?= site_url(); ?>public/js/form-new-product-autocomplete.js"></script>
 <script src="<?= site_url(); ?>public/js/carga-imagen-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

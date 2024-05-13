@@ -37,14 +37,15 @@ function agregarItem(idNew, item){
                                 <td>${item.id}</td><td>${item.item}</td>
                                 <td>
                                     <input 
-                                        type="number" 
+                                        type="numeric" 
                                         class="form-control cant porcentaje" 
                                         name="porcentaje_${item.id}"
                                         value = "${item.porcentaje}"
                                         placeholder="0"
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
-                                        min="0.1" step="0.1"
+                                        oninput="validarInput2(${item.id})"
+                                        min="0"
                                     >
                                 </td>
                                 <td>
@@ -128,7 +129,14 @@ function calculaPorcentaje(idItem){
     let precioFinal = document.getElementById("precio_final_"+idItem)
     let pvp = document.getElementById("pvp_"+idItem)
     
-    precioVenta = (parseFloat(porcentaje) * parseFloat(precio))
+    if (porcentaje == '') {
+
+        porcenteje = 1
+        document.getElementById("porcentaje_"+idItem).value = 1
+        precioVenta = (parseFloat('1') * parseFloat(precio))
+    }else{
+        precioVenta = (parseFloat(porcentaje) * parseFloat(precio))
+    }
     precioFinal.value = '0'
     precioFinal.value = parseFloat(precioVenta).toFixed(2)
     pvp.value = parseFloat(precioVenta).toFixed(2)
@@ -248,14 +256,15 @@ function deleteItem(idNew, idItem){
                         <td>${item.id}</td><td>${item.item}</td>
                         <td>
                             <input 
-                                type="number" 
+                                type="numeric" 
                                 class="form-control cant porcentaje" 
                                 name="porcentaje_${item.id}"
                                 value = ${item.porcentaje}
                                 placeholder="0"
                                 id="porcentaje_${item.id}" 
                                 onchange="calculaPorcentaje(${item.id})"
-                                min="0.1" step="0.1"
+                                oninput="validarInput2(${item.id})"
+                                min="0"
                             >
                         </td>
                         <td>
@@ -348,8 +357,6 @@ const alertaMensaje = (msg, time, icon) => {
         title: msg,
     });
 }
-
-
 
 
 linkBorraImagen.addEventListener('click', function(e) {

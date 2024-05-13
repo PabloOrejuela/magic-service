@@ -668,7 +668,7 @@ class Administracion extends BaseController {
                     $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item);
                 }
             }
-            //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
+
             //Traigo los items de la tabla temporal, el idproducto y el idnew son el mismo
             $data['items'] = $this->itemsProductoTempModel->_getItemsNewProducto($newId);
 
@@ -783,8 +783,10 @@ class Administracion extends BaseController {
                 'image' => $this->request->getPostGet('image'),
                 'arreglo_temporal' => $this->request->getPostGet('arreglo_temporal'),
                 'observaciones' => $this->request->getPostGet('observaciones'),
+                'fileImage'=> $this->request->getPostGet('file-img'),
             ];
 
+            echo '<pre>'.var_export($newProducto, true).'</pre>';exit;
             $items = $this->itemsProductoTempModel->_getItemsProducto($idproductoOld);
             
             //Inserto el nuevo producto
