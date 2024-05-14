@@ -135,6 +135,8 @@
                                                         name="total" 
                                                         value="0.00" 
                                                         id="input-total"
+                                                        oninput="validarInputTotal()"
+                                                        min="0"
                                                     >
                                                 </td>
                                                 <td></td>

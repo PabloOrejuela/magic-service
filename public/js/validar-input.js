@@ -53,3 +53,29 @@ function validarInputPvp(id){
     // Devolvemos el nuevo array con solo los números
     inputPvp.value = numeros.join("");
 }
+
+function validarInputTotal(){
+    // let inputNumber = document.querySelector('.number')
+    let inputTotal = document.getElementById('input-total')
+    let inputValue = inputTotal.value
+
+    let cadena = inputValue.split("");
+
+    // Variables para contar los puntos
+    let puntoCount = 0;
+
+    let numeros = cadena.filter(function(caracter) {
+        if (caracter === '.') {
+            // Si encontramos un punto, incrementamos el contador
+            puntoCount++;
+            // Solo permitimos el punto si no hemos encontrado otro antes
+            return puntoCount <= 1;
+        } else {
+            // Permitimos números
+            return !isNaN(caracter);
+        }
+    });
+
+    // Devolvemos el nuevo array con solo los números
+    inputTotal.value = numeros.join("");
+}

@@ -775,7 +775,8 @@ class Administracion extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
 
             $idproductoOld = $this->request->getPostGet('idproducto');
-            $newProducto = [
+            $imagen = $this->request->getFile('file-img');
+            $producto = [
                 'idusuario' => $data['id'],
                 'producto' => strtoupper($this->request->getPostGet('nombreArregloNuevo')),
                 'categoria' => $this->request->getPostGet('categoria'),
@@ -783,14 +784,49 @@ class Administracion extends BaseController {
                 'image' => $this->request->getPostGet('image'),
                 'arreglo_temporal' => $this->request->getPostGet('arreglo_temporal'),
                 'observaciones' => $this->request->getPostGet('observaciones'),
-                'fileImage'=> $this->request->getPostGet('file-img'),
+                'imagenNew' => $imagen->getName(),
             ];
 
-            echo '<pre>'.var_export($newProducto, true).'</pre>';exit;
+            //Verifico si se sube otra imagen o no
+            if ($producto['imagenNew'] != '') {
+                //Se ha elegido una nueva imágen
+                
+                //Creo la ruta a las imágenes
+                $ruta = './public/images/productos/';
+
+                $producto['image'] = '';
+                
+                if (!$imagen->isValid()) {
+                    //SI NO ES VÁLIDO PASO VACÍO AL NOMBRE O LA IMAGEN DEFAULT
+                    $producto['image'] = 'default-img';
+    
+                }else{
+                    //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
+                    
+                    //Muevo el archivo del temporal a la carpeta
+                    $producto['image'] = $producto['producto'];
+                    $imagen->move($ruta, $producto['image'], true);
+                    
+                    $this->image->withFile($ruta.$producto['image'])
+                        ->convert(IMAGETYPE_JPEG)
+                        ->resize(450, 450, false, 'height')
+                        ->save($ruta.$producto['image'].'.jpg');
+    
+                    if (!$imagen->hasMoved()) {
+                        //Si la imágen NO se copió al server el nombre del archivo va vacío
+                        $producto['image'] = 'default-img';
+                    }
+                }
+            }else{
+                //No se ha elegido una nueva imagen
+                //Verifico si se ha borrado la imágen
+                //echo "se borró la imagen";
+            }
+
             $items = $this->itemsProductoTempModel->_getItemsProducto($idproductoOld);
             
             //Inserto el nuevo producto
-            $idproducto = $this->productoModel->_insertPersonalizado($newProducto);
+            $idproducto = $this->productoModel->_insertPersonalizado($producto);
             
             //Recibo el id insertado y hago el insert de los items del producto
             $this->itemsProductoModel->_insertItemsPersonalizado($idproducto, $items);

@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="<?= site_url(); ?>public/css/form-product-edit.css">
 
 <section class="content">
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
             <!-- left column -->
             <div class="col-md-12">
@@ -230,6 +230,8 @@
                                                         name="total" 
                                                         value="<?= $producto->precio; ?>" 
                                                         id="input-total"
+                                                        oninput="validarInputTotal()"
+                                                        min="0"
                                                     >
                                                 </td>
                                             </tr>
