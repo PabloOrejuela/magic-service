@@ -10,4 +10,5 @@
     <li>Faltaba validar cuando uno desea editar un producto que no tiene ITEMS antes de hacer un insert en la tabla de items</li>
     <li>El botón de "guardar como arreglo definitivo" estaba en todos los productos, ya se puso una validación y solo sale cuando es temporal 
 y se oculta al darle click y hacer definitivo el arreglo</li>
+    <li>Corregido el problema que no permitía guardar un producto nuevo </li>
 </ul>

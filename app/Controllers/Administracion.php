@@ -635,7 +635,7 @@ class Administracion extends BaseController {
 
             //Obtengo los items del producto que estoy creando
             $items = $this->itemsProductoTempModel->_getItemsNewProducto($producto['new_id']);
-            
+            //echo '<pre>'.var_export('R: '.$items, true).'</pre>';exit;
             //Recibo el id insertado y hago el insert de los items del producto
             $this->itemsProductoModel->_insertItemsPersonalizado($idproducto, $items);
 

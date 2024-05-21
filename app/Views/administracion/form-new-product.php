@@ -71,9 +71,8 @@
                                             class="form-control  col-md-1 mt-1" 
                                             name="new_id" 
                                             id="new_id"
-                                            style="display:block;"
+                                            style="display:none;"
                                             value="<?= $newId; ?>"
-                                            disabled
                                         >
                                     </div>
                                 </div>

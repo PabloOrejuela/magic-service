@@ -67,7 +67,7 @@ class ItemsProductoModel extends Model {
 
     public function _insertItemsPersonalizado($idproducto, $data) {
 
-        echo '<pre>'.var_export($data, true).'</pre>';exit;
+        //echo '<pre>'.var_export($data, true).'</pre>';exit;
 
         //Inserto el nuevo producto
         $builder = $this->db->table($this->table);
