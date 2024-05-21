@@ -168,6 +168,7 @@
                                                                         id="porcentaje_'.$item->id.'" 
                                                                         onchange="calculaPorcentaje('.$item->id.')"
                                                                         oninput="validarInput2('.$item->id.')"
+                                                                        onkeydown="preventDefault(porcentaje_'.$item->id.')"
                                                                         min="0"
                                                                     >
                                                                 </td>
@@ -200,6 +201,7 @@
                                                                         id="pvp_'.$item->id.'"
                                                                         onchange="updatePvp('.$item->id.')"
                                                                         oninput="validarInputPvp('.$item->id.')"
+                                                                        onkeydown="preventDefault(pvp_'.$item->id.')"
                                                                         min="0"
 
                                                                     >
@@ -231,6 +233,7 @@
                                                         value="<?= $producto->precio; ?>" 
                                                         id="input-total"
                                                         oninput="validarInputTotal()"
+                                                        onkeydown="preventDefault('input-total')"
                                                         min="0"
                                                     >
                                                 </td>
@@ -255,9 +258,14 @@
                         <!-- /.card-body -->
                         
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar cambios</button>
-                            <a href="#" class="btn btn-light temporal" id="btn-temporal">Guardar como arreglo definitivo</a>
-                            <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar()">Cancelar</a>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar cambios</button>
+                            <?php
+                                if ($producto->attr_temporal == 1) {
+                                    echo '<a href="#" class="btn btn-light temporal" id="btn-temporal">Guardar como arreglo definitivo</a>';
+                                }
+                            ?>
+                            
+                            <a href="#" class="btn btn-light cancelar" id="btn-cancela" onclick="cancelar(<?= $producto->id; ?>)">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -272,4 +280,6 @@
 <script src="<?= site_url(); ?>public/js/form-new-product-autocomplete.js"></script>
 <script src="<?= site_url(); ?>public/js/carga-imagen-cotizador.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 

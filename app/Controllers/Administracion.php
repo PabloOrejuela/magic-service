@@ -660,21 +660,23 @@ class Administracion extends BaseController {
             $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
             $newId = $idproducto;
             //Verifico si ya están en la tabla sino están los guardo
-            foreach ($items as $key => $item) {
+            if ($items) {
+                foreach ($items as $key => $item) {
                 
-                $verifica = $this->itemsProductoTempModel->_verificaItem($newId, $item->id);
-                //echo '<pre>'.var_export($verifica, true).'</pre>';exit;
-                if (!isset($verifica) || $verifica == 0 || $verifica == NULL) {
-                    $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item);
+                    $verifica = $this->itemsProductoTempModel->_verificaItem($newId, $item->id);
+                    //echo '<pre>'.var_export($verifica, true).'</pre>';exit;
+                    if (!isset($verifica) || $verifica == 0 || $verifica == NULL) {
+                        $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item);
+                    }
                 }
             }
-
             //Traigo los items de la tabla temporal, el idproducto y el idnew son el mismo
             $data['items'] = $this->itemsProductoTempModel->_getItemsNewProducto($newId);
 
             $data['title']='Administración';
             $data['subtitle']='Editar producto';
             $data['main_content']='administracion/form-product-edit';
+            
             return view('dashboard/index', $data);
         }else{
             $this->logout();
@@ -740,21 +742,31 @@ class Administracion extends BaseController {
 
             //Actualizo el producto
             $this->productoModel->_updateProducto($producto);
-
+            //echo '<pre>'.var_export($producto['idproducto'], true).'</pre>';exit;
             //Obtengo los items del producto que estoy editando
             $items = $this->itemsProductoTempModel->_getItemsProducto($producto['idproducto']);
-            
-            foreach ($items as $key => $item) {
-                //verifico si ya existe en la tabla de items
-                $existe = $this->itemsProductoModel->_getItemProducto($producto['idproducto'], $item->id);
 
-                if ($existe == 1) {
-                    //Si existe actualizo
-                    $this->itemsProductoModel->_updateItemProducto($producto['idproducto'], $item);
+            /**
+             * Borro los items que ya estaban en la tabla Items del producto pues serán reeemplazados 
+             * Por los nuevos, con esto evito que sigan en la tabla elementos que ya hayan sido borrados
+            */
+            $this->itemsProductoModel->_deleteItemsProducto($producto['idproducto']);
+
+
+            //Recorro los items y los inserto en la tabla de items del producto
+            if ($items) {
+                foreach ($items as $key => $item) {
+                    //verifico si ya existe en la tabla de items
+                    $existe = $this->itemsProductoModel->_getItemProducto($producto['idproducto'], $item->id);
                     
-                }else if($existe == 0){
-                    //Si no existe inserto
-                    $this->itemsProductoModel->_insertItemProducto($producto['idproducto'], $item);
+                    if ($existe == 1) {
+                        //Si existe actualizo
+                        //$this->itemsProductoModel->_updateItemProducto($producto['idproducto'], $item);
+                        
+                    }else if($existe == 0){
+                        //Si no existe inserto
+                        $this->itemsProductoModel->_insertItemProducto($producto['idproducto'], $item);
+                    }
                 }
             }
 

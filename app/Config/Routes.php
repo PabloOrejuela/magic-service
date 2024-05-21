@@ -60,6 +60,7 @@ $routes->get('updatePvpTempProduct', 'Ventas::updatePvpTempProduct');
 $routes->get('deleteItemTempProduct', 'Ventas::deleteItemTempProduct');
 $routes->get('cotizador', 'Ventas::cotizador');
 $routes->get('deleteItemsTempProduct', 'Ventas::deleteItemsTempProduct');
+$routes->get('updatePrecioActualTempProduct', 'Ventas::updatePrecioActualTempProduct');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');

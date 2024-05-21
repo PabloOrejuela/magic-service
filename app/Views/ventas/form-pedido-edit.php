@@ -42,19 +42,19 @@
                                                             foreach ($horariosEntrega as $key => $hora) {
                                                                 if ($hora->id == $pedido->horario_entrega) {
                                                                     if ($hora->id < 5 || $hora->id > 24) {
-                                                                            echo '<option 
-                                                                                    value="'.$hora->id.'" 
-                                                                                    '.set_select('vendedor', $hora->id, false).' 
-                                                                                    id="horario-extra-red"
-                                                                                    selected
-                                                                                >'.$hora->hora.' Horario extra</option>';
+                                                                        echo '<option 
+                                                                                value="'.$hora->id.'" 
+                                                                                '.set_select('vendedor', $hora->id, false).' 
+                                                                                id="horario-extra-red"
+                                                                                selected
+                                                                            >'.$hora->hora.' Horario extra</option>';
                                                                     }else{
                                                                         echo '<option 
                                                                                     value="'.$hora->id.'" 
                                                                                     '.set_select('vendedor', $hora->id, false).' 
                                                                                     id="horario-extra-black"
                                                                                     selected
-                                                                                >'.$hora->hora.' Horario extra</option>';
+                                                                            >'.$hora->hora.' Horario extra</option>';
                                                                     }
                                         
                                                                 }else{

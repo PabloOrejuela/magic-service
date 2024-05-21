@@ -45,6 +45,7 @@ function agregarItem(idNew, item){
                                         id="porcentaje_${item.id}" 
                                         onchange="calculaPorcentaje(${item.id})"
                                         oninput="validarInput2(${item.id})"
+                                        onkeydown="preventDefault(porcentaje_${item.id})"
                                         min="0"
                                     >
                                 </td>
@@ -76,6 +77,7 @@ function agregarItem(idNew, item){
                                         value="${item.pvp}" 
                                         id="pvp_${item.id}"
                                         onchange="updatePvp(${item.id})"
+                                        onkeydown="preventDefault(pvp_${item.id})"
                                     >
                                 </td>
                                 <td>
@@ -206,13 +208,25 @@ function updatePvp(idItem){
             alertProcesando()
         },
         success: function(resultado){
-            alertaMensaje("Se ha actualizado el porcentaje", 1000, "success")
+            alertaMensaje("Se ha actualizado el PVP", 1000, "success")
         },
         error: function(resultado){
             alertaMensaje("Hubo un error no se pudo actualizar", 1000, "error")
         }
     });
     calculaTotal()
+}
+
+function preventDefault(input){
+    console.log(input);
+    let inputPvp = document.getElementById(input)
+
+        inputPvp.addEventListener('keypress', e => {
+            if(e.key == 'Enter') {
+                console.log('13');
+                e.preventDefault();
+            }
+        })
 }
 
 function calculaTotal(){
@@ -264,6 +278,7 @@ function deleteItem(idNew, idItem){
                                 id="porcentaje_${item.id}" 
                                 onchange="calculaPorcentaje(${item.id})"
                                 oninput="validarInput2(${item.id})"
+                                onkeydown="preventDefault(porcentaje_${item.id})"
                                 min="0"
                             >
                         </td>
@@ -296,6 +311,7 @@ function deleteItem(idNew, idItem){
                                 value="${item.pvp}" 
                                 id="pvp_${item.id}"
                                 onchange="updatePvp(${item.id})"
+                                onkeydown="preventDefault(pvp_${item.id})"
                             >
                         </td>
                         <td>
@@ -319,7 +335,26 @@ function deleteItem(idNew, idItem){
     });
 }
 
-function cancelar(){
+function cancelar(id){
+
+    //Borro los registros de la tabla temporal
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "../deleteItemsTempProduct",
+        data:{
+            idproducto: id,
+        },
+        beforeSend: function (f) {
+            alertProcesando()
+        },
+        success: function(resultado){
+            alertaMensaje("Se ha cancelado", 1000, "success")
+        },
+        error: function(resultado){
+            alertaMensaje("Hubo un error no se pudo cancelar", 1000, "error")
+        }
+    });
     
     location.replace('../productos');
 }
@@ -381,10 +416,12 @@ linkAregloTemporal.addEventListener('click', function(e) {
             alertProcesando("El proceso se ha realizado con éxito, el arreglo ahora es definitivo", "success")
             let inputTipo = document.getElementById('input-tipo')
             inputTipo.value = "Arreglo Definitivo"
+            linkAregloTemporal.style.display = "none"
             //inputTipo.style.display="none"
         }
     });   
 })
+
 
 const alertProcesando = (msg, icono) => {
     const toast = Swal.mixin({

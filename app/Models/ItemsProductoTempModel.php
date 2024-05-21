@@ -198,6 +198,17 @@ class ItemsProductoTempModel extends Model {
         $builder->update();
     }
 
+    function _updatePrecio($data){
+        // echo '<pre>'.var_export($data, true).'</pre>';exit;
+        
+        $builder = $this->db->table($this->table);
+        $builder->set('precio_actual', $data['precio_actual']);
+        $builder->where('new_id', $data['new_id']);
+        $builder->where('item', $data['item']);
+        $builder->update();
+        //echo $this->db->getLastQuery();
+    }
+
     public function _deleteItem($item, $newId){
         
         $this->db->transStart();

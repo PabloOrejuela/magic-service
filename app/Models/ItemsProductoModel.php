@@ -67,7 +67,7 @@ class ItemsProductoModel extends Model {
 
     public function _insertItemsPersonalizado($idproducto, $data) {
 
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        echo '<pre>'.var_export($data, true).'</pre>';exit;
 
         //Inserto el nuevo producto
         $builder = $this->db->table($this->table);
@@ -263,5 +263,12 @@ class ItemsProductoModel extends Model {
         
         $builder->insert();
     
+    }
+
+    public function _deleteItemsProducto($idproducto) {
+
+        $builder = $this->db->table($this->table);        
+        $builder->where('idproducto', $idproducto);
+        $builder->delete();   
     }
 }

@@ -142,6 +142,19 @@ class Ventas extends BaseController {
         return true;
     }
 
+    function updatePrecioActualTempProduct(){
+
+        $prod['idproducto'] =  strtoupper($this->request->getPostGet('idproducto'));
+        $prod['precio_actual'] =  strtoupper($this->request->getPostGet('precio_actual'));
+        $prod['item'] =  strtoupper($this->request->getPostGet('item'));
+        $prod['new_id'] =  strtoupper($this->request->getPostGet('idNew'));
+        
+        if ($prod['precio_actual'] != 0 && $prod['precio_actual'] != '' ) {
+            $this->itemsProductoTempModel->_updatePrecio($prod);
+        }
+        return true;
+    }
+
     function insertAttrArreglo(){
         
         $data['iddetalle'] =  $this->request->getPostGet('iddetalle');

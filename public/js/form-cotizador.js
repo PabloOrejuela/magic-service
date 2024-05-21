@@ -135,14 +135,18 @@ $(document).ready(function(){
                                     >
                                 </td>
                                 <td>
-                                    <input 
-                                        type="text" 
-                                        class="form-control cant number precio_final" 
-                                        name="precio_final_${item.id}" 
-                                        value="${item.precio_actual}" 
-                                        id="precio_final_${item.id}"
-                                        disabled
-                                    >
+                                    <div class="row col-md-12">
+                                        <input 
+                                            type="text" 
+                                            class="form-control cant number precio_final" 
+                                            name="precio_final_${item.id}" 
+                                            value="${item.precio_actual}" 
+                                            id="precio_final_${item.id}"
+                                            onchange="updatePrecio(${item.id})"
+                                            disabled
+                                        >
+                                        <a href="javascript:activaEditar(${item.id})">editar</a>
+                                    </div>
                                 </td>
                                 <td>
                                     <input 
@@ -190,6 +194,47 @@ $(document).ready(function(){
         }
     });
 });
+
+/**
+ * Hace un update del nuevo porcentaje y precio
+ * usando AJAX
+*/
+
+function updatePrecio(id){
+    let precio_actual = document.getElementById("precio_final_"+id).value
+    let idproducto = document.getElementById("idproducto").value
+    let idNew = document.getElementById("new_id").value
+    
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "updatePrecioActualTempProduct",
+        data:{
+            idproducto: idproducto,
+            precio_actual: precio_actual,
+            item: id,
+            idNew: idNew
+        },
+        beforeSend: function (f) {
+            alertProcesando("Actualizando valores", "info")
+        },
+        success: function(resultado){
+            return 1;
+        },
+        error: function(resultado){
+            alertProcesando("Hubo un error, no se pudo actualizar los valores totales", "error")
+        }
+    });
+    calculaPvp(id, precio_actual)
+    calculaTotal()
+}
+
+function calculaPvp(id, precio_actual){
+    let porcentaje = document.getElementById("porcentaje_"+id).value
+    let pvp = document.getElementById("pvp_"+id)
+
+    pvp.value = (porcentaje * precio_actual).toFixed(2)
+}
 
 
 function calculaPorcentaje(idItem){
@@ -499,6 +544,7 @@ function agregarItem(idproducto, item){
                                         id="precio_final_${item.id}"
                                         disabled
                                     >
+                                    
                                 </td>
                                 <td>
                                     <input 
@@ -532,6 +578,11 @@ function agregarItem(idproducto, item){
         
     }
     
+}
+
+const activaEditar = (id) =>{
+    let input = document.getElementById('precio_final_'+id)
+    input.disabled = false
 }
 
 
