@@ -258,7 +258,7 @@
                         <!-- /.card-body -->
                         
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar cambios</button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar cambios</button>
                             <?php
                                 if ($producto->attr_temporal == 1) {
                                     echo '<a href="#" class="btn btn-light temporal" id="btn-temporal" style="visibility: visible;">Guardar como arreglo definitivo</a>';
