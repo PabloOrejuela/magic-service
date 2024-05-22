@@ -201,7 +201,7 @@
                                                                         id="pvp_'.$item->id.'"
                                                                         onchange="updatePvp('.$item->id.')"
                                                                         oninput="validarInputPvp('.$item->id.')"
-                                                                        onkeydown="preventDefault(pvp_'.$item->id.')"
+                                                                        
                                                                         min="0"
 
                                                                     >
@@ -261,7 +261,9 @@
                             <button type="submit" class="btn btn-primary" id="btnGuardar" disabled>Guardar cambios</button>
                             <?php
                                 if ($producto->attr_temporal == 1) {
-                                    echo '<a href="#" class="btn btn-light temporal" id="btn-temporal">Guardar como arreglo definitivo</a>';
+                                    echo '<a href="#" class="btn btn-light temporal" id="btn-temporal" style="visibility: visible;">Guardar como arreglo definitivo</a>';
+                                }else{
+                                    echo '<a href="#" class="btn btn-light temporal" id="btn-temporal" style="display:none;">Guardar como arreglo definitivo</a>';
                                 }
                             ?>
                             

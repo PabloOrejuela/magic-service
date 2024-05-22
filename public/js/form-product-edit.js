@@ -194,7 +194,7 @@ function updatePorcentaje(datosActualizar){
 function updatePvp(idItem){
     let pvp = document.getElementById("pvp_"+idItem)
     let idNew = document.getElementById("idproducto").value
-
+    
     $.ajax({
         type:"GET",
         dataType:"html",
