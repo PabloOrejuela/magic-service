@@ -1,9 +1,12 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Creada la tabla de registro de cambios cuando se edita un producto</li>
-    <li>Creada la funcionalidad de guardar cambios cuando se edita un producto</li>
-    <li>Creada la interfaz que muestra la lista de cambios que ha tenido un producto</li>
+    <li>Creado el archivo de Javascript para el grid de historial de cambios</li>
+    <li>Implementado el botón para regresar a la lista de productos desde el grid de historial del cambios</li>
+
 </ul>
+
+</br>
+
 <h3>Correcciones:</h3>
 <ul>
 
