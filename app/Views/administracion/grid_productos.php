@@ -27,6 +27,7 @@
                                 <th class="centrado">Estado</th>
                                 <th class="centrado">Arreglo definitivo</th>
                                 <th class="centrado">Habilitado hasta</th>
+                                <th class="centrado">Historial</th>
                                 <th class="centrado">Borrar</th>
                             </thead>
                             <tbody>
@@ -62,8 +63,15 @@
                                                     $fechaHasta = date('Y-m-d',$timeHasta);
                                                     echo '<td class="centrado">'.$fechaHasta.'</td>';
                                                 }
-                                            
                                             echo '<td>
+                                                    <div class="contenedor centrado">
+                                                        <a type="button" id="btn-register" href="'.site_url().'prod-historial-changes/'.$value->id.'" class="edit">
+                                                            <img src="'.site_url().'public/images/list.png" width="30" >
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            
+                                                    <td>
                                                     <div class="contenedor centrado">
                                                         <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >

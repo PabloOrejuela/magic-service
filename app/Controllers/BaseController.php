@@ -9,33 +9,34 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-use App\Models\UsuarioModel;
-use App\Models\FormaPagoModel;
-use App\Models\ClienteModel;
-use App\Models\ProductoModel;
-use App\Models\ItemModel;
-use App\Models\PedidoModel;
-use App\Models\ProveedorModel;
-use App\Models\GastoModel;
-use App\Models\RolModel;
+use App\Models\AttrExtArregModel;
+use App\Models\BancoModel;
 use App\Models\CategoriaModel;
-use App\Models\ItemsProductoModel;
-use App\Models\SectoresEntregaModel;
+use App\Models\ClienteModel;
 use App\Models\ConfiguracionModel;
-use App\Models\HorariosEntregaModel;
 use App\Models\DetallePedidoModel;
-use App\Models\SucursalModel;
-use App\Models\NegocioModel;
-use App\Models\TipoGastoModel;
-use App\Models\EstadoPedidoModel;
 use App\Models\DetallePedidoTempModel;
+use App\Models\EstadoPedidoModel;
+use App\Models\GastoModel;
+use App\Models\FormaPagoModel;
+use App\Models\HorariosEntregaModel;
+use App\Models\ItemModel;
+use App\Models\ItemsProductoModel;
+use App\Models\ItemsProductoTempModel;
 use App\Models\KardexModel;
 use App\Models\MovimientoInventarioModel;
-use App\Models\StockActualModel;
-use App\Models\ItemsProductoTempModel;
-use App\Models\BancoModel;
+use App\Models\NegocioModel;
+use App\Models\PedidoModel;
 use App\Models\ProcedenciaModel;
-use App\Models\AttrExtArregModel;
+use App\Models\ProductoModel;
+use App\Models\ProductoCambiosModel;
+use App\Models\ProveedorModel;
+use App\Models\RolModel;
+use App\Models\SectoresEntregaModel;
+use App\Models\StockActualModel;
+use App\Models\SucursalModel;
+use App\Models\TipoGastoModel;
+use App\Models\UsuarioModel;
 
 /**
  * Class BaseController
@@ -107,6 +108,7 @@ abstract class BaseController extends Controller {
         $this->itemsProductoTempModel = new ItemsProductoTempModel($this->db);
         $this->bancoModel = new BancoModel($this->db);
         $this->procedenciaModel = new ProcedenciaModel($this->db);
+        $this->productoCambiosModel = new ProductoCambiosModel($this->db);
         $this->attrExtArregModel = new AttrExtArregModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();

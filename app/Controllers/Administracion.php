@@ -648,6 +648,27 @@ class Administracion extends BaseController {
         }
     }
 
+    public function prod_historial_changes($idproducto){
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+            
+            $data['session'] = $this->session;
+            $data['producto'] = $this->productoModel->find($idproducto);
+            $data['historial'] = $this->productoCambiosModel->_getCambiosProducto($idproducto);
+        
+            $data['title']='Administración';
+            $data['subtitle']='Historial de cambios del producto: '. $data['producto']->producto;
+            $data['main_content']='administracion/report_cambios_product';
+            
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
     public function product_edit($idproducto){
 
         $data = $this->acl();
@@ -689,6 +710,8 @@ class Administracion extends BaseController {
         $data = $this->acl();
         
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
+
+            
             //Recibo la imagen
             $imagen = $this->request->getFile('file-img');
             $producto = [
@@ -699,9 +722,16 @@ class Administracion extends BaseController {
                 'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
                 'precio' => $this->request->getPostGet('total'),
                 'image' => $this->request->getPostGet('image'),
-                'imagenNew' => $imagen->getName(),
+                'imagenNew' => $imagen->getName()
             ];
-            
+
+            //Creo el objeto de cambios
+            $cambios = [
+                'idusuario' => $data['id'],
+                'idproducto' => $this->request->getPostGet('idproducto'),
+                'descripcion' => '',
+                'detalle' => ''
+            ];
             
             //Verifico si se sube otra imagen o no
             if ($producto['imagenNew'] != '') {
@@ -718,7 +748,7 @@ class Administracion extends BaseController {
     
                 }else{
                     //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
-                    
+
                     //Muevo el archivo del temporal a la carpeta
                     $producto['image'] = $producto['producto'];
                     $imagen->move($ruta, $producto['image'], true);
@@ -732,6 +762,8 @@ class Administracion extends BaseController {
                         //Si la imágen NO se copió al server el nombre del archivo va vacío
                         $producto['image'] = 'default-img';
                     }
+
+                    $cambios['descripcion'] .= 'IMAGEN: '. $producto['image'];
                 }
             }else{
                 //No se ha elegido una nueva imagen
@@ -740,11 +772,26 @@ class Administracion extends BaseController {
                 
             }
 
+            
             //Actualizo el producto
             $this->productoModel->_updateProducto($producto);
-            //echo '<pre>'.var_export($producto['idproducto'], true).'</pre>';exit;
+
             //Obtengo los items del producto que estoy editando
             $items = $this->itemsProductoTempModel->_getItemsProducto($producto['idproducto']);
+
+            /*
+            * Asigno los datos del producto al registro de cambios
+            * Campos: categoria, nombre, observaciones, precio, image, imagenNew
+            * Detalle: item, porcentaje, precio unitario, precio actual, pvp
+            */
+            $cambios['descripcion'] = $producto['idcategoria'].';'.$producto['producto'].';'.$producto['observaciones'].';'.$producto['precio'].';'.$producto['image'].';'.$producto['imagenNew'];
+
+            //Creo el string con el detalle del producto
+            foreach ($items as $key => $item) {
+                $cambios['detalle'] .= $item->id.','.$item->porcentaje.','.$item->precio_unitario.','.$item->precio_actual.','.$item->pvp.';';
+            }
+            
+            $this->productoCambiosModel->insert($cambios);
 
             /**
              * Borro los items que ya estaban en la tabla Items del producto pues serán reeemplazados 
@@ -836,7 +883,7 @@ class Administracion extends BaseController {
             }
 
             $items = $this->itemsProductoTempModel->_getItemsProducto($idproductoOld);
-            
+
             //Inserto el nuevo producto
             $idproducto = $this->productoModel->_insertPersonalizado($producto);
             

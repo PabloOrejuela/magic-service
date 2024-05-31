@@ -1,10 +1,10 @@
 <h3>Cambios</h3>
 <ul>
-    <li></li>
+    <li>Creada la tabla de registro de cambios cuando se edita un producto</li>
+    <li>Creada la funcionalidad de guardar cambios cuando se edita un producto</li>
+    <li>Creada la interfaz que muestra la lista de cambios que ha tenido un producto</li>
 </ul>
 <h3>Correcciones:</h3>
 <ul>
-    <li>Corregido error en editar producto no se calculaba el total al dar tab</li>
-    <li>Al dar clic en Cancelar no regresaba al grid de productos</li>
-    <li>El boton de de guardar estaba desactivado</li>
+
 </ul>

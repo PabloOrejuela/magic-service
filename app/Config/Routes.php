@@ -71,6 +71,7 @@ $routes->get('productos', 'Administracion::productos');
 $routes->get('cambia-attr-temp-producto', 'Administracion::cambia_attr_temp_producto');
 $routes->get('producto-create', 'Administracion::form_producto_create');
 $routes->post('product-insert', 'Administracion::product_insert');
+$routes->get('prod-historial-changes/(:num)', 'Administracion::prod_historial_changes/$1');
 $routes->post('product-new-insert', 'Administracion::product_new_insert');
 $routes->post('product-update', 'Administracion::product_update');
 $routes->get('product-edit/(:num)', 'Administracion::product_edit/$1');
