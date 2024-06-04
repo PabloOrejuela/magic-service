@@ -28,7 +28,7 @@
                                                         <td>
                                                             <a href="'.site_url().'detalle-cambio-prod/'.$value->id.'" 
                                                                 id="link-editar"
-                                                            >'.$value->detalle.'</a>
+                                                            >Ver detalle</a>
                                                         </td>
                                                         <td>'.$value->nombre.'</td>
                                                         <td class="centrado">'.$value->updated_at.'</td>

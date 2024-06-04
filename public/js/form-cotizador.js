@@ -131,8 +131,10 @@ $(document).ready(function(){
                                         name="precio_${item.id}" 
                                         value="${item.precio_unitario}" 
                                         id="precio_${item.id}"
+                                        onchange="calculaPorcentaje(${item.id})"
                                         disabled
                                     >
+                                    <a href="javascript:activaEditar(${item.id})">editar</a>
                                 </td>
                                 <td>
                                     <div class="row col-md-12">
@@ -142,10 +144,8 @@ $(document).ready(function(){
                                             name="precio_final_${item.id}" 
                                             value="${item.precio_actual}" 
                                             id="precio_final_${item.id}"
-                                            onchange="updatePrecio(${item.id})"
                                             disabled
                                         >
-                                        <a href="javascript:activaEditar(${item.id})">editar</a>
                                     </div>
                                 </td>
                                 <td>
@@ -425,6 +425,7 @@ function deleteItem(idItem){
                                 onchange="calculaPorcentaje(${item.id})"
                                 disabled
                             >
+                            <a href="javascript:activaEditar(${item.id})">editar</a>
                         </td>
                         <td>
                             <input 
@@ -433,6 +434,7 @@ function deleteItem(idItem){
                                 name="precio_final_${item.id}" 
                                 value="${item.precio_actual}" 
                                 id="precio_final_${item.id}"
+                                onchange="updatePrecio(${item.id})"
                                 disabled
                             >
                         </td>
@@ -532,8 +534,10 @@ function agregarItem(idproducto, item){
                                         name="precio_${item.id}" 
                                         value="${item.precio_unitario}" 
                                         id="precio_${item.id}"
+                                        onchange="calculaPorcentaje(${item.id})"
                                         disabled
                                     >
+                                    <a href="javascript:activaEditar(${item.id})">editar</a>
                                 </td>
                                 <td>
                                     <input 
@@ -544,7 +548,6 @@ function agregarItem(idproducto, item){
                                         id="precio_final_${item.id}"
                                         disabled
                                     >
-                                    
                                 </td>
                                 <td>
                                     <input 
@@ -581,7 +584,7 @@ function agregarItem(idproducto, item){
 }
 
 const activaEditar = (id) =>{
-    let input = document.getElementById('precio_final_'+id)
+    let input = document.getElementById('precio_'+id)
     input.disabled = false
 }
 
