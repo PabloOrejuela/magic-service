@@ -98,6 +98,7 @@ $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');
 $routes->post('product-personalize', 'Administracion::product_personalize');
 $routes->get('updateVariableSistema', 'Administracion::updateVariableSistema');
 $routes->get('actualizaPrecioItem', 'Administracion::actualizaPrecioItem');
+$routes->get('actualizaPermiso', 'Administracion::actualizaPermiso');
 $routes->get('list-items', 'Administracion::list_items');
 $routes->get('set-arreg-temp-definitivo/(:num)', 'Administracion::set_arreg_temp_definitivo/$1');
 

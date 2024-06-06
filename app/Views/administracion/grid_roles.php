@@ -36,26 +36,91 @@
                                 <th>Rol</th>
                                 <th>Administración</th>
                                 <th>Ventas</th>
+                                <th>Clientes</th>
                                 <th>Proveedores</th>
+                                <th>Gastos</th>
+                                <th>Entregas</th>
+                                <th>Inventarios</th>
                                 <th>Reportes</th>
-                                <th>Editar</th>
                             </thead>
                             <tbody>
                                 <?php
                                     if (isset($roles) && $roles != NULL) {
+                                        //echo '<pre>'.var_export($roles, true).'</pre>';exit;
                                         foreach ($roles as $key => $value) {
                                             echo '<tr>
                                                     <td>'.$value->rol.'</td>
-                                                    <td>'.$value->admin.'</td>
-                                                    <td>'.$value->ventas.'</td>
-                                                    <td>'.$value->proveedores.'</td>
-                                                    <td>'.$value->reportes.'</td>
                                                     <td>
-                                                        <div class="contenedor">
-                                                            <a type="button" id="btn-register" href="'.site_url().'rol-edit/'.$value->id.'" class="edit">
-                                                                <img src="'.site_url().'public/images/edit.png" width="30" >
-                                                            </a>
-                                                        </div>
+                                                        <input 
+                                                            value="'.$value->admin.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="admin"
+                                                            id="input-admin_'.$value->id.'" 
+                                                            onchange="changePermisoAdmin('.$value->id.')" 
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            value="'.$value->ventas.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="ventas"
+                                                            id="input-ventas_'.$value->id.'" 
+                                                            onchange="changePermisoVentas('.$value->id.')" 
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            value="'.$value->clientes.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="clientes"
+                                                            id="input-clientes_'.$value->id.'" 
+                                                            onchange="changePermisoClientes('.$value->id.')" 
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            value="'.$value->proveedores.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="proveedores"
+                                                            id="input-proveedores_'.$value->id.'" 
+                                                            onchange="changePermisoProveedores('.$value->id.')" 
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            value="'.$value->gastos.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="gastos"
+                                                            id="input-gastos_'.$value->id.'" 
+                                                            onchange="changePermisoGastos('.$value->id.')" 
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            value="'.$value->entregas.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="entregas"
+                                                            id="input-entregas_'.$value->id.'" 
+                                                            onchange="changePermisoEntregas('.$value->id.')" 
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            value="'.$value->inventarios.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="inventarios"
+                                                            id="input-inventarios_'.$value->id.'" 
+                                                            onchange="changePermisoInventarios('.$value->id.')" 
+                                                        >
+                                                    </td>
+                                                    <td>
+                                                        <input 
+                                                            value="'.$value->reportes.'"
+                                                            class="form-control rol-permisos"
+                                                            data-campo="reportes"
+                                                            id="input-reportes_'.$value->id.'" 
+                                                            onchange="changePermisoReportes('.$value->id.')" 
+                                                        >
                                                     </td>
                                                 </tr>';
                                         }
@@ -70,6 +135,8 @@
         </div>
     </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/grid-roles.js"></script>
 <script>
   $(document).ready(function () {
     $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";

@@ -13,7 +13,11 @@ class RolModel extends Model {
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['rol','admin','ventas','reportes','proveedores'];
+    protected $allowedFields    = [
+        'rol','admin','ventas','clientes',
+        'reportes','proveedores','gastos',
+        'entregas','inventarios'
+    ];
 
     // Dates
     protected $useTimestamps = false;
@@ -38,4 +42,11 @@ class RolModel extends Model {
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function _updatePermiso($id, $permiso, $campo){
+        $builder = $this->db->table($this->table);
+        $builder->set($campo, $permiso);
+        $builder->where('id', $id);
+        $builder->update();
+    }
 }

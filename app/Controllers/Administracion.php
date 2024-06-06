@@ -259,6 +259,15 @@ class Administracion extends BaseController {
         return $id;
     }
 
+    public function actualizaPermiso() {
+        $id = $this->request->getPostGet('id');
+        $permiso = $this->request->getPostGet('permiso');
+        $campo = $this->request->getPostGet('campo');
+
+        $id = $this->rolModel->_updatePermiso($id, $permiso, $campo);
+        return $id;
+    }
+
     public function cambia_attr_temp_producto() {
         $id = $this->request->getPostGet('id');
         $producto = [
@@ -1136,10 +1145,6 @@ class Administracion extends BaseController {
             
         }
         return json_encode($mensaje);
-    }
-
-    public function form_rol_edit($id){
-        echo 'Formulario para crear un Nuevo usuario DESHABILITADO';
     }
 
     public function form_sucursal_edit($id){

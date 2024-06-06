@@ -1,0 +1,13 @@
+.rol-permisos{
+    border:none;
+    border-radius: 0%;
+    background: transparent;
+}
+
+.rol-permisos:focus{
+    border:none;
+    border-radius: 0%;
+    color: #ffffff;
+    background: #5f5959;
+    font-weight: bold;
+}
