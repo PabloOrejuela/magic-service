@@ -620,12 +620,23 @@ function searchPhones(valor, phone) {
                     success: function(res){
                         
                         let data = JSON.parse(res);
+
+                        if (valor != 0) {
+                            alertCambioValor()
+                            document.getElementById("horario_extra").value = parseFloat(data.costo)
+                        }else{
+                            alertCambioValor()
+                            document.getElementById("horario_extra").value = 0
+                        }
                         
-                        alertCambioValor()
-                        document.getElementById("horario_extra").value = parseFloat(data.costo)
                         sumarTotal()
+                    },
+                    error: function(data){
+                        console.log("No existe el valor de ese horario");
                     }
                 });
+            }else{
+                console.log("No existe el valor de ese horario");
             }
         });
     });
