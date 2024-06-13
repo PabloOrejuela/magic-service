@@ -261,7 +261,7 @@ class Ventas extends BaseController {
         $idproducto = $this->request->getPostGet('idproducto');
         $cantidad = $this->request->getPostGet('cantidad');
         $cod_pedido = $this->request->getPostGet('cod_pedido');
-
+        
         $error = '';
 
         $producto = $this->productoModel->find($idproducto);
@@ -271,19 +271,20 @@ class Ventas extends BaseController {
             
             if ($datosExiste) {
                 $cantidad = $datosExiste->cantidad + $cantidad;
+                
                 $precio = $datosExiste->precio;
                 if ($datosExiste->pvp != '0.00') {
-                    $subtotal = $cantidad * $datosExiste->pvp;
+                    $subtotal = ($cantidad * $datosExiste->pvp);
                 }else{
-                    $subtotal = $cantidad * $datosExiste->precio;
+                    $subtotal = ($cantidad * $datosExiste->precio);
                 }
-                
-                
-                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $precio, $subtotal);
+               
+                // echo '<pre>'.var_export($subtotal, true).'</pre>';exit;
+                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
 
             }else{
-                $subtotal = $cantidad * $producto->precio;
-
+                $subtotal = ($cantidad * $producto->precio);
+                // echo '<pre>'.var_export($subtotal, true).'</pre>';exit;
                 $data = [
                     'cod_pedido' => $cod_pedido,
                     'idproducto' => $idproducto,

@@ -26,25 +26,23 @@ function limpiaCamposCliente() {
 function sumarTotal() {
   let descuento = 0;
   let total = 0;
-  let subtotal = 0;
-  let porcentajeDescuento = 0;
-  let transporte = 0;
-  let cargoDomingo = 0;
-  let horarioExtra = 0;
-  let valorMensajeroEdit = 0;
-  let valorMensajero = 0;
-  let codigoPedido = document.getElementById("cod_pedido").value;
+  let subtotal = 0
+  let impTotal = 0
+  let porcentajeDescuento = 0
+  let transporte = 0
+  let cargoDomingo = 0
+  let horarioExtra = 0
 
   //Obtengo todos los valores de las casillas
-  subtotal = document.getElementById("valor_neto").value;
   impTotal = document.getElementById("total");
+
+  subtotal = document.getElementById("valor_neto").value;
   porcentajeDescuento = document.getElementById("descuento").value;
   transporte = document.getElementById("transporte").value;
   cargoDomingo = document.getElementById("cargo_domingo").value;
   horarioExtra = document.getElementById("horario_extra").value;
-  valorMensajero = document.getElementById("valor_mensajero").value;
-  valorMensajeroEdit = document.getElementById("valor_mensajero_edit").value;
 
+  
   if (isNaN(parseFloat(subtotal)) == true) {
     subtotal = 0;
   }
@@ -71,8 +69,7 @@ function sumarTotal() {
     descuento = 0;
   }
 
-  total = subtotal + parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra) - descuento;
-  //console.log(total);
+  total = parseFloat(subtotal) + parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra) - descuento;
 
   //Hago el cálculo del mensajero
   calcularMensajero();

@@ -323,9 +323,10 @@
         </div>
     </div>
 </section>
-<script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
+
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
 <script>
     // window.onbeforeunload = function() {
     //     return "¿Desea recargar la página web?";
@@ -429,45 +430,45 @@ function searchPhones(valor, phone) {
     }
 }
 
-$(document).ready(function(){
-  $("#telefono_2").on('change',function(){
-      if($("#telefono_2").val() !=""){
+    $(document).ready(function(){
+        $("#telefono_2").on('change',function(){
+            if($("#telefono_2").val() !=""){
 
-          valor = $("#telefono_2").val();
-          //console.log(valor);
-          $.ajax({
-              type:"POST",
-              dataType:"html",
-              url: "ventas/clientes_select_telefono_2",
-              data:"telefono="+valor,
-              beforeSend: function (f) {
-                  //$('#cliente').html('Cargando ...');
-              },
-              success: function(data){
-                let cliente = JSON.parse(data);
-                
-                if (cliente) {
-                  
-                  document.getElementById('nombre').value = cliente.nombre
-                  document.getElementById('telefono').value = cliente.telefono
-                  document.getElementById('telefono_2').value = cliente.telefono_2
-                  document.getElementById('documento').value = cliente.documento
-                  document.getElementById('email').value = cliente.email
-                  document.getElementById('idcliente').value = cliente.id
-                } else {
-                  //console.log('No hay, debo buscar en el 1 también');
-                  searchPhones(valor, 1)
-                }
-                
-                
-              },
-              error: function(data){
-                console.log("No hay");
-              }
-          });
-      }
-  });
-});
+                valor = $("#telefono_2").val();
+                //console.log(valor);
+                $.ajax({
+                    type:"POST",
+                    dataType:"html",
+                    url: "ventas/clientes_select_telefono_2",
+                    data:"telefono="+valor,
+                    beforeSend: function (f) {
+                        //$('#cliente').html('Cargando ...');
+                    },
+                    success: function(data){
+                        let cliente = JSON.parse(data);
+                        
+                        if (cliente) {
+                        
+                        document.getElementById('nombre').value = cliente.nombre
+                        document.getElementById('telefono').value = cliente.telefono
+                        document.getElementById('telefono_2').value = cliente.telefono_2
+                        document.getElementById('documento').value = cliente.documento
+                        document.getElementById('email').value = cliente.email
+                        document.getElementById('idcliente').value = cliente.id
+                        } else {
+                        //console.log('No hay, debo buscar en el 1 también');
+                        searchPhones(valor, 1)
+                        }
+                        
+                        
+                    },
+                    error: function(data){
+                        console.log("No hay");
+                    }
+                });
+            }
+        });
+    });
 
     $(document).ready(function(){
         $("#documento").on('change',function(){
@@ -503,7 +504,6 @@ $(document).ready(function(){
         $("#sectores").on('change',function(){
             if($("#sectores").val() !=""){
                 valor = $("#sectores").val();
-                
                 $.ajax({
                     type:"GET",
                     dataType:"html",
@@ -513,12 +513,24 @@ $(document).ready(function(){
                     },
                     success: function(resultado){
                         let dato = JSON.parse(resultado);
-                        alertCambioValor()
-                        document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4
+
+                        if (valor != 0) {
+                            alertCambioValor()
+                            document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4 
+                        }else{
+                            alertCambioValor()
+                            document.getElementById("transporte").value = 0
+                        }
+                        
                         sumarTotal()
 
+                    },
+                    error: function(data){
+                        console.log("No existe el costo de entrega");
                     }
                 });
+            }else{
+                console.log("No existe el costo de entrega");
             }
         });
     });
@@ -660,8 +672,32 @@ $(document).ready(function(){
     });
 
     function agregarProducto(idproducto, cantidad, cod_pedido){
+        let transporte = 0
+        let cargoDomingo = 0
+        let horarioExtra = 0
 
-        //let dia = getDayOfWeek();
+        let total = document.getElementById("total")
+
+        transporte = document.getElementById("transporte").value
+        cargoDomingo = document.getElementById("cargo_domingo").value
+        horarioExtra = document.getElementById("horario_extra").value
+        
+
+        if (isNaN(parseFloat(transporte)) == true) {
+            transporte = 0;
+        }
+
+        if (isNaN(parseFloat(cargoDomingo)) == true) {
+            cargoDomingo = 0;
+        }
+
+        if (isNaN(parseFloat(horarioExtra)) == true) {
+            horarioExtra = 0;
+        }
+
+        let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
+
+        
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
             
             $.ajax({
@@ -669,7 +705,7 @@ $(document).ready(function(){
                 data: {
                     idproducto: idproducto,
                     cantidad: cantidad,
-                    cod_pedido: cod_pedido
+                    cod_pedido: cod_pedido,
                 },
                 success: function(resultado){
                     if (resultado == 0) {
@@ -678,11 +714,12 @@ $(document).ready(function(){
                         //Exito
 
                         let detalle = JSON.parse(resultado);
-                        
+                        //console.log(parseFloat(detalle.total) + parseFloat(extras));
                         if (detalle.error == '') {
                             $("#tablaProductos tbody").empty();
                             $("#tablaProductos tbody").append(detalle.datos);
-                            $("#total").val(detalle.total);
+                            //$("#total").val(detalle.total);
+                            total.value = (parseFloat(detalle.total) + extras).toFixed(2)
                             document.getElementById('valor_neto').value = detalle.total
                             limpiaLineaProducto()
                         }
@@ -692,10 +729,33 @@ $(document).ready(function(){
             
         }
         calculaValorNeto(cod_pedido);
-        sumarTotal()
+        calcularMensajero();
     }
 
     function eliminaProducto(idproducto, cod_pedido){
+        let transporte = 0
+        let cargoDomingo = 0
+        let horarioExtra = 0
+
+        let total = document.getElementById("total")
+
+        transporte = document.getElementById("transporte").value
+        cargoDomingo = document.getElementById("cargo_domingo").value
+        horarioExtra = document.getElementById("horario_extra").value
+
+        if (isNaN(parseFloat(transporte)) == true) {
+            transporte = 0;
+        }
+
+        if (isNaN(parseFloat(cargoDomingo)) == true) {
+            cargoDomingo = 0;
+        }
+
+        if (isNaN(parseFloat(horarioExtra)) == true) {
+            horarioExtra = 0;
+        }
+
+        let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
 
         if (idproducto != null && idproducto != 0 && idproducto > 0) {
 
@@ -712,9 +772,10 @@ $(document).ready(function(){
                         if (detalle.error == '') {
                             $("#tablaProductos tbody").empty();
                             $("#tablaProductos tbody").append(detalle.datos);
-                            $("#total").val(detalle.total);
-                            $("#valor_neto").val(detalle.subtotal);
-
+                            //$("#total").val(detalle.total);
+                            //$("#valor_neto").val(detalle.subtotal);
+                            total.value = (parseFloat(detalle.total) + extras).toFixed(2)
+                            document.getElementById('valor_neto').value = detalle.subtotal
                             alertEliminaProducto()
                             limpiaLineaProducto()
                         }else{
@@ -727,7 +788,7 @@ $(document).ready(function(){
             
         }
         calculaValorNeto(cod_pedido);
-        sumarTotal()
+        calcularMensajero();
     }
 
     
@@ -844,6 +905,8 @@ $(document).ready(function(){
         let valorMensajero = document.getElementById('valor_mensajero').value
         let valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
         let cantProd = document.getElementById("cant_arreglos").value;
+
+        
         if (isNaN(parseFloat(transporte)) == true) {
             transporte = 0
         }
@@ -859,7 +922,7 @@ $(document).ready(function(){
         let cantProdExtra = (cantProd - 1)
 
         if (cantProdExtra >= 1) {
-            console.log("cant: " + cantProdExtra);
+            //console.log("cant: " + cantProdExtra);
             if (sectores == 1) {
                 
                 //Se agrega 50% de Transporte mas 50% mas de carga horario mas 50% mas de domingo por cada arreglo extra
@@ -949,7 +1012,6 @@ $(document).ready(function(){
                 //console.log("Detalle: " + detalle.cantidad);
                 document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
                 document.getElementById('cant_arreglos').value = detalle.cantidad;
-                sumarTotal()
             }
         });
     }
