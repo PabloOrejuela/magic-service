@@ -1,6 +1,8 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Implementado el archivo de estilos del grid de usuarios</li>
+    <li>Se agregó el default timezone en el Base controller</li>
+    <li>Se corrigió el comportamiento del botón salir de la app para que use la función update del modelo</li>
+    <li>Se cambió la funcionalidad de Validate credentials para que use el udpdate de user model</li>
 </ul>
 
 </br>

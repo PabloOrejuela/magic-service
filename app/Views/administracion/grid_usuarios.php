@@ -35,8 +35,14 @@
                                                 <td>'.$value->email.'</td>
                                                 <td>'.$value->direccion.'</td>
                                                 <td>'.$value->cedula.'</td>
-                                                <td>'.$value->rol.'</td>
-                                                <td>'.$value->logged.'</td>';
+                                                <td>'.$value->rol.'</td>';
+
+                                                if ($value->logged == 1) {
+                                                    echo '<td id="td-online" >ONLINE</td>';
+                                                }else if($value->logged == 0){
+                                                    echo '<td id="td-offline" >OFFLINE</td>';
+                                                }
+
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
                                                 }else if($value->estado == 0){

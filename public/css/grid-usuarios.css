@@ -18,3 +18,13 @@
 .row {
     margin-bottom: 20px;
 }
+
+#td-online{
+    text-align: center;
+    color: #0f0;
+}
+
+#td-offline{
+    text-align: center;
+    color: #f00;
+}

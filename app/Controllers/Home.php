@@ -27,6 +27,13 @@ class Home extends BaseController {
              */
             $this->productoModel->_desactivaProductosTemporales();
 
+            /*
+             * Verif
+             * 
+             */
+            $usuarios = $this->usuarioModel->findAll();
+            $this->usuarioModel->_cierraSesiones($usuarios);
+
             return redirect()->to('pedidos');
         }else{
             $this->logout();
@@ -90,14 +97,15 @@ class Home extends BaseController {
                         'reportes' => $usuario->reportes,
                         'inventarios' => $usuario->inventarios,
                     ];
-            
+                    
+                    $iduser = $usuario->id;
+
                     $user = [
-                        'id' => $usuario->id,
                         'logged' => 1,
                         'ip' => $ip
                     ];
                     //echo '<pre>'.var_export($user, true).'</pre>';exit;
-                    $this->usuarioModel->_updateLoggin($user);
+                    $this->usuarioModel->update($iduser, $user);
                     $this->session->version = $this->configuracionModel->_getVersion();
 
                     
@@ -122,14 +130,13 @@ class Home extends BaseController {
 
     public function logout(){
         //destruyo la session  y salgo
-        
+        $iduser = $this->session->id;
         $user = [
-            'id' => $this->session->idusuario,
             'logged' => 0,
             'ip' => 0
         ];
         //echo '<pre>'.var_export($user, true).'</pre>';exit;
-        $this->usuarioModel->_updateLoggin($user);
+        $this->usuarioModel->update($iduser, $user);
         $this->session->destroy();
         return redirect()->to('/');
     }
