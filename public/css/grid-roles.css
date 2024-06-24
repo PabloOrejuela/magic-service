@@ -8,6 +8,47 @@
     border:none;
     border-radius: 0%;
     color: #ffffff;
-    background: #5f5959;
+    background: transparent;
     font-weight: bold;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+
+#rol-permitido{
+    color: #000;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+#rol-denegado{
+    color: #f33;
+    font-size: 1.2rem;
+}
+
+.inputValor{
+    text-align: right;
+}
+
+#link-editar{
+    color: #00514E;
+    text-decoration: none;
+}
+
+#link-editar:hover{
+    color: #000;
+    text-decoration: none;
+}
+.input {
+    border-radius: 300px;
+    width: 250px;
+}
+.row {
+    margin-bottom: 20px;
 }

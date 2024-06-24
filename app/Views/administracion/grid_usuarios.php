@@ -1,26 +1,4 @@
-<style>
-    .inputValor{
-        text-align: right;
-    }
-
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
-    .input {
-        border-radius: 300px;
-        width: 250px;
-    }
-    .row {
-        margin-bottom: 20px;
-    }
-    
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/grid-usuarios.css">
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">

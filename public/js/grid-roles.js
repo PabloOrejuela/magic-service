@@ -43,7 +43,6 @@ function cambiaPermiso(input, id){
         dataType:"html",
         url: 'actualizaPermiso',
         data: { 
-            permiso: input.value,
             id: id,
             campo: input.dataset.campo
         },
@@ -58,12 +57,11 @@ function cambiaPermiso(input, id){
         },
         error: function(data){
             alertProcesando("Hubo un error, no se pudo actualizar el permiso!", "error")
-            setTimeout(function(){
-                location.replace('roles');
-            }, 3000);
-            
         }
     });
+    // setTimeout(function(){
+    //     location.replace('roles');
+    // }, 2800);
 }
 
 const alertProcesando = (msg, icono) => {

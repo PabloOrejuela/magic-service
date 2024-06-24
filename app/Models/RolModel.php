@@ -49,4 +49,20 @@ class RolModel extends Model {
         $builder->where('id', $id);
         $builder->update();
     }
+
+    function _getPermiso($id, $campo){
+        
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $builder->where('idcategoria', $idcategoria);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
 }

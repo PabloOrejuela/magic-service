@@ -261,10 +261,21 @@ class Administracion extends BaseController {
 
     public function actualizaPermiso() {
         $id = $this->request->getPostGet('id');
-        $permiso = $this->request->getPostGet('permiso');
         $campo = $this->request->getPostGet('campo');
 
+        //Obtengo el permiso actual
+        $permisoActual = $this->rolModel->find($id);
+
+        $permisoActualArray = get_object_vars( $permisoActual );
+
+        if ($permisoActualArray[''.$campo.''] == 1) {
+            $permiso = 0;
+        }else if($permisoActualArray[''.$campo.''] == 0){
+            $permiso = 1;
+        }
+        echo '<pre>'.var_export($permisoActualArray[''.$campo.''], true).'</pre>';exit;
         $id = $this->rolModel->_updatePermiso($id, $permiso, $campo);
+
         return $id;
     }
 

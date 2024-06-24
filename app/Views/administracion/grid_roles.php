@@ -1,25 +1,6 @@
-<style>
-    .inputValor{
-        text-align: right;
-    }
-
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
-    .input {
-        border-radius: 300px;
-        width: 250px;
-    }
-    .row {
-        margin-bottom: 20px;
-    }
-</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/grid-roles.css">
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
@@ -48,81 +29,201 @@
                                     if (isset($roles) && $roles != NULL) {
                                         //echo '<pre>'.var_export($roles, true).'</pre>';exit;
                                         foreach ($roles as $key => $value) {
-                                            echo '<tr>
-                                                    <td>'.$value->rol.'</td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->admin.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="admin"
-                                                            id="input-admin_'.$value->id.'" 
-                                                            onchange="changePermisoAdmin('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->ventas.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="ventas"
-                                                            id="input-ventas_'.$value->id.'" 
-                                                            onchange="changePermisoVentas('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->clientes.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="clientes"
-                                                            id="input-clientes_'.$value->id.'" 
-                                                            onchange="changePermisoClientes('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->proveedores.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="proveedores"
-                                                            id="input-proveedores_'.$value->id.'" 
-                                                            onchange="changePermisoProveedores('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->gastos.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="gastos"
-                                                            id="input-gastos_'.$value->id.'" 
-                                                            onchange="changePermisoGastos('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->entregas.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="entregas"
-                                                            id="input-entregas_'.$value->id.'" 
-                                                            onchange="changePermisoEntregas('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->inventarios.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="inventarios"
-                                                            id="input-inventarios_'.$value->id.'" 
-                                                            onchange="changePermisoInventarios('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                    <td>
-                                                        <input 
-                                                            value="'.$value->reportes.'"
-                                                            class="form-control rol-permisos"
-                                                            data-campo="reportes"
-                                                            id="input-reportes_'.$value->id.'" 
-                                                            onchange="changePermisoReportes('.$value->id.')" 
-                                                        >
-                                                    </td>
-                                                </tr>';
+                                            echo '<tr>';
+                                            echo '<td>'.$value->rol.'</td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-admin_'.$value->id.'" 
+                                                        data-campo="admin" 
+                                                    >';
+                                                        if ($value->admin == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->admin == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-ventas_'.$value->id.'" 
+                                                        data-campo="ventas" 
+                                                    >';
+                                                        if ($value->ventas == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->ventas == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-clientes_'.$value->id.'" 
+                                                        data-campo="clientes" 
+                                                    >';
+                                                        if ($value->clientes == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->clientes == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-proveedores_'.$value->id.'" 
+                                                        data-campo="proveedores" 
+                                                    >';
+                                                        if ($value->proveedores == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->proveedores == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-gastos_'.$value->id.'" 
+                                                        data-campo="gastos" 
+                                                    >';
+                                                        if ($value->gastos == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->gastos == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-entregas_'.$value->id.'" 
+                                                        data-campo="entregas" 
+                                                    >';
+                                                        if ($value->entregas == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->entregas == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-inventarios_'.$value->id.'" 
+                                                        data-campo="inventarios" 
+                                                    >';
+                                                        if ($value->inventarios == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->inventarios == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        id="input-reportes_'.$value->id.'" 
+                                                        data-campo="reportes" 
+                                                    >';
+                                                        if ($value->reportes == 1) {
+                                                            echo    '<input
+                                                                        value="Permitido"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-permitido"
+                                                                        readonly
+                                                                        
+                                                                    >';
+                                                        }else if($value->reportes == 0){
+                                                            echo    '<input
+                                                                        value="Denegado"
+                                                                        class="form-control rol-permisos"
+                                                                        id="rol-denegado"
+                                                                        readonly
+                                                                    >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '</tr>';
                                         }
                                     }
                                 ?>
