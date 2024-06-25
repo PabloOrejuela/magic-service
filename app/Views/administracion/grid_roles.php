@@ -39,20 +39,17 @@
                                                         data-campo="admin" 
                                                     >';
                                                         if ($value->admin == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->admin == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '<td>
@@ -63,20 +60,17 @@
                                                         data-campo="ventas" 
                                                     >';
                                                         if ($value->ventas == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->ventas == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '<td>
@@ -87,20 +81,17 @@
                                                         data-campo="clientes" 
                                                     >';
                                                         if ($value->clientes == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->clientes == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '<td>
@@ -111,20 +102,17 @@
                                                         data-campo="proveedores" 
                                                     >';
                                                         if ($value->proveedores == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->proveedores == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '<td>
@@ -135,20 +123,17 @@
                                                         data-campo="gastos" 
                                                     >';
                                                         if ($value->gastos == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->gastos == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '<td>
@@ -159,20 +144,17 @@
                                                         data-campo="entregas" 
                                                     >';
                                                         if ($value->entregas == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->entregas == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '<td>
@@ -183,20 +165,17 @@
                                                         data-campo="inventarios" 
                                                     >';
                                                         if ($value->inventarios == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->inventarios == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '<td>
@@ -207,20 +186,17 @@
                                                         data-campo="reportes" 
                                                     >';
                                                         if ($value->reportes == 1) {
-                                                            echo    '<input
-                                                                        value="Permitido"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-permitido"
-                                                                        readonly
-                                                                        
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
                                                         }else if($value->reportes == 0){
-                                                            echo    '<input
-                                                                        value="Denegado"
-                                                                        class="form-control rol-permisos"
-                                                                        id="rol-denegado"
-                                                                        readonly
-                                                                    >';
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
                                                         }
                                             echo '</a></td>';
                                             echo '</tr>';
