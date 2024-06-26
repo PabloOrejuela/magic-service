@@ -38,6 +38,7 @@ function changePermisoInventarios(id){
 }
 
 function cambiaPermiso(input, id){
+    //console.log(input.dataset.campo);
     $.ajax({
         type:"get",
         dataType:"html",
@@ -59,9 +60,9 @@ function cambiaPermiso(input, id){
             alertProcesando("Hubo un error, no se pudo actualizar el permiso!", "error")
         }
     });
-    // setTimeout(function(){
-    //     location.replace('roles');
-    // }, 2800);
+    setTimeout(function(){
+        location.replace('roles');
+    }, 2800);
 }
 
 const alertProcesando = (msg, icono) => {

@@ -1,7 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Se cambió el grid de roles ahora tiene iconos de focos para indicar el estado del permiso</li>
-    <li>Se redujo la fuente de los grid de roles y usuarios</li>
+    <li>Funcionando el form de roles y permisos con los cambios de imagen  y con el cambio de texto a icono de foco</li>
 </ul>
 
 </br>

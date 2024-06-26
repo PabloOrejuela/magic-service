@@ -19,10 +19,10 @@
                                 <th>Ventas</th>
                                 <th>Clientes</th>
                                 <th>Proveedores</th>
+                                <th>Reportes</th>
                                 <th>Gastos</th>
                                 <th>Entregas</th>
                                 <th>Inventarios</th>
-                                <th>Reportes</th>
                             </thead>
                             <tbody>
                                 <?php
@@ -55,7 +55,7 @@
                                             echo '<td>
                                                     <a 
                                                         href="#" 
-                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        onclick="javascript:changePermisoVentas('.$value->id.')" 
                                                         id="input-ventas_'.$value->id.'" 
                                                         data-campo="ventas" 
                                                     >';
@@ -76,7 +76,7 @@
                                             echo '<td>
                                                     <a 
                                                         href="#" 
-                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        onclick="javascript:changePermisoClientes('.$value->id.')" 
                                                         id="input-clientes_'.$value->id.'" 
                                                         data-campo="clientes" 
                                                     >';
@@ -97,7 +97,7 @@
                                             echo '<td>
                                                     <a 
                                                         href="#" 
-                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        onclick="javascript:changePermisoProveedores('.$value->id.')" 
                                                         id="input-proveedores_'.$value->id.'" 
                                                         data-campo="proveedores" 
                                                     >';
@@ -118,7 +118,28 @@
                                             echo '<td>
                                                     <a 
                                                         href="#" 
-                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        onclick="javascript:changePermisoReportes('.$value->id.')" 
+                                                        id="input-reportes_'.$value->id.'" 
+                                                        data-campo="reportes" 
+                                                    >';
+                                                        if ($value->reportes == 1) {
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/on.png"
+                                                                    id="rol-permitido" 
+                                                                    value="Permitido" 
+                                                                >';
+                                                        }else if($value->reportes == 0){
+                                                            echo '<img 
+                                                                    src="'.site_url().'public/images/off.png" 
+                                                                    id="rol-denegado"
+                                                                    value="Denegado"
+                                                                >';
+                                                        }
+                                            echo '</a></td>';
+                                            echo '<td>
+                                                    <a 
+                                                        href="#" 
+                                                        onclick="javascript:changePermisoGastos('.$value->id.')" 
                                                         id="input-gastos_'.$value->id.'" 
                                                         data-campo="gastos" 
                                                     >';
@@ -139,7 +160,7 @@
                                             echo '<td>
                                                     <a 
                                                         href="#" 
-                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        onclick="javascript:changePermisoEntregas('.$value->id.')" 
                                                         id="input-entregas_'.$value->id.'" 
                                                         data-campo="entregas" 
                                                     >';
@@ -160,7 +181,7 @@
                                             echo '<td>
                                                     <a 
                                                         href="#" 
-                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
+                                                        onclick="javascript:changePermisoInventarios('.$value->id.')" 
                                                         id="input-inventarios_'.$value->id.'" 
                                                         data-campo="inventarios" 
                                                     >';
@@ -171,27 +192,6 @@
                                                                     value="Permitido" 
                                                                 >';
                                                         }else if($value->inventarios == 0){
-                                                            echo '<img 
-                                                                    src="'.site_url().'public/images/off.png" 
-                                                                    id="rol-denegado"
-                                                                    value="Denegado"
-                                                                >';
-                                                        }
-                                            echo '</a></td>';
-                                            echo '<td>
-                                                    <a 
-                                                        href="#" 
-                                                        onclick="javascript:changePermisoAdmin('.$value->id.')" 
-                                                        id="input-reportes_'.$value->id.'" 
-                                                        data-campo="reportes" 
-                                                    >';
-                                                        if ($value->reportes == 1) {
-                                                            echo '<img 
-                                                                    src="'.site_url().'public/images/on.png"
-                                                                    id="rol-permitido" 
-                                                                    value="Permitido" 
-                                                                >';
-                                                        }else if($value->reportes == 0){
                                                             echo '<img 
                                                                     src="'.site_url().'public/images/off.png" 
                                                                     id="rol-denegado"

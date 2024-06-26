@@ -274,6 +274,7 @@
                                                     onchange="sumarTotal()" 
                                                     name="valor_mensajero"
                                                     value="<?= old('valor_mensajero'); ?>"
+                                                    readonly
                                                 >
                                             </div>
                                         </div>
