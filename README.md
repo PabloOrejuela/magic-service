@@ -1,6 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Funcionando el form de roles y permisos con los cambios de imagen  y con el cambio de texto a icono de foco</li>
+    <li>Implementada la cfuncionalidad de cierre de sessión de usuario desde el grid de usuarios</li>
 </ul>
 
 </br>

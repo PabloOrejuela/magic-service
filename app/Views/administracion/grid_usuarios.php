@@ -22,6 +22,7 @@
                                 <th>Documento</th>
                                 <th>Rol</th>
                                 <th>Logueado</th>
+                                <th>Sesión</th>
                                 <th>Estado</th>
                                 <th>Desactivar</th>
                             </thead>
@@ -39,8 +40,25 @@
 
                                                 if ($value->logged == 1) {
                                                     echo '<td id="td-online" >ONLINE</td>';
+                                                    echo '
+                                                        <td>
+                                                            <div class="contenedor button">
+                                                                <a 
+                                                                    type="button" 
+                                                                    id="btn-register" 
+                                                                    href="#" 
+                                                                    class="edit"
+                                                                    onclick="javascript:sessionClose('.$value->id.')"
+                                                                >
+                                                                    <img src="'.site_url().'public/images/salir-sesion.png" width="30" >
+                                                                </a>
+                                                            </div>
+                                                        </td>';
                                                 }else if($value->logged == 0){
                                                     echo '<td id="td-offline" >OFFLINE</td>';
+                                                    echo '
+                                                        <td>
+                                                        </td>';
                                                 }
 
                                                 if ($value->estado == 1) {
@@ -48,9 +66,10 @@
                                                 }else if($value->estado == 0){
                                                     echo '<td>Inactivo</td>';
                                                 }
+                                            
                                             echo '
                                                 <td>
-                                                    <div class="contenedor">
+                                                    <div class="contenedor button">
                                                         <a type="button" id="btn-register" href="'.site_url().'user-delete/'.$value->id.'/'.$value->estado.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
@@ -69,6 +88,8 @@
         </div>
     </div>
 </section>
+<script src="<?= site_url(); ?>public/js/grid-usuarios.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(document).ready(function () {
     $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";

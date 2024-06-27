@@ -43,6 +43,13 @@ class Administracion extends BaseController {
         return view('includes/template_login', $data);
     }
 
+    public function sign_off() {
+
+        $res = $this->usuarioModel->_signOff($this->request->getPostGet('id'));
+        
+        echo json_encode($res);
+    }
+
     public function productos() {
 
         $data = $this->acl();

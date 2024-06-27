@@ -133,6 +133,22 @@ class UsuarioModel extends Model {
         $builder->update();
     }
 
+    function _signOff ($id){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $this->db->transStart();
+        $builder->set('logged', 0);
+        $builder->set('ip', NULL);
+        $builder->where('id', $id);
+        $builder->update();
+        $this->db->transComplete();
+        if ($this->db->transStatus() === false) {
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
     public function _insert($data) {
 
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
