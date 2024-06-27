@@ -116,7 +116,7 @@ class Home extends BaseController {
                 }else{
                     $this->session->setFlashdata('mensaje', $data);
                     //$this->logout();
-                    return redirect()->back()->with('mensaje', 'Hubo un error, usuario o contraseña incorrectos');
+                    return redirect()->back()->with('mensaje', 'Hubo un problema, no puede ingresar al sistema, puede deberse a: Usuario / contraseña incorrectos o su usuario ha sido desactivado, contacte con el administrador');
                 }
             }
         }

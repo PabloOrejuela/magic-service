@@ -57,7 +57,7 @@ class UsuarioModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select(
             'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,clientes,proveedores,reportes,gastos,inventarios'
-        )->where('user', $usuario['user'])->where('password', md5($usuario['password']));
+        )->where('user', $usuario['user'])->where('password', md5($usuario['password']))->where('estado', 1);
         $builder->join('roles', 'roles.id=usuarios.idroles');
         $query = $builder->get();
         if ($query->getResult() != null) {
