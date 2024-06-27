@@ -1,6 +1,7 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Implementada la cfuncionalidad de cierre de sessión de usuario desde el grid de usuarios</li>
+    <li>Implementada la funcionalidad de desactivar usuarios en grid usuarios</li>
+    <li>Implementada la funcionalidad de cierre de sessión de usuario desde el grid de usuarios</li>
 </ul>
 
 </br>

@@ -70,7 +70,13 @@
                                             echo '
                                                 <td>
                                                     <div class="contenedor button">
-                                                        <a type="button" id="btn-register" href="'.site_url().'user-delete/'.$value->id.'/'.$value->estado.'" class="edit">
+                                                        <a 
+                                                            type="button" 
+                                                            id="btn-register" 
+                                                            href="#" 
+                                                            class="edit"
+                                                            onclick="javascript:userDelete('.$value->id.')"
+                                                        >
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>

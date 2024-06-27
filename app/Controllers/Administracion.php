@@ -43,6 +43,19 @@ class Administracion extends BaseController {
         return view('includes/template_login', $data);
     }
 
+    public function user_delete() {
+
+        $id = $this->request->getPostGet('id');
+         $data = [
+            'logged' => 0,
+            'ip' => null,
+            'estado' => 0
+         ];
+        $res = $this->usuarioModel->update($id, $data);
+        
+        echo json_encode($res);
+    }
+
     public function sign_off() {
 
         $res = $this->usuarioModel->_signOff($this->request->getPostGet('id'));

@@ -89,6 +89,7 @@ $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_dele
 $routes->get('usuarios', 'Administracion::usuarios');
 $routes->post('user-insert', 'Administracion::user_insert');
 $routes->post('user-update', 'Administracion::user_update');
+$routes->get('user-delete', 'Administracion::user_delete');
 $routes->get('usuario-edit/(:num)', 'Administracion::form_usuario_edit/$1');
 $routes->get('usuario-create', 'Administracion::form_usuario_create');
 $routes->get('roles', 'Administracion::roles');
