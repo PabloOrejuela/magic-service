@@ -10,6 +10,6 @@
 
 <h5>Formulario nuevo pedido</h5>
 <ul>
-    <li></li>
+    <li>Se corrigió el valor de sector de entrega que cargaba $4 extras a los valores de todos los sectores</li>
 
 </ul>

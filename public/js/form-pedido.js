@@ -135,7 +135,7 @@ $(document).ready(function(){
 
                   if (valor != 0) {
                       alertCambioValor()
-                      document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4 
+                      document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega)
                   }else{
                       alertCambioValor()
                       document.getElementById("transporte").value = 0
