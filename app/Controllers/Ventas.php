@@ -97,8 +97,8 @@ class Ventas extends BaseController {
         echo view('precio_producto', $data);
     }
 
-    function get_valor_sector($sector){
-        //$producto = $this->request->getPostGet('producto');
+    function get_valor_sector(){
+        $sector = $this->request->getPostGet('sector');
         $data['sector'] = $this->sectoresEntregaModel->find($sector);
         
         echo json_encode($data);
@@ -207,8 +207,9 @@ class Ventas extends BaseController {
         return true;
     }
 
-    function get_costo_horario($horario){
-        //$producto = $this->request->getPostGet('producto');
+    function get_costo_horario(){
+
+        $horario = $this->request->getPostGet('horario');
         $costo_horario = $this->horariosEntregaModel->find($horario);
         
         echo json_encode($costo_horario);

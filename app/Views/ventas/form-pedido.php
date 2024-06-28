@@ -40,8 +40,8 @@
                                                     <?php
                                                         if (isset($horariosEntrega)) {
                                                             foreach ($horariosEntrega as $key => $hora) {
-                                                                if ($hora->id < 5 || $hora->id > 24) {
-                                                                    echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).' style="color:red;">'.$hora->hora.' Horario extra</option>';
+                                                                if ($hora->id == 2) {
+                                                                    echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).' style="color:red;">'.$hora->hora.'</option>';
                                                                 }else{
                                                                     echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).'>'.$hora->hora.'</option>';
                                                                 }
@@ -501,41 +501,6 @@ function searchPhones(valor, phone) {
         });
     });
 
-    $(document).ready(function(){
-        $("#sectores").on('change',function(){
-            if($("#sectores").val() !=""){
-                valor = $("#sectores").val();
-                $.ajax({
-                    type:"GET",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/get_valor_sector/"+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(resultado){
-                        let dato = JSON.parse(resultado);
-
-                        if (valor != 0) {
-                            alertCambioValor()
-                            document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4 
-                        }else{
-                            alertCambioValor()
-                            document.getElementById("transporte").value = 0
-                        }
-                        
-                        sumarTotal()
-
-                    },
-                    error: function(data){
-                        console.log("No existe el costo de entrega");
-                    }
-                });
-            }else{
-                console.log("No existe el costo de entrega");
-            }
-        });
-    });
-
     function observacion(idproducto, cod_pedido){
         let observacion = document.getElementById("observa_"+idproducto).value
         //console.log(observacion);
@@ -604,43 +569,6 @@ function searchPhones(valor, phone) {
             
         }
     }
-
-    $(document).ready(function(){
-        $("#horario_entrega").on('change',function(){
-            if($("#horario_entrega").val() !=""){
-                valor = $("#horario_entrega").val();
-                //console.log(valor);
-                $.ajax({
-                    type:"GET",
-                    dataType:"html",
-                    url: "<?php echo site_url(); ?>ventas/get_costo_horario/"+valor,
-                    data:"horario="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(res){
-                        
-                        let data = JSON.parse(res);
-
-                        if (valor != 0) {
-                            alertCambioValor()
-                            document.getElementById("horario_extra").value = parseFloat(data.costo)
-                        }else{
-                            alertCambioValor()
-                            document.getElementById("horario_extra").value = 0
-                        }
-                        
-                        sumarTotal()
-                    },
-                    error: function(data){
-                        console.log("No existe el valor de ese horario");
-                    }
-                });
-            }else{
-                console.log("No existe el valor de ese horario");
-            }
-        });
-    });
 
     $(document).ready(function(){
         $("#valor_mensajero_edit").on('change',function(){

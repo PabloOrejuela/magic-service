@@ -77,6 +77,84 @@ function sumarTotal() {
   impTotal.value = total.toFixed(2);
 }
 
+$(document).ready(function(){
+  $("#horario_entrega").on('change',function(){
+      if($("#horario_entrega").val() !=""){
+          valor = $("#horario_entrega").val();
+          //console.log(valor);
+          $.ajax({
+              method: 'get',
+              dataType:"html",
+              url: "get_costo_horario",
+              data: {
+                horario: valor,
+              },
+              beforeSend: function (f) {
+                  //$('#cliente').html('Cargando ...');
+              },
+              success: function(res){
+                  
+                  let data = JSON.parse(res);
+
+                  if (valor != 0) {
+                      alertCambioValor()
+                      document.getElementById("horario_extra").value = parseFloat(data.costo)
+                  }else{
+                      alertCambioValor()
+                      document.getElementById("horario_extra").value = 0
+                  }
+                  
+                  sumarTotal()
+              },
+              error: function(data){
+                  console.log("No existe el valor de ese horario");
+              }
+          });
+      }else{
+          console.log("No existe el valor de ese horario");
+      }
+  });
+});
+
+$(document).ready(function(){
+  $("#sectores").on('change',function(){
+      if($("#sectores").val() !=""){
+          valor = $("#sectores").val();
+          $.ajax({
+              method: 'get',
+              dataType:"html",
+              url: "get_valor_sector",
+              data: {
+                sector: valor
+              },
+              beforeSend: function (f) {
+                  //$('#cliente').html('Cargando ...');
+              },
+              success: function(resultado){
+                  let dato = JSON.parse(resultado);
+
+                  if (valor != 0) {
+                      alertCambioValor()
+                      document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega) + 4 
+                  }else{
+                      alertCambioValor()
+                      document.getElementById("transporte").value = 0
+                  }
+                  
+                  sumarTotal()
+
+              },
+              error: function(data){
+                  console.log("No existe el costo de entrega");
+              }
+          });
+      }else{
+          console.log("No existe el costo de entrega");
+      }
+  });
+});
+
+
 const confirmSaveAlert = () => {
   Swal.fire({
     position: "center",

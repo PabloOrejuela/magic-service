@@ -23,6 +23,8 @@ $routes->post('ventas/clientes_select_telefono_2', 'Ventas::clientes_select_tele
 $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
 $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
 $routes->get('ventas/get_costo_horario/(:num)', 'Ventas::get_costo_horario/$1');
+$routes->get('get_costo_horario', 'Ventas::get_costo_horario');
+$routes->get('get_valor_sector', 'Ventas::get_valor_sector');
 $routes->post('pedido-insert', 'Ventas::pedido_insert');
 $routes->post('pedido-update', 'Ventas::pedido_update');
 $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');

@@ -1,8 +1,7 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Implementada la funcionalidad de desactivar usuarios en grid usuarios</li>
-    <li>Implementada la funcionalidad de cierre de sessión de usuario desde el grid de usuarios</li>
-    <li>Mejorado el Login, ahora verifica el usuario, la contraseña y el estado del usuario</li>
+    <li>Se hizo el cambio de horarios de entrega, ahora solo hay horario normal y horario extra</li>
+    <li>Se limpió un poco el archivo de formulario de pedido, se pasó al archvo js las funciones de horario de entrega y sectores de entrega</li>
 </ul>
 
 </br>
