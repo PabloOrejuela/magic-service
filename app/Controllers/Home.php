@@ -28,11 +28,11 @@ class Home extends BaseController {
             $this->productoModel->_desactivaProductosTemporales();
 
             /*
-             * Verif
-             * 
+             * Verifico los usuarios que tienen sesiones abiertas y cierro todas las que estén abiertas y no se hayan creado ese día
+             * desde las 00:00:01
              */
-            $usuarios = $this->usuarioModel->findAll();
-            $this->usuarioModel->_cierraSesiones($usuarios);
+            $usuariosLogueados = $this->usuarioModel->_getLogueados();
+            $this->usuarioModel->_cierraSesiones($usuariosLogueados);
 
             return redirect()->to('pedidos');
         }else{
@@ -48,7 +48,6 @@ class Home extends BaseController {
         );
         
         $this->validation->setRuleGroup('login');
-        
         
         if (!$this->validation->withRequest($this->request)->run()) {
             //Depuración
@@ -108,7 +107,6 @@ class Home extends BaseController {
                     $this->usuarioModel->update($iduser, $user);
                     $this->session->version = $this->configuracionModel->_getVersion();
 
-                    
                     $this->session->set($sessiondata);
             
                     return redirect()->to('inicio');

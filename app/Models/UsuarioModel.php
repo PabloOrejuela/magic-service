@@ -86,6 +86,20 @@ class UsuarioModel extends Model {
         return $result;
     }
 
+    function _getLogueados(){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*')->where('logged', 1);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getUsuariosRol($idrol){
         $result = NULL;
         $builder = $this->db->table($this->table);
@@ -199,28 +213,19 @@ class UsuarioModel extends Model {
     }
 
     public function _cierraSesiones($usuarios) {
-
+        $now = date('Y-m-d');
+        $fechaCierre = $now.' 00:00:01';
         //echo '<pre>'.var_export($usuarios, true).'</pre>';exit;
-        // $builder = $this->db->table($this->table);
-        // $this->db->transStart();
-        // $builder->set('nombre', $data['nombre']);
-        // $builder->set('user', $data['user']);
-        // if ($data['password'] != null && $data['password'] != '') {
-        //     $builder->set('password', md5($data['password']));
-        // }
-        
-        // $builder->set('telefono', $data['telefono']);
-        // $builder->set('email', $data['email']);
-        // $builder->set('cedula', $data['cedula']);
-        // $builder->set('direccion', $data['direccion']);
-        // $builder->set('idroles', $data['idroles']);
-        // $builder->where('id', $data['id']);
-        // $builder->update();
-        // //echo $this->db->getLastQuery();
-        // $this->db->transComplete();
-        // if ($this->db->transStatus() === false) {
-        //     echo log_message();
-        // }
-        return  1;
+        $builder = $this->db->table($this->table);
+
+        foreach ($usuarios as $key => $value) {
+            if ($value->updated_at <= $fechaCierre) {
+                $builder->set('logged', 0);
+                $builder->set('ip', NULL);
+                $builder->where('id', $value->id);
+                $builder->where('id', $value->id);
+                $builder->update();
+            }
+        }
     }
 }

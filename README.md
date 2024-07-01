@@ -1,7 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Se hizo el cambio de horarios de entrega, ahora solo hay horario normal y horario extra</li>
-    <li>Se limpió un poco el archivo de formulario de pedido, se pasó al archvo js las funciones de horario de entrega y sectores de entrega</li>
+    <li>Lista la funcionalidad que cierra las sesiones que están abiertas del día anterior</li>
 </ul>
 
 </br>
@@ -10,6 +9,6 @@
 
 <h5>Formulario nuevo pedido</h5>
 <ul>
-    <li>Se corrigió el valor de sector de entrega que cargaba $4 extras a los valores de todos los sectores</li>
+    <li></li>
 
 </ul>
