@@ -58,7 +58,7 @@
                                         </div>
                                         <p id="error-message"><?= session('errors.idcliente');?> </p>
                                         <div class="form-group">
-                                            <label for="nombre">Nombre cliente *:</label>
+                                            <label for="nombre">Nombre y apellido del cliente *:</label>
                                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
                                         </div>
                                         <p id="error-message"><?= session('errors.nombre');?> </p>

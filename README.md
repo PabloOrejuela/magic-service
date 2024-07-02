@@ -1,7 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Se implementó una validación para que en el form de Edit cliente el email no pueda ir en mayúsculas</li>
-    <li>Se implementó una validación para que en el form de Nuevo cliente el email no pueda ir en mayúsculas</li>
+    <li>Se cambió el nombre del campo Nombre del cliente a "Nombre y apellido del cliente" en el formulario de nuevo Pedido</li>
 </ul>
 
 </br>
