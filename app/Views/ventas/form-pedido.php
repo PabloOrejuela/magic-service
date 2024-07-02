@@ -431,550 +431,519 @@ function searchPhones(valor, phone) {
     }
 }
 
-    $(document).ready(function(){
-        $("#telefono_2").on('change',function(){
-            if($("#telefono_2").val() !=""){
+$(document).ready(function(){
+    $("#telefono_2").on('change',function(){
+        if($("#telefono_2").val() !=""){
 
-                valor = $("#telefono_2").val();
-                //console.log(valor);
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "ventas/clientes_select_telefono_2",
-                    data:"telefono="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        let cliente = JSON.parse(data);
-                        
-                        if (cliente) {
-                        
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('telefono').value = cliente.telefono
-                        document.getElementById('telefono_2').value = cliente.telefono_2
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                        document.getElementById('idcliente').value = cliente.id
-                        } else {
-                        //console.log('No hay, debo buscar en el 1 también');
-                        searchPhones(valor, 1)
-                        }
-                        
-                        
-                    },
-                    error: function(data){
-                        console.log("No hay");
-                    }
-                });
-            }
-        });
-    });
-
-    $(document).ready(function(){
-        $("#documento").on('change',function(){
-            if($("#documento").val() != ""){
-                valor = document.querySelector("#documento").value
-                //console.log(valor);
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "ventas/clientes_select",
-                    data:"documento="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        let cliente = JSON.parse(data);
-                        
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('telefono').value = cliente.telefono
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                        document.getElementById('idcliente').value = cliente.id
-                    },
-                    error: function(data){
-                        console.log("No existe el cliente");
-                    }
-                });
-            }
-        });
-    });
-
-    function observacion(idproducto, cod_pedido){
-        let observacion = document.getElementById("observa_"+idproducto).value
-        //console.log(observacion);
-        if (observacion != null && observacion != '') {
-
+            valor = $("#telefono_2").val();
+            //console.log(valor);
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
-                success: function(resultado){
-                    if (resultado == 0) {
-
-                    }else{
-                        //Exito
-                        let detalle = JSON.parse(resultado);
-
-                        if (detalle.error == '') {
-                            $("#tablaProductos tbody").empty();
-                            $("#tablaProductos tbody").append(detalle.datos);
-                            $("#total").val(detalle.total);
-                            $("#valor_neto").val(detalle.subtotal);
-
-                            limpiaLineaProducto()
-                            calculaValorNeto(cod_pedido);
-                            sumarTotal()
-                        }
-                    }
-                }
-            });
-            
-        }
-    }
-
-    function actualizaPrecio(idproducto, cod_pedido){
-        let precio = document.getElementById("precio_"+idproducto).value
-        let cant = document.getElementById("cant_"+idproducto).innerHTML
-        
-        if (precio != null && precio != '') {
-
-            $.ajax({
-                url: '<?php echo base_url(); ?>detalle_pedido_update_precio_temp',
-                data: {
-                    idproducto: idproducto,
-                    cod_pedido: cod_pedido,
-                    precio: precio,
-                    cant: cant
+                type:"POST",
+                dataType:"html",
+                url: "ventas/clientes_select_telefono_2",
+                data:"telefono="+valor,
+                beforeSend: function (f) {
+                    //$('#cliente').html('Cargando ...');
                 },
-                success: function(resultado){
-                    if (resultado == 0) {
-
-                    }else{
-                        //Exito
-                        let detalle = JSON.parse(resultado);
-                        //console.log(detalle);
-                        if (detalle.error == '') {
-                            $("#tablaProductos tbody").empty();
-                            $("#tablaProductos tbody").append(detalle.datos);
-                            $("#total").val(detalle.total);
-                            $("#valor_neto").val(detalle.subtotal);
-
-                            limpiaLineaProducto()
-                            calculaValorNeto(cod_pedido);
-                            sumarTotal()
-                        }
+                success: function(data){
+                    let cliente = JSON.parse(data);
+                    
+                    if (cliente) {
+                    
+                    document.getElementById('nombre').value = cliente.nombre
+                    document.getElementById('telefono').value = cliente.telefono
+                    document.getElementById('telefono_2').value = cliente.telefono_2
+                    document.getElementById('documento').value = cliente.documento
+                    document.getElementById('email').value = cliente.email
+                    document.getElementById('idcliente').value = cliente.id
+                    } else {
+                    //console.log('No hay, debo buscar en el 1 también');
+                    searchPhones(valor, 1)
                     }
-                }
-            });
-            
-        }
-    }
-
-    $(document).ready(function(){
-        $("#valor_mensajero_edit").on('change',function(){
-            if($("#valor_mensajero_edit").val() !=""){
-                alertCambioValorMensajero()
-            }
-        });
-    });
-
-    $(document).ready(function(){
-        $("#telefono").on("change", function() {
-            let string = $("#telefono").val();
-           
-            $("#telefono").val(string.replace(/[^\w]/gi, ''));
-        });
-    });
-
-    $(document).ready(function(){
-        $("#telefono_2").on("change", function() {
-            let string = $("#telefono_2").val();
-           
-            $("#telefono_2").val(string.replace(/[^\w]/gi, ''));
-        });
-    });
-
-    function agregarProducto(idproducto, cantidad, cod_pedido){
-        let transporte = 0
-        let cargoDomingo = 0
-        let horarioExtra = 0
-
-        let total = document.getElementById("total")
-
-        transporte = document.getElementById("transporte").value
-        cargoDomingo = document.getElementById("cargo_domingo").value
-        horarioExtra = document.getElementById("horario_extra").value
-        
-
-        if (isNaN(parseFloat(transporte)) == true) {
-            transporte = 0;
-        }
-
-        if (isNaN(parseFloat(cargoDomingo)) == true) {
-            cargoDomingo = 0;
-        }
-
-        if (isNaN(parseFloat(horarioExtra)) == true) {
-            horarioExtra = 0;
-        }
-
-        let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
-
-        
-        if (idproducto != null && idproducto != 0 && idproducto > 0) {
-            
-            $.ajax({
-                url: '<?php echo base_url(); ?>detalle_pedido_insert_temp',
-                data: {
-                    idproducto: idproducto,
-                    cantidad: cantidad,
-                    cod_pedido: cod_pedido,
+                    
+                    
                 },
-                success: function(resultado){
-                    if (resultado == 0) {
-                    }else{
-                        alertAgregaProducto()
-                        //Exito
-
-                        let detalle = JSON.parse(resultado);
-                        //console.log(parseFloat(detalle.total) + parseFloat(extras));
-                        if (detalle.error == '') {
-                            $("#tablaProductos tbody").empty();
-                            $("#tablaProductos tbody").append(detalle.datos);
-                            //$("#total").val(detalle.total);
-                            total.value = (parseFloat(detalle.total) + extras).toFixed(2)
-                            document.getElementById('valor_neto').value = detalle.total
-                            limpiaLineaProducto()
-                        }
-                    }
+                error: function(data){
+                    console.log("No hay");
                 }
             });
-            
         }
-        calculaValorNeto(cod_pedido);
-        calcularMensajero();
-    }
+    });
+});
 
-    function eliminaProducto(idproducto, cod_pedido){
-        let transporte = 0
-        let cargoDomingo = 0
-        let horarioExtra = 0
-
-        let total = document.getElementById("total")
-
-        transporte = document.getElementById("transporte").value
-        cargoDomingo = document.getElementById("cargo_domingo").value
-        horarioExtra = document.getElementById("horario_extra").value
-
-        if (isNaN(parseFloat(transporte)) == true) {
-            transporte = 0;
-        }
-
-        if (isNaN(parseFloat(cargoDomingo)) == true) {
-            cargoDomingo = 0;
-        }
-
-        if (isNaN(parseFloat(horarioExtra)) == true) {
-            horarioExtra = 0;
-        }
-
-        let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
-
-        if (idproducto != null && idproducto != 0 && idproducto > 0) {
-
+$(document).ready(function(){
+    $("#documento").on('change',function(){
+        if($("#documento").val() != ""){
+            valor = document.querySelector("#documento").value
+            //console.log(valor);
             $.ajax({
-                url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
-                success: function(resultado){
-                    if (resultado == 0) {
-
-                    }else{
-                        //Exito
-    
-                        let detalle = JSON.parse(resultado);
-
-                        if (detalle.error == '') {
-                            $("#tablaProductos tbody").empty();
-                            $("#tablaProductos tbody").append(detalle.datos);
-                            //$("#total").val(detalle.total);
-                            //$("#valor_neto").val(detalle.subtotal);
-                            total.value = (parseFloat(detalle.total) + extras).toFixed(2)
-                            document.getElementById('valor_neto').value = detalle.subtotal
-                            alertEliminaProducto()
-                            limpiaLineaProducto()
-                        }else{
-                            console.log("Error");
-                        }
-                        
-                    }
+                type:"POST",
+                dataType:"html",
+                url: "ventas/clientes_select",
+                data:"documento="+valor,
+                beforeSend: function (f) {
+                    //$('#cliente').html('Cargando ...');
+                },
+                success: function(data){
+                    let cliente = JSON.parse(data);
+                    
+                    document.getElementById('nombre').value = cliente.nombre
+                    document.getElementById('telefono').value = cliente.telefono
+                    document.getElementById('documento').value = cliente.documento
+                    document.getElementById('email').value = cliente.email
+                    document.getElementById('idcliente').value = cliente.id
+                },
+                error: function(data){
+                    console.log("No existe el cliente");
                 }
             });
-            
         }
-        calculaValorNeto(cod_pedido);
-        calcularMensajero();
-    }
+    });
+});
 
-    
-    const alertAgregaProducto = () => {
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "El producto se ha agregado",
-            showConfirmButton: false,
-            timer: 1200
-        });
-    }
+function observacion(idproducto, cod_pedido){
+    let observacion = document.getElementById("observa_"+idproducto).value
+    //console.log(observacion);
+    if (observacion != null && observacion != '') {
 
-    const alertEliminaProducto = () => {
-        Swal.fire({
-            position: "center",
-            icon: "warning",
-            title: "El producto se ha eliminado",
-            showConfirmButton: false,
-            timer: 1200
-        });
-    }
-
-    const alertCambioValor = () => {
-        const toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 2500,
-            //timerProgressBar: true,
-            //height: '200rem',
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            },
-            customClass: {
-                // container: '...',
-                popup: 'popup-class',
-
-                }
-        });
-        toast.fire({
-            position: "top-end",
-            icon: "warning",
-            title: "Se ha realizado un cambio que puede haber alterado el valor final del pedido"
-        });
-    }
-
-    const alertCambioValorMensajero = () => {
-        const toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 1500,
-            timerProgressBar: true,
-            //height: '200rem',
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            },
-            customClass: {
-                // container: '...',
-                popup: 'popup-class',
-
-                }
-        });
-
-        toast.fire({
-            icon: "success",
-            title: "Se ha cambiado el valor del mensajero"
-        });
-    }
-
-
-    function limpiarValores(valor) {
-        var valor = 0
-        document.getElementById("idproducto").selectedIndex = 2;
-        document.getElementById('descuento').value = valor;
-        document.getElementById('transporte').value = valor.toFixed(2);
-        document.getElementById('total').value = valor.toFixed(2);
-    }
-
-    function limpiaLineaProducto() {
-
-        document.getElementById("idproducto").value = '';
-        document.getElementById('idp').value = 0;
-        document.getElementById('cant').value = 1;
-    }
-
-    function descontar(valor) {
-        var total = 0;
-        var descuento = 0;
-        valor = valor.replace(/,/g, '.')
-        valor = parseFloat(valor); // Convertir el valor a un float (número).
-
-        total = document.getElementById('total').value;
-
-        // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
-        total = (total == null || total == undefined || total == "") ? 0 : total;
-
-        /* Este es el cálculo. */
-        descuento = (parseFloat(total) * parseFloat(valor))/100
-        total = (parseFloat(total) - parseFloat(descuento));
-
-        document.getElementById('total').value = total.toFixed(2);
-        sumarTotal()
-    }
-
-    function calcularMensajero(){
-        let sectores = document.getElementById("sectores").value
-        let transporte = document.getElementById('transporte').value
-        let cargoDomingo = document.getElementById('cargo_domingo').value
-        let horarioExtra = document.getElementById('horario_extra').value
-        let valorMensajero = document.getElementById('valor_mensajero').value
-        let valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
-        let cantProd = document.getElementById("cant_arreglos").value;
-
-        
-        if (isNaN(parseFloat(transporte)) == true) {
-            transporte = 0
-        }
-
-        if (isNaN(parseFloat(cargoDomingo)) == true) {
-            cargoDomingo = 0
-        }
-
-        if (isNaN(parseFloat(horarioExtra)) == true) {
-            horarioExtra = 0
-        }
-        let extraMensajero = 0
-        let cantProdExtra = (cantProd - 1)
-
-        if (cantProdExtra >= 1) {
-            //console.log("cant: " + cantProdExtra);
-            if (sectores == 1) {
-                
-                //Se agrega 50% de Transporte mas 50% mas de carga horario mas 50% mas de domingo por cada arreglo extra
-                for (let i = 1; i <= cantProdExtra; i++) {
-                    extraMensajero += (parseFloat(transporte)*0.5) + (parseFloat(horarioExtra)*0.5) + (parseFloat(cargoDomingo)*0.5)
-                }
-
-                valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
-
-            }else if(sectores > 1){
-                
-                //Se agrega 35% de Transporte mas 35% mas de carga horario mas 35% mas de domingo por arreglo
-                for (let i = 1; i <= cantProdExtra; i++) {
-                    extraMensajero += (parseFloat(transporte)*0.35) + (parseFloat(horarioExtra)*0.35) + (parseFloat(cargoDomingo)*0.35)
-                    console.log("Trans: " + (parseFloat(transporte)*0.35) );
-                    console.log("Horario: " + (parseFloat(horarioExtra)*0.35) );
-                    console.log("Domingo: " + (parseFloat(cargoDomingo)*0.35) );
-                    console.log(extraMensajero);
-                }
-
-                valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
-            }else{
-                console.log("No se ha elegio un sector poner una validación");
-            }
-        } else {
-            //Si solo es un arreglo no hay extra
-            valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2)
-
-        }
-
-        // /* Este es el cálculo. */
-        if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
-            total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
-        }else{
-            total = (parseFloat(total) + parseFloat(valorMensajero));
-        }
-
-        document.getElementById('valor_mensajero').value = valorMensajero
-
-    }
-
-
-    function getDetalletemporal(codigoPedido){
-        
-        return $.ajax({
-            type:"GET",
-            dataType:"html",
-            url: "ventas/getDetallePedido_temp/"+codigoPedido,
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(data){
-                // limpiarClienteDocumento();
-                let detalle = JSON.parse(data);
-                let datos = detalle.datos
-                let cant = 0;
-                
-                for (const i of datos) {
-                    cant += parseInt(i.cantidad)
-                }
-
-                document.getElementById("cant_arreglos").value = cant
-            },
-            error: function(data){
-                console.log("No hay detalle");
-            }
-        });
-        
-    }
-
-
-    function getDayOfWeek(fechaEntrega){
-        let ahora = new Date(fechaEntrega);
-        let diaSemana = ahora.getDay();
-        return diaSemana;
-    }
-
-    function calculaValorNeto(cod_pedido) {
-
-        let total = 0;
         $.ajax({
-            type:"GET",
-            dataType:"html",
-            url: "<?php echo site_url(); ?>ventas/getDetallePedido_temp/"+cod_pedido,
+            url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
             success: function(resultado){
-                let detalle = JSON.parse(resultado);
-                //console.log("Detalle: " + detalle.cantidad);
-                document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
-                document.getElementById('cant_arreglos').value = detalle.cantidad;
+                if (resultado == 0) {
+
+                }else{
+                    //Exito
+                    let detalle = JSON.parse(resultado);
+
+                    if (detalle.error == '') {
+                        $("#tablaProductos tbody").empty();
+                        $("#tablaProductos tbody").append(detalle.datos);
+                        $("#total").val(detalle.total);
+                        $("#valor_neto").val(detalle.subtotal);
+
+                        limpiaLineaProducto()
+                        calculaValorNeto(cod_pedido);
+                        sumarTotal()
+                    }
+                }
             }
         });
+        
     }
+}
 
-    aData = {}
+function actualizaPrecio(idproducto, cod_pedido){
+    let precio = document.getElementById("precio_"+idproducto).value
+    let cant = document.getElementById("cant_"+idproducto).innerHTML
     
-    $('#idproducto').autocomplete({
-        source: function(request, response){
-            $.ajax({
-                url: 'getProductosAutocomplete',
-                method: 'GET',
-                dataType: 'json',
-                data: {
-                    producto: request.term
-                },
-                success: function(res) {
+    if (precio != null && precio != '') {
 
-                    aData = $.map(res, function(value, key){
-                        return{
-                            id: value.id,
-                            label: value.producto + ' - ' + value.precio
-                        };
-                    });
-                    let results = $.ui.autocomplete.filter(aData, request.term);
-                    response(results)
+        $.ajax({
+            url: '<?php echo base_url(); ?>detalle_pedido_update_precio_temp',
+            data: {
+                idproducto: idproducto,
+                cod_pedido: cod_pedido,
+                precio: precio,
+                cant: cant
+            },
+            success: function(resultado){
+                if (resultado == 0) {
+
+                }else{
+                    //Exito
+                    let detalle = JSON.parse(resultado);
+                    //console.log(detalle);
+                    if (detalle.error == '') {
+                        $("#tablaProductos tbody").empty();
+                        $("#tablaProductos tbody").append(detalle.datos);
+                        $("#total").val(detalle.total);
+                        $("#valor_neto").val(detalle.subtotal);
+
+                        limpiaLineaProducto()
+                        calculaValorNeto(cod_pedido);
+                        sumarTotal()
+                    }
                 }
-            });
-        },
-        select: function(event, ui){
-            //document.getElementById('idp').value = 10
-            document.getElementById("idp").value = ui.item.id
-            //console.log(ui.item.id);
+            }
+        });
+        
+    }
+}
+
+$(document).ready(function(){
+    $("#valor_mensajero_edit").on('change',function(){
+        if($("#valor_mensajero_edit").val() !=""){
+            alertCambioValorMensajero()
         }
     });
+});
 
-    $(document).ready(function(){
-        $(".decimal").on("input", function() {
-
-            this.value = this.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');
-        });
+$(document).ready(function(){
+    $("#telefono").on("change", function() {
+        let string = $("#telefono").val();
+        
+        $("#telefono").val(string.replace(/[^\w]/gi, ''));
     });
+});
+
+$(document).ready(function(){
+    $("#telefono_2").on("change", function() {
+        let string = $("#telefono_2").val();
+        
+        $("#telefono_2").val(string.replace(/[^\w]/gi, ''));
+    });
+});
+
+function agregarProducto(idproducto, cantidad, cod_pedido){
+    let transporte = 0
+    let cargoDomingo = 0
+    let horarioExtra = 0
+
+    let total = document.getElementById("total")
+
+    transporte = document.getElementById("transporte").value
+    cargoDomingo = document.getElementById("cargo_domingo").value
+    horarioExtra = document.getElementById("horario_extra").value
+    
+
+    if (isNaN(parseFloat(transporte)) == true) {
+        transporte = 0;
+    }
+
+    if (isNaN(parseFloat(cargoDomingo)) == true) {
+        cargoDomingo = 0;
+    }
+
+    if (isNaN(parseFloat(horarioExtra)) == true) {
+        horarioExtra = 0;
+    }
+
+    let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
+
+    
+    if (idproducto != null && idproducto != 0 && idproducto > 0) {
+        
+        $.ajax({
+            url: '<?php echo base_url(); ?>detalle_pedido_insert_temp',
+            data: {
+                idproducto: idproducto,
+                cantidad: cantidad,
+                cod_pedido: cod_pedido,
+            },
+            success: function(resultado){
+                if (resultado == 0) {
+                }else{
+                    alertAgregaProducto()
+                    //Exito
+
+                    let detalle = JSON.parse(resultado);
+                    //console.log(parseFloat(detalle.total) + parseFloat(extras));
+                    if (detalle.error == '') {
+                        $("#tablaProductos tbody").empty();
+                        $("#tablaProductos tbody").append(detalle.datos);
+                        //$("#total").val(detalle.total);
+                        total.value = (parseFloat(detalle.total) + extras).toFixed(2)
+                        document.getElementById('valor_neto').value = detalle.total
+                        limpiaLineaProducto()
+                    }
+                }
+            }
+        });
+        
+    }
+    calculaValorNeto(cod_pedido);
+    calcularMensajero();
+}
+
+function eliminaProducto(idproducto, cod_pedido){
+    let transporte = 0
+    let cargoDomingo = 0
+    let horarioExtra = 0
+
+    let total = document.getElementById("total")
+
+    transporte = document.getElementById("transporte").value
+    cargoDomingo = document.getElementById("cargo_domingo").value
+    horarioExtra = document.getElementById("horario_extra").value
+
+    if (isNaN(parseFloat(transporte)) == true) {
+        transporte = 0;
+    }
+
+    if (isNaN(parseFloat(cargoDomingo)) == true) {
+        cargoDomingo = 0;
+    }
+
+    if (isNaN(parseFloat(horarioExtra)) == true) {
+        horarioExtra = 0;
+    }
+
+    let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
+
+    if (idproducto != null && idproducto != 0 && idproducto > 0) {
+
+        $.ajax({
+            url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
+            success: function(resultado){
+                if (resultado == 0) {
+
+                }else{
+                    //Exito
+
+                    let detalle = JSON.parse(resultado);
+
+                    if (detalle.error == '') {
+                        $("#tablaProductos tbody").empty();
+                        $("#tablaProductos tbody").append(detalle.datos);
+                        //$("#total").val(detalle.total);
+                        //$("#valor_neto").val(detalle.subtotal);
+                        total.value = (parseFloat(detalle.total) + extras).toFixed(2)
+                        document.getElementById('valor_neto').value = detalle.subtotal
+                        alertEliminaProducto()
+                        limpiaLineaProducto()
+                    }else{
+                        console.log("Error");
+                    }
+                    
+                }
+            }
+        });
+        
+    }
+    calculaValorNeto(cod_pedido);
+    calcularMensajero();
+}
+
+
+const alertAgregaProducto = () => {
+    Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "El producto se ha agregado",
+        showConfirmButton: false,
+        timer: 1200
+    });
+}
+
+const alertEliminaProducto = () => {
+    Swal.fire({
+        position: "center",
+        icon: "warning",
+        title: "El producto se ha eliminado",
+        showConfirmButton: false,
+        timer: 1200
+    });
+}
+
+const alertCambioValor = () => {
+    const toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 2500,
+        //timerProgressBar: true,
+        //height: '200rem',
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+        customClass: {
+            // container: '...',
+            popup: 'popup-class',
+
+            }
+    });
+    toast.fire({
+        position: "top-end",
+        icon: "warning",
+        title: "Se ha realizado un cambio que puede haber alterado el valor final del pedido"
+    });
+}
+
+const alertCambioValorMensajero = () => {
+    const toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        //height: '200rem',
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        },
+        customClass: {
+            // container: '...',
+            popup: 'popup-class',
+
+            }
+    });
+
+    toast.fire({
+        icon: "success",
+        title: "Se ha cambiado el valor del mensajero"
+    });
+}
+
+
+function limpiarValores(valor) {
+    var valor = 0
+    document.getElementById("idproducto").selectedIndex = 2;
+    document.getElementById('descuento').value = valor;
+    document.getElementById('transporte').value = valor.toFixed(2);
+    document.getElementById('total').value = valor.toFixed(2);
+}
+
+function limpiaLineaProducto() {
+
+    document.getElementById("idproducto").value = '';
+    document.getElementById('idp').value = 0;
+    document.getElementById('cant').value = 1;
+}
+
+function descontar(valor) {
+    var total = 0;
+    var descuento = 0;
+    valor = valor.replace(/,/g, '.')
+    valor = parseFloat(valor); // Convertir el valor a un float (número).
+
+    total = document.getElementById('total').value;
+
+    // Aquí valido si hay un valor previo, si no hay datos, le pongo un cero "0".
+    total = (total == null || total == undefined || total == "") ? 0 : total;
+
+    /* Este es el cálculo. */
+    descuento = (parseFloat(total) * parseFloat(valor))/100
+    total = (parseFloat(total) - parseFloat(descuento));
+
+    document.getElementById('total').value = total.toFixed(2);
+    sumarTotal()
+}
+
+function calcularMensajero(){
+    let sectores = document.getElementById("sectores").value
+    let transporte = document.getElementById('transporte').value
+    let cargoDomingo = document.getElementById('cargo_domingo').value
+    let horarioExtra = document.getElementById('horario_extra').value
+    let valorMensajero = document.getElementById('valor_mensajero').value
+    let valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
+    let cantProd = document.getElementById("cant_arreglos").value;
+
+    
+    if (isNaN(parseFloat(transporte)) == true) {
+        transporte = 0
+    }
+
+    if (isNaN(parseFloat(cargoDomingo)) == true) {
+        cargoDomingo = 0
+    }
+
+    if (isNaN(parseFloat(horarioExtra)) == true) {
+        horarioExtra = 0
+    }
+    let extraMensajero = 0
+    let cantProdExtra = (cantProd - 1)
+
+    if (cantProdExtra >= 1) {
+        //console.log("cant: " + cantProdExtra);
+        if (sectores == 1) {
+            
+            //Se agrega 50% de Transporte mas 50% mas de carga horario mas 50% mas de domingo por cada arreglo extra
+            for (let i = 1; i <= cantProdExtra; i++) {
+                extraMensajero += (parseFloat(transporte)*0.5) + (parseFloat(horarioExtra)*0.5) + (parseFloat(cargoDomingo)*0.5)
+            }
+
+            valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
+
+        }else if(sectores > 1){
+            
+            //Se agrega 35% de Transporte mas 35% mas de carga horario mas 35% mas de domingo por arreglo
+            for (let i = 1; i <= cantProdExtra; i++) {
+                extraMensajero += (parseFloat(transporte)*0.35) + (parseFloat(horarioExtra)*0.35) + (parseFloat(cargoDomingo)*0.35)
+                console.log("Trans: " + (parseFloat(transporte)*0.35) );
+                console.log("Horario: " + (parseFloat(horarioExtra)*0.35) );
+                console.log("Domingo: " + (parseFloat(cargoDomingo)*0.35) );
+                console.log(extraMensajero);
+            }
+
+            valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
+        }else{
+            console.log("No se ha elegio un sector poner una validación");
+        }
+    } else {
+        //Si solo es un arreglo no hay extra
+        valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2)
+
+    }
+
+    // /* Este es el cálculo. */
+    if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
+        total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
+    }else{
+        total = (parseFloat(total) + parseFloat(valorMensajero));
+    }
+
+    document.getElementById('valor_mensajero').value = valorMensajero
+
+}
+
+
+function getDetalletemporal(codigoPedido){
+    
+    return $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "ventas/getDetallePedido_temp/"+codigoPedido,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(data){
+            // limpiarClienteDocumento();
+            let detalle = JSON.parse(data);
+            let datos = detalle.datos
+            let cant = 0;
+            
+            for (const i of datos) {
+                cant += parseInt(i.cantidad)
+            }
+
+            document.getElementById("cant_arreglos").value = cant
+        },
+        error: function(data){
+            console.log("No hay detalle");
+        }
+    });
+    
+}
+
+
+function getDayOfWeek(fechaEntrega){
+    let ahora = new Date(fechaEntrega);
+    let diaSemana = ahora.getDay();
+    return diaSemana;
+}
+
+function calculaValorNeto(cod_pedido) {
+
+    let total = 0;
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "<?php echo site_url(); ?>ventas/getDetallePedido_temp/"+cod_pedido,
+        success: function(resultado){
+            let detalle = JSON.parse(resultado);
+            //console.log("Detalle: " + detalle.cantidad);
+            document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
+            document.getElementById('cant_arreglos').value = detalle.cantidad;
+        }
+    });
+}
+
+$(document).ready(function(){
+    $(".decimal").on("input", function() {
+
+        this.value = this.value.replace(/[^0-9,.]/g, '').replace(/,/g, '.');
+    });
+});
 </script>
 

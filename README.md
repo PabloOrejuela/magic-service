@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>La función de Javascript el producto en le pedido se pasó del form pedido al archivo javascript</li>
     <li>La función de Javascript que agrega el costo por entrega en domingo se pasó del form pedido al archivo javascript</li>
 </ul>
 

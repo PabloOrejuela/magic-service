@@ -1,3 +1,35 @@
+aData = {}
+
+$('#idproducto').autocomplete({
+  source: function(request, response){
+    
+      $.ajax({
+          url: 'getProductosAutocomplete',
+          method: 'GET',
+          dataType: 'json',
+          data: {
+              producto: request.term
+          },
+          success: function(res) {
+
+              aData = $.map(res, function(value, key){
+                  return{
+                      id: value.id,
+                      label: value.producto + ' - ' + value.precio
+                  };
+              });
+              let results = $.ui.autocomplete.filter(aData, request.term);
+              response(results)
+          }
+      });
+  },
+  select: function(event, ui){
+      //document.getElementById('idp').value = 10
+      document.getElementById("idp").value = ui.item.id
+      //console.log(ui.item.id);
+  }
+});
+
 function limpiarClienteTelefono() {
   document.getElementById("nombre").value = "";
   document.getElementById("documento").value = "";
@@ -170,7 +202,6 @@ $(document).ready(function(){
       }
   });
 });
-
 
 const confirmSaveAlert = () => {
   Swal.fire({

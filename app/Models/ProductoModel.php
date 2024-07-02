@@ -129,6 +129,7 @@ class ProductoModel extends Model {
     }
 
     function _getProductoAutocomplete($producto){
+        
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('*');
