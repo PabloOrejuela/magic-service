@@ -1,7 +1,7 @@
 <h3>Cambios</h3>
 <ul>
-    <li>La función de Javascript el producto en le pedido se pasó del form pedido al archivo javascript</li>
-    <li>La función de Javascript que agrega el costo por entrega en domingo se pasó del form pedido al archivo javascript</li>
+    <li>Se implementó una validación para que en el form de Edit cliente el email no pueda ir en mayúsculas</li>
+    <li>Se implementó una validación para que en el form de Nuevo cliente el email no pueda ir en mayúsculas</li>
 </ul>
 
 </br>

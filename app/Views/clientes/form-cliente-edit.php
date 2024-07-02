@@ -66,21 +66,5 @@
         </div>
     </div>
 </section> <!-- /.card -->
-
-<script>
-    $(document).ready(function(){
-        $("#telefono").on("change", function() {
-            let string = $("#telefono").val();
-           
-            $("#telefono").val(string.replace(/[^\w]/gi, ''));
-        });
-    });
-
-    $(document).ready(function(){
-        $("#telefono_2").on("change", function() {
-            let string = $("#telefono_2").val();
-           
-            $("#telefono_2").val(string.replace(/[^\w]/gi, ''));
-        });
-    });
-</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/form-cliente-edit.js"></script>

@@ -814,7 +814,7 @@ class Ventas extends BaseController {
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
             
-            //echo '<pre>'.var_export($data['procedencias'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['horariosEntrega'], true).'</pre>';exit;
             $data['mensaje'] = '';
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
