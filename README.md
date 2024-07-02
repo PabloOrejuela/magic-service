@@ -1,6 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Lista la funcionalidad que cierra las sesiones que están abiertas del día anterior</li>
+    <li>La función de Javascript que agrega el costo por entrega en domingo se pasó del form pedido al archivo javascript</li>
 </ul>
 
 </br>

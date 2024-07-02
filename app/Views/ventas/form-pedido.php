@@ -579,23 +579,6 @@ function searchPhones(valor, phone) {
     });
 
     $(document).ready(function(){
-        $("#inputFecha").on('change',function(){
-            if($("#inputFecha").val() !=""){
-                valor = $("#inputFecha").val();
-                
-                diaSemana = getDayOfWeek(valor)
-                if (diaSemana == 6) {
-                    document.getElementById("cargo_domingo").value = 2
-                }else{
-                    document.getElementById("cargo_domingo").value = 0
-                }
-                alertCambioValor()
-                sumarTotal()
-            }
-        });
-    });
-
-    $(document).ready(function(){
         $("#telefono").on("change", function() {
             let string = $("#telefono").val();
            
