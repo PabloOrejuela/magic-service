@@ -56,19 +56,6 @@
                                             <label for="nombre">Id Cliente:</label>
                                             <input type="hidden" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>"  >
                                         </div>
-                                        <p id="error-message"><?= session('errors.idcliente');?> </p>
-                                        <div class="form-group">
-                                            <label for="nombre">Nombre y apellido del cliente *:</label>
-                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
-                                            <a href="<?= site_url(); ?>/cliente-create" class="nav-link mb-3" id="link-clear-fields" target="_blank">Registrar nuevo cliente</a>
-                                        </div>
-                                        <p id="error-message"><?= session('errors.nombre');?> </p>
-                                        <div class="form-group">
-                                            <label for="documento">Documento:</label>
-                                            <input type="text" class="form-control" id="documento" name="documento" placeholder="documento" value="<?= old('documento'); ?>" >
-                                        </div>
-                                        <p id="error-message"><?= session('errors.documento');?> </p>
-                                        <div id="cliente"> </div>
                                         <div class="form-group row" id="campo-extra">
                                             <div class="col-md-6 div-celular">
                                                 <label for="telefono">Celular 1 *:</label>
@@ -94,6 +81,19 @@
                                                 >
                                             </div>
                                         </div>
+                                        <p id="error-message"><?= session('errors.idcliente');?> </p>
+                                        <div class="form-group">
+                                            <label for="nombre">Nombre y apellido del cliente *:</label>
+                                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
+                                            <a href="<?= site_url(); ?>/cliente-create" class="nav-link mb-3" id="link-clear-fields" target="_blank">Registrar nuevo cliente</a>
+                                        </div>
+                                        <p id="error-message"><?= session('errors.nombre');?> </p>
+                                        <div class="form-group">
+                                            <label for="documento">Documento:</label>
+                                            <input type="text" class="form-control" id="documento" name="documento" placeholder="documento" value="<?= old('documento'); ?>" >
+                                        </div>
+                                        <p id="error-message"><?= session('errors.documento');?> </p>
+                                        <div id="cliente"> </div>
                                         <div class="form-group" id="campo-extra">
                                             <label for="email" >Email:</label>
                                             <input 
