@@ -44,6 +44,7 @@ class DetallePedidoTempModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->where('created_at <=', $ayer);
         $builder->delete();
+        // echo $this->db->getLastQuery();
     }
 
     public function _getProdDetallePedido($idproducto, $cod_pedido){

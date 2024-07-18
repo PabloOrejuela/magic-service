@@ -27,6 +27,9 @@ class Home extends BaseController {
              */
             $this->productoModel->_desactivaProductosTemporales();
 
+            //Borro todos los items de la tabla items temporales insertados hasta el día anterior
+            $this->itemsProductoTempModel->_deleteItemsTempOld();
+            
             /*
              * Verifico los usuarios que tienen sesiones abiertas y cierro todas las que estén abiertas y no se hayan creado ese día
              * desde las 00:00:01

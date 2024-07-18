@@ -168,7 +168,7 @@ class ItemsProductoTempModel extends Model {
     public function _deleteItemsTempOld(){
         $ayer = date('Y-m-d', time() - 60 * 60 * 24);
         $builder = $this->db->table($this->table);
-        $builder->where('updated_at <=', $ayer);
+        $builder->where('created_at <=', $ayer);
         $builder->delete();
         //echo $this->db->getLastQuery();
     }

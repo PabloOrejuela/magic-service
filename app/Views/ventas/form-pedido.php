@@ -60,6 +60,7 @@
                                         <div class="form-group">
                                             <label for="nombre">Nombre y apellido del cliente *:</label>
                                             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
+                                            <a href="<?= site_url(); ?>/cliente-create" class="nav-link mb-3" id="link-clear-fields" target="_blank">Registrar nuevo cliente</a>
                                         </div>
                                         <p id="error-message"><?= session('errors.nombre');?> </p>
                                         <div class="form-group">
@@ -95,7 +96,14 @@
                                         </div>
                                         <div class="form-group" id="campo-extra">
                                             <label for="email" >Email:</label>
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="cliente@email.com" value="<?= old('email'); ?>">
+                                            <input 
+                                                type="email" 
+                                                class="form-control" 
+                                                id="email" 
+                                                name="email" 
+                                                placeholder="cliente@email.com" 
+                                                value="<?= old('email'); ?>"
+                                            >
                                         </div>
                                         <div class="form-group mt-2">
                                             <a href="javascript:limpiaCamposCliente()" class="nav-link mb-3" id="link-clear-fields">Limpiar campos</a>
@@ -279,12 +287,20 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
+                                            <div class="col-sm-8">
+                                                <label for="" class="col-sm-12 col-form-label" id="lbl-modificar">Modificar valor:</label>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="" class="col-sm-12 col-form-label" id="lbl-modificar">Verificar valor:</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
                                             <label for="total" class="col-sm-8 col-form-label">Total:</label>
                                             <div class="col-sm-4">
                                                 <input 
                                                     type="text" 
                                                     class="form-control inputValor decimal" 
-                                                    id="total" 
+                                                    id="total"
                                                     placeholder="0.00" 
                                                     onchange="sumarTotal()" 
                                                     name="total"
@@ -314,6 +330,44 @@
                                         <div class="card-footer">
                                             <button type="submit" class="btn btn-primary" >Enviar</button>
                                             <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
+                                            <div class="row mt-3" id="varSistema">
+                                                <div class="col-md-2">
+                                                    <label for="">Porcentaje de transporte</label>
+                                                    <input type="text" class="form-control" id="porcentTransporte" value="<?= $variablesSistema[0]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Porcentaje cargo horario</label>
+                                                    <input type="text" class="form-control" id="porcentCargoHorario" value="<?= $variablesSistema[1]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Porcentaje cargo domingo</label>
+                                                    <input type="text" class="form-control" id="porcentCargoDomingo" value="<?= $variablesSistema[2]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Porcentaje Transporte entrega extra mismo sector</label>
+                                                    <input type="text" class="form-control" id="porcentTransporteExtra" value="<?= $variablesSistema[3]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Cargo horario entrega extra mismo sector</label>
+                                                    <input type="text" class="form-control" id="porcentCargoHorarioExtra" value="<?= $variablesSistema[4]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Cargo domingo entrega extra mismo sector</label>
+                                                    <input type="text" class="form-control" id="porcentCargoDomingoExtra" value="<?= $variablesSistema[5]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Cargo horario entrega extra otro sector</label>
+                                                    <input type="text" class="form-control" id="porcentCargoHorarioExtraOtroSector" value="<?= $variablesSistema[6]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Cargo domingo entrega extra otro sector</label>
+                                                    <input type="text" class="form-control" id="porcentCargoDomingoExtraOtroSector" value="<?= $variablesSistema[7]->valor; ?>">
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Transporte entrega extra otro sector</label>
+                                                    <input type="text" class="form-control" id="porcentTransporteExtraOtroSector" value="<?= $variablesSistema[7]->valor; ?>">
+                                                </div>
+                                            </div> 
                                         </div>           
                                 </form>
                             </div>
@@ -634,7 +688,6 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
                 if (resultado == 0) {
                 }else{
                     alertAgregaProducto()
-                    //Exito
 
                     let detalle = JSON.parse(resultado);
                     //console.log(parseFloat(detalle.total) + parseFloat(extras));
@@ -829,6 +882,9 @@ function calcularMensajero(){
     let valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
     let cantProd = document.getElementById("cant_arreglos").value;
 
+    let porcentajeMensajeroEntregaExtra = parseFloat(document.getElementById("porcentTransporteExtra").value)/100
+    let porcentajeMensajeroEntregaExtraOtro = parseFloat(document.getElementById("porcentTransporteExtraOtroSector").value)/100
+
     
     if (isNaN(parseFloat(transporte)) == true) {
         transporte = 0
@@ -850,7 +906,9 @@ function calcularMensajero(){
             
             //Se agrega 50% de Transporte mas 50% mas de carga horario mas 50% mas de domingo por cada arreglo extra
             for (let i = 1; i <= cantProdExtra; i++) {
-                extraMensajero += (parseFloat(transporte)*0.5) + (parseFloat(horarioExtra)*0.5) + (parseFloat(cargoDomingo)*0.5)
+                extraMensajero += (parseFloat(transporte)*porcentajeMensajeroEntregaExtra) 
+                                + (parseFloat(horarioExtra)*porcentajeMensajeroEntregaExtra) 
+                                + (parseFloat(cargoDomingo)*porcentajeMensajeroEntregaExtra)
             }
 
             valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
@@ -859,11 +917,14 @@ function calcularMensajero(){
             
             //Se agrega 35% de Transporte mas 35% mas de carga horario mas 35% mas de domingo por arreglo
             for (let i = 1; i <= cantProdExtra; i++) {
-                extraMensajero += (parseFloat(transporte)*0.35) + (parseFloat(horarioExtra)*0.35) + (parseFloat(cargoDomingo)*0.35)
-                console.log("Trans: " + (parseFloat(transporte)*0.35) );
-                console.log("Horario: " + (parseFloat(horarioExtra)*0.35) );
-                console.log("Domingo: " + (parseFloat(cargoDomingo)*0.35) );
-                console.log(extraMensajero);
+                extraMensajero += (parseFloat(transporte) * porcentajeMensajeroEntregaExtraOtro) 
+                                + (parseFloat(horarioExtra) * porcentajeMensajeroEntregaExtraOtro) 
+                                + (parseFloat(cargoDomingo) * porcentajeMensajeroEntregaExtraOtro)
+                                
+                // console.log("Trans: " + (parseFloat(transporte) * porcentajeMensajeroEntregaExtra) );
+                // console.log("Horario: " + (parseFloat(horarioExtra) * porcentajeMensajeroEntregaExtra) );
+                // console.log("Domingo: " + (parseFloat(cargoDomingo) * porcentajeMensajeroEntregaExtra) );
+                // console.log(extraMensajero);
             }
 
             valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero

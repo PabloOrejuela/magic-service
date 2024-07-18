@@ -107,7 +107,7 @@ class Validation extends BaseConfig
             'required' => 'El campo "Cliente" es obligatorio',
         ],
         'idcliente' => [
-            'required' => 'El campo "Cliente" es obligatorio',
+            'required' => 'El campo "Cliente" es obligatorio, el cliente aun no está registrado',
         ],
         'vendedor' => [
             'greater_than' => 'El campo "Vendedor" es obligatorio',

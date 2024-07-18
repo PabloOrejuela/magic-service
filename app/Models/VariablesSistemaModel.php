@@ -38,4 +38,19 @@ class VariablesSistemaModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    function _getAll(){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            // foreach ($query->getResult() as $row) {
+            //     $result[] = $row;
+            // }
+            $result[] = $row;
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
 }

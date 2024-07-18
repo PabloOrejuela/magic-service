@@ -37,6 +37,7 @@ use App\Models\StockActualModel;
 use App\Models\SucursalModel;
 use App\Models\TipoGastoModel;
 use App\Models\UsuarioModel;
+use App\Models\VariablesSistemaModel;
 
 /**
  * Class BaseController
@@ -112,6 +113,8 @@ abstract class BaseController extends Controller {
         $this->procedenciaModel = new ProcedenciaModel($this->db);
         $this->productoCambiosModel = new ProductoCambiosModel($this->db);
         $this->attrExtArregModel = new AttrExtArregModel($this->db);
+        $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
+
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

@@ -3,7 +3,7 @@
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
@@ -48,6 +48,27 @@
                                     <label for="email" class="form-label">Email</label>
                                     <input type="text" class="form-control" id="email" name="email" placeholder="Email" value="<?= $cliente->email; ?>" autofocus>
                                     <p id="error-message"><?= session('errors.email');?> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 mb-1 px-3" id="fila-form">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label for="procedencia" class="form-label">Procedencia:</label>
+                                    <select class="custom-select form-control" id="procedencia" name="procedencia">
+                                        <?php
+                                            if (isset($procedencias)) {
+                                                foreach ($procedencias as $key => $procedencia) {
+                                                    if ($procedencia->id == $cliente->procedencia) {
+                                                        echo '<option value="'.$procedencia->id.'" selected>'.$procedencia->procedencia.'</option>';
+                                                    } else {
+                                                        echo '<option value="'.$procedencia->id.'">'.$procedencia->procedencia.'</option>';
+                                                    }
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                    <p id="error-message"><?= session('errors.procedencia');?> </p>
                                 </div>
                             </div>
                         </div>

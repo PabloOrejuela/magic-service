@@ -52,7 +52,7 @@
                                                     <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
                                                     <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                 if ($value->fecha_entrega) {
-                                                    echo '<td id="fechaEntrega_'.$value->id.'">'.$value->fecha_entrega.'</td>';
+                                                    echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$value->fecha_entrega.'</td>';
                                                 }else{
                                                     echo '<td>Registrar fecha de entrega</td>';
                                                 }
@@ -102,7 +102,7 @@
                                             }
                                             echo '</ul></td>';
                                             if ($value->hora_salida_pedido) {
-                                                echo '<td>
+                                                echo '<td class="datos-negrita">
                                                     <a 
                                                         type="button" 
                                                         id="sector_'.$value->id.'" 
@@ -112,7 +112,7 @@
                                                         data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
                                                 </td>';
                                             }else{
-                                                echo '<td>
+                                                echo '<td class="datos-negrita">
                                                     <a 
                                                         type="button" 
                                                         id="sector_'.$value->id.'" 
@@ -123,7 +123,7 @@
                                                 </td>';
                                             }
                                             
-                                            echo '<td id="hora_entrega'.$value->id.'">
+                                            echo '<td id="hora_entrega'.$value->id.'" class="datos-negrita">
                                                     <a 
                                                         type="button" 
                                                         id="horaEntrega_'.$value->id.'" 

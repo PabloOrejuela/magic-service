@@ -44,3 +44,8 @@
 .form-label{
     margin-bottom: 0px;
 }
+
+.datos-negrita{
+    font-weight: bold;
+    font-size: 1em;
+}

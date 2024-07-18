@@ -18,8 +18,7 @@ $(document).ready(function(){
                     let selectProductos = document.getElementById('productos')
                     if (productos) {
                         $("#productos").prop('disabled', false);
-
-                        
+                                                
                         selectProductos.innerHTML = ''
                         selectProductos.innerHTML += `<option value="0" selected>--Seleccionar producto--</option>`
                         for(let producto of productos){

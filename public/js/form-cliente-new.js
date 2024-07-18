@@ -7,7 +7,6 @@ imptEmail.addEventListener('input', function(e){
     
 })
 
-
 $(document).ready(function(){
     $("#telefono").on("change", function() {
         let string = $("#telefono").val();

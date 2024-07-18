@@ -26,7 +26,7 @@ class Ventas extends BaseController {
             
             //Borramos pedidos
             $this->detallePedidoTempModel->_deleteDetallesTempOld();
-
+            
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
@@ -35,7 +35,9 @@ class Ventas extends BaseController {
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['cod_pedido'] = $this->session->id.$date;
 
-            //echo '<pre>'.var_export($this->session , true).'</pre>';exit;
+            $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
+
+            //echo '<pre>'.var_export($data['varSistema'], true).'</pre>';exit;
 
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
@@ -642,7 +644,8 @@ class Ventas extends BaseController {
                 'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'direccion' => '',
-                'email' => $this->request->getPostGet('email'),
+                'email' => strtolower($this->request->getPostGet('email')),
+                'procedencia' => 9,
             ];
 
             //echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
@@ -671,7 +674,7 @@ class Ventas extends BaseController {
                 }else{
 
                     //Inserto el cliente nuevo
-                    $pedido['idcliente'] = $this->clienteModel->_insert($cliente);
+                    $pedido['idcliente'] = $this->clienteModel->insert($cliente);
 
                     //Inserto el nuevo pedido
                     $this->pedidoModel->_insert($pedido);

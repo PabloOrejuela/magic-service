@@ -95,3 +95,6 @@
         </div>
     </div>
 </section> <!-- /.card -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/form-user-edit.js"></script>
+

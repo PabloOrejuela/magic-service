@@ -1,4 +1,12 @@
 aData = {}
+let imptEmail = document.getElementById("email")
+
+imptEmail.addEventListener('input', function(e){
+    e.stopPropagation()
+    let email = imptEmail.value
+    imptEmail.value = email.toLowerCase()
+    
+})
 
 $('#idproducto').autocomplete({
   source: function(request, response){
@@ -202,6 +210,30 @@ $(document).ready(function(){
       }
   });
 });
+
+const alertaMensaje = (msg, time, icon) => {
+  const toast = Swal.mixin({
+      toast: true,
+      position: "top-end",
+      showConfirmButton: false,
+      timer: time,
+      //timerProgressBar: true,
+      //height: '200rem',
+      didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+      },
+      customClass: {
+          // container: '...',
+          popup: 'popup-class',
+      }
+  });
+  toast.fire({
+      position: "top-end",
+      icon: icon,
+      title: msg,
+  });
+}
 
 const confirmSaveAlert = () => {
   Swal.fire({
