@@ -75,7 +75,6 @@ class Clientes extends BaseController {
         if ($data['logged'] == 1 && $this->session->clientes == 1) {
             
             $data['session'] = $this->session;
-            $data['procedencias'] = $this->procedenciaModel->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Clientes';
@@ -101,7 +100,6 @@ class Clientes extends BaseController {
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'direccion' => strtoupper($this->request->getPostGet('direccion')),
                 'email' => $this->request->getPostGet('email'),
-                'procedencia' => strtoupper($this->request->getPostGet('procedencia')),
             ];
 
             $this->validation->setRuleGroup('cliente');
@@ -140,7 +138,6 @@ class Clientes extends BaseController {
             
             $data['session'] = $this->session;
             $data['cliente'] = $this->clienteModel->find($idcliente);
-            $data['procedencias'] = $this->procedenciaModel->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Clientes';
@@ -223,7 +220,6 @@ class Clientes extends BaseController {
                 'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'direccion' => strtoupper($this->request->getPostGet('direccion')),
-                'procedencia' => strtoupper($this->request->getPostGet('procedencia')),
                 'email' => $this->request->getPostGet('email'),
             ];
 

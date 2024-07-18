@@ -109,10 +109,6 @@ class ClienteModel extends Model {
             $builder->set('email', $data['email']);
         }
 
-        if ($data['procedencia'] > 0) {
-            $builder->set('procedencia', $data['procedencia']);
-        }
-
         $builder->insert();
         return  $this->db->insertID();
     }
@@ -143,10 +139,6 @@ class ClienteModel extends Model {
 
         if ($data['email'] != 'NULL') {
             $builder->set('email', $data['email']);
-        }
-
-        if ($data['procedencia'] > 0) {
-            $builder->set('procedencia', $data['procedencia']);
         }
 
         $builder->where('id', $data['id'] );

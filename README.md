@@ -1,7 +1,9 @@
 <h3>Cambios</h3>
 <ul>
-    <li>En el form de nuevo pedido la línea de celulares ahora va arriba de los nombres</li>
-    <li>En form user edit y form user new se valida que en el campo email ya no se acepten mayúsculas</li>
+    <li>Se eliminó la columna Procedencias en la tabla Cliente</li>
+    <li>Se quitó los select de procedencias en los formularios de nuevo cliente y editar cliente</li>
+    <li>Se quitó procedencia del modelo de la tabla cliente</li>
+    <li>Se quitó procedencias de las funciones del controlador de clientes</li>
 </ul>
 
 </br>
