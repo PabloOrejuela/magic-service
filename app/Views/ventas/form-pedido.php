@@ -708,66 +708,6 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
     calcularMensajero();
 }
 
-function eliminaProducto(idproducto, cod_pedido){
-    let transporte = 0
-    let cargoDomingo = 0
-    let horarioExtra = 0
-
-    let total = document.getElementById("total")
-
-    transporte = document.getElementById("transporte").value
-    cargoDomingo = document.getElementById("cargo_domingo").value
-    horarioExtra = document.getElementById("horario_extra").value
-
-    if (isNaN(parseFloat(transporte)) == true) {
-        transporte = 0;
-    }
-
-    if (isNaN(parseFloat(cargoDomingo)) == true) {
-        cargoDomingo = 0;
-    }
-
-    if (isNaN(parseFloat(horarioExtra)) == true) {
-        horarioExtra = 0;
-    }
-
-    let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
-
-    if (idproducto != null && idproducto != 0 && idproducto > 0) {
-
-        $.ajax({
-            url: '<?php echo base_url(); ?>ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
-            success: function(resultado){
-                if (resultado == 0) {
-
-                }else{
-                    //Exito
-
-                    let detalle = JSON.parse(resultado);
-
-                    if (detalle.error == '') {
-                        $("#tablaProductos tbody").empty();
-                        $("#tablaProductos tbody").append(detalle.datos);
-                        //$("#total").val(detalle.total);
-                        //$("#valor_neto").val(detalle.subtotal);
-                        total.value = (parseFloat(detalle.total) + extras).toFixed(2)
-                        document.getElementById('valor_neto').value = detalle.subtotal
-                        alertEliminaProducto()
-                        limpiaLineaProducto()
-                    }else{
-                        console.log("Error");
-                    }
-                    
-                }
-            }
-        });
-        
-    }
-    calculaValorNeto(cod_pedido);
-    calcularMensajero();
-}
-
-
 const alertAgregaProducto = () => {
     Swal.fire({
         position: "center",
