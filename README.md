@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>La función agrega producto ahora está en el archivo jabascript de pedido</li>
     <li>La función elimina producto ahora está en el archivo jabascript de pedido</li>
     <li>Se corrigió el problema que no permitía que se use el orden del localstore en el grid de Pedidos</li>
     <li>La función que calcula el valor del mensajero ahora está en el archivo de Javascript</li>
