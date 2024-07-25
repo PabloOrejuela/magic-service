@@ -314,6 +314,98 @@ function eliminaProducto(idproducto, cod_pedido){
   calcularMensajero();
 }
 
+function observacion(idproducto, cod_pedido){
+  let observacion = document.getElementById("observa_"+idproducto).value
+  //console.log(observacion);
+  if (observacion != null && observacion != '') {
+
+      $.ajax({
+          url: 'ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
+          success: function(resultado){
+              if (resultado == 0) {
+
+              }else{
+                  //Exito
+                  let detalle = JSON.parse(resultado);
+
+                  if (detalle.error == '') {
+                      $("#tablaProductos tbody").empty();
+                      $("#tablaProductos tbody").append(detalle.datos);
+                      $("#total").val(detalle.total);
+                      $("#valor_neto").val(detalle.subtotal);
+
+                      limpiaLineaProducto()
+                      calculaValorNeto(cod_pedido);
+                      sumarTotal()
+                  }
+              }
+          }
+      });
+      
+  }
+}
+
+function actualizaPrecio(idproducto, cod_pedido){
+  let precio = document.getElementById("precio_"+idproducto).value
+  let cant = document.getElementById("cant_"+idproducto).innerHTML
+  
+  if (precio != null && precio != '') {
+
+      $.ajax({
+          url: 'detalle_pedido_update_precio_temp',
+          data: {
+              idproducto: idproducto,
+              cod_pedido: cod_pedido,
+              precio: precio,
+              cant: cant
+          },
+          success: function(resultado){
+              if (resultado == 0) {
+
+              }else{
+                  //Exito
+                  let detalle = JSON.parse(resultado);
+                  //console.log(detalle);
+                  if (detalle.error == '') {
+                      $("#tablaProductos tbody").empty();
+                      $("#tablaProductos tbody").append(detalle.datos);
+                      $("#total").val(detalle.total);
+                      $("#valor_neto").val(detalle.subtotal);
+
+                      limpiaLineaProducto()
+                      calculaValorNeto(cod_pedido);
+                      sumarTotal()
+                  }
+              }
+          }
+      });
+      
+  }
+}
+
+function limpiaLineaProducto() {
+
+  document.getElementById("idproducto").value = '';
+  document.getElementById('idp').value = 0;
+  document.getElementById('cant').value = 1;
+}
+
+function calculaValorNeto(cod_pedido) {
+
+  let total = 0;
+  $.ajax({
+      type:"GET",
+      dataType:"html",
+      url: "ventas/getDetallePedido_temp/"+cod_pedido,
+      success: function(resultado){
+          let detalle = JSON.parse(resultado);
+          //console.log("Detalle: " + detalle.cantidad);
+          document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
+          document.getElementById('cant_arreglos').value = detalle.cantidad;
+      }
+  });
+}
+
 function calcularMensajero(){
   let sectores = document.getElementById("sectores").value
   let transporte = document.getElementById('transporte').value

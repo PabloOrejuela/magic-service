@@ -555,75 +555,6 @@ $(document).ready(function(){
     });
 });
 
-function observacion(idproducto, cod_pedido){
-    let observacion = document.getElementById("observa_"+idproducto).value
-    //console.log(observacion);
-    if (observacion != null && observacion != '') {
-
-        $.ajax({
-            url: '<?php echo base_url(); ?>ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
-            success: function(resultado){
-                if (resultado == 0) {
-
-                }else{
-                    //Exito
-                    let detalle = JSON.parse(resultado);
-
-                    if (detalle.error == '') {
-                        $("#tablaProductos tbody").empty();
-                        $("#tablaProductos tbody").append(detalle.datos);
-                        $("#total").val(detalle.total);
-                        $("#valor_neto").val(detalle.subtotal);
-
-                        limpiaLineaProducto()
-                        calculaValorNeto(cod_pedido);
-                        sumarTotal()
-                    }
-                }
-            }
-        });
-        
-    }
-}
-
-function actualizaPrecio(idproducto, cod_pedido){
-    let precio = document.getElementById("precio_"+idproducto).value
-    let cant = document.getElementById("cant_"+idproducto).innerHTML
-    
-    if (precio != null && precio != '') {
-
-        $.ajax({
-            url: '<?php echo base_url(); ?>detalle_pedido_update_precio_temp',
-            data: {
-                idproducto: idproducto,
-                cod_pedido: cod_pedido,
-                precio: precio,
-                cant: cant
-            },
-            success: function(resultado){
-                if (resultado == 0) {
-
-                }else{
-                    //Exito
-                    let detalle = JSON.parse(resultado);
-                    //console.log(detalle);
-                    if (detalle.error == '') {
-                        $("#tablaProductos tbody").empty();
-                        $("#tablaProductos tbody").append(detalle.datos);
-                        $("#total").val(detalle.total);
-                        $("#valor_neto").val(detalle.subtotal);
-
-                        limpiaLineaProducto()
-                        calculaValorNeto(cod_pedido);
-                        sumarTotal()
-                    }
-                }
-            }
-        });
-        
-    }
-}
-
 $(document).ready(function(){
     $("#valor_mensajero_edit").on('change',function(){
         if($("#valor_mensajero_edit").val() !=""){
@@ -727,13 +658,6 @@ function limpiarValores(valor) {
     document.getElementById('total').value = valor.toFixed(2);
 }
 
-function limpiaLineaProducto() {
-
-    document.getElementById("idproducto").value = '';
-    document.getElementById('idp').value = 0;
-    document.getElementById('cant').value = 1;
-}
-
 function descontar(valor) {
     var total = 0;
     var descuento = 0;
@@ -786,22 +710,6 @@ function getDayOfWeek(fechaEntrega){
     let ahora = new Date(fechaEntrega);
     let diaSemana = ahora.getDay();
     return diaSemana;
-}
-
-function calculaValorNeto(cod_pedido) {
-
-    let total = 0;
-    $.ajax({
-        type:"GET",
-        dataType:"html",
-        url: "<?php echo site_url(); ?>ventas/getDetallePedido_temp/"+cod_pedido,
-        success: function(resultado){
-            let detalle = JSON.parse(resultado);
-            //console.log("Detalle: " + detalle.cantidad);
-            document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
-            document.getElementById('cant_arreglos').value = detalle.cantidad;
-        }
-    });
 }
 
 $(document).ready(function(){
