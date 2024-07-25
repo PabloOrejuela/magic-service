@@ -1,3 +1,34 @@
+const lista = document.getElementById('lista')
+
+    Sortable.create(lista, {
+        animation: 150,
+        chosenClass: "seleccionado",
+        ghostClass: "fantasma",
+        dragClass: "drag",
+        onEnd: () => {
+            //Aquí podría usar ajax para guardar el orden en base de datos
+            console.log('se movió un elemento')
+        },
+        group: "lista-pedidos-grid",
+        handle: ".handle",
+        store: {
+            //Guarda el orden de la lista
+            set: (sortable) => {
+                const orden = sortable.toArray()
+
+                //Pasamos el areglo a cadena y gaurdamos
+                localStorage.setItem(sortable.options.group.name, orden.join(','))
+            },
+
+            //Obtenemos el óden de la lista
+            get: (sortable) => {
+                const orden = localStorage.getItem(sortable.options.group.name)
+                return orden ? orden.split(',') : []
+            }
+        }
+    })
+
+
 let botonesMensajero = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
 let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEntregaModal"]');
 let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');

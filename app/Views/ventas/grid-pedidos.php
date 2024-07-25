@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= site_url(); ?>/public/css/form-pedidos.css">
+<link rel="stylesheet" href="<?= site_url(); ?>/public/css/grid-pedidos.css">
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
@@ -389,40 +389,13 @@
 
 <!-- FONTAWESOME -->
 <script src="https://kit.fontawesome.com/964a730002.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
-
-    const lista = document.getElementById('lista')
-    Sortable.create(lista, {
-        chosenClass: "seleccionado",
-        ghostClass: "fantasma",
-        onEnd: () => {
-            //console.log('se movió el elemento')
-        },
-        group: "lista-pedidos-grid",
-        handle: ".handle",
-        store: {
-            //Guarda el orden de la lista
-            set: (sortable) => {
-                const orden = sortable.toArray()
-                localStorage.setItem(sortable.options.group.name, orden.join('|'))
-            },
-
-            //Obtenemos el óden de la lista
-            get: (sortable) => {
-                const orden = localStorage.getItem(sortable.options.group.name)
-                return orden ? orden.split('|') : []
-            },
-
-        }
-    })
-
 
     $(document).ready(function () {
         $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
         $('#datatablesSimple').DataTable({
             "responsive": true, 
-            "order": [[ 0, 'dsc' ]],
+            ordering: false,
             lengthMenu: [
                 [25, 50, -1],
                 [25, 50, 'Todos']

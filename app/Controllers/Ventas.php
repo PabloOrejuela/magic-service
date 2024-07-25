@@ -645,7 +645,6 @@ class Ventas extends BaseController {
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'direccion' => '',
                 'email' => strtolower($this->request->getPostGet('email')),
-                'procedencia' => 9,
             ];
 
             //echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
@@ -812,6 +811,7 @@ class Ventas extends BaseController {
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
+            
             $data['pedidos'] = $this->pedidoModel->_getPedidos();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();

@@ -1,5 +1,6 @@
 aData = {}
 let imptEmail = document.getElementById("email")
+let sectores = document.getElementById("sectores")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -156,43 +157,119 @@ $(document).ready(function(){
   });
 });
 
-$(document).ready(function(){
-  $("#sectores").on('change',function(){
-      if($("#sectores").val() !=""){
-          valor = $("#sectores").val();
-          $.ajax({
-              method: 'get',
-              dataType:"html",
-              url: "get_valor_sector",
-              data: {
-                sector: valor
-              },
-              beforeSend: function (f) {
-                  //$('#cliente').html('Cargando ...');
-              },
-              success: function(resultado){
-                  let dato = JSON.parse(resultado);
+//SECTOR
+sectores.addEventListener("change", () => {
+  if($("#sectores").val() !=""){
+    valor = $("#sectores").val();
+    $.ajax({
+        method: 'get',
+        dataType:"html",
+        url: "get_valor_sector",
+        data: {
+          sector: valor
+        },
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(resultado){
+            let dato = JSON.parse(resultado);
+            console.log('Valor: ' + valor);
+            if (valor != 0) {
+                alertCambioValor()
+                document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega)
+            }else{
+                alertCambioValor()
+                document.getElementById("transporte").value = 0
+                document.getElementById("valor_mensajero").value = 0
+            }
+            
+            sumarTotal()
 
-                  if (valor != 0) {
-                      alertCambioValor()
-                      document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega)
-                  }else{
-                      alertCambioValor()
-                      document.getElementById("transporte").value = 0
-                  }
-                  
-                  sumarTotal()
+        },
+        error: function(data){
+            console.log("No existe el costo de entrega");
+        }
+    });
+  }else{
+      console.log("No existe el costo de entrega");
+  }
+})
 
-              },
-              error: function(data){
-                  console.log("No existe el costo de entrega");
-              }
-          });
+function calcularMensajero(){
+  let sectores = document.getElementById("sectores").value
+  let transporte = document.getElementById('transporte').value
+  let cargoDomingo = document.getElementById('cargo_domingo').value
+  let horarioExtra = document.getElementById('horario_extra').value
+  let valorMensajero = document.getElementById('valor_mensajero').value
+  let valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
+  let cantProd = document.getElementById("cant_arreglos").value;
+
+  let porcentajeMensajeroEntregaExtra = parseFloat(document.getElementById("porcentTransporteExtra").value)/100
+  let porcentajeMensajeroEntregaExtraOtro = parseFloat(document.getElementById("porcentTransporteExtraOtroSector").value)/100
+
+  
+  if (isNaN(parseFloat(transporte)) == true) {
+      transporte = 0
+  }
+
+  if (isNaN(parseFloat(cargoDomingo)) == true) {
+      cargoDomingo = 0
+  }
+
+  if (isNaN(parseFloat(horarioExtra)) == true) {
+      horarioExtra = 0
+  }
+  let extraMensajero = 0
+  let cantProdExtra = (cantProd - 1)
+  
+  if (cantProdExtra >= 1) {
+      //console.log("cant: " + cantProdExtra);
+      if (sectores == 1) {
+          
+          //Se agrega 50% de Transporte mas 50% mas de carga horario mas 50% mas de domingo por cada arreglo extra
+          for (let i = 1; i <= cantProdExtra; i++) {
+              extraMensajero += ((parseFloat(transporte))*porcentajeMensajeroEntregaExtra) 
+                              + (parseFloat(horarioExtra)*porcentajeMensajeroEntregaExtra) 
+                              + (parseFloat(cargoDomingo)*porcentajeMensajeroEntregaExtra)
+          }
+
+          valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
+
+      }else if(sectores > 1){
+          
+          //Se agrega 35% de Transporte mas 35% mas de carga horario mas 35% mas de domingo por arreglo
+          for (let i = 1; i <= cantProdExtra; i++) {
+              extraMensajero += (parseFloat(transporte) * porcentajeMensajeroEntregaExtraOtro) 
+                              + (parseFloat(horarioExtra) * porcentajeMensajeroEntregaExtraOtro) 
+                              + (parseFloat(cargoDomingo) * porcentajeMensajeroEntregaExtraOtro)
+                              
+              // console.log("Trans: " + (parseFloat(transporte) * porcentajeMensajeroEntregaExtra) );
+              // console.log("Horario: " + (parseFloat(horarioExtra) * porcentajeMensajeroEntregaExtra) );
+              // console.log("Domingo: " + (parseFloat(cargoDomingo) * porcentajeMensajeroEntregaExtra) );
+              // console.log(extraMensajero);
+          }
+
+          valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
       }else{
-          console.log("No existe el costo de entrega");
+          console.log("No se ha elegio un sector poner una validación");
       }
-  });
-});
+  } else {
+      console.log(cantProdExtra);
+      //Si solo es un arreglo no hay extra hace este cálculo, el 4 se agrega pues el sector norte se supone que es gratis pero si carga 4 al valor del mensajero
+      valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + 4 + parseFloat(horarioExtra/2)
+
+  }
+
+  // /* Este es el cálculo. */
+  if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
+      total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
+  }else{
+      total = (parseFloat(total) + parseFloat(valorMensajero));
+  }
+
+  document.getElementById('valor_mensajero').value = valorMensajero
+
+}
 
 $(document).ready(function(){
   $("#inputFecha").on('change',function(){
