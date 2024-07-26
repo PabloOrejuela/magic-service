@@ -802,6 +802,19 @@ class Ventas extends BaseController {
         echo json_encode($horasEntrega);
     }
 
+    function guardaOrden(){
+        $pedidos = $this->request->getPostGet('pedidos');
+        foreach ($pedidos as $key => $pedido) {
+            //echo ($key+1).'-'.$pedido.'<br>';
+            $data = [
+                'orden' => ($key+1)
+            ];
+            $this->pedidoModel->update($pedido, $data);
+        }
+
+        //echo json_encode($estadosPedido);
+    }
+
     public function pedidos() {
         
         $data = $this->acl();
@@ -817,7 +830,7 @@ class Ventas extends BaseController {
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
             
-            //echo '<pre>'.var_export($data['horariosEntrega'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['pedidos'], true).'</pre>';exit;
             $data['mensaje'] = '';
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';

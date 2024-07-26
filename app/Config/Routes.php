@@ -16,6 +16,7 @@ $routes->get('logout', 'Home::logout');
 //VENTAS
 $routes->get('ventas', 'Ventas::index');
 $routes->get('pedidos', 'Ventas::pedidos');
+$routes->get('guarda-orden', 'Ventas::guardaOrden');
 $routes->get('pedidos-ventana', 'Ventas::pedidos_ventana');
 $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
 $routes->post('ventas/clientes_select_telefono', 'Ventas::clientes_select_telefono');

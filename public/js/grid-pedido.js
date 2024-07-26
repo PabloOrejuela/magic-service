@@ -1,32 +1,57 @@
 const lista = document.getElementById('lista')
 
-    Sortable.create(lista, {
-        animation: 150,
-        chosenClass: "seleccionado",
-        ghostClass: "fantasma",
-        dragClass: "drag",
-        onEnd: () => {
-            //Aquí podría usar ajax para guardar el orden en base de datos
-            console.log('se movió un elemento')
+Sortable.create(lista, {
+    animation: 150,
+    chosenClass: "seleccionado",
+    ghostClass: "fantasma",
+    dragClass: "drag",
+    onEnd: (sortable) => {
+        
+    },
+    group: "lista-pedidos-grid",
+    handle: ".handle",
+    store: {
+        //Guarda el orden de la lista
+        set: (sortable) => {
+            const orden = sortable.toArray()
+            
+            //Pasamos el areglo a cadena y guardamos en localstorage y base de datos
+            localStorage.setItem(sortable.options.group.name, orden.join(','))
+            _guardaOrdenEnDb(orden)
+            alertaMensaje("Se ha actualizado el órden", 500, "success")
         },
-        group: "lista-pedidos-grid",
-        handle: ".handle",
-        store: {
-            //Guarda el orden de la lista
-            set: (sortable) => {
-                const orden = sortable.toArray()
 
-                //Pasamos el areglo a cadena y gaurdamos
-                localStorage.setItem(sortable.options.group.name, orden.join(','))
-            },
+        //Obtenemos el óden de la lista
+        // get: (sortable) => {
+        //     const orden = localStorage.getItem(sortable.options.group.name)
+        //     return orden ? orden.split(',') : []
+        // }
+    }
+})
 
-            //Obtenemos el óden de la lista
-            get: (sortable) => {
-                const orden = localStorage.getItem(sortable.options.group.name)
-                return orden ? orden.split(',') : []
-            }
-        }
-    })
+function _guardaOrdenEnDb (orden){
+    // orden.forEach(function(num) {
+    //     console.log(num);
+    // });
+    $.ajax({
+        method: 'get',
+        dataType:"html",
+        url: "guarda-orden",
+        data: {
+            pedidos: orden,
+        },
+        beforeSend: function (f) {
+            alertaMensaje("Procesando", 500, "info")
+        },
+        success: function(data){
+            let datos = JSON.parse(data)
+            alertaMensaje("Se ha actualizado el órden", 500, "success")
+        },
+        error: function(){
+            alertaMensaje("No se ha podido actualizar el órden", 500, "success")
+        },
+    });
+}
 
 
 let botonesMensajero = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');

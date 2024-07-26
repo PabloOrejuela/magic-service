@@ -64,6 +64,7 @@ class PedidoModel extends Model {
                 formas_pago,
                 banco,
                 fecha,
+                orden,
                 sectores_entrega.sector as sector,
                 dir_entrega,
                 estados_pedidos.estado as estado,
@@ -75,7 +76,7 @@ class PedidoModel extends Model {
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
-        //$builder->orderBy('id', 'ASC');
+        $builder->orderBy('orden', 'ASC');
         //PABLO revisar que si es admin soplo traiga 300 ultimos y si es otro rol máximo 1000
         $builder->limit(300);
         $query = $builder->get();
