@@ -546,7 +546,7 @@ class Administracion extends BaseController {
             //$this->itemsProductoTempModel->_deleteItemsTempOld();
             $this->itemsProductoTempModel->_deleteItemsTempOld();
             $data['lastId'] = $this->productoModel->_getLastId();
-            $data['newId'] = $data['lastId'].rand(0, 19);
+            $data['newId'] = $data['lastId'].rand(0, 999);
 
             //En caso de haber items temporales asignados a ese id los borro
             $this->itemsProductoTempModel->_deleteItems($data['newId']);

@@ -1,15 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Varias funciones del form pedido ahora están en el archivo javascript de pedido</li>
-    <li>La función agrega producto ahora está en el archivo javascript de pedido</li>
-    <li>La función elimina producto ahora está en el archivo javascript de pedido</li>
-    <li>Se corrigió el problema que no permitía que se use el orden del localstore en el grid de Pedidos</li>
-    <li>La función que calcula el valor del mensajero ahora está en el archivo de Javascript</li>
-    <li>La función que detectaba el cambio del sector ya no usa Jquery sino un event</li>
-    <li>Se eliminó la columna Procedencias en la tabla Cliente</li>
-    <li>Se quitó los select de procedencias en los formularios de nuevo cliente y editar cliente</li>
-    <li>Se quitó procedencia del modelo de la tabla cliente</li>
-    <li>Se quitó procedencias de las funciones del controlador de clientes</li>
+    <li>Implementado el órden de los pedidos desde base de datos</li>
 </ul>
 
 </br>
@@ -18,6 +9,5 @@
 
 <h5>Formulario nuevo pedido</h5>
 <ul>
-    <li></li>
-
+    <li>Se modificó el rand del newitem del nuevo producto, ahora va de 1 a 999 para evitar que coincidan dos personas creando el mismo producto</li>
 </ul>

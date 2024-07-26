@@ -545,9 +545,16 @@ const mensajePedidosPendientes = () => {
     }
 }
 
-setInterval(function(){   
+setInterval(function(){  
     
     location.reload();
+
+    //Limpiar el grid
+    //lista.innerHTML = ''
+
+    //Traer los pedidos con todo listo
+
+    //mostrar todo el grid
     
 }, 100000)
 
