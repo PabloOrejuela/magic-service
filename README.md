@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>Se modificó el rango del número randómico que genera el new id al crear un producto nuevo</li>
     <li>Implementado el órden de los pedidos desde base de datos</li>
 </ul>
 
