@@ -41,7 +41,7 @@ class Inventarios extends BaseController {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
-            $data['movimientos'] = $this->movimientoInventarioModel->findAll();
+            $data['movimientos'] = $this->movimientoInventarioModel->orderBy('descripcion', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Inventarios';

@@ -29,9 +29,9 @@ class Ventas extends BaseController {
             
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
-            $data['categorias'] = $this->categoriaModel->findAll();
+            $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
             $data['productos'] = $this->productoModel->findAll();
-            $data['sectores'] = $this->sectoresEntregaModel->findAll();
+            $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'asc')->findAll();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['cod_pedido'] = $this->session->id.$date;
 
@@ -631,6 +631,8 @@ class Ventas extends BaseController {
                 'descuento' => $this->request->getPostGet('descuento'),
                 'transporte' => $this->request->getPostGet('transporte'),
                 'horario_extra' => $this->request->getPostGet('horario_extra'),
+                'rango_entrega_desde' => $this->request->getPostGet('rango_entrega_desde'),
+                'rango_entrega_hasta' => $this->request->getPostGet('rango_entrega_hasta'),
                 'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
                 'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
@@ -901,8 +903,8 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
-            $data['categorias'] = $this->categoriaModel->findAll();
-            $data['productos'] = $this->productoModel->findAll();
+            $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
+            $data['productos'] = $this->productoModel->orderBy('producto', 'asc')->findAll();
 
             //delete de los items de la tabla temporal de hace un día
             $this->itemsProductoTempModel->_deleteItemsTempOld();

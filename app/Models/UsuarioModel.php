@@ -76,6 +76,7 @@ class UsuarioModel extends Model {
             'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,proveedores,reportes,rol,direccion,estado'
         );
         $builder->join('roles', 'roles.id=usuarios.idroles');
+        $builder->orderBy('nombre', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -90,6 +91,7 @@ class UsuarioModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('*')->where('logged', 1);
+        $builder->orderBy('nombre', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -104,6 +106,7 @@ class UsuarioModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('*')->where('idroles', $idrol);
+        $builder->orderBy('nombre', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

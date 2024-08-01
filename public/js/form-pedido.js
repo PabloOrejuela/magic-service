@@ -1,11 +1,100 @@
 aData = {}
 let imptEmail = document.getElementById("email")
 let sectores = document.getElementById("sectores")
+let sliderEntregaDesde = document.getElementById("sliderEntregaDesde")
+let rangoEntregaDesde = document.getElementById("rango-entrega-desde")
+let sliderEntregaHasta = document.getElementById("sliderEntregaHasta")
+let rangoEntregaHasta = document.getElementById("rango-entrega-hasta")
+
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
     let email = imptEmail.value
     imptEmail.value = email.toLowerCase()
+    
+})
+
+sliderEntregaDesde.addEventListener('input', function(e){
+    let caracterMinutos = ":"
+    let cadenaDesde = ""
+    let cadenaTexto = sliderEntregaDesde.value
+    
+    if (cadenaTexto.length < 4) {
+        let minutosCadena = cadenaTexto.slice(1)
+        let minutos = parseInt(minutosCadena)
+        
+        if(minutos >= 0 && minutos < 60){
+
+            cadenaDesde = cadenaTexto.slice(0, 1) + caracterMinutos + minutos
+            if (cadenaDesde.length == 3) {
+                rangoEntregaDesde.value = cadenaDesde+"0"
+            }else{
+                rangoEntregaDesde.value = cadenaDesde
+            }
+            
+        }
+
+    }
+
+    if (cadenaTexto.length == 4) {
+        let minutosCadena = cadenaTexto.slice(2)
+        let minutos = parseInt(minutosCadena)
+        if(minutos >= 0 && minutos < 60){
+
+            cadenaDesde = cadenaTexto.slice(0, 2) + caracterMinutos + minutos
+            if (cadenaDesde.length == 4) {
+                rangoEntregaDesde.value = cadenaDesde+"0"
+            }else{
+                rangoEntregaDesde.value = cadenaDesde
+            }
+        }
+    }
+    
+})
+
+sliderEntregaHasta.addEventListener('input', function(e){
+    let min = rangoEntregaDesde.value
+    let minimo = parseInt(min.replace(":",""))
+    let caracterMinutos = ":"
+    let cadenaDesde = ""
+    let cadenaTexto = sliderEntregaHasta.value
+    
+    console.log(minimo);
+
+    if (cadenaTexto.length < 4) {
+        let minutosCadena = cadenaTexto.slice(1)
+        let minutos = parseInt(minutosCadena)
+
+        if (parseInt(cadenaTexto) >= minimo) {
+            if(minutos >= 0 && minutos < 60){
+
+                cadenaDesde = cadenaTexto.slice(0, 1) + caracterMinutos + minutos
+                if (cadenaDesde.length == 3) {
+                    rangoEntregaHasta.value = cadenaDesde+"0"
+                }else{
+                    rangoEntregaHasta.value = cadenaDesde
+                }
+            }
+    
+        } 
+    }
+
+    if (cadenaTexto.length == 4) {
+        let minutosCadena = cadenaTexto.slice(2)
+        let minutos = parseInt(minutosCadena)
+
+        if (parseInt(cadenaTexto) >= minimo) {
+            if(minutos >= 0 && minutos < 60){
+
+                cadenaDesde = cadenaTexto.slice(0, 2) + caracterMinutos + minutos
+                if (cadenaDesde.length == 4) {
+                    rangoEntregaHasta.value = cadenaDesde+"0"
+                }else{
+                    rangoEntregaHasta.value = cadenaDesde
+                }
+            }
+        }
+    }
     
 })
 

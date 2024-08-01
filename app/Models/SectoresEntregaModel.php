@@ -44,6 +44,7 @@ class SectoresEntregaModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select(''.$this->table.'.id as idsector, sector, costo_entrega, estado, sucursal, direccion, idsucursal');
         $builder->join('sucursales', 'sucursales.id='.$this->table.'.idsucursal');
+        $builder->orderBy('sector', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

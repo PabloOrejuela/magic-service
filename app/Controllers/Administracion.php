@@ -88,7 +88,8 @@ class Administracion extends BaseController {
 
     public function getProductosCategoria($categoria){
         
-        $productos = $this->productoModel->_getProductosCategoria($categoria );
+        //$productos = $this->productoModel->_getProductosCategoria($categoria );
+        $productos = $this->productoModel->where('idcategoria', $categoria)->orderBy('producto', 'asc')->find();
         echo json_encode($productos);
     }
 
@@ -112,7 +113,7 @@ class Administracion extends BaseController {
             
             $data['session'] = $this->session;
 
-            $data['sucursales'] = $this->sucursalModel->findAll();
+            $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Administración';
@@ -134,7 +135,7 @@ class Administracion extends BaseController {
             $data['session'] = $this->session;
 
             $data['sectores'] = $this->sectoresEntregaModel->_getSectores();
-            $data['sucursales'] = $this->sucursalModel->findAll();
+            $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Administración';
@@ -156,7 +157,7 @@ class Administracion extends BaseController {
             
             $data['session'] = $this->session;
 
-            $data['variables'] = $this->variablesSistemaModel->findAll();
+            $data['variables'] = $this->variablesSistemaModel->orderBy('variable', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Administración';
@@ -717,7 +718,7 @@ class Administracion extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
-            $data['categorias'] = $this->categoriaModel->findAll();
+            $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
             $data['producto'] = $this->productoModel->_getProducto($idproducto);
             $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
             $newId = $idproducto;
@@ -1026,7 +1027,7 @@ class Administracion extends BaseController {
         if ($data['logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
-            $data['roles'] = $this->rolModel->findAll();
+            $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
             $data['title']='Administración';

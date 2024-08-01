@@ -59,6 +59,8 @@ class PedidoModel extends Model {
                 clientes.nombre as nombre, 
                 fecha_entrega,
                 horario_entrega,
+                rango_entrega_desde,
+                rango_entrega_hasta,
                 observaciones,
                 hora_salida_pedido,
                 formas_pago,
@@ -207,6 +209,14 @@ class PedidoModel extends Model {
             $builder->set('horario_entrega', $data['horario_entrega']); 
         }
 
+        if ($data['rango_entrega_desde'] != 'NULL' && $data['rango_entrega_desde'] != '') {
+            $builder->set('rango_entrega_desde', $data['rango_entrega_desde']); 
+        }
+
+        if ($data['rango_entrega_hasta'] != 'NULL' && $data['rango_entrega_hasta'] != '') {
+            $builder->set('rango_entrega_hasta', $data['rango_entrega_hasta']); 
+        }
+
         if ($data['horario_extra'] != 'NULL' && $data['horario_extra'] != '') {
             $builder->set('cargo_horario', $data['horario_extra']); 
         }
@@ -280,6 +290,14 @@ class PedidoModel extends Model {
         
         if ($data['horario_entrega'] != 'NULL' && $data['horario_entrega'] != '') {
             $builder->set('horario_entrega', $data['horario_entrega']); 
+        }
+
+        if ($data['rango_entrega_desde'] != 'NULL' && $data['rango_entrega_desde'] != '') {
+            $builder->set('rango_entrega_desde', $data['rango_entrega_desde']); 
+        }
+
+        if ($data['rango_entrega_hasta'] != 'NULL' && $data['rango_entrega_hasta'] != '') {
+            $builder->set('rango_entrega_hasta', $data['rango_entrega_hasta']); 
         }
 
         if ($data['formas_pago'] != 'NULL' && $data['formas_pago'] != '') {

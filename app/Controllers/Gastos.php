@@ -48,10 +48,10 @@ class Gastos extends BaseController {
         if ($data['logged'] == 1 && $this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
-            $data['sucursales'] = $this->sucursalModel->findAll();
-            $data['negocios'] = $this->negocioModel->findAll();
-            $data['proveedores'] = $this->proveedorModel->findAll();
-            $data['tipos_gasto'] = $this->tipoGastoModel->findAll();
+            $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
+            $data['negocios'] = $this->negocioModel->orderBy('negocio', 'asc')->findAll();
+            $data['proveedores'] = $this->proveedorModel->orderBy('nombre', 'asc')->findAll();
+            $data['tipos_gasto'] = $this->tipoGastoModel->orderBy('tipo_gasto', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Gastos';

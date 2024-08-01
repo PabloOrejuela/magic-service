@@ -32,7 +32,7 @@
                                         </div>
                                         <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="form-group row mb-5">
                                         <label for="horario_entrega" class="col-md-5 col-form-label">Horario de entrega:</label>
                                         <div class="col-md-6">
                                             <select class="form-select form-control-border" id="horario_entrega" name="horario_entrega">
@@ -50,6 +50,42 @@
                                                     }
                                                 ?>
                                         </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-5 div-celular">
+                                            <label for="disabledRange" class="form-label">Entrega desde:</label>
+                                            <input type="range" min="600" max="2030" step="10" id="sliderEntregaDesde" value="0">
+                                        </div>
+                                        <div class="col-md-5 div-celular">
+                                            <label for="disabledRange" class="form-label">Entrega hasta:</label>
+                                            <input type="range" min="600" max="2030" step="10" id="sliderEntregaHasta" value="0">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-5" id="campo-extra">
+                                        <div class="col-md-5 div-celular">
+                                            <label for="rango-entrega">Desde:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="rango-entrega-desde" 
+                                                name="rango_entrega_desde" 
+                                                placeholder="0:00"
+                                                maxlength="5"
+                                                value="<?= old('rango_entrega_desde'); ?>"
+                                            >
+                                        </div>
+                                        <div class="col-md-5 div-celular">
+                                            <label for="rango-entrega">Hasta:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="rango-entrega-hasta" 
+                                                name="rango_entrega_hasta" 
+                                                placeholder="0:00"
+                                                maxlength="5"
+                                                value="<?= old('rango_entrega_hasta'); ?>"
+                                            >
                                         </div>
                                     </div>
                                     <div class="form-group"  style="display: none;">
