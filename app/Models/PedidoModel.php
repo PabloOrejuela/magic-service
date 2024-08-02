@@ -390,6 +390,9 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $pedido = $this->_getDatosPedido($id);
+
+        // echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+
         if ($pedido->fecha_entrega != NULL) {
             $numCampos--;
         }

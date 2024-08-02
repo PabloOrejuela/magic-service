@@ -91,7 +91,7 @@ class Validation extends BaseConfig
     ];
 
     public $pedidoInicial = [
-        'fecha_entrega'   => 'required|less_than[8]',
+        'fecha_entrega'   => 'required|min_length[8]',
         'nombre'   => 'required',
         'telefono'   => 'required|min_length[9]',
         'vendedor'   => 'required|greater_than[0]',

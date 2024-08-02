@@ -1,6 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Se quitó la validación de que el id del cliente sea requerido</li>
+    <li>Ya registra el usuario nuevo desde el form de Nuevo pedido</li>
 </ul>
 
 </br>
