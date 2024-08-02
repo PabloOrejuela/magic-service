@@ -91,9 +91,9 @@ class Validation extends BaseConfig
     ];
 
     public $pedidoInicial = [
-        'fecha_entrega'   => 'required',
+        'fecha_entrega'   => 'required|less_than[8]',
         'nombre'   => 'required',
-        'idcliente'   => 'required',
+        'telefono'   => 'required|min_length[9]',
         'vendedor'   => 'required|greater_than[0]',
         'sectores'   => 'required|greater_than[0]',
         
@@ -106,16 +106,18 @@ class Validation extends BaseConfig
         'nombre' => [
             'required' => 'El campo "Cliente" es obligatorio',
         ],
-        'idcliente' => [
-            'required' => 'El campo "Cliente" es obligatorio, el cliente aun no está registrado',
-        ],
         'vendedor' => [
             'greater_than' => 'El campo "Vendedor" es obligatorio',
         ],
         'sectores' => [
-            'greater_than' => 'El campo "Sector" es obligatorio',
+            'greater_than' => 'El campo "Sector en Transporte" es obligatorio',
         ],
+        'telefono' => [
+            'required' => 'El campo "Teléfono" es obligatorio',
+            'min_length' => 'El campo "Teléfono" es obligatorio',
+        ]
     ];
+
 
     public $usuario = [
         'nombre'   => 'required',

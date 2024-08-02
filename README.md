@@ -1,7 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Se modificó el rango del número randómico que genera el new id al crear un producto nuevo</li>
-    <li>Implementado el órden de los pedidos desde base de datos</li>
+    <li>Se quitó la validación de que el id del cliente sea requerido</li>
 </ul>
 
 </br>
@@ -10,5 +9,5 @@
 
 <h5>Formulario nuevo pedido</h5>
 <ul>
-    <li>Se modificó el rand del newitem del nuevo producto, ahora va de 1 a 999 para evitar que coincidan dos personas creando el mismo producto</li>
+    <li>Corregidas las validaciones del form nuevo pedido</li>
 </ul>

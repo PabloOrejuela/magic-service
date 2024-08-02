@@ -29,9 +29,10 @@
                                         <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
                                         <div class="col-sm-6">
                                             <input type="date" class="form-control" id="inputFecha" name="fecha_entrega"  min="<?= date('Y-m-d') ?>" value="<?= old('fecha_entrega')?>">
+                                            <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
                                         </div>
-                                        <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
                                     </div>
+                                    
                                     <div class="form-group row mb-5">
                                         <label for="horario_entrega" class="col-md-5 col-form-label">Horario de entrega:</label>
                                         <div class="col-md-6">
@@ -117,7 +118,7 @@
                                             >
                                         </div>
                                     </div>
-                                    <p id="error-message"><?= session('errors.idcliente');?> </p>
+                                    <p id="error-message"><?= session('errors.telefono');?> </p>
                                     <div class="form-group">
                                         <label for="nombre">Nombre y apellido del cliente *:</label>
                                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
@@ -128,7 +129,6 @@
                                         <label for="documento">Documento:</label>
                                         <input type="text" class="form-control" id="documento" name="documento" placeholder="documento" value="<?= old('documento'); ?>" >
                                     </div>
-                                    <p id="error-message"><?= session('errors.documento');?> </p>
                                     <div id="cliente"> </div>
                                     <div class="form-group" id="campo-extra">
                                         <label for="email" >Email:</label>
@@ -199,7 +199,6 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <p id="error-message"><?= session('errors.producto');?> </p>
                                     <div class="row mb-2">
                                         <table id="tablaProductos" class="table table-stripped table-sm table-responsive tablaProductos" width:="100%">
                                             <thead class="thead-light">
@@ -266,7 +265,9 @@
                                                 value="<?= old('transporte'); ?>"
                                             >
                                         </div>
+                                        
                                     </div>
+                                    <p id="error-message"><?= session('errors.sectores');?> </p>
                                     <div class="form-group row">
                                         <label for="horario_extra" class="col-sm-8 col-form-label">Cargo Horario:</label>
                                         <div class="col-sm-4">
@@ -343,9 +344,7 @@
                                                 value="<?= old('total'); ?>"
                                             >
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <p id="error-message"><?= session('errors.sectores');?> </p>
+                                        
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="form-group row">

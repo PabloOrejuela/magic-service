@@ -649,7 +649,6 @@ class Ventas extends BaseController {
                 'email' => strtolower($this->request->getPostGet('email')),
             ];
 
-            //echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
@@ -658,10 +657,10 @@ class Ventas extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                
+                echo '<pre>'.var_export($cliente, true).'</pre>';
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
-                $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
-                
+                $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($cliente['idcliente']);
+                echo '<pre>'.var_export($clienteExiste, true).'</pre>';exit;
                 if ($clienteExiste) {
                     
                     //Inserto el nuevo producto
