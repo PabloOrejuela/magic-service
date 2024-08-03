@@ -639,8 +639,8 @@ class Ventas extends BaseController {
                 'total' => $this->request->getPostGet('total'),
             ];
 
+            $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [
-                'idcliente' => $this->request->getPostGet('idcliente'),
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'telefono' => strtoupper($this->request->getPostGet('telefono')),
                 'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
@@ -659,16 +659,36 @@ class Ventas extends BaseController {
             }else{
                 
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
-                $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($cliente['idcliente']);
-
+                $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($clienteID);
+                //echo '<pre>'.var_export($clienteExiste, true).'</pre>';exit;
                 if ($clienteExiste) {
-                    
-                    //Inserto el nuevo producto
-                    $this->pedidoModel->_insert($pedido);
 
+                    //Actualizo los datos del cliente
+                    $cliente = [
+                        'nombre' => strtoupper($this->request->getPostGet('nombre')),
+                        'telefono' => strtoupper($this->request->getPostGet('telefono')),
+                        'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
+                        'documento' => strtoupper($this->request->getPostGet('documento')),
+                        'direccion' => '',
+                        'email' => strtolower($this->request->getPostGet('email')),
+                    ];
+                    $this->clienteModel->update($clienteID, $cliente);
+
+                    //Inserto el nuevo producto
+                    if ($pedido) {
+                        $this->pedidoModel->_insert($pedido);
+                        $mensaje = 1;
+                    }else{
+                        $mensaje = 0;
+                    }
+                    
                     //Inserto el detalle
-                    $this->detallePedidoModel->_insert($detalleTemporal);
-                    $mensaje = 1;
+                    if ($detalleTemporal) {
+                        $this->detallePedidoModel->_insert($detalleTemporal);
+                        $mensaje = 1;
+                    }else{
+                        $mensaje = 0;
+                    }
                     $this->session->setFlashdata('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }else{

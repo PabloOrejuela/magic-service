@@ -11,7 +11,7 @@
                     <div class="card-header">
                         <h3 class="card-title titulo-form-pedido">
                             <i class="fas fa-table mr-1"></i>
-                            <?= $subtitle . ' Aún no está listo este formulario';?>
+                            <?= $subtitle . ' Revisiones finales de este formulario';?>
                         </h3>
                     </div><!-- /.card-header -->
                     <div class="card-body">
@@ -42,9 +42,9 @@
                                                     if (isset($horariosEntrega)) {
                                                         foreach ($horariosEntrega as $key => $hora) {
                                                             if ($hora->id == 2) {
-                                                                echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).' style="color:red;">'.$hora->hora.'</option>';
+                                                                echo '<option value="'.$hora->id.'" '.set_select('horario_entrega', $hora->id, false).' style="color:red;">'.$hora->hora.'</option>';
                                                             }else{
-                                                                echo '<option value="'.$hora->id.'" '.set_select('vendedor', $hora->id, false).'>'.$hora->hora.'</option>';
+                                                                echo '<option value="'.$hora->id.'" '.set_select('horario_entrega', $hora->id, false).'>'.$hora->hora.'</option>';
                                                             }
                                                             
                                                         }
@@ -89,9 +89,9 @@
                                             >
                                         </div>
                                     </div>
-                                    <div class="form-group"  style="display: none;">
+                                    <div class="form-group"  style="display: block;">
                                         <label for="nombre">Id Cliente:</label>
-                                        <input type="hidden" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>"  >
+                                        <input type="txt" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>" readonly >
                                     </div>
                                     <div class="form-group row" id="campo-extra">
                                         <div class="col-md-6 div-celular">

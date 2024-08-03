@@ -8,6 +8,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
+                        <h4><?= $mensaje; ?></h4>
                         <div>
                             <a href="<?= site_url().'pedidos-ventana/'; ?>"  class="btn btn-success mb-2" target="_blank">Abrir en nueva ventana</a>
                         </div>
