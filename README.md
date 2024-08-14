@@ -1,7 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Ya actualiza los datos del cliente desde el form de nuevo pedido</li>
-    <li>Ya registra el usuario nuevo desde el form de Nuevo pedido</li>
+
 </ul>
 
 </br>
@@ -10,5 +9,5 @@
 
 <h5>Formulario nuevo pedido</h5>
 <ul>
-    <li>Corregidas y revisadas las validaciones del form nuevo pedido</li>
+    <li>Corregidas un error en el cotizador que no borraba la imagen cuando se le ponía borrar </li>
 </ul>

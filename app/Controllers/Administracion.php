@@ -887,11 +887,10 @@ class Administracion extends BaseController {
                 'observaciones' => $this->request->getPostGet('observaciones'),
                 'imagenNew' => $imagen->getName(),
             ];
-
+            
             //Verifico si se sube otra imagen o no
             if ($producto['imagenNew'] != '') {
                 //Se ha elegido una nueva imágen
-                
                 //Creo la ruta a las imágenes
                 $ruta = './public/images/productos/';
 
@@ -919,7 +918,9 @@ class Administracion extends BaseController {
                     }
                 }
             }else{
+                //echo '<pre>'.var_export($producto, true).'</pre>';exit;
                 //No se ha elegido una nueva imagen
+                $producto['image'] = 'default-img';
                 //Verifico si se ha borrado la imágen
                 //echo "se borró la imagen";
             }

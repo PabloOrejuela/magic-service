@@ -620,12 +620,11 @@ const alertProcesando = (msg, icono) => {
       icon: icono,
       title: msg,
     });
-  };
+};
 
 linkBorraImagen.addEventListener('click', function(e) {
     e.stopPropagation()
     let divImagen = document.getElementById('image-product')
     //let imagenNew = document.querySelector('input[name="file-img"]')
     divImagen.src = "./public/images/productos/default-img.jpg"
-
 });
