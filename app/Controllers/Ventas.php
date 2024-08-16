@@ -37,7 +37,9 @@ class Ventas extends BaseController {
 
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
 
-            //echo '<pre>'.var_export($data['varSistema'], true).'</pre>';exit;
+            $data['detalle'] = $this->detallePedidoTempModel->where('cod_pedido', $data['cod_pedido'])->findAll();
+
+            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
 
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
@@ -102,6 +104,14 @@ class Ventas extends BaseController {
     function get_valor_sector(){
         $sector = $this->request->getPostGet('sector');
         $data['sector'] = $this->sectoresEntregaModel->find($sector);
+        
+        echo json_encode($data);
+        //echo view('precio_sector', $data);
+    }
+
+    function getDetallle(){
+        $codigo = $this->request->getPostGet('codigo');
+        $data['detalle'] = $this->detallePedidoTempModel->find($codigo);
         
         echo json_encode($data);
         //echo view('precio_sector', $data);
@@ -268,7 +278,7 @@ class Ventas extends BaseController {
         $error = '';
 
         $producto = $this->productoModel->find($idproducto);
-
+        
         if ($producto) {
             $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
             
@@ -296,8 +306,8 @@ class Ventas extends BaseController {
                     'pvp' => $producto->precio,
                     'subtotal' => $subtotal,
                 ];
-
-                $this->detallePedidoTempModel->_saveProdDetalle($data);
+                
+                $this->detallePedidoTempModel->insert($data);
             }
         }else{
             $error = 'No existe el producto';
@@ -543,8 +553,6 @@ class Ventas extends BaseController {
         return $itemsTemp;
     }
 
-
-
     function cargaProductos_temp($cod_pedido){
         $resultado = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
         $fila = '';
@@ -612,7 +620,7 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
-        
+
             $pedido = [
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $data['id'],
@@ -732,7 +740,7 @@ class Ventas extends BaseController {
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
-            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido );
+            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
         
             $pedido = [
                 'cod_pedido' => $cod_pedido,

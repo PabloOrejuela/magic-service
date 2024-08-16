@@ -64,6 +64,7 @@ $routes->get('deleteItemTempProduct', 'Ventas::deleteItemTempProduct');
 $routes->get('cotizador', 'Ventas::cotizador');
 $routes->get('deleteItemsTempProduct', 'Ventas::deleteItemsTempProduct');
 $routes->get('updatePrecioActualTempProduct', 'Ventas::updatePrecioActualTempProduct');
+$routes->get('get_detallle', 'Ventas::getDetallle');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');

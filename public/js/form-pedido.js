@@ -59,7 +59,7 @@ sliderEntregaHasta.addEventListener('input', function(e){
     let cadenaDesde = ""
     let cadenaTexto = sliderEntregaHasta.value
     
-    console.log(minimo);
+    //console.log(minimo);
 
     if (cadenaTexto.length < 4) {
         let minutosCadena = cadenaTexto.slice(1)
@@ -262,7 +262,7 @@ sectores.addEventListener("change", () => {
         },
         success: function(resultado){
             let dato = JSON.parse(resultado);
-            console.log('Valor: ' + valor);
+            //console.log('Valor: ' + valor);
             if (valor != 0) {
                 alertCambioValor()
                 document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega)
@@ -554,7 +554,7 @@ function calcularMensajero(){
           console.log("No se ha elegio un sector poner una validación");
       }
   } else {
-      console.log(cantProdExtra);
+      //console.log(cantProdExtra);
       //Si solo es un arreglo no hay extra hace este cálculo, el 4 se agrega pues el sector norte se supone que es gratis pero si carga 4 al valor del mensajero
       valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + 4 + parseFloat(horarioExtra/2)
 
@@ -587,6 +587,7 @@ $(document).ready(function(){
       }
   });
 });
+
 
 const alertaMensaje = (msg, time, icon) => {
   const toast = Swal.mixin({

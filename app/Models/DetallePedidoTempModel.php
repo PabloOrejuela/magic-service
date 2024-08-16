@@ -13,10 +13,10 @@ class DetallePedidoTempModel extends Model {
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['cod_pedido','idproducto','cantidad','precio','subtotal','observacion','created_at','updated_at'];
+    protected $allowedFields    = ['cod_pedido','idproducto','cantidad','precio','pvp','subtotal','observacion','created_at','updated_at'];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -41,6 +41,7 @@ class DetallePedidoTempModel extends Model {
 
     public function _deleteDetallesTempOld(){
         $ayer = date('Y-m-d', time() - 60 * 60 * 24);
+        
         $builder = $this->db->table($this->table);
         $builder->where('created_at <=', $ayer);
         $builder->delete();
@@ -80,22 +81,11 @@ class DetallePedidoTempModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->set('cantidad', $cantidad);
         $builder->set('subtotal', $subtotal);
+        $builder->set('updated_at', date('Y-m-d H:m:s'));
         //$builder->set('precio', $precio);
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();
-    }
-
-    public function _saveProdDetalle($data){
-        
-        $builder = $this->db->table($this->table);
-        $builder->set('cantidad', $data['cantidad']);
-        $builder->set('subtotal', $data['subtotal']);
-        $builder->set('precio', $data['precio']);
-        $builder->set('pvp', $data['pvp']);
-        $builder->set('cod_pedido', $data['cod_pedido']);
-        $builder->set('idproducto', $data['idproducto']);
-        $builder->insert();
     }
 
     public function _eliminarProdDetalle($idproducto, $cod_pedido){
@@ -110,6 +100,7 @@ class DetallePedidoTempModel extends Model {
         
         $builder = $this->db->table($this->table);
         $builder->set('observacion', $observacion);
+        $builder->set('updated_at', date('Y-m-d H:m:s'));
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();
@@ -120,6 +111,7 @@ class DetallePedidoTempModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->set('pvp', $precio);
         $builder->set('subtotal', $subtotal);
+        $builder->set('updated_at', date('Y-m-d H:m:s'));
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();

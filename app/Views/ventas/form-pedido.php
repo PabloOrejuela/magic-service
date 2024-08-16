@@ -418,10 +418,38 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
 <script>
-    // window.onbeforeunload = function() {
-    //     return "¿Desea recargar la página web?";
-    // };
-    //import Swal from 'sweetalert2';
+
+    //Traigo el detalle al cargar la página
+    window.addEventListener('load', function() {
+        let codigoPedido = document.getElementById('cod_pedido').value
+    
+        $.ajax({
+            method: 'get',
+            dataType:"html",
+            url: "get_detallle",
+            data: {
+            codigo: codigoPedido
+            },
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(resultado){
+                let dato = JSON.parse(resultado);
+                console.log(dato);
+                if (dato != 0) {
+                    alertCambioValor()
+                }else{
+                    alertCambioValor()
+                }
+                
+                sumarTotal()
+
+            },
+            error: function(data){
+                console.log("No hay detalle");
+            }
+        });
+    });
 
     $(document).ready(function(){
         $("#telefono").on('change',function(){
