@@ -16,8 +16,8 @@
                                         if ($variables) {
                                             foreach ($variables as $key => $value) {
                                                 echo '<div class="mb-3 row">
-                                                        <label for="'.$value->id.'" class="col-sm-8 col-form-label">'.$value->variable.'</label>
-                                                        <div class="col-sm-4">
+                                                        <label for="'.$value->id.'" class="col-sm-9 col-form-label">'.$value->variable.' ('.$value->unidad.')</label>
+                                                        <div class="col-sm-2">
                                                             <input 
                                                                 type="text" 
                                                                 class="form-control" 

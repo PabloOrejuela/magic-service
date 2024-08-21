@@ -34,7 +34,6 @@ class Ventas extends BaseController {
             $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'asc')->findAll();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['cod_pedido'] = $this->session->id.$date;
-
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
 
             $data['detalle'] = $this->detallePedidoTempModel->where('cod_pedido', $data['cod_pedido'])->findAll();

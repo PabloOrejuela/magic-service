@@ -22,7 +22,17 @@
                                 <form action="<?= site_url().'pedido-insert';?>" method="post">
                                     
                                     <div id="div-pedido">
-                                        <label for="cod_pedido">Pedido: </label><span class="span-pedido"><?= $cod_pedido ?></span>
+                                        <label for="cod_pedido">Pedido: </label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control col-3" 
+                                            id="cod_pedido" 
+                                            name="cod_pedido"
+                                            placeholder="<?= $cod_pedido ?>"
+                                            maxlength="5"
+                                            value="<?= old('cod_pedido'); ?>"
+                                            readonly
+                                        >
                                     </div>
                                     <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
                                     <div class="form-group row">
@@ -121,7 +131,7 @@
                                     <p id="error-message"><?= session('errors.telefono');?> </p>
                                     <div class="form-group">
                                         <label for="nombre">Nombre y apellido del cliente *:</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>"  required>
+                                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= old('nombre'); ?>">
                                         <a href="<?= site_url(); ?>/cliente-create" class="nav-link mb-3" id="link-clear-fields" target="_blank">Registrar nuevo cliente</a>
                                     </div>
                                     <p id="error-message"><?= session('errors.nombre');?> </p>
@@ -351,13 +361,6 @@
                                         <input 
                                             type="hidden" 
                                             class="form-control inputValor" 
-                                            id="cod_pedido" 
-                                            name="cod_pedido"
-                                            value="<?= $cod_pedido; ?>"
-                                        >
-                                        <input 
-                                            type="hidden" 
-                                            class="form-control inputValor" 
                                             id="cant_arreglos" 
                                             name="cant_arreglos"
                                         >
@@ -375,32 +378,20 @@
                                                 <input type="text" class="form-control" id="porcentCargoHorario" value="<?= $variablesSistema[1]->valor; ?>">
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="">Porcentaje cargo domingo</label>
+                                                <label for="">Porcentaje mensajero por cargo domingo</label>
                                                 <input type="text" class="form-control" id="porcentCargoDomingo" value="<?= $variablesSistema[2]->valor; ?>">
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="">Porcentaje Transporte entrega extra mismo sector</label>
+                                                <label for="">Porcentaje mensajero por cargo horario extra</label>
                                                 <input type="text" class="form-control" id="porcentTransporteExtra" value="<?= $variablesSistema[3]->valor; ?>">
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="">Cargo horario entrega extra mismo sector</label>
+                                                <label for="">Valor de cargo en domingo</label>
                                                 <input type="text" class="form-control" id="porcentCargoHorarioExtra" value="<?= $variablesSistema[4]->valor; ?>">
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="">Cargo domingo entrega extra mismo sector</label>
+                                                <label for="">Valor de cargo en horario extra</label>
                                                 <input type="text" class="form-control" id="porcentCargoDomingoExtra" value="<?= $variablesSistema[5]->valor; ?>">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="">Cargo horario entrega extra otro sector</label>
-                                                <input type="text" class="form-control" id="porcentCargoHorarioExtraOtroSector" value="<?= $variablesSistema[6]->valor; ?>">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="">Cargo domingo entrega extra otro sector</label>
-                                                <input type="text" class="form-control" id="porcentCargoDomingoExtraOtroSector" value="<?= $variablesSistema[7]->valor; ?>">
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label for="">Transporte entrega extra otro sector</label>
-                                                <input type="text" class="form-control" id="porcentTransporteExtraOtroSector" value="<?= $variablesSistema[7]->valor; ?>">
                                             </div>
                                         </div> 
                                     </div>           

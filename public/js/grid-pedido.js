@@ -556,8 +556,7 @@ setInterval(function(){
 
     //mostrar todo el grid
     
-}, 100000)
-
+}, 200000)
 
 
 function copyData(id){

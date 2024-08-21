@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>Se eliminó las variables del sistema que ya no se utilizaban, el cambio también se hizo a nivel de DB</li>
     <li>Se eliminó la función que insertaba el detalle temporal del pedido y en lugar se usa la función insert del modelo</li>
     <li>Se implementó en todas las funciones de actualización del modelo de detalle temporal el que actualice el updated at</li>
 </ul>
