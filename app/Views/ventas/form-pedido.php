@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.css">
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/nuevopedido-styles.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/form-pedido.css">
 
 <section class="content">
       <div class="container-fluid">
@@ -63,16 +63,6 @@
                                         </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-md-5 div-celular">
-                                            <label for="disabledRange" class="form-label">Entrega desde:</label>
-                                            <input type="range" min="600" max="2030" step="10" id="sliderEntregaDesde" value="0">
-                                        </div>
-                                        <div class="col-md-5 div-celular">
-                                            <label for="disabledRange" class="form-label">Entrega hasta:</label>
-                                            <input type="range" min="600" max="2030" step="10" id="sliderEntregaHasta" value="0">
-                                        </div>
-                                    </div>
                                     <div class="form-group row mb-5" id="campo-extra">
                                         <div class="col-md-5 div-celular">
                                             <label for="rango-entrega">Desde:</label>
@@ -82,7 +72,7 @@
                                                 id="rango-entrega-desde" 
                                                 name="rango_entrega_desde" 
                                                 placeholder="0:00"
-                                                maxlength="5"
+                                                maxlength="100"
                                                 value="<?= old('rango_entrega_desde'); ?>"
                                             >
                                         </div>
@@ -94,7 +84,7 @@
                                                 id="rango-entrega-hasta" 
                                                 name="rango_entrega_hasta" 
                                                 placeholder="0:00"
-                                                maxlength="5"
+                                                maxlength="100"
                                                 value="<?= old('rango_entrega_hasta'); ?>"
                                             >
                                         </div>
@@ -234,6 +224,7 @@
                                                 onchange="sumarTotal(this.value);" 
                                                 name="valor_neto"
                                                 value="<?= old('valor_neto'); ?>"
+                                                readonly
                                             >
                                         </div>
                                     </div>

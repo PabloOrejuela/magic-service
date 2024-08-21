@@ -28,6 +28,10 @@
 }
 
 #valor_mensajero{
-    background-color: rgba(230, 166, 166, 0.7);
+    background-color: rgba(230, 166, 166, 0.2);
     color: rgb(0, 0, 0, 1);;
+}
+
+#valor_neto{
+    background-color: rgba(153, 239, 241, 0.2);
 }
