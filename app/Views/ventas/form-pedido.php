@@ -89,7 +89,7 @@
                                             >
                                         </div>
                                     </div>
-                                    <div class="form-group"  style="display: block;">
+                                    <div class="form-group"  style="display: none;">
                                         <label for="nombre">Id Cliente:</label>
                                         <input type="txt" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>" readonly >
                                     </div>
@@ -297,6 +297,20 @@
                                             >
                                         </div>
                                     </div>
+                                    <div class="form-group row" id="valor-mensajero-hidden">
+                                        <label for="valor_mensajero" class="col-sm-8 col-form-label">Valor mensajero calculado:</label>
+                                        <div class="col-sm-4">
+                                            <input 
+                                                type="text" 
+                                                class="form-control inputValor" 
+                                                id="valor_mensajero" 
+                                                name="valor_mensajero"
+                                                onchange="sumarTotal()" 
+                                                value="<?= old('valor_mensajero'); ?>"
+                                                readonly
+                                            >
+                                        </div>
+                                    </div>
                                     <div class="form-group row">
                                         <label for="valor_mensajero_edit" class="col-sm-4 col-form-label">Valor mensajero:</label>
                                         <div class="col-sm-4">
@@ -315,11 +329,10 @@
                                             <input 
                                                 type="text" 
                                                 class="form-control inputValor valorImportante decimal" 
-                                                id="valor_mensajero" 
-                                                placeholder="0" 
+                                                id="valor_mensajero_mostrado" 
+                                                placeholder="0.00" 
                                                 onchange="sumarTotal()" 
-                                                name="valor_mensajero"
-                                                value="<?= old('valor_mensajero'); ?>"
+                                                name="valor_mensajero_mostrado"
                                                 readonly
                                             >
                                         </div>
@@ -374,15 +387,15 @@
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="">Porcentaje mensajero por cargo horario extra</label>
-                                                <input type="text" class="form-control" id="porcentTransporteExtra" value="<?= $variablesSistema[3]->valor; ?>">
+                                                <input type="text" class="form-control" id="porcentCargoHorarioExtra" value="<?= $variablesSistema[3]->valor; ?>">
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="">Valor de cargo en domingo</label>
-                                                <input type="text" class="form-control" id="porcentCargoHorarioExtra" value="<?= $variablesSistema[4]->valor; ?>">
+                                                <input type="text" class="form-control" id="valorDomingo" value="<?= $variablesSistema[4]->valor; ?>">
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="">Valor de cargo en horario extra</label>
-                                                <input type="text" class="form-control" id="porcentCargoDomingoExtra" value="<?= $variablesSistema[5]->valor; ?>">
+                                                <input type="text" class="form-control" id="valorHorarioExtra" value="<?= $variablesSistema[5]->valor; ?>">
                                             </div>
                                         </div> 
                                     </div>           
@@ -417,7 +430,7 @@
             },
             success: function(resultado){
                 let dato = JSON.parse(resultado);
-                console.log(dato);
+                //console.log(dato);
                 if (dato != 0) {
                     alertCambioValor()
                 }else{
@@ -604,6 +617,7 @@ $(document).ready(function(){
     $("#valor_mensajero_edit").on('change',function(){
         if($("#valor_mensajero_edit").val() !=""){
             alertCambioValorMensajero()
+            document.getElementById('valor_mensajero_mostrado').value = "0.00"
         }
     });
 });

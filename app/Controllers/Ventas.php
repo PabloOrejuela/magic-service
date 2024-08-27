@@ -648,14 +648,14 @@ class Ventas extends BaseController {
 
             $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [
-                'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                'telefono' => strtoupper($this->request->getPostGet('telefono')),
-                'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
-                'documento' => strtoupper($this->request->getPostGet('documento')),
+                'nombre' => $this->request->getPostGet('nombre'),
+                'telefono' => $this->request->getPostGet('telefono'),
+                'telefono_2' => $this->request->getPostGet('telefono_2'),
+                'documento' => $this->request->getPostGet('documento'),
                 'direccion' => '',
                 'email' => strtolower($this->request->getPostGet('email')),
             ];
-
+            //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
@@ -667,15 +667,15 @@ class Ventas extends BaseController {
                 
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
                 $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($clienteID);
-                //echo '<pre>'.var_export($clienteExiste, true).'</pre>';exit;
+                
                 if ($clienteExiste) {
 
                     //Actualizo los datos del cliente
                     $cliente = [
-                        'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                        'telefono' => strtoupper($this->request->getPostGet('telefono')),
-                        'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
-                        'documento' => strtoupper($this->request->getPostGet('documento')),
+                        'nombre' => $this->request->getPostGet('nombre'),
+                        'telefono' => $this->request->getPostGet('telefono'),
+                        'telefono_2' => $this->request->getPostGet('telefono_2'),
+                        'documento' => $this->request->getPostGet('documento'),
                         'direccion' => '',
                         'email' => strtolower($this->request->getPostGet('email')),
                     ];
@@ -701,10 +701,10 @@ class Ventas extends BaseController {
                 }else{
 
                     $cliente = [
-                        'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                        'telefono' => strtoupper($this->request->getPostGet('telefono')),
-                        'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
-                        'documento' => strtoupper($this->request->getPostGet('documento')),
+                        'nombre' => $this->request->getPostGet('nombre'),
+                        'telefono' => $this->request->getPostGet('telefono'),
+                        'telefono_2' => $this->request->getPostGet('telefono2'),
+                        'documento' => $this->request->getPostGet('documento'),
                         'direccion' => '',
                         'email' => strtolower($this->request->getPostGet('email')),
                     ];

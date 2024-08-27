@@ -35,3 +35,7 @@
 #valor_neto{
     background-color: rgba(153, 239, 241, 0.2);
 }
+
+#valor-mensajero-hidden{
+    display: none;
+}

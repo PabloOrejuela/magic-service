@@ -446,15 +446,15 @@ botonesEstadoPedido.forEach(btn => {
                 selectEstadoModal.innerHTML = ''
                 if (datos) {
                     for (const dato of datos) {
-                        if (dato.estado == estado) {
-                            selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
-                        }else{
-                            selectEstadoModal.innerHTML += `<option value="${dato.id}">${dato.estado}</option>`
+                        if (dato.id != 6) {
+                            if (dato.estado == estado) {
+                                selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
+                            }else{
+                                selectEstadoModal.innerHTML += `<option value="${dato.id}">${dato.estado}</option>`
+                            }
                         }
                     }
                 }
-                
-                
             }
         });
         document.querySelector('#codigo_pedido').value = id;

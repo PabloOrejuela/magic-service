@@ -145,7 +145,7 @@ $(document).ready(function(){
                       document.getElementById("horario_extra").value = 0
                   }
                   
-                  sumarTotal()
+                  //sumarTotal()
               },
               error: function(data){
                   console.log("No existe el valor de ese horario");
@@ -181,6 +181,7 @@ sectores.addEventListener("change", () => {
                 alertCambioValor()
                 document.getElementById("transporte").value = 0
                 document.getElementById("valor_mensajero").value = 0
+                document.getElementById("valor_mensajero_mostrado").value = 0
             }
             
             sumarTotal()
@@ -336,7 +337,7 @@ function observacion(idproducto, cod_pedido){
 
                       limpiaLineaProducto()
                       calculaValorNeto(cod_pedido);
-                      sumarTotal()
+                      //sumarTotal()
                   }
               }
           }
@@ -413,11 +414,14 @@ function calcularMensajero(){
   let horarioExtra = document.getElementById('horario_extra').value
   let valorMensajero = document.getElementById('valor_mensajero').value
   let valorMensajeroEdit = document.getElementById('valor_mensajero_edit').value
-  let cantProd = document.getElementById("cant_arreglos").value;
 
-  let porcentajeMensajeroEntregaExtra = parseFloat(document.getElementById("porcentTransporteExtra").value)/100
-
+  //Capturo los valores del sistema
+  let porcentajeHorario = parseFloat(document.getElementById("porcentCargoHorario").value)/100
+  let porcentajeHorarioExtra = parseFloat(document.getElementById("porcentCargoHorarioExtra").value)/100
+  let porcentajeTransporte = parseFloat(document.getElementById("porcentTransporte").value)/100
+  let porcentajeDomingo = parseFloat(document.getElementById("porcentCargoDomingo").value)/100
   
+
   if (isNaN(parseFloat(transporte)) == true) {
       transporte = 0
   }
@@ -429,45 +433,12 @@ function calcularMensajero(){
   if (isNaN(parseFloat(horarioExtra)) == true) {
       horarioExtra = 0
   }
-  let extraMensajero = 0
-  let cantProdExtra = (cantProd - 1)
-  
-  if (cantProdExtra >= 1) {
-      //console.log("cant: " + cantProdExtra);
-      if (sectores == 1) {
-          
-          //Se agrega 50% de Transporte mas 50% mas de carga horario mas 50% mas de domingo por cada arreglo extra
-          for (let i = 1; i <= cantProdExtra; i++) {
-              extraMensajero += ((parseFloat(transporte))*porcentajeMensajeroEntregaExtra) 
-                              + (parseFloat(horarioExtra)*porcentajeMensajeroEntregaExtra) 
-                              + (parseFloat(cargoDomingo)*porcentajeMensajeroEntregaExtra)
-          }
 
-          valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
-
-      }else if(sectores > 1){
-          
-          //Se agrega 35% de Transporte mas 35% mas de carga horario mas 35% mas de domingo por arreglo
-          for (let i = 1; i <= cantProdExtra; i++) {
-              extraMensajero += (parseFloat(transporte) * porcentajeMensajeroEntregaExtraOtro) 
-                              + (parseFloat(horarioExtra) * porcentajeMensajeroEntregaExtraOtro) 
-                              + (parseFloat(cargoDomingo) * porcentajeMensajeroEntregaExtraOtro)
-                              
-              // console.log("Trans: " + (parseFloat(transporte) * porcentajeMensajeroEntregaExtra) );
-              // console.log("Horario: " + (parseFloat(horarioExtra) * porcentajeMensajeroEntregaExtra) );
-              // console.log("Domingo: " + (parseFloat(cargoDomingo) * porcentajeMensajeroEntregaExtra) );
-              // console.log(extraMensajero);
-          }
-
-          valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + parseFloat(horarioExtra/2) + extraMensajero
-      }else{
-          console.log("No se ha elegio un sector poner una validación");
-      }
+  if (sectores == 0 || sectores == 18) {
+    valorMensajero = "0.00"
   } else {
-      //console.log(cantProdExtra);
-      //Si solo es un arreglo no hay extra hace este cálculo, el 4 se agrega pues el sector norte se supone que es gratis pero si carga 4 al valor del mensajero
-      valorMensajero = parseFloat(cargoDomingo/2) + parseFloat(transporte) + 4 + parseFloat(horarioExtra/2)
-
+    valorMensajero = parseFloat(cargoDomingo * porcentajeDomingo) + parseFloat(transporte) + parseFloat("4") + parseFloat(horarioExtra * porcentajeHorarioExtra)
+    
   }
 
   // /* Este es el cálculo. */
@@ -478,6 +449,7 @@ function calcularMensajero(){
   }
 
   document.getElementById('valor_mensajero').value = valorMensajero
+  document.getElementById('valor_mensajero_mostrado').value = valorMensajero
 
 }
 
@@ -493,7 +465,7 @@ $(document).ready(function(){
               document.getElementById("cargo_domingo").value = 0
           }
           alertCambioValor()
-          sumarTotal()
+          //sumarTotal()
       }
   });
 });
