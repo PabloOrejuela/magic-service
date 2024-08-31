@@ -76,7 +76,7 @@ function sumarTotal() {
 
   //Obtengo todos los valores de las casillas
   impTotal = document.getElementById("total");
-
+  sector = document.getElementById("sectores");
   subtotal = document.getElementById("valor_neto").value;
   porcentajeDescuento = document.getElementById("descuento").value;
   transporte = document.getElementById("transporte").value;
@@ -112,10 +112,14 @@ function sumarTotal() {
 
   total = parseFloat(subtotal) + parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra) - descuento;
 
-  //Hago el cálculo del mensajero
-  calcularMensajero();
-
-  impTotal.value = total.toFixed(2);
+  //Hago el cálculo del mensajero SOLO si se ha seleccionado un sector
+  if (sector.selectedIndex != 0 && sector.selectedIndex != 13) {
+    calcularMensajero();
+    impTotal.value = total.toFixed(2);
+  }else{
+    document.getElementById('valor_mensajero').value = "0.00"
+    document.getElementById('valor_mensajero_mostrado').value = "0.00"
+  }
 }
 
 $(document).ready(function(){
@@ -145,7 +149,7 @@ $(document).ready(function(){
                       document.getElementById("horario_extra").value = 0
                   }
                   
-                  //sumarTotal()
+                  sumarTotal()
               },
               error: function(data){
                   console.log("No existe el valor de ese horario");
@@ -465,7 +469,7 @@ $(document).ready(function(){
               document.getElementById("cargo_domingo").value = 0
           }
           alertCambioValor()
-          //sumarTotal()
+          sumarTotal()
       }
   });
 });

@@ -45,18 +45,4 @@ class ConfiguracionModel extends Model {
         $builder->set('estado', 0);
         $builder->update();
     }
-
-    public function _getVersion(){
-        $result = NULL;
-        $builder = $this->db->table($this->table);
-        $builder->select('version');
-        $query = $builder->get();
-        if ($query->getResult() != null) {
-            foreach ($query->getResult() as $row) {
-                $result = $row->version;
-            }
-        }
-        //echo $this->db->getLastQuery();
-        return $result;
-    }
 }

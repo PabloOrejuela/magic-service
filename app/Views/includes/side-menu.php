@@ -108,7 +108,7 @@
           <li class="nav-item subItem">
             <a href="'.base_url().'sectores-entrega" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Setores de entrega</p>
+              <p>Sectores de entrega</p>
             </a>
           </li>
           <li class="nav-item subItem">

@@ -108,8 +108,8 @@ class Home extends BaseController {
                     ];
                     //echo '<pre>'.var_export($user, true).'</pre>';exit;
                     $this->usuarioModel->update($iduser, $user);
-                    $this->session->version = $this->configuracionModel->_getVersion();
-
+                    $this->session->version = $this->configuracionModel->findAll();
+                    
                     $this->session->set($sessiondata);
             
                     return redirect()->to('inicio');

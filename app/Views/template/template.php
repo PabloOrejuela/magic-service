@@ -45,10 +45,10 @@
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer mt-3">
-    <strong>Copyright &copy; 2014-2021 <a href="https://appdvp.com">Magic service</a>.</strong>
+    <strong class="px-3">Versión del sistema  <?= session('version')[0]->version; ?></strong>
+    <strong class="px-3">Copyright &copy; 2014-2021 <a href="https://appdvp.com">Magic service</a>.</strong>
     Derechos reservados.
     <div class="float-right d-none d-sm-inline-block px-5">
-      <b>Version</b> <?= session('version'); ?>
     </div>
   </footer>
 

@@ -481,7 +481,7 @@ class Administracion extends BaseController {
 
             $data['session'] = $this->session;
             $data['estado'] = $this->estadoSistema();
-
+            
             $data['title']='Administración';
             $data['subtitle']='Estado del sistema';
             $data['main_content']='administracion/frm_estado';

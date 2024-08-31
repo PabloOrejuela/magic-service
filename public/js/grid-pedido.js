@@ -466,6 +466,9 @@ botonesHorariosEntrega.forEach(btn => {
     btn.addEventListener('click', function(e) {
         e.stopPropagation()
         let id = this.dataset.id
+        let desde = this.dataset.desde
+        let hasta = this.dataset.hasta
+        let codigoPedido = this.dataset.codigoPedido
         let hora = this.dataset.value
         let selectHoraEntrega = document.getElementById('selectHoraEntrega')
 
@@ -479,6 +482,7 @@ botonesHorariosEntrega.forEach(btn => {
             },
             success: function(data){
                 let datos = JSON.parse(data)
+                //console.log(datos);
                 selectHoraEntrega.innerHTML = ''
                 if (datos) {
                     for (let dato of datos) {
@@ -502,7 +506,10 @@ botonesHorariosEntrega.forEach(btn => {
             }
         });
 
-        document.querySelector('#codigo_pedido').value = id;
+        document.querySelector('#codigo_pedido').value = codigoPedido;
+        document.querySelector('#id').value = id;
+        document.querySelector('#entrega-desde').value = desde;
+        document.querySelector('#entrega-hasta').value = hasta;
         //console.log('abrir modal');
         $('#horaEntregaModal').modal();
     });
@@ -556,7 +563,7 @@ setInterval(function(){
 
     //mostrar todo el grid
     
-}, 200000)
+}, 240000)
 
 
 function copyData(id){
@@ -831,13 +838,19 @@ function actualizarEstadoPedido(estado_pedido, codigo_pedido){
     });
 }
 
-function actualizarHorarioEntrega(horario_entrega, codigo_pedido){
+function actualizarHorarioEntrega(horario_entrega, codigo_pedido, idpedido, entrega_desde, entrega_hasta){
     
     $.ajax({
-        type:"GET",
-        dataType:"html",
-        url: "ventas/actualizarHorarioEntrega/"+horario_entrega+'/'+codigo_pedido,
-        //data:"codigo="+valor,
+        method:"GET",
+        //dataType:"html",
+        url: "actualizarHorarioEntrega",
+        data: {
+            horarioEntrega: horario_entrega,
+            codigoPedido: codigo_pedido,
+            id: idpedido,
+            entregaDesde: entrega_desde,
+            entregaHasta: entrega_hasta
+        },
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
         },

@@ -15,7 +15,8 @@
                                     <?php
                                         if ($variables) {
                                             foreach ($variables as $key => $value) {
-                                                echo '<div class="mb-3 row">
+                                                if ($value->id > 2) {
+                                                    echo '<div class="mb-3 row">
                                                         <label for="'.$value->id.'" class="col-sm-9 col-form-label">'.$value->variable.' ('.$value->unidad.')</label>
                                                         <div class="col-sm-2">
                                                             <input 
@@ -29,6 +30,7 @@
                                                             >
                                                         </div>
                                                     </div>';
+                                                }
                                             }
                                         }
                                     ?>

@@ -125,12 +125,22 @@ class Ventas extends BaseController {
         return true;
     }
 
-    function actualizarHorarioEntrega($horario_entrega, $cod_pedido){
+    function actualizarHorarioEntrega(){
+
+        $id = $this->request->getPostGet('id');
+
+        $datos['horario_entrega'] = $this->request->getPostGet('horarioEntrega');
+        $datos['rango_entrega_desde'] = $this->request->getPostGet('entregaDesde');
+        $datos['rango_entrega_hasta'] = $this->request->getPostGet('entregaHasta');
         
-        if ($horario_entrega != 0) {
-            $this->pedidoModel->_actualizaHorarioEntrega($horario_entrega, $cod_pedido);
+        if ($datos['horario_entrega'] != 0) {
+            //$this->pedidoModel->_actualizaHorarioEntrega($horario_entrega, $cod_pedido);
+            $this->pedidoModel->update($id, $datos);
         }
-        $data['horario'] = $horario_entrega;
+
+        $data['horario'] = $datos['horario_entrega'];
+        $data['entrega_desde'] = $datos['rango_entrega_desde'];
+        $data['entrega_hasta'] = $datos['rango_entrega_hasta'];
         echo json_encode($data);
     }
 

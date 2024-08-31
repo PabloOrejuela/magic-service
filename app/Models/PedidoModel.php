@@ -337,19 +337,6 @@ class PedidoModel extends Model {
         $builder->update();
     }
 
-    public function _actualizaHorarioEntrega($horario_entrega, $codigo_pedido) {
-
-        $builder = $this->db->table($this->table);
-
-        if ($horario_entrega != 0 && $horario_entrega != null) {
-            $builder->set('horario_entrega', $horario_entrega);
-        }
-
-
-        $builder->where($this->table.'.cod_pedido', $codigo_pedido);
-        $builder->update();
-    }
-
     public function _actualizarEstadoPedido($estado_pedido, $cod_pedido) {
 
         $builder = $this->db->table($this->table);
