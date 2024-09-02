@@ -59,6 +59,10 @@ class DetallePedidoTempModel extends Model {
         return $result;
     }
 
+    /*
+    *   Esta tabla se usa para traer el detalle del pedido que está en la tabla temporal, 
+    *   Se puede usar el modelo y eliminar está función en el futuro
+    */
     public function _getDetallePedido($cod_pedido){
         //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
         $result = NULL;

@@ -36,9 +36,12 @@ class Ventas extends BaseController {
             $data['cod_pedido'] = $this->session->codigo_pedido;
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
 
-            $data['detalle'] = $this->detallePedidoTempModel->where('cod_pedido', $data['cod_pedido'])->findAll();
+            $data['detalle'] = $this->detallePedidoTempModel->where('cod_pedido', $data['cod_pedido'])
+                                                            ->join('productos','productos.id = detalle_pedido_temp.idproducto')
+                                                            ->findAll();
+            //$data['detalle'] = $this->detallePedidoTempModel->_getDetallePedido($data['cod_pedido']);
 
-            //echo '<pre>'.var_export($data['cod_pedido'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
 
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
@@ -678,7 +681,7 @@ class Ventas extends BaseController {
                 'direccion' => '',
                 'email' => strtolower($this->request->getPostGet('email')),
             ];
-            //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+            
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 

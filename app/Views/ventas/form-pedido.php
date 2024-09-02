@@ -210,7 +210,50 @@
                                                 <th>Cant</th>
                                                 <th width="1%"></th>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tbody>
+                                                <?php
+                                                    if ($detalle) {
+                                                        $numFila = 0;
+                                                        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
+                                                        foreach ($detalle as $row) {
+                                                            $numFila++;
+                                                            
+                                                            echo '<tr id="fila_'.$numFila.'">';
+                                                            echo '<td>'.$numFila.'</td>';
+                                                            echo '<td>'.$row->id.'</td>';
+                                                            echo '<td>'.$row->producto.'</td>';
+                                                            echo '<td>
+                                                                        <input 
+                                                                            type="text" 
+                                                                            class="form-control" 
+                                                                            name="observacion_'.$row->idproducto.'" 
+                                                                            value="'.$row->observacion.'" 
+                                                                            onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" 
+                                                                            id="observa_'.$row->idproducto.'"
+                                                                        >
+                                                                    </td>';
+                                                            echo '<td>
+                                                                        <input 
+                                                                            type="text" 
+                                                                            class="form-control input-precio" 
+                                                                            name="precio_'.$row->idproducto.'" 
+                                                                            value="'.$row->pvp.'" 
+                                                                            onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" 
+                                                                            id="precio_'.$row->idproducto.'"
+                                                                        >
+                                                                    </td>';
+                                                            
+                                                            echo '<td id="cant_'.$row->idproducto.'" class="cant_arreglo">'.$row->cantidad.'</td>';
+                                                            
+                                                            echo '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="btn btn-borrar">
+                                                                        <img src="'.site_url().'public/images/delete.png" width="25" >
+                                                                        </a></td>';
+                                                            echo '</tr>';
+                                                            
+                                                        }
+                                                    }
+                                                ?>
+                                            </tbody>
                                         </table>
                                     </div>
                                     <div class="form-group row">
