@@ -98,6 +98,7 @@ class Home extends BaseController {
                         'gastos' => $usuario->gastos,
                         'reportes' => $usuario->reportes,
                         'inventarios' => $usuario->inventarios,
+                        'codigo_pedido' => ''
                     ];
                     
                     $iduser = $usuario->id;

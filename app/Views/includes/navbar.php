@@ -5,7 +5,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars btn-collapse"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido">Registrar Nuevo Pedido</a>
+        <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido" data-id="<?= session('id') ?>">Registrar Nuevo Pedido</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block px-3">
         <a href="<?= base_url(); ?>cotizador" class="btn btn-primary" id="btn-cotizador">Cotizador</a>
@@ -22,3 +22,4 @@
       </li>
     </ul>
   </nav>
+  <script src="<?= site_url(); ?>public/js/navbar.js"></script>

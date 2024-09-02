@@ -28,9 +28,9 @@
                                             class="form-control col-3" 
                                             id="cod_pedido" 
                                             name="cod_pedido"
-                                            placeholder="<?= $cod_pedido ?>"
+                                            placeholder="<?= $session->codigo_pedido ?>"
                                             maxlength="5"
-                                            value="<?= old('cod_pedido'); ?>"
+                                            value="<?= $cod_pedido; ?>"
                                             readonly
                                         >
                                     </div>

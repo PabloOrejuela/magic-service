@@ -33,12 +33,12 @@ class Ventas extends BaseController {
             $data['productos'] = $this->productoModel->findAll();
             $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'asc')->findAll();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
-            $data['cod_pedido'] = $this->session->id.$date;
+            $data['cod_pedido'] = $this->session->codigo_pedido;
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
 
             $data['detalle'] = $this->detallePedidoTempModel->where('cod_pedido', $data['cod_pedido'])->findAll();
 
-            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['cod_pedido'], true).'</pre>';exit;
 
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
@@ -50,6 +50,19 @@ class Ventas extends BaseController {
             return redirect()->to('/');
         }
     }
+
+    function generaCodigoPedido(){
+
+        //Recibo el código
+        $codigo = $this->request->getPostGet('codigo');
+
+        //pongo el código en la sesion
+        $this->session->set('codigo_pedido', $codigo);
+
+        $data['resultado'] = "Exito";
+        echo json_encode($data);
+    }
+
 
     public function estadisticaVentas() {
 
