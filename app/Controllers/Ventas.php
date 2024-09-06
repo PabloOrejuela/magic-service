@@ -525,6 +525,12 @@ class Ventas extends BaseController {
         echo json_encode($res);
     }
 
+    function actualizaMensajeSession(){
+        $this->session->set('mensaje', '3');
+        $res['msj'] = '3';
+        echo json_encode($res);
+    }
+
     function getProducto($id){
         $error = "No se encontró el producto";
         $res['producto'] = $this->productoModel->_getProducto($id);
@@ -688,6 +694,7 @@ class Ventas extends BaseController {
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
                 //dd($validation->getErrors());
+                $this->session->set('mensaje', 0);
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
                 
@@ -722,7 +729,7 @@ class Ventas extends BaseController {
                     }else{
                         $mensaje = 0;
                     }
-                    $this->session->setFlashdata('mensaje', $mensaje);
+                    $this->session->set('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }else{
 
@@ -746,7 +753,7 @@ class Ventas extends BaseController {
 
                     //Inserto el detalle
                     $mensaje = 1;
-                    $this->session->setFlashdata('mensaje', $mensaje);
+                    $this->session->set('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }
                 
@@ -895,9 +902,9 @@ class Ventas extends BaseController {
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
+            //$this->session->set('mensaje', 3);
             
             //echo '<pre>'.var_export($data['pedidos'], true).'</pre>';exit;
-            $data['mensaje'] = '';
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
             $data['main_content']='ventas/grid-pedidos';

@@ -9,5 +9,6 @@
 <h3>Correcciones:</h3>
 
 <h5></h5>
-<ul>
+<ul>   
+    <li>Corregido el error que hacía que al ingresar al sistema el valor del mensaje sea error sin haber generado un pedido</li>
 </ul>

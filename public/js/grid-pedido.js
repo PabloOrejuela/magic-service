@@ -803,6 +803,23 @@ function actualizaObservacionPedido(){
     });
 }
 
+function actualizaMensaje(){
+
+    $.ajax({
+        method:"GET",
+        dataType:"html",
+        url: "actualizaMensajeSession",
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(res){
+
+            let msj = document.getElementById('msj')
+            msj,value = '3'
+        }
+    });
+}
+
 function actualizarMensajero(mensajero, codigo_pedido){
 
     $.ajax({
@@ -872,6 +889,41 @@ function actualizarHorarioEntrega(horario_entrega, codigo_pedido, idpedido, entr
             
     });
 }
+
+let btnPedidonuevo2 = document.getElementById('btn-pedido-2');
+
+btnPedidonuevo2.addEventListener('click', function(e) {
+    //e.stopPropagation()
+    //console.log("CLICK");
+    let fecha = new Date();
+    let tiempo = fecha.getFullYear().toString() 
+        + (fecha.getMonth() + 1).toString() 
+        + fecha.getDate().toString() 
+        + fecha.getHours().toString() 
+        + fecha.getMinutes().toString() 
+        + fecha.getSeconds().toString()
+
+    //Aquí creo el nuevo código
+    let id = this.dataset.id;
+    let codigoPedido = id+tiempo;
+
+    $.ajax({
+        method:"GET",
+        dataType:"html",
+        url: "genera-codigo-pedido",
+        data: {
+            codigo: codigoPedido,
+            id: id
+        },
+        beforeSend: function (f) {
+            
+        },
+        success: function(resultado){
+            let res = JSON.parse(resultado)
+        }
+    });
+    
+});
 
 const alerta = (msg, time, icon) => {
     const toast = Swal.mixin({

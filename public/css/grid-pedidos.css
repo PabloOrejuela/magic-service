@@ -33,6 +33,16 @@
     outline:none;
     overflow:hidden;
     font-size: 0.01em;
+    display: block;
+}
+
+#msj{
+    background-color:transparent;
+    color: #000;
+    border: none;
+    outline: none;
+    overflow: hidden;
+    font-size: 0.01em;
 }
 
 #mensaje::selection{
@@ -48,4 +58,12 @@
 .datos-negrita{
     font-weight: bold;
     font-size: 1em;
+}
+
+#btn-pedido-2{
+    color: antiquewhite;
+    margin-top: 5px;
+    font-weight: bold;
+    padding: 10px;
+    background-color: rgb(184, 45, 27, 1);
 }

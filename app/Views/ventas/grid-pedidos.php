@@ -8,197 +8,196 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
-                        <h4><?= $mensaje; ?></h4>
+                        <div><input type="text" value="<?= session('mensaje')?>" id="msj" readonly></div>
                         <div>
                             <a href="<?= site_url().'pedidos-ventana/'; ?>"  class="btn btn-success mb-2" target="_blank">Abrir en nueva ventana</a>
                         </div>
                         <div class="botones mb-2">
-                            <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido">Registrar Nuevo Pedido</a>
+                            <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido-2" data-id="<?= session('id') ?>">Registrar Nuevo Pedido</a>
                             <a href="<?= base_url(); ?>cotizador" class="btn btn-primary" id="btn-cotizador">Cotizador</a>
                         </div>
                         <form action="#" method="post">
-                        <table id="datatablesSimple" class="table table-bordered table-striped">
-                            <thead>
-                                <th></th>
-                                <th>Pedido</th>
-                                <th>Fecha entrega</th>
-                                <th>Cliente</th>
-                                <th>Sector</th>
-                                <th>Dir. entrega</th>
-                                <th>COD Arreglo</th>
-                                <th>Hora salida</th>
-                                <th>Hora entrega</th>
-                                <th>Mensajero</th>
-                                <th>Estado</th>
-                                <th>Información</th>
-                                <th>Observación</th>
-                                <th>Copiar</th>
-                            </thead>
-                            <tbody id="lista">
-                                <?php
-                                    use App\Models\PedidoModel;
-                                    use App\Models\DetallePedidoModel;
-                                    use App\Models\AttrExtArregModel;
-                                    $this->attrExtArregModel = new AttrExtArregModel();
-                                    $this->detallePedidoModel = new DetallePedidoModel();
-                                    $this->pedidoModel = new PedidoModel();
-                                    $pedidos = $this->pedidoModel->_getPedidos();
+                            <table id="datatablesSimple" class="table table-bordered table-striped">
+                                <thead>
+                                    <th></th>
+                                    <th>Pedido</th>
+                                    <th>Fecha entrega</th>
+                                    <th>Cliente</th>
+                                    <th>Sector</th>
+                                    <th>Dir. entrega</th>
+                                    <th>COD Arreglo</th>
+                                    <th>Hora salida</th>
+                                    <th>Hora entrega</th>
+                                    <th>Mensajero</th>
+                                    <th>Estado</th>
+                                    <th>Información</th>
+                                    <th>Observación</th>
+                                    <th>Copiar</th>
+                                </thead>
+                                <tbody id="lista">
+                                    <?php
+                                        use App\Models\PedidoModel;
+                                        use App\Models\DetallePedidoModel;
+                                        use App\Models\AttrExtArregModel;
+                                        $this->attrExtArregModel = new AttrExtArregModel();
+                                        $this->detallePedidoModel = new DetallePedidoModel();
+                                        $this->pedidoModel = new PedidoModel();
+                                        $pedidos = $this->pedidoModel->_getPedidos();
 
-                                    if (isset($pedidos) && $pedidos != NULL) {
-                                        foreach ($pedidos as $key => $value) {
-                                            $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
-                                            $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
-                                            //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
-                                            echo '<tr class="item-list" data-id="'.$value->id.'">
-                                                    <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
-                                                    <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
-                                                if ($value->fecha_entrega) {
-                                                    echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$value->fecha_entrega.'</td>';
+                                        if (isset($pedidos) && $pedidos != NULL) {
+                                            foreach ($pedidos as $key => $value) {
+                                                $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
+                                                $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
+                                                //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
+                                                echo '<tr class="item-list" data-id="'.$value->id.'">
+                                                        <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
+                                                        <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
+                                                    if ($value->fecha_entrega) {
+                                                        echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$value->fecha_entrega.'</td>';
+                                                    }else{
+                                                        echo '<td>Registrar fecha de entrega</td>';
+                                                    }
+                                                echo '<td id="cliente_'.$value->id.'" class="clipboard">'.$value->nombre.'</td>';
+                                                if ($value->sector) {
+                                                    echo '<td id="sector_'.$value->id.'">'.$value->sector.'</td>';
                                                 }else{
-                                                    echo '<td>Registrar fecha de entrega</td>';
+                                                    echo '<td></td>';
                                                 }
-                                            echo '<td id="cliente_'.$value->id.'" class="clipboard">'.$value->nombre.'</td>';
-                                            if ($value->sector) {
-                                                echo '<td id="sector_'.$value->id.'">'.$value->sector.'</td>';
-                                            }else{
-                                                echo '<td></td>';
-                                            }
-                                            if ($value->dir_entrega) {
-                                                
-                                                echo '<td id="direccion_'.$value->id.'" class="clipboard">'.$value->dir_entrega.' <a href="'.$value->ubicacion.'" id="link-editar" target="_blank">'.$value->ubicacion.'</a></td>';
-                                            }else{
-                                                echo '<td>Registrar dirección</td>';
-                                            }
-                                            echo '<td id="cod_arreglo_'.$value->id.'"><ul>';
-                                            if (isset($detalle)) {
-                                                foreach ($detalle as $key => $d) {
-                                                    $attrExtArreg = $this->attrExtArregModel->_getAttrExtArreg($d->iddetalle);
-                                                    if ($attrExtArreg) {
-                                                        echo '<li>
-                                                            <a 
-                                                                href="#" 
-                                                                id="link-Arreglo-Pedido" 
-                                                                data-id="'.$d->iddetalle.'"
-                                                                data-arreglo="'.$d->producto.'"
-                                                                data-pedido="'.$d->cod_pedido.'"
-                                                                data-bs-toggle="modal"
-                                                                data-category="'.$d->idcategoria.'" 
-                                                                data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
-                                                        </li>';
-                                                    } else {
-                                                        echo '<li>
-                                                            <a 
-                                                                href="#" 
-                                                                id="link-Arreglo-Pedido" 
-                                                                data-id="'.$d->iddetalle.'"
-                                                                data-arreglo="'.$d->producto.'"
-                                                                data-pedido="'.$d->cod_pedido.'"
-                                                                data-bs-toggle="modal"
-                                                                data-category="'.$d->idcategoria.'" 
-                                                                style="color:#c70a0a;"
-                                                                data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
-                                                        </li>';
+                                                if ($value->dir_entrega) {
+                                                    
+                                                    echo '<td id="direccion_'.$value->id.'" class="clipboard">'.$value->dir_entrega.' <a href="'.$value->ubicacion.'" id="link-editar" target="_blank">'.$value->ubicacion.'</a></td>';
+                                                }else{
+                                                    echo '<td>Registrar dirección</td>';
+                                                }
+                                                echo '<td id="cod_arreglo_'.$value->id.'"><ul>';
+                                                if (isset($detalle)) {
+                                                    foreach ($detalle as $key => $d) {
+                                                        $attrExtArreg = $this->attrExtArregModel->_getAttrExtArreg($d->iddetalle);
+                                                        if ($attrExtArreg) {
+                                                            echo '<li>
+                                                                <a 
+                                                                    href="#" 
+                                                                    id="link-Arreglo-Pedido" 
+                                                                    data-id="'.$d->iddetalle.'"
+                                                                    data-arreglo="'.$d->producto.'"
+                                                                    data-pedido="'.$d->cod_pedido.'"
+                                                                    data-bs-toggle="modal"
+                                                                    data-category="'.$d->idcategoria.'" 
+                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
+                                                            </li>';
+                                                        } else {
+                                                            echo '<li>
+                                                                <a 
+                                                                    href="#" 
+                                                                    id="link-Arreglo-Pedido" 
+                                                                    data-id="'.$d->iddetalle.'"
+                                                                    data-arreglo="'.$d->producto.'"
+                                                                    data-pedido="'.$d->cod_pedido.'"
+                                                                    data-bs-toggle="modal"
+                                                                    data-category="'.$d->idcategoria.'" 
+                                                                    style="color:#c70a0a;"
+                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
+                                                            </li>';
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            echo '</ul></td>';
-                                            if ($value->hora_salida_pedido) {
-                                                echo '<td class="datos-negrita">
-                                                    <a 
-                                                        type="button" 
-                                                        id="sector_'.$value->id.'" 
-                                                        href="#" 
-                                                        data-id="'.$value->cod_pedido.'" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
-                                                </td>';
-                                            }else{
-                                                echo '<td class="datos-negrita">
-                                                    <a 
-                                                        type="button" 
-                                                        id="sector_'.$value->id.'" 
-                                                        href="#" 
-                                                        data-id="'.$value->cod_pedido.'" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#horaSalidaModal">Registrar</a>
-                                                </td>';
-                                            }
-                                            
-                                            echo '<td id="hora_entrega'.$value->id.'" class="datos-negrita">
-                                                    <a 
-                                                        type="button" 
-                                                        id="horaEntrega_'.$value->id.'" 
-                                                        href="#" 
-                                                        data-id="'.$value->id.'"
-                                                        data-codigoPedido="'.$value->cod_pedido.'"
-                                                        data-value="'.$value->hora.'"
-                                                        data-desde="'.$value->rango_entrega_desde.'" 
-                                                        data-hasta="'.$value->rango_entrega_hasta.'" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
-                                                </td>';
+                                                echo '</ul></td>';
+                                                if ($value->hora_salida_pedido) {
+                                                    echo '<td class="datos-negrita">
+                                                        <a 
+                                                            type="button" 
+                                                            id="sector_'.$value->id.'" 
+                                                            href="#" 
+                                                            data-id="'.$value->cod_pedido.'" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
+                                                    </td>';
+                                                }else{
+                                                    echo '<td class="datos-negrita">
+                                                        <a 
+                                                            type="button" 
+                                                            id="sector_'.$value->id.'" 
+                                                            href="#" 
+                                                            data-id="'.$value->cod_pedido.'" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#horaSalidaModal">Registrar</a>
+                                                    </td>';
+                                                }
+                                                
+                                                echo '<td id="hora_entrega'.$value->id.'" class="datos-negrita">
+                                                        <a 
+                                                            type="button" 
+                                                            id="horaEntrega_'.$value->id.'" 
+                                                            href="#" 
+                                                            data-id="'.$value->id.'"
+                                                            data-codigoPedido="'.$value->cod_pedido.'"
+                                                            data-value="'.$value->hora.'"
+                                                            data-desde="'.$value->rango_entrega_desde.'" 
+                                                            data-hasta="'.$value->rango_entrega_hasta.'" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
+                                                    </td>';
 
-                                            if ($value->mensajero) {
-                                                echo '<td id="mensajero'.$value->id.'">
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
-                                                </td>';
-                                            }else{
-                                                echo '<td id="mensajero'.$value->id.'">
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
-                                                </td>';
-                                            }
-                                        
-                                            echo '<td >
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->estado.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
-                                                </td>';
-                                            if ($verificaCampos == 0) {
-                                                echo '<td id="informacion"><span id="span-completo">Completo</span></td>';
-                                            }else{
-                                                echo '<td id="informacion"><span id="span-incompleto">Incompleto: '.$verificaCampos.'</span></td>';
-                                            }
-                                            // echo '<td id="observacion_'.$value->id.'">'.$value->observaciones.'</td>';
-                                            if ($value->observaciones != '') {
-                                                echo '<td id="observaciones'.$value->id.'">
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">'.$value->observaciones.'</a>
-                                                </td>';
-                                            }else{
-                                                echo '<td id="observaciones'.$value->id.'">
-                                                    <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">Registrar</a>
-                                                </td>';
-                                            }
-    
+                                                if ($value->mensajero) {
+                                                    echo '<td id="mensajero'.$value->id.'">
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
+                                                    </td>';
+                                                }else{
+                                                    echo '<td id="mensajero'.$value->id.'">
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
+                                                    </td>';
+                                                }
                                             
-                                            echo '<td>
-                                                    <div class="contenedor" id="btn-copy">
-                                                        <a type="button" class="btnAction" href="javascript:copyData('.$value->id.')">
-                                                            <img src="'.site_url().'public/images/copy.png" width="25" >
+                                                echo '<td >
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->estado.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
+                                                    </td>';
+                                                if ($verificaCampos == 0) {
+                                                    echo '<td id="informacion"><span id="span-completo">Completo</span></td>';
+                                                }else{
+                                                    echo '<td id="informacion"><span id="span-incompleto">Incompleto: '.$verificaCampos.'</span></td>';
+                                                }
+                                                // echo '<td id="observacion_'.$value->id.'">'.$value->observaciones.'</td>';
+                                                if ($value->observaciones != '') {
+                                                    echo '<td id="observaciones'.$value->id.'">
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">'.$value->observaciones.'</a>
+                                                    </td>';
+                                                }else{
+                                                    echo '<td id="observaciones'.$value->id.'">
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">Registrar</a>
+                                                    </td>';
+                                                }
+        
+                                                
+                                                echo '<td>
+                                                        <div class="contenedor" id="btn-copy">
+                                                            <a type="button" class="btnAction" href="javascript:copyData('.$value->id.')">
+                                                                <img src="'.site_url().'public/images/copy.png" width="25" >
+                                                            </a>';
+                                                if ($verificaCampos == 0) {
+                                                    echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
+                                                            <img src="'.site_url().'public/images/btn-print.png" width="25"  >
                                                         </a>';
-                                            if ($verificaCampos == 0) {
-                                                echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
-                                                        <img src="'.site_url().'public/images/btn-print.png" width="25"  >
-                                                    </a>';
-                                            }else{
-                                                echo '<a type="button" href="#" class="btnAction">
-                                                        <img src="'.site_url().'public/images/btn-print.png" width="25">
-                                                    </a>';
+                                                }else{
+                                                    echo '<a type="button" href="#" class="btnAction">
+                                                            <img src="'.site_url().'public/images/btn-print.png" width="25">
+                                                        </a>';
+                                                }
+                                                if (true) {
+                                                    echo '<a type="button" href="'.site_url().'verHistorialPedido/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
+                                                            <img src="'.site_url().'public/images/note-task.png" width="25"  >
+                                                        </a>';
+                                                }else{
+                                                    echo '<a type="button" href="#" class="btnAction">
+                                                            <img src="'.site_url().'public/images/note-task.png" width="25">
+                                                        </a>';
+                                                }
+                                                            
+                                                echo    '</div></td></tr>';
                                             }
-                                            if (true) {
-                                                echo '<a type="button" href="'.site_url().'verHistorialPedido/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
-                                                        <img src="'.site_url().'public/images/note-task.png" width="25"  >
-                                                    </a>';
-                                            }else{
-                                                echo '<a type="button" href="#" class="btnAction">
-                                                        <img src="'.site_url().'public/images/note-task.png" width="25">
-                                                    </a>';
-                                            }
-                                                        
-                                            echo    '</div></td></tr>';
                                         }
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
-                        <textarea id="mensaje" style="color:white;"></textarea>
+                                    ?>
+                                </tbody>
+                            </table>
                         </form>
                     </div></div><!-- /.card-body -->
                 </div><!-- /.card-->
@@ -429,6 +428,19 @@
 <script>
 
     $(document).ready(function () {
+        let msj = document.getElementById('msj')
+        
+        if (msj.value == 1) {
+            alertaMensaje("El pedido se ha enviado", "2500", "success")
+            actualizaMensaje()
+            msj.value = '3'
+        }else if(msj.value == 0 && msj.value !== ''){
+            alertaMensaje("Hubo un problema y el pedido no se envió correctamente", "2500", "error")
+            actualizaMensaje()
+        }else{
+            actualizaMensaje()
+        }
+        
         $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
         $('#datatablesSimple').DataTable({
             "responsive": true, 
