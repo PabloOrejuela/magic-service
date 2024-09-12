@@ -27,6 +27,7 @@ use App\Models\KardexModel;
 use App\Models\MovimientoInventarioModel;
 use App\Models\NegocioModel;
 use App\Models\PedidoModel;
+use App\Models\PedidoProcedenciaModel;
 use App\Models\ProcedenciaModel;
 use App\Models\ProductoModel;
 use App\Models\ProductoCambiosModel;
@@ -38,6 +39,7 @@ use App\Models\SucursalModel;
 use App\Models\TipoGastoModel;
 use App\Models\UsuarioModel;
 use App\Models\VariablesSistemaModel;
+
 
 /**
  * Class BaseController
@@ -111,6 +113,7 @@ abstract class BaseController extends Controller {
         $this->itemsProductoTempModel = new ItemsProductoTempModel($this->db);
         $this->bancoModel = new BancoModel($this->db);
         $this->procedenciaModel = new ProcedenciaModel($this->db);
+        $this->pedidoProcedenciaModel = new PedidoProcedenciaModel($this->db);
         $this->productoCambiosModel = new ProductoCambiosModel($this->db);
         $this->attrExtArregModel = new AttrExtArregModel($this->db);
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);

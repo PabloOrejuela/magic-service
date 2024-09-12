@@ -915,15 +915,19 @@ class Ventas extends BaseController {
         }
     }
 
-    public function pedido_edit($pedido) {
+    public function pedido_edit($codigoPedido) {
         
         $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
-            $data['pedido'] = $this->pedidoModel->_getDatosPedido($pedido);
-            $data['detalle'] = $this->detallePedidoModel->_getDetallePedido($data['pedido']->cod_pedido);
+            $data['pedido'] = $this->pedidoModel->_getDatosPedido($codigoPedido);
+            $data['detalle'] = $this->detallePedidoModel
+                            ->where('cod_pedido', $data['pedido']->cod_pedido)
+                            ->join('productos','productos.id=detalle_pedido.idproducto')
+                            ->findAll();
+            
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
@@ -933,8 +937,10 @@ class Ventas extends BaseController {
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['bancos'] = $this->bancoModel->findAll();
             $data['procedencias'] = $this->procedenciaModel->findAll();
+            $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
+            $data['pedidoProcedencia'] = $this->pedidoProcedenciaModel->where('idpedidos', $data['pedido']->id)->first();
 
-            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['pedidoProcedencia'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';

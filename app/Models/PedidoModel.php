@@ -120,7 +120,7 @@ class PedidoModel extends Model {
                 nombre,documento,clientes.id as idcliente,direccion,telefono,telefono_2,email,fecha_entrega,
                 horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,
                 pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,valor_mensajero,ref_pago,
-                valor_mensajero_edit,transporte,cargo_horario,domingo,valor_neto,descuento,total');
+                valor_mensajero_edit,transporte,cargo_horario,domingo,valor_neto,descuento,total,rango_entrega_desde,rango_entrega_hasta');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id');

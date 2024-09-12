@@ -1,7 +1,8 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Se modificó la formna en la que llama al detalle temporal en el formulario de pedido, ahora ya no se borra cuando se refresca la página</li>
-    <li>Ahora el codigo de pedido se crea solo al dar click en el boton de Nuevo pedido y no se cambia al refrescar la página</li>
+    <li>Se agregó los campos faltantes al form de pedido edit</li>
+    <li>Se creó el modelos de pedido procedencia</li>
+    <li>En el controlador de Ventas algunas funciones que traían data desde el modelo se las eliminó y se implementó las funciones propias del modelo</li>
 </ul>
 
 </br>
@@ -10,5 +11,6 @@
 
 <h5></h5>
 <ul>   
-    <li>Corregido el error que hacía que al ingresar al sistema el valor del mensaje sea error sin haber generado un pedido</li>
+    <li>Se corrigieron errores que impedían que se cargue el form de pedido edit</li>
+    <li>Se corrigió un error que no permitía que funcione bien el mensaje en el login</li>
 </ul>
