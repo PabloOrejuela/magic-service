@@ -89,9 +89,14 @@
                                             >
                                         </div>
                                     </div>
+                                    <hr class="divider">
                                     <div class="form-group"  style="display: none;">
                                         <label for="nombre">Id Cliente:</label>
                                         <input type="txt" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>" readonly >
+                                    </div>
+                                    <div class="form-check mt-2 mb-2">
+                                        <input type="checkbox" class="form-check-input" id="remitente" name="remitente" value="1" <?php echo set_checkbox('remitente', '0'); ?> >
+                                        <label class="form-check-label" for="remitente">Sin remitente</label>
                                     </div>
                                     <div class="form-group row" id="campo-extra">
                                         <div class="col-md-6 div-celular">
@@ -130,7 +135,7 @@
                                         <input type="text" class="form-control" id="documento" name="documento" placeholder="documento" value="<?= old('documento'); ?>" >
                                     </div>
                                     <div id="cliente"> </div>
-                                    <div class="form-group" id="campo-extra">
+                                    <div class="form-group mb-1" id="campo-extra">
                                         <label for="email" >Email:</label>
                                         <input 
                                             type="email" 
@@ -141,10 +146,11 @@
                                             value="<?= old('email'); ?>"
                                         >
                                     </div>
-                                    <div class="form-group mt-2">
+                                    <div class="form-group mb-5">
                                         <a href="javascript:limpiaCamposCliente()" class="nav-link mb-3" id="link-clear-fields">Limpiar campos</a>
                                     </div>
-                                    <div class="form-group mb-3 mt-5">
+                                    <hr class="divider mt-5 mb-3">
+                                    <div class="form-group mb-3 mt-2">
                                         <label for="vendedor">Vendedor *:</label>
                                         <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
                                             <option value="0" selected>--Seleccionar vendedor--</option>

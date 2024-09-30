@@ -39,3 +39,8 @@
 #valor-mensajero-hidden{
     display: none;
 }
+
+.divider{
+    height: 5px;
+    background-color: rgba(21, 121, 12, 0.3)
+}
