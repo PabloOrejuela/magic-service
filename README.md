@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>Creado el archivo css del grid de formas de pago</li>
     <li>Ordenados todos los select del formulario de editar pedido</li>
     <li>Implementada la funcionalidad del checkbox de Nuevo pedido y de editar pedido</li>
     <li>Agregado el checkbox de sin remitente al formulario de Nuevo pedido</li>
