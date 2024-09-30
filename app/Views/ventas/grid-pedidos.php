@@ -46,9 +46,10 @@
 
                                         if (isset($pedidos) && $pedidos != NULL) {
                                             foreach ($pedidos as $key => $value) {
+                                                
                                                 $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
                                                 $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
-                                                //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
+                                                
                                                 echo '<tr class="item-list" data-id="'.$value->id.'">
                                                         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
                                                         <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';

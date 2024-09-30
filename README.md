@@ -1,8 +1,7 @@
 <h3>Cambios</h3>
 <ul>
     <li>Se agregó los campos faltantes al form de pedido edit</li>
-    <li>Se creó el modelos de pedido procedencia</li>
-    <li>En el controlador de Ventas algunas funciones que traían data desde el modelo se las eliminó y se implementó las funciones propias del modelo</li>
+    <li>Implementada la formad de pago PAYPAL</li>
 </ul>
 
 </br>

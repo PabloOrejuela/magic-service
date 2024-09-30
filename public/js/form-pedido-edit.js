@@ -13,7 +13,7 @@ $('#idproducto').autocomplete({
   source: function(request, response){
     
       $.ajax({
-          url: 'getProductosAutocomplete',
+          url: '../getProductosAutocomplete',
           method: 'GET',
           dataType: 'json',
           data: {
@@ -130,7 +130,7 @@ $(document).ready(function(){
           $.ajax({
               method: 'get',
               dataType:"html",
-              url: "get_costo_horario",
+              url: "../get_costo_horario",
               data: {
                 horario: valor,
               },
@@ -168,7 +168,7 @@ sectores.addEventListener("change", () => {
     $.ajax({
         method: 'get',
         dataType:"html",
-        url: "get_valor_sector",
+        url: "../get_valor_sector",
         data: {
           sector: valor
         },
@@ -230,7 +230,7 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
   if (idproducto != null && idproducto != 0 && idproducto > 0) {
       
       $.ajax({
-          url: 'detalle_pedido_insert_temp',
+          url: '../detalle_pedido_insert_temp',
           data: {
               idproducto: idproducto,
               cantidad: cantidad,
@@ -288,7 +288,7 @@ function eliminaProducto(idproducto, cod_pedido){
   if (idproducto != null && idproducto != 0 && idproducto > 0) {
 
       $.ajax({
-          url: 'ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
+          url: '../ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
           success: function(resultado){
               if (resultado == 0) {
 
@@ -325,7 +325,7 @@ function observacion(idproducto, cod_pedido){
   if (observacion != null && observacion != '') {
 
       $.ajax({
-          url: 'ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
+          url: '../ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
           success: function(resultado){
               if (resultado == 0) {
 
@@ -357,7 +357,7 @@ function actualizaPrecio(idproducto, cod_pedido){
   if (precio != null && precio != '') {
 
       $.ajax({
-          url: 'detalle_pedido_update_precio_temp',
+          url: '../detalle_pedido_update_precio_temp',
           data: {
               idproducto: idproducto,
               cod_pedido: cod_pedido,
@@ -399,9 +399,12 @@ function calculaValorNeto(cod_pedido) {
 
   let total = 0;
   $.ajax({
-      type:"GET",
+      method:"GET",
       dataType:"html",
-      url: "ventas/getDetallePedido_temp/"+cod_pedido,
+      url: "../ventas/getDetallePedido_temp/"+cod_pedido,
+      data: {
+        
+      },
       success: function(resultado){
           let detalle = JSON.parse(resultado);
           //console.log("Detalle: " + detalle.cantidad);

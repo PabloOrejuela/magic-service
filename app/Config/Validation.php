@@ -118,6 +118,34 @@ class Validation extends BaseConfig
         ]
     ];
 
+    public $pedidoUpdate = [
+        'fecha_entrega'   => 'required|min_length[8]',
+        'nombre'   => 'required',
+        'telefono'   => 'required|min_length[9]',
+        'vendedor'   => 'required|greater_than[0]',
+        'sectores'   => 'required|greater_than[0]',
+        
+    ]; 
+
+    public $pedidoUpdate_errors = [
+        'fecha_entrega' => [
+            'required' => 'El campo "Fecha de entrega" es obligatorio',
+        ],
+        'nombre' => [
+            'required' => 'El campo "Cliente" es obligatorio',
+        ],
+        'vendedor' => [
+            'greater_than' => 'El campo "Vendedor" es obligatorio',
+        ],
+        'sectores' => [
+            'greater_than' => 'El campo "Sector en Transporte" es obligatorio',
+        ],
+        'telefono' => [
+            'required' => 'El campo "Teléfono" es obligatorio',
+            'min_length' => 'El campo "Teléfono" es obligatorio',
+        ]
+    ];
+
 
     public $usuario = [
         'nombre'   => 'required',

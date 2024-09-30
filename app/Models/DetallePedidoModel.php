@@ -54,7 +54,8 @@ class DetallePedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-            'cod_pedido,
+            $this->table.'.id as id,
+            cod_pedido,
             idproducto,
             cantidad,
             '.$this->table.'.precio as precio,

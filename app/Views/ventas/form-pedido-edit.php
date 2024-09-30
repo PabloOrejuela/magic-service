@@ -19,8 +19,8 @@
                             <!-- Morris chart - Sales -->
                             <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
-                                <form action="<?= site_url().'pedido-insert';?>" method="post">
-                                    
+                                <form action="<?= site_url().'pedido-update';?>" method="post">
+                                    <?= form_hidden('idpedido', $pedido->id); ?>
                                     <div id="div-pedido">
                                         <label for="cod_pedido">Pedido: </label>
                                         <input 
@@ -42,7 +42,7 @@
                                                 class="form-control" 
                                                 id="inputFecha" 
                                                 name="fecha_entrega" 
-                                                min="<?= date('Y-m-d') ?>" 
+                                                
                                                 value="<?= $pedido->fecha_entrega; ?>"
                                             >
                                             <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
@@ -59,11 +59,6 @@
                                                         foreach ($horariosEntrega as $key => $hora) {
                                                             if ($hora->id == $pedido->horario_entrega) {
                                                                 echo '<option value="'.$hora->id.'" selected>'.$hora->hora.'</option>'; 
-                                                                // if ($pedido->horario_entrega == 2) {
-                                                                //     echo '<option value="'.$hora->id.'" style="color:red;" selected>'.$hora->hora.'</option>';
-                                                                // }else{
-                                                                //     echo '<option value="'.$hora->id.'" selected>'.$hora->hora.'</option>';
-                                                                // }
                                                                 
                                                             }else{
                                                                 echo '<option value="'.$hora->id.'">'.$hora->hora.'</option>'; 
@@ -160,15 +155,19 @@
                                         <select class="form-select form-control-border" id="procedencia" name="procedencia" required>
                                             <option value="0" selected>--Seleccionar--</option>
                                             <?php
-                                            
+                                                
                                                 if (isset($procedencias) && isset($pedidoProcedencia)) {
                                                     foreach ($procedencias as $key => $procedencia) {
-                                                        if ($procedencia->id == $pedidoProcedencia->idrocedencia) {
+                                                        if ($procedencia->id == $pedidoProcedencia->idprocedencia) {
                                                             echo '<option value="'.$procedencia->id.'" selected>'.$procedencia->procedencia.'</option>';
                                                         }else{
                                                             echo '<option value="'.$procedencia->id.'">'.$procedencia->procedencia.'</option>';
                                                         }
                                                         
+                                                    }
+                                                }else{
+                                                    foreach ($procedencias as $key => $procedencia) {
+                                                        echo '<option value="'.$procedencia->id.'">'.$procedencia->procedencia.'</option>';
                                                     }
                                                 }
                                             ?>
@@ -476,8 +475,8 @@
                                         </div>
                                     </div>
                                     <div class="form-group mb-3 mt-2">
-                                        <label for="vendedor">Mensajero *:</label>
-                                        <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
+                                        <label for="mensajero">Mensajero *:</label>
+                                        <select class="form-select form-control-border" id="mensajero" name="mensajero" required>
                                             <option value="0" selected>--Seleccionar mensajero--</option>
                                             <?php
                                                 if (isset($mensajeros)) {
@@ -541,6 +540,16 @@
                                             value="<?= $pedido->ref_pago; ?>"
                                         >
                                     </div>
+                                    <div id="error-message">
+                                    <?php 
+                                        echo session('errors.fecha_entrega');
+                                        echo session('errors.nombre');
+                                        echo session('errors.telefono');
+                                        echo session('errors.vendedor');
+                                        echo session('errors.sectores');
+                                    ?>
+                                    </div>
+                                    
 
                                     <!-- /.card-body -->
                                     <div class="form-group row">
@@ -552,7 +561,7 @@
                                         >
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary" onclick="pedidoInsert()" >Enviar</button>
+                                        <button type="submit" class="btn btn-primary" >Enviar</button>
                                         <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
                                         <div class="row mt-3" id="varSistema">
                                             <div class="col-md-2">
@@ -596,75 +605,75 @@
 <script src="<?= site_url(); ?>public/js/form-pedido-edit.js"></script>
 <script>
 
-    //Traigo el detalle al cargar la página
-    window.addEventListener('load', function() {
-        let codigoPedido = document.getElementById('cod_pedido').value
-    
-        $.ajax({
-            method: 'get',
-            dataType:"html",
-            url: "get_detallle",
-            data: {
-            codigo: codigoPedido
-            },
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(resultado){
-                let dato = JSON.parse(resultado);
-                //console.log(dato);
-                if (dato != 0) {
-                    alertCambioValor()
-                }else{
-                    alertCambioValor()
-                }
-                
-                sumarTotal()
+//Traigo el detalle al cargar la página
+// window.addEventListener('load', function() {
+//     let codigoPedido = document.getElementById('cod_pedido').value
 
-            },
-            error: function(data){
-                console.log("No hay detalle");
-            }
-        });
-    });
+//     $.ajax({
+//         method: 'get',
+//         dataType:"html",
+//         url: "get_detallle",
+//         data: {
+//         codigo: codigoPedido
+//         },
+//         beforeSend: function (f) {
+//             //$('#cliente').html('Cargando ...');
+//         },
+//         success: function(resultado){
+//             let dato = JSON.parse(resultado);
+//             //console.log(dato);
+//             if (dato != 0) {
+//                 alertCambioValor()
+//             }else{
+//                 alertCambioValor()
+//             }
+            
+//             sumarTotal()
 
-    $(document).ready(function(){
-        $("#telefono").on('change',function(){
-            if($("#telefono").val() !=""){
+//         },
+//         error: function(data){
+//             console.log("No hay detalle");
+//         }
+//     });
+// });
 
-                valor = $("#telefono").val();
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "ventas/clientes_select_telefono",
-                    data:"telefono="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        // limpiarClienteDocumento();
-                        let cliente = JSON.parse(data);
+$(document).ready(function(){
+    $("#telefono").on('change',function(){
+        if($("#telefono").val() !=""){
 
-                        if (cliente) {
-                        //console.log(data);
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('telefono').value = cliente.telefono
-                        document.getElementById('telefono_2').value = cliente.telefono_2
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                        document.getElementById('idcliente').value = cliente.id
-                        }else {
-                        console.log('No hay, debo buscar en el 1 también');
-                        searchPhones(valor, 2)
-                        }
-                    },
-                    error: function(data){
-                        console.log("No hay");
+            valor = $("#telefono").val();
+            $.ajax({
+                type:"POST",
+                dataType:"html",
+                url: "ventas/clientes_select_telefono",
+                data:"telefono="+valor,
+                beforeSend: function (f) {
+                    //$('#cliente').html('Cargando ...');
+                },
+                success: function(data){
+                    // limpiarClienteDocumento();
+                    let cliente = JSON.parse(data);
+
+                    if (cliente) {
+                    //console.log(data);
+                    document.getElementById('nombre').value = cliente.nombre
+                    document.getElementById('telefono').value = cliente.telefono
+                    document.getElementById('telefono_2').value = cliente.telefono_2
+                    document.getElementById('documento').value = cliente.documento
+                    document.getElementById('email').value = cliente.email
+                    document.getElementById('idcliente').value = cliente.id
+                    }else {
+                    console.log('No hay, debo buscar en el 1 también');
+                    searchPhones(valor, 2)
                     }
-                });
-            }
-        });
+                },
+                error: function(data){
+                    console.log("No hay");
+                }
+            });
+        }
     });
+});
 
 function searchPhones(valor, phone) {
     if (phone == 1) {
@@ -921,9 +930,12 @@ function descontar(valor) {
 function getDetalletemporal(codigoPedido){
     
     return $.ajax({
-        type:"GET",
+        method:"GET",
         dataType:"html",
-        url: "ventas/getDetallePedido_temp/"+codigoPedido,
+        url: "getDetallePedido_temp",
+        data: {
+            codigoPedido: codigoPedido
+        },
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
         },
@@ -940,7 +952,7 @@ function getDetalletemporal(codigoPedido){
             document.getElementById("cant_arreglos").value = cant
         },
         error: function(data){
-            console.log("No hay detalle");
+            console.log("No hay detalle vergas");
         }
     });
     

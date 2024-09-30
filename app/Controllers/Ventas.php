@@ -677,6 +677,7 @@ class Ventas extends BaseController {
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
             ];
+            //echo '<pre>'.var_export($datosPedido, true).'</pre>';exit;
 
             $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [
@@ -768,13 +769,13 @@ class Ventas extends BaseController {
     public function pedido_update(){
 
         $data = $this->acl();
-        
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
-        
+
             $pedido = [
+                'id' => $this->request->getPostGet('idpedido'),
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $data['id'],
                 'fecha' => date('Y-m-d'),
@@ -782,70 +783,156 @@ class Ventas extends BaseController {
 
                 'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
                 'horario_entrega' => $this->request->getPostGet('horario_entrega'),
-                'formas_pago' => $this->request->getPostGet('formas_pago'),
-                'banco' => $this->request->getPostGet('banco'),
                 'sector' => $this->request->getPostGet('sectores'),
+                'procedencia' => $this->request->getPostGet('procedencia'),
+                'dir_entrega' => $this->request->getPostGet('dir_entrega'),
+                'ubicacion' => $this->request->getPostGet('ubicacion'),
+                'observaciones' => $this->request->getPostGet('observaciones'),
                           
                 'vendedor' => $this->request->getPostGet('vendedor'),
-                'observaciones' => $this->request->getPostGet('observaciones'),
+                'mensajero' => $this->request->getPostGet('mensajero'),
                 'venta_extra' => $this->request->getPostGet('venta_extra'),
+
+                'formas_pago' => $this->request->getPostGet('formas_pago'),
+                'banco' => $this->request->getPostGet('banco'),
+                'ref_pago' => $this->request->getPostGet('ref_pago'),
                
                 //TOTALES
                 'valor_neto' => $this->request->getPostGet('valor_neto'),
                 'descuento' => $this->request->getPostGet('descuento'),
                 'transporte' => $this->request->getPostGet('transporte'),
                 'horario_extra' => $this->request->getPostGet('horario_extra'),
-                'domingo' => $this->request->getPostGet('cargo_domingo'),
-                'cargo_horario' => $this->request->getPostGet('cargo_horario'),
+                'rango_entrega_desde' => $this->request->getPostGet('rango_entrega_desde'),
+                'rango_entrega_hasta' => $this->request->getPostGet('rango_entrega_hasta'),
+                'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
                 'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
             ];
+            
+            $pedidoProcedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['id'])->first();
 
+            $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [
-                'idcliente' => $this->request->getPostGet('idcliente'),
-                'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                'telefono' => strtoupper($this->request->getPostGet('telefono')),
-                'telefono_2' => strtoupper($this->request->getPostGet('telefono_2')),
-                'documento' => strtoupper($this->request->getPostGet('documento')),
-                'procedencia' => $this->request->getPostGet('procedencia'),
+                'nombre' => $this->request->getPostGet('nombre'),
+                'telefono' => $this->request->getPostGet('telefono'),
+                'telefono_2' => $this->request->getPostGet('telefono_2'),
+                'documento' => $this->request->getPostGet('documento'),
                 'direccion' => '',
-                'email' => $this->request->getPostGet('email'),
+                'email' => strtolower($this->request->getPostGet('email')),
             ];
-            //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
             
             //VALIDACIONES
-            $this->validation->setRuleGroup('pedido');
+            $this->validation->setRuleGroup('pedidoUpdate');
 
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
                 //dd($validation->getErrors());
+                $this->session->set('mensaje', 0);
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
                 
                 //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
-                $clienteExiste = $this->clienteModel->find($cliente['idcliente']);
-                // echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+                $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($clienteID);
+                
                 if ($clienteExiste) {
 
-                    //Inserto el nuevo producto
-                    $this->pedidoModel->_insert($pedido);
+                    //Actualizo los datos del cliente
+                    $cliente = [
+                        'nombre' => $this->request->getPostGet('nombre'),
+                        'telefono' => $this->request->getPostGet('telefono'),
+                        'telefono_2' => $this->request->getPostGet('telefono_2'),
+                        'documento' => $this->request->getPostGet('documento'),
+                        'direccion' => '',
+                        'email' => strtolower($this->request->getPostGet('email')),
+                    ];
+                    $this->clienteModel->update($clienteID, $cliente);
 
-                    //Inserto el detalle
-                    $this->detallePedidoModel->_insert($detalleTemporal);
+                    //Actualizo el nuevo pedido y la procedencia
+                    if ($pedido) {
+                        $this->pedidoModel->_update($pedido);
 
+                        //Procedencia
+                        if (isset($pedido['procedencia']) && $pedido['procedencia'] != '' && $pedido['procedencia'] != '0') {
+                            $this->actualizoProcedenciaPedido($pedido);
+                        }
+
+                        $mensaje = 1;
+                    }else{
+                        $mensaje = 0;
+                    }
+
+                    //Inserto el detalle actualizado (MODIFICAR ESTA FUNCION PARA USAR EL MODELO Y TENER HISTORIAL DE CAMBIOS)
+                    if ($detalleTemporal) {
+
+                        //Elimino el detalle anterior antes de insertar el detalle actualizado
+                        $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->delete();
+
+                        //Inserto el detalle editado
+                        $this->detallePedidoModel->_insert($detalleTemporal);
+
+                        //Borro el detalle temporal de la tabla temporal
+                        $this->detallePedidoTempModel->where('cod_pedido', $cod_pedido)->delete();
+
+                        //Actualizo el mensaje
+                        $mensaje = 1;
+
+                    }else{
+                        $mensaje = 0;
+                    }
+                    $this->session->set('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }else{
 
+                    $cliente = [
+                        'nombre' => $this->request->getPostGet('nombre'),
+                        'telefono' => $this->request->getPostGet('telefono'),
+                        'telefono_2' => $this->request->getPostGet('telefono2'),
+                        'documento' => $this->request->getPostGet('documento'),
+                        'direccion' => '',
+                        'email' => strtolower($this->request->getPostGet('email')),
+                    ];
+
                     //Inserto el cliente nuevo
-                    $pedido['idcliente'] = $this->clienteModel->_insert($cliente);
+                    $pedido['idcliente'] = $this->clienteModel->insert($cliente);
 
-                    //Inserto el nuevo pedido
-                    $this->pedidoModel->_insert($pedido);
+                    //Actualizo el nuevo pedido y la procedencia
+                    if ($pedido) {
+                        $this->pedidoModel->_update($pedido);
 
-                    //Inserto el detalle
-                    $this->detallePedidoModel->_insert($detalleTemporal);
-                    
+                        //Procedencia
+                        if (isset($pedido['procedencia']) && $pedido['procedencia'] != '' && $pedido['procedencia'] != '0') {
+                            $this->actualizoProcedenciaPedido($pedido);
+                        }
+
+                        $mensaje = 1;
+                    }else{
+                        $mensaje = 0;
+                    }
+
+                    //Inserto el detalle actualizado (MODIFICAR ESTA FUNCION PARA USAR EL MODELO Y TENER HISTORIAL DE CAMBIOS)
+                    if ($detalleTemporal) {
+
+                        //Elimino el detalle anterior antes de insertar el detalle actualizado
+                        $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->delete();
+                        
+                        //Inserto el detalle editado
+                        $this->detallePedidoModel->_insert($detalleTemporal);
+
+                        //Borro el detalle temporal de la tabla temporal
+                        $this->detallePedidoTempModel->where('cod_pedido', $cod_pedido)->delete();
+
+                        //Actualizo el mensaje
+                        $mensaje = 1;
+
+                    }else{
+                        $mensaje = 0;
+                    }
+
+                    //Actualizo el mensaje
+                    $mensaje = 1;
+
+                    $this->session->set('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }
                 
@@ -854,6 +941,26 @@ class Ventas extends BaseController {
         }else{
 
             $this->logout();
+        }
+    }
+
+    function actualizoProcedenciaPedido($pedido){
+
+        //Verifico si el pedido tiene una procedencia asignada
+        $procedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['id'])->first();
+        
+        $data = [
+            'idpedidos' => $pedido['id'],
+            'idprocedencia' => $pedido['procedencia']
+        ];
+
+        if ($procedencia) {
+            //Actualizo
+            $this->pedidoProcedenciaModel->update($procedencia->id, $data);
+            
+        } else {
+            //Inserto
+            $this->pedidoProcedenciaModel->insert($data);
         }
     }
 
@@ -923,14 +1030,37 @@ class Ventas extends BaseController {
             
             $data['session'] = $this->session;
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($codigoPedido);
-            $data['detalle'] = $this->detallePedidoModel
-                            ->where('cod_pedido', $data['pedido']->cod_pedido)
-                            ->join('productos','productos.id=detalle_pedido.idproducto')
-                            ->findAll();
+            // $data['detalle'] = $this->detallePedidoModel
+            //                 ->where('cod_pedido', $data['pedido']->cod_pedido)
+            //                 ->join('productos','productos.id=detalle_pedido.idproducto')
+            //                 ->findAll();
+
+            //Traigo el detalle del pedido
+            $data['detalle'] = $this->detallePedidoModel->_getDetallePedido($data['pedido']->cod_pedido);
+
+            //Elimino el detalle del pedido en la tabla temporal en caso de que exista
+            $this->detallePedidoTempModel->where('cod_pedido', $data['pedido']->cod_pedido)->delete();
             
+            //Inserto el detalle del pedido en la tabla temporal para poder editarlo
+            if (isset($data['detalle'])) {
+                foreach ($data['detalle'] as $key => $detalle) {
+                    $datos = [
+                        'cod_pedido' => $detalle->cod_pedido,
+                        'idproducto' => $detalle->idproducto,
+                        'cantidad' => $detalle->cantidad,
+                        'precio' => $detalle->precio,
+                        'pvp' => $detalle->pvp,
+                        'subtotal' => $detalle->subtotal,
+                        'observacion' => $detalle->observacion,
+                    ];
+    
+                    $this->detallePedidoTempModel->insert($datos);
+                }
+            }
+
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
-            $data['formas_pago'] = $this->formaPagoModel->findAll();
+            $data['formas_pago'] = $this->formaPagoModel->orderBy('forma_pago', 'asc')->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
             $data['sectores'] = $this->sectoresEntregaModel->findAll();

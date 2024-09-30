@@ -242,7 +242,7 @@ class PedidoModel extends Model {
 
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
 
-        //Actualizo el nuevo pedido
+        //Actualizo el pedido
         $builder = $this->db->table($this->table);
         if ($data['cod_pedido'] != 'NULL' && $data['cod_pedido'] != '') {
             $builder->set('cod_pedido', $data['cod_pedido']);
@@ -300,16 +300,12 @@ class PedidoModel extends Model {
             $builder->set('rango_entrega_hasta', $data['rango_entrega_hasta']); 
         }
 
-        if ($data['formas_pago'] != 'NULL' && $data['formas_pago'] != '') {
-            $builder->set('formas_pago', $data['formas_pago']); 
+        if ($data['horario_extra'] != 'NULL' && $data['horario_extra'] != '') {
+            $builder->set('cargo_horario', $data['horario_extra']); 
         }
 
-        if ($data['banco'] != 'NULL' && $data['banco'] != '') {
-            $builder->set('banco', $data['banco']); 
-        }
-
-        if ($data['observaciones'] != 'NULL') {
-            $builder->set('observaciones', $data['observaciones']); 
+        if ($data['cargo_domingo'] != 'NULL' && $data['cargo_domingo'] != '') {
+            $builder->set('domingo', $data['cargo_domingo']); 
         }
 
         if ($data['valor_mensajero'] != 'NULL' && $data['valor_mensajero'] != '') {
@@ -318,6 +314,34 @@ class PedidoModel extends Model {
 
         if ($data['valor_mensajero_edit'] != 'NULL' && $data['valor_mensajero_edit'] != '') {
             $builder->set('valor_mensajero_edit', $data['valor_mensajero_edit']); 
+        }
+
+        if ($data['dir_entrega'] != 'NULL' && $data['dir_entrega'] != '') {
+            $builder->set('dir_entrega', $data['dir_entrega']); 
+        }
+
+        if ($data['ubicacion'] != 'NULL' && $data['ubicacion'] != '') {
+            $builder->set('ubicacion', $data['ubicacion']); 
+        }
+
+        if ($data['observaciones'] != 'NULL' && $data['observaciones'] != '') {
+            $builder->set('observaciones', $data['observaciones']); 
+        }
+
+        if ($data['mensajero'] != 'NULL' && $data['mensajero'] != '') {
+            $builder->set('mensajero', $data['mensajero']); 
+        }
+
+        if ($data['formas_pago'] != 'NULL' && $data['formas_pago'] != '') {
+            $builder->set('formas_pago', $data['formas_pago']); 
+        }
+
+        if ($data['banco'] != 'NULL' && $data['banco'] != '') {
+            $builder->set('banco', $data['banco']); 
+        }
+
+        if ($data['ref_pago'] != 'NULL' && $data['ref_pago'] != '') {
+            $builder->set('ref_pago', $data['ref_pago']); 
         }
 
         $builder->where($this->table.'.id', $data['id']);
@@ -371,6 +395,10 @@ class PedidoModel extends Model {
         $builder->update();
     }
 
+    /*
+    *   
+    */
+
     function _verificaCampos($id, $detalle){
         //fecha_entrega, nombre, sector, dir_entrega, cod arreglo, horario_entrega
         $numCampos = 6;
@@ -378,25 +406,25 @@ class PedidoModel extends Model {
         $builder = $this->db->table($this->table);
         $pedido = $this->_getDatosPedido($id);
 
-        // echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+        //echo '<pre>'.var_export(isset($pedido->fecha_entrega), true).'</pre>';
 
-        if ($pedido->fecha_entrega != NULL) {
+        if (isset($pedido->fecha_entrega) && $pedido->fecha_entrega != NULL) {
             $numCampos--;
         }
 
-        if ($pedido->nombre != NULL) {
+        if (isset($pedido->nombre) && $pedido->nombre != NULL) {
             $numCampos--;
         }
 
-        if ($pedido->sector > 0) {
+        if (isset($pedido->nombre) && $pedido->sector > 0) {
             $numCampos--;
         }
 
-        if ($pedido->dir_entrega != NULL && $pedido->dir_entrega != '') {
+        if (isset($pedido->dir_entrega) && $pedido->dir_entrega != NULL && $pedido->dir_entrega != '') {
             $numCampos--;
         }
 
-        if ($pedido->horario_entrega != NULL) {
+        if (isset($pedido->horario_entrega) && $pedido->horario_entrega != NULL) {
             $numCampos--;
         }
         
