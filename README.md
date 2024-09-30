@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>La información de banco en el formulario de editar pedido solo se activa si la forma de pago es por institucuín financiera</li>
     <li>En el form de editar pedido los campos nuevos que hay que llenar tienen un color de fondo diferente</li>
     <li>Implementada la interfaz para agregar nuevas formas de pago</li>
     <li>Creado el archivo css del grid de formas de pago</li>

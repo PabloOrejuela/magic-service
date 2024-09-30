@@ -1,6 +1,9 @@
 aData = {}
 let imptEmail = document.getElementById("email")
 let sectores = document.getElementById("sectores")
+let formaPago = document.querySelector("#formas_pago");
+let divBancos = document.querySelector("#div-bancos")
+let divDocPago = document.querySelector("#div-doc-pago")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -8,6 +11,18 @@ imptEmail.addEventListener('input', function(e){
     imptEmail.value = email.toLowerCase()
     
 })
+
+formaPago.addEventListener("change", function () {
+  let valor = formaPago.value;
+
+  if (valor > 0 && valor <= 2) {
+    divBancos.style.display = "block";
+    divDocPago.style.display = "block";
+  }else{
+    divBancos.style.display = "none";
+    divDocPago.style.display = "none";
+  }
+});
 
 $('#idproducto').autocomplete({
   source: function(request, response){

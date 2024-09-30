@@ -2,6 +2,8 @@ let telefono = document.querySelector("#telefono");
 let telefono_2 = document.querySelector("#telefono");
 let formaPago = document.querySelector("#formas_pago");
 let divBancos = document.querySelector("#div-bancos")
+let divDocPago = document.querySelector("#div-doc-pago")
+
 
 telefono.addEventListener("change", function () {
   if ($("#telefono").val() != "") {
@@ -77,7 +79,7 @@ telefono_2.addEventListener("change", function () {
 
 formaPago.addEventListener("change", function () {
   let valor = formaPago.value;
-
+  console.log("Forma de pago");
   if (valor > 0 && valor <= 2) {
     divBancos.style.display = "block";
   }else{

@@ -554,7 +554,7 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="div-doc-pago">
                                         <label for="ref_pago" >No. Documento del pago:</label>
                                         <input 
                                             type="text" 
@@ -630,37 +630,19 @@
 <script src="<?= site_url(); ?>public/js/form-pedido-edit.js"></script>
 <script>
 
-//Traigo el detalle al cargar la página
-// window.addEventListener('load', function() {
-//     let codigoPedido = document.getElementById('cod_pedido').value
+//
+window.addEventListener('load', function() {
+    let formaDePago = document.getElementById('formas_pago').value
+    let divBancos = document.querySelector("#div-bancos")
+    let divDocPago = document.querySelector("#div-doc-pago")
 
-//     $.ajax({
-//         method: 'get',
-//         dataType:"html",
-//         url: "get_detallle",
-//         data: {
-//         codigo: codigoPedido
-//         },
-//         beforeSend: function (f) {
-//             //$('#cliente').html('Cargando ...');
-//         },
-//         success: function(resultado){
-//             let dato = JSON.parse(resultado);
-//             //console.log(dato);
-//             if (dato != 0) {
-//                 alertCambioValor()
-//             }else{
-//                 alertCambioValor()
-//             }
-            
-//             sumarTotal()
 
-//         },
-//         error: function(data){
-//             console.log("No hay detalle");
-//         }
-//     });
-// });
+    if (formaDePago == 1 || formaDePago == 2) {
+        divBancos.style.display = "block";
+        divDocPago.style.display = "block";
+    }
+    
+});
 
 $(document).ready(function(){
     $("#telefono").on('change',function(){
