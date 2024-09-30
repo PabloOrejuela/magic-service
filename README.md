@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>En el form de editar pedido los campos nuevos que hay que llenar tienen un color de fondo diferente</li>
     <li>Implementada la interfaz para agregar nuevas formas de pago</li>
     <li>Creado el archivo css del grid de formas de pago</li>
     <li>Ordenados todos los select del formulario de editar pedido</li>
@@ -14,7 +15,8 @@
 <h3>Correcciones:</h3>
 
 <h5></h5>
-<ul>   
+<ul>  
+    <li>Corregido error que mostraba "seleccionar procedencia" duplicado</li>
     <li>Se corrigieron errores que impedían que se cargue el form de pedido edit</li>
     <li>Se corrigió un error que no permitía que funcione bien el mensaje en el login</li>
 </ul>

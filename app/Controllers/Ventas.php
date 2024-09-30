@@ -652,13 +652,20 @@ class Ventas extends BaseController {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
 
+            if ($this->request->getPostGet('sin_remitente') != null) {
+                $sin_remitente = $this->request->getPostGet('sin_remitente');
+            } else {
+                $sin_remitente = 0;
+            }
+            
+
             $pedido = [
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $data['id'],
                 'fecha' => date('Y-m-d'),
                 'idcliente' => $this->request->getPostGet('idcliente'),
-                'sin_remitente' => $this->request->getPostGet('sin_remitente'),
-
+                'sin_remitente' => $sin_remitente,
+                
                 'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
                 'horario_entrega' => $this->request->getPostGet('horario_entrega'),
                 'sector' => $this->request->getPostGet('sectores'),
@@ -678,7 +685,7 @@ class Ventas extends BaseController {
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
             ];
-            //echo '<pre>'.var_export($datosPedido, true).'</pre>';exit;
+            //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
 
             $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [

@@ -164,13 +164,13 @@
                                     <hr class="divider mt-5 mb-3">
                                     <div class="form-group mb-3 mt-5">
                                         <label for="procedencia">Procedencia *:</label>
-                                        <select class="form-select form-control-border" id="procedencia" name="procedencia" required>
-                                            <option value="0" selected>--Seleccionar--</option>
+                                        <select class="form-select form-control-border campos-nuevos" id="procedencia" name="procedencia" required>
+                                            
                                             <?php
                                                 
                                                 if (isset($procedencias) && isset($pedidoProcedencia)) {
                                                     foreach ($procedencias as $key => $procedencia) {
-                                                        if ($procedencia->id == $pedidoProcedencia->idprocedencia) {
+                                                        if ($procedencia->id == $pedidoProcedencia->idprocedencia ) {
                                                             echo '<option value="'.$procedencia->id.'" selected>'.$procedencia->procedencia.'</option>';
                                                         }else{
                                                             echo '<option value="'.$procedencia->id.'">'.$procedencia->procedencia.'</option>';
@@ -178,8 +178,14 @@
                                                         
                                                     }
                                                 }else{
+
                                                     foreach ($procedencias as $key => $procedencia) {
-                                                        echo '<option value="'.$procedencia->id.'">'.$procedencia->procedencia.'</option>';
+                                                        if ($procedencia->id == 9) {
+                                                            echo '<option value="'.$procedencia->id.'" selected> -- '.$procedencia->procedencia.' -- </option>';
+                                                        }else{
+                                                            echo '<option value="'.$procedencia->id.'">'.$procedencia->procedencia.'</option>';
+                                                        }
+                                                        
                                                     }
                                                 }
                                             ?>
@@ -190,7 +196,7 @@
                                         <label for="dir_entrega" >Dirección de entrega *:</label>
                                         <input 
                                             type="dir_entrega" 
-                                            class="form-control" 
+                                            class="form-control campos-nuevos" 
                                             id="dir_entrega" 
                                             name="dir_entrega" 
                                             placeholder="Dirección" 
@@ -199,7 +205,14 @@
                                     </div>
                                     <div class="form-group" id="campo-extra">
                                         <label for="ubicacion" >Ubicación (Mapa) *:</label>
-                                        <input type="ubicacion" class="form-control" id="ubicacion" name="ubicacion" placeholder="Ubicación" value="<?= $pedido->ubicacion; ?>">
+                                        <input 
+                                            type="ubicacion" 
+                                            class="form-control campos-nuevos" 
+                                            id="ubicacion" 
+                                            name="ubicacion" 
+                                            placeholder="Ubicación" 
+                                            value="<?= $pedido->ubicacion; ?>"
+                                        >
                                     </div>
                                     <div class="form-group mb-3 mt-5">
                                         <label for="vendedor">Vendedor *:</label>
@@ -328,7 +341,7 @@
                                         <label for="observaciones" >Observación del pedido:</label>
                                         <input 
                                             type="text" 
-                                            class="form-control" 
+                                            class="form-control campos-nuevos" 
                                             id="observaciones" 
                                             name="observaciones" 
                                             placeholder="Observación" 
@@ -488,7 +501,7 @@
                                     </div>
                                     <div class="form-group mb-3 mt-2">
                                         <label for="mensajero">Mensajero *:</label>
-                                        <select class="form-select form-control-border" id="mensajero" name="mensajero" required>
+                                        <select class="form-select form-control-border campos-nuevos" id="mensajero" name="mensajero" required>
                                             <option value="0" selected>--Seleccionar mensajero--</option>
                                             <?php
                                                 if (isset($mensajeros)) {
@@ -506,7 +519,7 @@
                                     <div class="form-group mb-3 mt-5">
                                         <h4 class="mt-3">Información financiera</h4>
                                         <label for="formas_pago">Forma de pago *:</label>
-                                        <select class="form-select form-control-border" id="formas_pago" name="formas_pago" required>
+                                        <select class="form-select form-control-border campos-nuevos" id="formas_pago" name="formas_pago" required>
                                             <option value="0" selected>--Seleccionar la forma de pago--</option>
                                             <?php
                                                 if (isset($formas_pago)) {
@@ -525,7 +538,7 @@
                                     
                                     <div class="form-group mb-3 mt-2" id="div-bancos">
                                         <label for="banco">Institución financiera:</label>
-                                        <select class="form-select form-control-border" id="select-banco" name="banco">
+                                        <select class="form-select form-control-border campos-nuevos" id="select-banco" name="banco">
                                             <option value="0" selected>--Seleccionar --</option>
                                             <?php
                                                 if (isset($bancos)) {
@@ -545,7 +558,7 @@
                                         <label for="ref_pago" >No. Documento del pago:</label>
                                         <input 
                                             type="text" 
-                                            class="form-control" 
+                                            class="form-control campos-nuevos" 
                                             id="ref_pago" 
                                             name="ref_pago" 
                                             placeholder="Número de documento" 
@@ -964,7 +977,7 @@ function getDetalletemporal(codigoPedido){
             document.getElementById("cant_arreglos").value = cant
         },
         error: function(data){
-            console.log("No hay detalle vergas");
+            console.log("No hay detalle");
         }
     });
     

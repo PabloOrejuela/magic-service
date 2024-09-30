@@ -432,11 +432,11 @@
         let msj = document.getElementById('msj')
         
         if (msj.value == 1) {
-            alertaMensaje("El pedido se ha enviado", "2500", "success")
+            alertaMensaje("El pedido se ha editado correctamente", "2500", "success")
             actualizaMensaje()
             msj.value = '3'
         }else if(msj.value == 0 && msj.value !== ''){
-            alertaMensaje("Hubo un problema y el pedido no se envió correctamente", "2500", "error")
+            alertaMensaje("Hubo un problema y el pedido no se pudo editar", "2500", "error")
             actualizaMensaje()
         }else{
             actualizaMensaje()

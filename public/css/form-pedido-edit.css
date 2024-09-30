@@ -48,3 +48,8 @@
     height: 5px;
     background-color: rgba(21, 121, 12, 0.3)
 }
+
+.campos-nuevos{
+    background-color: rgba(180, 247, 205, 0.4);
+    color: rgb(0, 0, 0);
+}
