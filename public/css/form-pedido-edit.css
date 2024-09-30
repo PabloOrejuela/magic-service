@@ -43,3 +43,8 @@
 .form-select{
     font-size: 1.2em !important;
 }
+
+.divider{
+    height: 5px;
+    background-color: rgba(21, 121, 12, 0.3)
+}

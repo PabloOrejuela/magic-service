@@ -95,8 +95,8 @@
                                         <input type="txt" class="form-control" id="idcliente" name="idcliente" value="<?= old('idcliente'); ?>" readonly >
                                     </div>
                                     <div class="form-check mt-2 mb-2">
-                                        <input type="checkbox" class="form-check-input" id="remitente" name="remitente" value="1" <?php echo set_checkbox('remitente', '0'); ?> >
-                                        <label class="form-check-label" for="remitente">Sin remitente</label>
+                                        <input type="checkbox" class="form-check-input" id="sin_remitente" name="sin_remitente" value="1" <?php echo set_checkbox('sin_remitente', '0'); ?> >
+                                        <label class="form-check-label" for="sin_remitente">Sin remitente</label>
                                     </div>
                                     <div class="form-group row" id="campo-extra">
                                         <div class="col-md-6 div-celular">

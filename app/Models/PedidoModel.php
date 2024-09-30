@@ -67,6 +67,7 @@ class PedidoModel extends Model {
                 banco,
                 fecha,
                 orden,
+                sin_remitente,
                 sectores_entrega.sector as sector,
                 dir_entrega,
                 estados_pedidos.estado as estado,
@@ -117,7 +118,7 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado, 
-                nombre,documento,clientes.id as idcliente,direccion,telefono,telefono_2,email,fecha_entrega,
+                nombre,documento,clientes.id as idcliente,direccion,telefono,telefono_2,email,fecha_entrega,sin_remitente,
                 horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,
                 pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,valor_mensajero,ref_pago,
                 valor_mensajero_edit,transporte,cargo_horario,domingo,valor_neto,descuento,total,rango_entrega_desde,rango_entrega_hasta');
@@ -233,6 +234,7 @@ class PedidoModel extends Model {
             $builder->set('valor_mensajero_edit', $data['valor_mensajero_edit']); 
         }
 
+        $builder->set('sin_remitente', $data['sin_remitente']); 
         $builder->insert();
         return  $this->db->insertID();
     }
@@ -344,6 +346,7 @@ class PedidoModel extends Model {
             $builder->set('ref_pago', $data['ref_pago']); 
         }
 
+        $builder->set('sin_remitente', $data['sin_remitente']); 
         $builder->where($this->table.'.id', $data['id']);
         $builder->update();
     }

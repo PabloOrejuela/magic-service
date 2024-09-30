@@ -657,6 +657,7 @@ class Ventas extends BaseController {
                 'idusuario' => $data['id'],
                 'fecha' => date('Y-m-d'),
                 'idcliente' => $this->request->getPostGet('idcliente'),
+                'sin_remitente' => $this->request->getPostGet('sin_remitente'),
 
                 'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
                 'horario_entrega' => $this->request->getPostGet('horario_entrega'),
@@ -780,6 +781,7 @@ class Ventas extends BaseController {
                 'idusuario' => $data['id'],
                 'fecha' => date('Y-m-d'),
                 'idcliente' => $this->request->getPostGet('idcliente'),
+                'sin_remitente' => $this->request->getPostGet('sin_remitente'),
 
                 'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
                 'horario_entrega' => $this->request->getPostGet('horario_entrega'),

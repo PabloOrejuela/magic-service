@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>Implementada la funcionalidad del checkbox de Nuevo pedido y de editar pedido</li>
     <li>Agregado el checkbox de sin remitente al formulario de Nuevo pedido</li>
     <li>Se agregó los campos faltantes al form de pedido edit</li>
     <li>Implementada la formad de pago PAYPAL</li>
