@@ -1065,10 +1065,10 @@ class Ventas extends BaseController {
             $data['formas_pago'] = $this->formaPagoModel->orderBy('forma_pago', 'asc')->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
-            $data['sectores'] = $this->sectoresEntregaModel->findAll();
+            $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'asc')->findAll();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
-            $data['bancos'] = $this->bancoModel->findAll();
-            $data['procedencias'] = $this->procedenciaModel->findAll();
+            $data['bancos'] = $this->bancoModel->orderBy('banco', 'asc')->findAll();
+            $data['procedencias'] = $this->procedenciaModel->orderBy('procedencia', 'asc')->findAll();
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
             $data['pedidoProcedencia'] = $this->pedidoProcedenciaModel->where('idpedidos', $data['pedido']->id)->first();
 
