@@ -91,6 +91,7 @@ $routes->get('item-delete/(:num)', 'Administracion::item_delete/$1');
 $routes->get('item-cuantificable-update/(:num)/(:num)', 'Administracion::item_cuantificable_update/$1/$2');
 $routes->get('formas-pago', 'Administracion::formas_pago');
 $routes->get('form-pago-create', 'Administracion::form_formas_pago_create');
+$routes->post('forma-pago-new', 'Administracion::forma_pago_new');
 $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
 $routes->get('usuarios', 'Administracion::usuarios');
 $routes->post('user-insert', 'Administracion::user_insert');

@@ -9,7 +9,7 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div>
-                            <a type="button" href="<?= site_url().'form-pago-create/'; ?>" class="btn btn-success mb-2" >Registrar una nueva forma de pago<</a>
+                            <a type="button" href="<?= site_url().'form-pago-create/'; ?>" class="btn btn-success mb-2" >Registrar una nueva forma de pago</a>
                         </div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">

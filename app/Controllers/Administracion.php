@@ -1017,8 +1017,52 @@ class Administracion extends BaseController {
         }
     }
 
+    public function forma_pago_new(){
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $forma = [
+                'forma_pago' => $this->request->getPostGet('forma_pago'),
+            ];
+            
+            $this->validation->setRuleGroup('formas_pago');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+                //echo '<pre>'.var_export($item, true).'</pre>';exit;
+                $this->formaPagoModel->insert($forma);
+
+                return redirect()->to('formas-pago');
+            }
+            
+        }else{
+
+            $this->logout();
+        }
+    }
+
     public function form_formas_pago_create(){
-        echo 'Formulario para ingresar un Nueva forma de pago';
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
+
+            //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Nueva forma de pago';
+            $data['main_content']='administracion/form-pago-create';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
     }
 
     public function form_usuario_create(){

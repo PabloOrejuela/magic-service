@@ -202,6 +202,16 @@ class Validation extends BaseConfig
         ],
     ];
 
+    public $formas_pago = [
+        'forma_pago'   => 'required',
+    ]; 
+
+    public $formas_pago_errors = [
+        'forma_pago' => [
+            'required' => 'El campo "Forma de pago" es obligatorio',
+        ]
+    ];
+
     public $cliente = [
         'nombre'   => 'required',
     ]; 
