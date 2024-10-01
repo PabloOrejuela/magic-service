@@ -17,6 +17,7 @@
 
 <h5></h5>
 <ul>  
+    <li>Corregido el error que no permitía guardar la procedencia e el Formulario de Editar pedido</li>
     <li>Corregido error que mostraba "seleccionar procedencia" duplicado</li>
     <li>Se corrigieron errores que impedían que se cargue el form de pedido edit</li>
     <li>Se corrigió un error que no permitía que funcione bien el mensaje en el login</li>

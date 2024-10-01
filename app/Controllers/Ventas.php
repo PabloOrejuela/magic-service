@@ -820,7 +820,7 @@ class Ventas extends BaseController {
             ];
             
             $pedidoProcedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['id'])->first();
-
+            
             $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [
                 'nombre' => $this->request->getPostGet('nombre'),
@@ -969,7 +969,7 @@ class Ventas extends BaseController {
             
         } else {
             //Inserto
-            $this->pedidoProcedenciaModel->insert($data);
+            $this->pedidoProcedenciaModel->insert($data);echo $this->db->getLastQuery();
         }
     }
 
