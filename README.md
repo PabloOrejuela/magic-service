@@ -1,14 +1,8 @@
 <h3>Cambios</h3>
 <ul>
-    <li>La información de banco en el formulario de editar pedido solo se activa si la forma de pago es por institucuín financiera</li>
-    <li>En el form de editar pedido los campos nuevos que hay que llenar tienen un color de fondo diferente</li>
-    <li>Implementada la interfaz para agregar nuevas formas de pago</li>
-    <li>Creado el archivo css del grid de formas de pago</li>
-    <li>Ordenados todos los select del formulario de editar pedido</li>
-    <li>Implementada la funcionalidad del checkbox de Nuevo pedido y de editar pedido</li>
-    <li>Agregado el checkbox de sin remitente al formulario de Nuevo pedido</li>
-    <li>Se agregó los campos faltantes al form de pedido edit</li>
-    <li>Implementada la formad de pago PAYPAL</li>
+    <li>Creada el Grid de instituciones financieras</li>
+    <li>Creada el menú de instituciones financieras</li>
+    <li>Creada la ruta del menú Instituciones financieras</li>
 </ul>
 
 </br>
@@ -17,8 +11,5 @@
 
 <h5></h5>
 <ul>  
-    <li>Corregido el error que no permitía guardar la procedencia e el Formulario de Editar pedido</li>
-    <li>Corregido error que mostraba "seleccionar procedencia" duplicado</li>
-    <li>Se corrigieron errores que impedían que se cargue el form de pedido edit</li>
-    <li>Se corrigió un error que no permitía que funcione bien el mensaje en el login</li>
+    
 </ul>

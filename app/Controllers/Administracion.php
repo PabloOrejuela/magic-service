@@ -452,6 +452,36 @@ class Administracion extends BaseController {
     * @throws conditon
     * @date fecha
     */
+    public function instituciones_financieras() {
+    
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['institucionesFinancieras'] = $this->bancoModel->findAll();
+
+            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Instituciones Financieras';
+            $data['main_content']='administracion/grid_instituciones_finacieras';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    
+    }
+
+    /*
+    * undocumented function summary
+    *
+    * @param Type var Description
+    * @return object
+    * @throws conditon
+    * @date fecha
+    */
     public function usuarios() {
     
         $data = $this->acl();

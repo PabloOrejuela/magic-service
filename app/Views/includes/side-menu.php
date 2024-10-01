@@ -88,6 +88,12 @@
             </a>
           </li>
           <li class="nav-item subItem">
+            <a href="'.base_url().'institucion-financiera" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Instituciones financieras</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
             <a href="'.base_url().'usuarios" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Usuarios</p>
