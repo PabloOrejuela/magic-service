@@ -94,6 +94,8 @@ $routes->get('form-pago-create', 'Administracion::form_formas_pago_create');
 $routes->post('forma-pago-new', 'Administracion::forma_pago_new');
 $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
 $routes->get('institucion-financiera', 'Administracion::instituciones_financieras');
+$routes->get('institucion-financiera-new', 'Administracion::institucion_financiera_new');
+$routes->post('institucion-financiera-create', 'Administracion::institucion_financiera_create');
 $routes->get('usuarios', 'Administracion::usuarios');
 $routes->post('user-insert', 'Administracion::user_insert');
 $routes->post('user-update', 'Administracion::user_update');

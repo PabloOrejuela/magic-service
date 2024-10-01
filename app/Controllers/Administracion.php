@@ -474,6 +474,54 @@ class Administracion extends BaseController {
     
     }
 
+    public function institucion_financiera_new(){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
+
+            //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Nueva Institucion Financiera';
+            $data['main_content']='administracion/institucion-financiera-create';
+            return view('dashboard/index', $data);
+        }else{
+            $this->logout();
+            return redirect()->to('/');
+        }
+    }
+
+    public function institucion_financiera_create(){
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $institucion = [
+                'banco' => $this->request->getPostGet('banco'),
+            ];
+            
+            $this->validation->setRuleGroup('inst_financiera');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+                //echo '<pre>'.var_export($item, true).'</pre>';exit;
+                $this->bancoModel->insert($institucion);
+
+                return redirect()->to('institucion-financiera');
+            }
+            
+        }else{
+
+            $this->logout();
+        }
+    }
+
     /*
     * undocumented function summary
     *

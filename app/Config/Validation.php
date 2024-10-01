@@ -212,6 +212,16 @@ class Validation extends BaseConfig
         ]
     ];
 
+    public $inst_financiera = [
+        'banco'   => 'required',
+    ]; 
+
+    public $inst_financiera_errors = [
+        'banco' => [
+            'required' => 'El campo "Institución Financiera" es obligatorio',
+        ]
+    ];
+
     public $cliente = [
         'nombre'   => 'required',
     ]; 
