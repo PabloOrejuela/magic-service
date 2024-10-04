@@ -49,6 +49,8 @@
                                                 
                                                 $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
                                                 $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
+
+                                                
                                                 
                                                 echo '<tr class="item-list" data-id="'.$value->id.'">
                                                         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
@@ -86,6 +88,7 @@
                                                                     data-category="'.$d->idcategoria.'" 
                                                                     data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
                                                             </li>';
+                                                            echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
                                                         } else {
                                                             echo '<li>
                                                                 <a 
@@ -99,6 +102,7 @@
                                                                     style="color:#c70a0a;"
                                                                     data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
                                                             </li>';
+                                                            echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
                                                         }
                                                     }
                                                 }
