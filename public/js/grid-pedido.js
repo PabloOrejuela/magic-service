@@ -62,6 +62,38 @@ let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observac
 let btnNombreArreglo = document.querySelectorAll('[data-bs-target="#linkArregloPedido"]');
 let formAttrModal = document.querySelector('#link-borra-imagen')
 
+/**
+ * Función que actualiza el valor de un campo del formulario
+ * "Campos del arreglo para el tiket"
+ * 
+ * @param Type variables nombre del campo, categoría, id del detalle
+ * @return void
+ * @throws conditon No
+ * @author Pablo Orejuela
+ **/
+const actualiza = (campo, categoria, id, valor) => {
+    
+    //llamo a la funcion AJAX que hace la actualización
+    $.ajax({
+        method:"GET",
+        dataType:"json",
+        url: "ventas/actualizaValorCampoTicket",
+        data: {
+            id: id,
+            campo: campo,
+            categoria: categoria,
+            valor: valor
+        },
+        beforeSend: function (f) {
+            alertaMensaje('Actualizando', 300, "info")
+        },
+        success: function(data){
+            alertaMensaje('Dato actualizado', 300, "success")
+            let datos = JSON.parse(data)
+            
+        }
+    });
+}
 
 btnNombreArreglo.forEach(link => {
     link.addEventListener('click', function(e){
@@ -83,34 +115,56 @@ btnNombreArreglo.forEach(link => {
             formulario.innerHTML += `
                 <div class="mb-3 mt-3">
                     <label for="para" class="form-label">Para:</label>
-                    <input type="text" class="form-control" id="para" placeholder="para" required>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="para" 
+                        placeholder="para" 
+                        onchange="actualiza('para','1',document.querySelector('#idarreglo').value, this.value);" 
+                        required
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="celular" class="form-label">Celular</label>
-                    <input type="text" class="form-control" id="celular" placeholder="celular" required>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="celular" 
+                        placeholder="celular" 
+                        onchange="actualiza('celular','1',document.querySelector('#idarreglo').value, this.value);" 
+                        required
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="mensaje_fresas" class="form-label">Mensaje Fresas</label>
-                    <input type="text" class="form-control" id="mensaje_fresas" placeholder="mensaje">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="mensaje_fresas" 
+                        placeholder="mensaje"
+                        onchange="actualiza('mensaje_fresas','1',document.querySelector('#idarreglo').value, this.value);"
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="peluche" class="form-label">Peluche</label>
-                    <input type="text" class="form-control" id="peluche" placeholder="peluche">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="peluche" 
+                        placeholder="peluche"
+                        onchange="actualiza('peluche','1',document.querySelector('#idarreglo').value, this.value);"
+                    >
                 </div>
                 <div class="mb-3">
                     <label for="globo" class="form-label">Globo</label>
-                    <input type="text" class="form-control" id="globo" placeholder="globo">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="globo" 
+                        placeholder="globo"
+                        onchange="actualiza('globo','1',document.querySelector('#idarreglo').value, this.value);"
+                    >
                 </div>
-
-                <button 
-                    type="button"
-                    id="btnSubmit"
-                    class="btn btn-secondary" 
-                    data-bs-dismiss="modal" 
-                    onClick="insertAttrArreglo()"
-                    disabled
-                >Guardar</button>
-                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             `
             $(document).ready(function(){
                 $("#para").on('change',function(){

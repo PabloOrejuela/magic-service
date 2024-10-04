@@ -67,6 +67,7 @@ $routes->get('updatePrecioActualTempProduct', 'Ventas::updatePrecioActualTempPro
 $routes->get('get_detallle', 'Ventas::getDetallle');
 $routes->get('genera-codigo-pedido', 'Ventas::generaCodigoPedido');
 $routes->get('actualizaMensajeSession', 'Ventas::actualizaMensajeSession');
+$routes->get('ventas/actualizaValorCampoTicket', 'Ventas::actualizaValorCampoTicket');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');

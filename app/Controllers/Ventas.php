@@ -192,6 +192,29 @@ class Ventas extends BaseController {
         return true;
     }
 
+    function actualizaValorCampoTicket(){
+
+        $id =  strtoupper($this->request->getPostGet('id'));
+        $campo = $this->request->getPostGet('campo');
+
+        //Verfica si tiene datos en la tabla
+        $verifica = $this->attrExtArregModel->where('iddetalle', $id)->first();
+        if ($verifica) {
+            $this->attrExtArregModel
+                    ->where('iddetalle', $id)
+                    ->set([$campo => strtoupper($this->request->getPostGet('valor'))])
+                    ->update();
+        } else {
+            $prod = [
+                'iddetalle' => $id,
+                $campo => strtoupper($this->request->getPostGet('valor')),
+            ];
+            $this->attrExtArregModel->insert($prod);
+        }
+        
+        return true;
+    }
+
     function insertAttrArreglo(){
         
         $data['iddetalle'] =  $this->request->getPostGet('iddetalle');
