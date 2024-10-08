@@ -192,6 +192,16 @@ class Ventas extends BaseController {
         return true;
     }
 
+    function getAttrExtraTicket(){
+
+        $iddetalle = $this->request->getPostGet('iddetalle');
+        $datos['infoExtra'] = $this->attrExtArregModel
+                    ->where('iddetalle', $iddetalle)
+                    ->first();
+        //echo $this->db->getLastQuery();
+        echo json_encode($datos);
+    }
+
     function actualizaValorCampoTicket(){
 
         $id =  strtoupper($this->request->getPostGet('id'));
@@ -1035,7 +1045,7 @@ class Ventas extends BaseController {
             
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
-            $data['formas_pago'] = $this->formaPagoModel->findAll();
+            $data['formas_pago'] = $this->formaPagoModel->where('estado', '1')->findAll();
             
             $data['pedidos'] = $this->pedidoModel->_getPedidos();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
@@ -1054,18 +1064,20 @@ class Ventas extends BaseController {
         }
     }
 
-    public function pedido_edit($codigoPedido) {
+    public function pedido_edit($idpedido) {
         
         $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
-            $data['pedido'] = $this->pedidoModel->_getDatosPedido($codigoPedido);
+            $data['pedido'] = $this->pedidoModel->_getDatosPedido($idpedido);
             // $data['detalle'] = $this->detallePedidoModel
             //                 ->where('cod_pedido', $data['pedido']->cod_pedido)
             //                 ->join('productos','productos.id=detalle_pedido.idproducto')
             //                 ->findAll();
+
+            //echo '<pre>'.var_export($data['pedido'], true).'</pre>';exit;
 
             //Traigo el detalle del pedido
             $data['detalle'] = $this->detallePedidoModel->_getDetallePedido($data['pedido']->cod_pedido);
@@ -1092,7 +1104,7 @@ class Ventas extends BaseController {
 
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
-            $data['formas_pago'] = $this->formaPagoModel->orderBy('forma_pago', 'asc')->findAll();
+            $data['formas_pago'] = $this->formaPagoModel->where('estado',1)->orderBy('forma_pago', 'asc')->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
             $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'asc')->findAll();

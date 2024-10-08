@@ -53,12 +53,17 @@
                                         <label for="horario_entrega" class="col-md-5 col-form-label">Horario de entrega:</label>
                                         <div class="col-md-6">
                                             <select class="form-select form-control-border" id="horario_entrega" name="horario_entrega">
-                                                <option value="0" selected>--Seleccionar horario--</option>
                                                 <?php
                                                     if (isset($horariosEntrega)) {
                                                         foreach ($horariosEntrega as $key => $hora) {
                                                             if ($hora->id == $pedido->horario_entrega) {
-                                                                echo '<option value="'.$hora->id.'" selected>'.$hora->hora.'</option>'; 
+                                                                if ($hora->id == '2') {
+                                                                    echo '<option value="'.$hora->id.'" style="color:red !important;" selected>'.$hora->hora.'</option>';
+                                                                }else if ($hora->id == '3') {
+                                                                    echo '<option value="'.$hora->id.'" selected> -- '.$hora->hora.' -- </option>';
+                                                                }else{
+                                                                    echo '<option value="'.$hora->id.'">'.$hora->hora.'</option>';
+                                                                }
                                                                 
                                                             }else{
                                                                 echo '<option value="'.$hora->id.'">'.$hora->hora.'</option>'; 

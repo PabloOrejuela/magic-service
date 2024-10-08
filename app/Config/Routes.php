@@ -68,6 +68,7 @@ $routes->get('get_detallle', 'Ventas::getDetallle');
 $routes->get('genera-codigo-pedido', 'Ventas::generaCodigoPedido');
 $routes->get('actualizaMensajeSession', 'Ventas::actualizaMensajeSession');
 $routes->get('ventas/actualizaValorCampoTicket', 'Ventas::actualizaValorCampoTicket');
+$routes->get('getAttrExtraTicket', 'Ventas::getAttrExtraTicket');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');
@@ -96,6 +97,7 @@ $routes->post('forma-pago-new', 'Administracion::forma_pago_new');
 $routes->get('forma-pago-delete/(:num)/(:num)', 'Administracion::forma_pago_delete/$1/$2');
 $routes->get('institucion-financiera', 'Administracion::instituciones_financieras');
 $routes->get('institucion-financiera-new', 'Administracion::institucion_financiera_new');
+$routes->get('institucion-financiera-delete/(:num)/(:num)', 'Administracion::institucion_financiera_delete/$1/$2');
 $routes->post('institucion-financiera-create', 'Administracion::institucion_financiera_create');
 $routes->get('usuarios', 'Administracion::usuarios');
 $routes->post('user-insert', 'Administracion::user_insert');

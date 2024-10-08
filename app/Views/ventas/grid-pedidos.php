@@ -425,7 +425,7 @@
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= site_url(); ?>public/js/grid-pedido.js"></script>
+<script src="<?= site_url(); ?>public/js/grid-pedidos.js"></script>
 
 
 <!-- FONTAWESOME -->

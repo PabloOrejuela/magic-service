@@ -429,13 +429,17 @@ class Administracion extends BaseController {
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
-            $dato = [
-                'id' => $id,
-                'estado' => $estado,
-            ];
-            //echo '<pre>'.var_export($item, true).'</pre>';exit;
-            $this->formaPagoModel->_updateEstado($dato);
-            //echo $this->db->getLastQuery();exit;
+            if ($estado == 1) {
+                $dato = [
+                    'estado' => 0,
+                ];
+            } else {
+                $dato = [
+                    'estado' => 1,
+                ];
+            }
+
+            $this->formaPagoModel->update($id, $dato);
 
             return redirect()->to('formas-pago');
         }else{
@@ -490,6 +494,39 @@ class Administracion extends BaseController {
         }else{
             $this->logout();
             return redirect()->to('/');
+        }
+    }
+
+    /*
+    * Recibe info del form y cambia el estado de la IF
+    *
+    * @param Type var get
+    * @return void
+    * @throws conditon
+    * @date 08-10-2024
+    */
+    public function institucion_financiera_delete($id, $estado) {
+    
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            if ($estado == 1) {
+                $dato = [
+                    'estado' => 0,
+                ];
+            } else {
+                $dato = [
+                    'estado' => 1,
+                ];
+            }
+
+            $this->bancoModel->update($id, $dato);
+
+            return redirect()->to('institucion-financiera');
+        }else{
+
+            $this->logout();
         }
     }
 

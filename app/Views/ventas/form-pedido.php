@@ -47,19 +47,22 @@
                                         <label for="horario_entrega" class="col-md-5 col-form-label">Horario de entrega:</label>
                                         <div class="col-md-6">
                                             <select class="form-select form-control-border" id="horario_entrega" name="horario_entrega">
-                                                <option value="0" selected>--Seleccionar horario--</option>
                                                 <?php
                                                     if (isset($horariosEntrega)) {
                                                         foreach ($horariosEntrega as $key => $hora) {
                                                             if ($hora->id == 2) {
                                                                 echo '<option value="'.$hora->id.'" '.set_select('horario_entrega', $hora->id, false).' style="color:red;">'.$hora->hora.'</option>';
+                                                            }else if ($hora->id == '3') {
+                                                                echo '<option value="'.$hora->id.'" selected> -- '.$hora->hora.' -- </option>';
                                                             }else{
-                                                                echo '<option value="'.$hora->id.'" '.set_select('horario_entrega', $hora->id, false).'>'.$hora->hora.'</option>';
+                                                                echo '<option value="'.$hora->id.'">'.$hora->hora.'</option>';
                                                             }
-                                                            
                                                         }
+                                                    }else{
+                                                        echo '<option value="3" selected>HUBO UN PROBLEMA Y NO SE CARGAN LOS HORARIOS </option>';
                                                     }
                                                 ?>
+                                               
                                         </select>
                                         </div>
                                     </div>
