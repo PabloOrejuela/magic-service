@@ -21,6 +21,7 @@
                                 <th>Dirección</th>
                                 <th>Documento</th>
                                 <th>Rol</th>
+                                <th>Ventas</th>
                                 <th>Logueado</th>
                                 <th>Sesión</th>
                                 <th>Estado</th>
@@ -38,6 +39,27 @@
                                                 <td>'.$value->cedula.'</td>
                                                 <td>'.$value->rol.'</td>';
 
+                                                if ($value->es_vendedor == 0 && $value->rol != 'VENDEDOR') {
+                                                    echo '<td id="td-ventas">
+                                                            <a
+                                                                id="btn-register" 
+                                                                href="#" 
+                                                                class="edit"
+                                                                onclick="javascript:estadoVentas('.$value->id.','.$value->es_vendedor.')"
+                                                            >
+                                                            NO</a>
+                                                        </td>';
+                                                } else {
+                                                    echo '<td id="td-ventas">
+                                                            <a 
+                                                                id="btn-register" 
+                                                                href="#" 
+                                                                class="edit"
+                                                                onclick="javascript:estadoVentas('.$value->id.','.$value->es_vendedor.')"
+                                                            >SI</a>
+                                                        </td>';
+                                                }
+                                            
                                                 if ($value->logged == 1) {
                                                     echo '<td id="td-online" >ONLINE</td>';
                                                     echo '

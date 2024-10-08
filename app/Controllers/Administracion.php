@@ -63,6 +63,27 @@ class Administracion extends BaseController {
         echo json_encode($res);
     }
 
+    public function user_estado_ventas() {
+
+        $id = $this->request->getPostGet('id');
+        $esVendedor = $this->request->getPostGet('es_vendedor');
+
+        if ($esVendedor == 0) {
+            $data = [
+                'es_vendedor' => 1
+            ];
+
+        } else {
+            $data = [
+                'es_vendedor' => 0
+            ];
+        }
+        
+        $res = $this->usuarioModel->update($id, $data);
+        
+        echo json_encode($res);
+    }
+
     public function productos() {
 
         $data = $this->acl();
@@ -576,7 +597,7 @@ class Administracion extends BaseController {
             $data['session'] = $this->session;
             $data['usuarios'] = $this->usuarioModel->_getAllUsers();
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['usuarios'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Usuarios';
             $data['main_content']='administracion/grid_usuarios';

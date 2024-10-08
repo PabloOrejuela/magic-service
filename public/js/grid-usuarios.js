@@ -69,6 +69,41 @@ const userDelete = (id) => {
     }
 }
 
+const estadoVentas = (id, es_vendedor) => {
+    
+    if (id != null && id != 0) {
+        
+        $.ajax({
+            dataType:"html",
+            url: "user-estado-ventas",
+            method: 'get',
+            data: {
+                id: id,
+                es_vendedor: es_vendedor
+            },
+            beforeSend: function (f) {
+                alertProcesando("Procesando", "info")
+            },
+            success: function(res){
+              
+                let resultado = JSON.parse(res)
+                if (resultado == 1) {
+                    alertProcesando("Se ha cambiado el valor", "info")
+                    setTimeout(function(){
+                        location.replace('usuarios')
+                    }, 2000)
+                }else{
+                    alertProcesando("No se pudo cambiar el valor", "error")
+                }
+            },
+            error: function(resultado){
+              console.log('No se pudo cambiar el valor');
+            }
+        });
+        
+    }
+}
+
 const alertProcesando = (msg, icono) => {
     const toast = Swal.mixin({
       toast: true,

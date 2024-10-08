@@ -29,6 +29,10 @@
     color: #f00;
 }
 
+#td-ventas{
+    text-align: center;
+}
+
 #datatablesSimple{
     font-size: 0.8em;
 }

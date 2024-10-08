@@ -25,7 +25,8 @@ class UsuarioModel extends Model {
         'logged',
         'ip',
         'estado',
-        'inventarios'
+        'inventarios',
+        'es_vendedor'
     ];
 
     // Dates
@@ -73,7 +74,24 @@ class UsuarioModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-            'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,proveedores,reportes,rol,direccion,estado'
+            'usuarios.id as id,
+            nombre,
+            user,
+            telefono,
+            email,
+            password,
+            cedula,
+            idroles,
+            logged,
+            rol,
+            admin,
+            ventas,
+            proveedores,
+            reportes,
+            rol,
+            direccion,
+            estado,
+            es_vendedor'
         );
         $builder->join('roles', 'roles.id=usuarios.idroles');
         $builder->orderBy('nombre', 'asc');
@@ -105,7 +123,7 @@ class UsuarioModel extends Model {
     function _getUsuariosRol($idrol){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select('*')->where('idroles', $idrol);
+        $builder->select('*')->where('idroles', $idrol)->orwhere('es_vendedor',1);
         $builder->orderBy('nombre', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
