@@ -856,48 +856,13 @@ botonesHorariosEntrega.forEach(btn => {
         let desde = this.dataset.desde
         let hasta = this.dataset.hasta
         let codigoPedido = this.dataset.codigoPedido
-        let hora = this.dataset.value
-        let selectHoraEntrega = document.getElementById('selectHoraEntrega')
-
-        $.ajax({
-            type:"GET",
-            dataType:"html",
-            url: "getHorasEntrega",
-            //data:"codigo="+valor,
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(data){
-                let datos = JSON.parse(data)
-                //console.log(datos);
-                selectHoraEntrega.innerHTML = ''
-                if (datos) {
-                    for (let dato of datos) {
-                        if (dato.id < 5 || dato.id > 24) {
-                            if (dato.hora == hora) {
-                                selectHoraEntrega.innerHTML += `<option value="${dato.id}" style="color:red;" selected>${dato.hora}</option>`
-                            } else {
-                                selectHoraEntrega.innerHTML += `<option value="${dato.id}" style="color:red;">${dato.hora}</option>`
-                            }
-                        }else{
-                            if (dato.hora == hora) {
-                                selectHoraEntrega.innerHTML += `<option value="${dato.id}" selected>${dato.hora}</option>`
-                            }else{
-                                selectHoraEntrega.innerHTML += `<option value="${dato.id}">${dato.hora}</option>`
-                            }
-                            
-                        }
-                    }
-                }
-                
-            }
-        });
+        //let hora = this.dataset.value
 
         document.querySelector('#codigo_pedido').value = codigoPedido;
         document.querySelector('#id').value = id;
         document.querySelector('#entrega-desde').value = desde;
         document.querySelector('#entrega-hasta').value = hasta;
-        //console.log('abrir modal');
+
         $('#horaEntregaModal').modal();
     });
 });
@@ -1124,14 +1089,13 @@ function actualizarEstadoPedido(estado_pedido, codigo_pedido){
     });
 }
 
-function actualizarHorarioEntrega(horario_entrega, codigo_pedido, idpedido, entrega_desde, entrega_hasta){
+function actualizarHorarioEntrega(codigo_pedido, idpedido, entrega_desde, entrega_hasta){
     
     $.ajax({
         method:"GET",
         //dataType:"html",
         url: "actualizarHorarioEntrega",
         data: {
-            horarioEntrega: horario_entrega,
             codigoPedido: codigo_pedido,
             id: idpedido,
             entregaDesde: entrega_desde,
@@ -1142,18 +1106,11 @@ function actualizarHorarioEntrega(horario_entrega, codigo_pedido, idpedido, entr
         },
         success: function(data){
             let datos = JSON.parse(data);
-            //console.log(datos.horario);
-            if (datos.horario < 5 || datos.horario > 24) {
-                alertActualizaCampoCambio()
-                setTimeout(function(){
-                    location.replace('pedidos');
-                }, 3000);
-            }else{
-                alertActualizaCampo()
-                setTimeout(function(){
-                    location.replace('pedidos');
-                }, 3000);
-            }
+
+            alertaMensaje("Se ha actualizado el horario de entrega", "2500", "success")
+            setTimeout(function(){
+                location.replace('pedidos');
+            }, 3000);
         }
             
     });

@@ -1,6 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Implementada la funcionalidad de es vendedor en el menú usuarios</li>
+    <li>El modal de Horario de entrega ya solo tiene los campos DESDE y HASTA</li>
 </ul>
 
 </br>
@@ -9,5 +9,4 @@
 
 <h5></h5>
 <ul>
-    <li>Corregido un error que no traía las instituciones financieras filtrando por el estado y traía todas siempre para el select de instituciones financieras en el formulario de editar pedido</li>
 </ul>

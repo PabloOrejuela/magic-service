@@ -335,17 +335,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <h5 class="modal-title" id="staticBackdropLabel">Horarios</h5>
       <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
       <input class="form-control" type="hidden" name="id" id="id">
-        <select 
-            class="form-select" 
-            id="selectHoraEntrega" 
-            name="hora_entrega"
-            data-style="form-control" 
-            data-live-search="true" 
-        >
-        </select>
 
         <div class="form-group row mb-5 mt-3" id="campo-extra">
             <div class="col-md-5 div-celular">
@@ -379,8 +370,7 @@
             type="button" 
             class="btn btn-secondary" 
             data-bs-dismiss="modal" 
-            onClick="
-                actualizarHorarioEntrega(document.getElementById('selectHoraEntrega').value, 
+            onClick="actualizarHorarioEntrega(
                 document.getElementById('codigo_pedido').value, 
                 document.getElementById('id').value, 
                 document.getElementById('entrega-desde').value, 
