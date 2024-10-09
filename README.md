@@ -1,6 +1,7 @@
 <h3>Cambios</h3>
 <ul>
-    <li>El modal de Horario de entrega ya solo tiene los campos DESDE y HASTA</li>
+    <li>Se cambió la función que busca el teléfono del formulario de nuevo pedido a el documento javascript del formulario de nuevo pedido</li>
+    <li>La función de búsqueda de los datos del cliente desde el campo del teléfono ahora ya no usa jquery</li>
 </ul>
 
 </br>

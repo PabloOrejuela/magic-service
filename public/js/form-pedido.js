@@ -1,6 +1,7 @@
 aData = {}
 let imptEmail = document.getElementById("email")
 let sectores = document.getElementById("sectores")
+let telefono = document.getElementById("telefono")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -63,6 +64,45 @@ function limpiaCamposCliente() {
   document.getElementById("idcliente").value = "";
   document.getElementById("telefono_2").value = "";
 }
+
+telefono.addEventListener('change', function(e){
+  console.log('Si detecta')
+  if($("#telefono").val() !=""){
+
+    valor = $("#telefono").val();
+    $.ajax({
+        type:"POST",
+        dataType:"html",
+        url: "ventas/clientes_select_telefono",
+        data:"telefono="+valor,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(data){
+            // limpiarClienteDocumento();
+            let cliente = JSON.parse(data);
+
+            if (cliente) {
+                //console.log(data);
+                document.getElementById('nombre').value = cliente.nombre
+                document.getElementById('telefono').value = cliente.telefono
+                document.getElementById('telefono_2').value = cliente.telefono_2
+                document.getElementById('documento').value = cliente.documento
+                document.getElementById('email').value = cliente.email
+                document.getElementById('idcliente').value = cliente.id
+            }else {
+                console.log('No hay, debo buscar en el 1 también');
+                searchPhones(valor, 2)
+            }
+        },
+        error: function(data){
+            console.log("No hay");
+        }
+    });
+}else{
+    limpiarClienteTelefono()
+}
+})
 
 function sumarTotal() {
   let descuento = 0;

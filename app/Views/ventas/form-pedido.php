@@ -466,75 +466,37 @@
 <script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
 <script>
 
-    //Traigo el detalle al cargar la página
-    window.addEventListener('load', function() {
-        let codigoPedido = document.getElementById('cod_pedido').value
-    
-        $.ajax({
-            method: 'get',
-            dataType:"html",
-            url: "get_detallle",
-            data: {
-            codigo: codigoPedido
-            },
-            beforeSend: function (f) {
-                //$('#cliente').html('Cargando ...');
-            },
-            success: function(resultado){
-                let dato = JSON.parse(resultado);
-                //console.log(dato);
-                if (dato != 0) {
-                    alertCambioValor()
-                }else{
-                    alertCambioValor()
-                }
-                
-                sumarTotal()
+//Traigo el detalle al cargar la página
+window.addEventListener('load', function() {
+    let codigoPedido = document.getElementById('cod_pedido').value
 
-            },
-            error: function(data){
-                console.log("No hay detalle");
+    $.ajax({
+        method: 'get',
+        dataType:"html",
+        url: "get_detallle",
+        data: {
+        codigo: codigoPedido
+        },
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(resultado){
+            let dato = JSON.parse(resultado);
+            //console.log(dato);
+            if (dato != 0) {
+                alertCambioValor()
+            }else{
+                alertCambioValor()
             }
-        });
+            
+            sumarTotal()
+
+        },
+        error: function(data){
+            console.log("No hay detalle");
+        }
     });
-
-    $(document).ready(function(){
-        $("#telefono").on('change',function(){
-            if($("#telefono").val() !=""){
-
-                valor = $("#telefono").val();
-                $.ajax({
-                    type:"POST",
-                    dataType:"html",
-                    url: "ventas/clientes_select_telefono",
-                    data:"telefono="+valor,
-                    beforeSend: function (f) {
-                        //$('#cliente').html('Cargando ...');
-                    },
-                    success: function(data){
-                        // limpiarClienteDocumento();
-                        let cliente = JSON.parse(data);
-
-                        if (cliente) {
-                        //console.log(data);
-                        document.getElementById('nombre').value = cliente.nombre
-                        document.getElementById('telefono').value = cliente.telefono
-                        document.getElementById('telefono_2').value = cliente.telefono_2
-                        document.getElementById('documento').value = cliente.documento
-                        document.getElementById('email').value = cliente.email
-                        document.getElementById('idcliente').value = cliente.id
-                        }else {
-                        console.log('No hay, debo buscar en el 1 también');
-                        searchPhones(valor, 2)
-                        }
-                    },
-                    error: function(data){
-                        console.log("No hay");
-                    }
-                });
-            }
-        });
-    });
+});
 
 function searchPhones(valor, phone) {
     if (phone == 1) {
