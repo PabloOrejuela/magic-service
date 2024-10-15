@@ -4,6 +4,8 @@ let sectores = document.getElementById("sectores")
 let formaPago = document.querySelector("#formas_pago");
 let divBancos = document.querySelector("#div-bancos")
 let divDocPago = document.querySelector("#div-doc-pago")
+let telefono = document.getElementById("telefono")
+let telefono2 = document.getElementById("telefono_2")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -60,6 +62,7 @@ function limpiarClienteTelefono() {
   document.getElementById("email").value = "";
   document.getElementById("idcliente").value = "";
   document.getElementById("telefono_2").value = "";
+  document.getElementById("telefono").value = "";
 }
 
 function limpiarClienteDocumento() {
@@ -77,6 +80,74 @@ function limpiaCamposCliente() {
   document.getElementById("email").value = "";
   document.getElementById("idcliente").value = "";
   document.getElementById("telefono_2").value = "";
+}
+
+const limpiartelefono = (telf) => {
+  let string = telf.value
+  telf.value = string.replace(/[^\w]/gi, '')
+}
+
+telefono.addEventListener('change', function(e){
+  
+  //Limpiar celular
+  limpiartelefono(telefono)
+  
+  if(telefono.value !=""){
+      buscaTelefono(telefono)
+  }else{
+      limpiarClienteTelefono()
+  }
+})
+
+telefono2.addEventListener('change', function(e){
+  //console.log(telefono.value)
+  limpiartelefono(telefono2)
+
+  if(telefono2.value !=""){
+      buscaTelefono(telefono2)
+  }else{
+      limpiarClienteTelefono()
+  }
+})
+
+function buscaTelefono(telefono){
+  $.ajax({
+      method:"GET",
+      dataType:"json",
+      url: "../clientes_select_telefono",
+      data:{
+          telefono: telefono.value
+      },
+      beforeSend: function (f) {
+          //$('#cliente').html('Cargando ...');
+      },
+      success: function(res){
+          
+          //let cliente = JSON.parse(data);
+          
+          if (res.respuesta[0] !== undefined) {
+              //console.log(data);
+              limpiarClienteDocumento();
+              document.getElementById('nombre').value = res.respuesta[0].nombre
+              document.getElementById('telefono').value = res.respuesta[0].telefono
+              document.getElementById('telefono_2').value = res.respuesta[0].telefono_2
+              document.getElementById('documento').value = res.respuesta[0].documento
+              document.getElementById('email').value = res.respuesta[0].email
+              document.getElementById('idcliente').value = res.respuesta[0].id
+          }else {
+              alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor', 3000, 'error')
+              document.getElementById('nombre').value = ''
+              document.getElementById('telefono').value = ''
+              document.getElementById('telefono_2').value = ''
+              document.getElementById('documento').value = ''
+              document.getElementById('email').value = ''
+              document.getElementById('idcliente').value = ''
+          }
+      },
+      error: function(data){
+          console.log("Error");
+      }
+  });
 }
 
 function sumarTotal() {
