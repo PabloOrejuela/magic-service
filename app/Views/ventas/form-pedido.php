@@ -484,9 +484,9 @@ window.addEventListener('load', function() {
             let dato = JSON.parse(resultado);
             //console.log(dato);
             if (dato != 0) {
-                alertCambioValor()
+                //alertCambioValor()
             }else{
-                alertCambioValor()
+                //alertCambioValor()
             }
             
             sumarTotal()
@@ -494,105 +494,6 @@ window.addEventListener('load', function() {
         },
         error: function(data){
             console.log("No hay detalle");
-        }
-    });
-});
-
-function searchPhones(valor, phone) {
-    if (phone == 1) {
-      $.ajax({
-        type:"POST",
-        dataType:"html",
-        url: "ventas/clientes_select_telefono",
-        data:"telefono="+valor,
-        beforeSend: function (f) {
-            $('#cliente').html('Buscando ...');
-        },
-        success: function(data){
-          let cliente = JSON.parse(data);
-          //console.log(cliente);
-          if (cliente) {
-            
-            document.getElementById('nombre').value = cliente.nombre
-            document.getElementById('telefono').value = cliente.telefono
-            document.getElementById('telefono_2').value = cliente.telefono_2
-            document.getElementById('documento').value = cliente.documento
-            document.getElementById('email').value = cliente.email
-            document.getElementById('idcliente').value = cliente.id
-          } 
-          
-        },
-        error: function(data){
-          console.log("No hay");
-        }
-      });
-    } else {
-      $.ajax({
-        type:"POST",
-        dataType:"html",
-        url: "ventas/clientes_select_telefono_2",
-        data:"telefono="+valor,
-        beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
-        },
-        success: function(data){
-          let cliente = JSON.parse(data);
-          
-          if (cliente) {
-            
-            document.getElementById('nombre').value = cliente.nombre
-            document.getElementById('telefono').value = cliente.telefono
-            document.getElementById('telefono_2').value = cliente.telefono_2
-            document.getElementById('documento').value = cliente.documento
-            document.getElementById('email').value = cliente.email
-            document.getElementById('idcliente').value = cliente.id
-          } 
-          
-          
-        },
-        error: function(data){
-          console.log("No hay");
-        }
-    });
-    }
-}
-
-$(document).ready(function(){
-    $("#telefono_2").on('change',function(){
-        if($("#telefono_2").val() !=""){
-
-            valor = $("#telefono_2").val();
-            //console.log(valor);
-            $.ajax({
-                type:"POST",
-                dataType:"html",
-                url: "ventas/clientes_select_telefono_2",
-                data:"telefono="+valor,
-                beforeSend: function (f) {
-                    //$('#cliente').html('Cargando ...');
-                },
-                success: function(data){
-                    let cliente = JSON.parse(data);
-                    
-                    if (cliente) {
-                    
-                    document.getElementById('nombre').value = cliente.nombre
-                    document.getElementById('telefono').value = cliente.telefono
-                    document.getElementById('telefono_2').value = cliente.telefono_2
-                    document.getElementById('documento').value = cliente.documento
-                    document.getElementById('email').value = cliente.email
-                    document.getElementById('idcliente').value = cliente.id
-                    } else {
-                    //console.log('No hay, debo buscar en el 1 también');
-                    searchPhones(valor, 1)
-                    }
-                    
-                    
-                },
-                error: function(data){
-                    console.log("No hay");
-                }
-            });
         }
     });
 });
@@ -633,22 +534,6 @@ $(document).ready(function(){
             alertCambioValorMensajero()
             document.getElementById('valor_mensajero_mostrado').value = "0.00"
         }
-    });
-});
-
-$(document).ready(function(){
-    $("#telefono").on("change", function() {
-        let string = $("#telefono").val();
-        
-        $("#telefono").val(string.replace(/[^\w]/gi, ''));
-    });
-});
-
-$(document).ready(function(){
-    $("#telefono_2").on("change", function() {
-        let string = $("#telefono_2").val();
-        
-        $("#telefono_2").val(string.replace(/[^\w]/gi, ''));
     });
 });
 

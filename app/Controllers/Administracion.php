@@ -662,6 +662,12 @@ class Administracion extends BaseController {
     
     }
 
+    function getRoles(){
+        $data['roles'] = $this->rolModel->findAll();
+
+        echo json_encode($data);
+    }
+
     /**
      * Formulario para crear un nuevo producto
      *

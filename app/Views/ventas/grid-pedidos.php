@@ -125,7 +125,9 @@
                                                             href="#" 
                                                             data-id="'.$value->cod_pedido.'" 
                                                             data-bs-toggle="modal" 
-                                                            data-bs-target="#horaSalidaModal">Registrar</a>
+                                                            data-bs-target="#horaSalidaModal"
+                                                        >
+                                                        Registrar</a>
                                                     </td>';
                                                 }
                                                 

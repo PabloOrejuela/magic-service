@@ -21,6 +21,7 @@
                                 <th>Dirección</th>
                                 <th>Documento</th>
                                 <th>Rol</th>
+                                <th>Segundo Rol</th>
                                 <th>Ventas</th>
                                 <th>Logueado</th>
                                 <th>Sesión</th>
@@ -29,8 +30,14 @@
                             </thead>
                             <tbody>
                                 <?php
+                                    use App\Models\rolModel;
+                                    $this->rolModel = new rolModel();
+
                                     if (isset($usuarios) && $usuarios != NULL) {
+
                                         foreach ($usuarios as $key => $value) {
+                                            $rol_2 = $this->rolModel->select('rol')->find($value->idrol_2);
+                                            $roles = $this->rolModel->findAll();
                                             echo '<tr>
                                                 <td><a href="'.site_url().'usuario-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
                                                 <td>'.$value->telefono.'</td>
@@ -38,6 +45,36 @@
                                                 <td>'.$value->direccion.'</td>
                                                 <td>'.$value->cedula.'</td>
                                                 <td>'.$value->rol.'</td>';
+
+                                                if ($value->idrol_2 == 0) {
+                                                    echo '<td id="td-ventas">
+                                                        <a
+                                                            id="btn-register_'.$value->id.'"
+                                                            data-id="'.$value->id.'"
+                                                            data-rol2="ASIGNAR"
+                                                            data-idrol_2="'.$value->idrol_2.'"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#asignaSegundoRolModal"
+                                                            href="#" 
+                                                            class="edit"
+                                                        >ASIGNAR</a>
+                                                    </td>';
+                                                } else {
+                                                    echo '<td id="td-ventas">
+                                                        <a
+                                                            id="btn-register_'.$value->id.'"
+                                                            data-id="'.$value->id.'"
+                                                            data-rol2="'.$rol_2->rol.'"
+                                                            data-idrol_2="'.$value->idrol_2.'"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#asignaSegundoRolModal"
+                                                            href="#" 
+                                                            class="edit"
+                                                        >'.$rol_2->rol.'</a>
+                                                    </td>';
+                                                }
+                                                
+                                                
 
                                                 if ($value->es_vendedor == 0 && $value->rol != 'VENDEDOR') {
                                                     echo '<td id="td-ventas">
@@ -116,6 +153,40 @@
         </div>
     </div>
 </section>
+
+<!-- Asigna segundo rol-->
+<div class="modal fade" id="asignaSegundoRolModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Asignar un segundo rol</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <h5 class="modal-title" id="staticBackdropLabel">Roles</h5>
+      <input class="form-control" type="hidden" name="idusuario" id="idusuario">
+        <select 
+            class="form-select" 
+            id="select-roles" 
+            name="idrol_2"
+            data-style="form-control" 
+            data-live-search="true" 
+        >
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button 
+            type="button" 
+            class="btn btn-secondary" 
+            data-bs-dismiss="modal" 
+            onClick="asignaRol(document.getElementById('select-roles').value, document.getElementById('idusuario').value)"
+        >Actualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="<?= site_url(); ?>public/js/grid-usuarios.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

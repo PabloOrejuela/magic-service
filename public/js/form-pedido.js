@@ -2,6 +2,7 @@ aData = {}
 let imptEmail = document.getElementById("email")
 let sectores = document.getElementById("sectores")
 let telefono = document.getElementById("telefono")
+let telefono2 = document.getElementById("telefono_2")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -46,6 +47,7 @@ function limpiarClienteTelefono() {
   document.getElementById("email").value = "";
   document.getElementById("idcliente").value = "";
   document.getElementById("telefono_2").value = "";
+  document.getElementById("telefono").value = "";
 }
 
 function limpiarClienteDocumento() {
@@ -65,44 +67,73 @@ function limpiaCamposCliente() {
   document.getElementById("telefono_2").value = "";
 }
 
-telefono.addEventListener('change', function(e){
-  console.log('Si detecta')
-  if($("#telefono").val() !=""){
+const limpiartelefono = (telf) => {
+    let string = telf.value
+    telf.value = string.replace(/[^\w]/gi, '')
+}
 
-    valor = $("#telefono").val();
+
+telefono.addEventListener('change', function(e){
+    //Limpiar celular
+    limpiartelefono(telefono)
+    
+    if(telefono.value !=""){
+        buscaTelefono(telefono)
+    }else{
+        limpiarClienteTelefono()
+    }
+})
+
+telefono2.addEventListener('change', function(e){
+    //console.log(telefono.value)
+    limpiartelefono(telefono2)
+
+    if(telefono2.value !=""){
+        buscaTelefono(telefono2)
+    }else{
+        limpiarClienteTelefono()
+    }
+})
+
+function buscaTelefono(telefono){
     $.ajax({
-        type:"POST",
-        dataType:"html",
-        url: "ventas/clientes_select_telefono",
-        data:"telefono="+valor,
+        method:"GET",
+        dataType:"json",
+        url: "clientes_select_telefono",
+        data:{
+            telefono: telefono.value
+        },
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
         },
-        success: function(data){
-            // limpiarClienteDocumento();
-            let cliente = JSON.parse(data);
-
-            if (cliente) {
+        success: function(res){
+            
+            //let cliente = JSON.parse(data);
+            
+            if (res.respuesta[0] !== undefined) {
                 //console.log(data);
-                document.getElementById('nombre').value = cliente.nombre
-                document.getElementById('telefono').value = cliente.telefono
-                document.getElementById('telefono_2').value = cliente.telefono_2
-                document.getElementById('documento').value = cliente.documento
-                document.getElementById('email').value = cliente.email
-                document.getElementById('idcliente').value = cliente.id
+                limpiarClienteDocumento();
+                document.getElementById('nombre').value = res.respuesta[0].nombre
+                document.getElementById('telefono').value = res.respuesta[0].telefono
+                document.getElementById('telefono_2').value = res.respuesta[0].telefono_2
+                document.getElementById('documento').value = res.respuesta[0].documento
+                document.getElementById('email').value = res.respuesta[0].email
+                document.getElementById('idcliente').value = res.respuesta[0].id
             }else {
-                console.log('No hay, debo buscar en el 1 también');
-                searchPhones(valor, 2)
+                alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor', 3000, 'error')
+                document.getElementById('nombre').value = ''
+                document.getElementById('telefono').value = ''
+                document.getElementById('telefono_2').value = ''
+                document.getElementById('documento').value = ''
+                document.getElementById('email').value = ''
+                document.getElementById('idcliente').value = ''
             }
         },
         error: function(data){
-            console.log("No hay");
+            console.log("Error");
         }
     });
-}else{
-    limpiarClienteTelefono()
 }
-})
 
 function sumarTotal() {
   let descuento = 0;

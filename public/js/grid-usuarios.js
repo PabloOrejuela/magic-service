@@ -1,4 +1,39 @@
 "use strict"
+let btnAsignaSegundoRol = document.querySelectorAll('[data-bs-target="#asignaSegundoRolModal"]');
+
+btnAsignaSegundoRol.forEach(btn => {
+    btn.addEventListener('click', function() {
+        let id = this.dataset.id;
+        let idrol_2 = this.dataset.idrol_2;
+        let selectRolesModal = document.getElementById('select-roles')
+
+        $.ajax({
+            method:"GET",
+            dataType:"html",
+            url: "getRoles",
+            beforeSend: function (f) {
+                //$('#cliente').html('Cargando ...');
+            },
+            success: function(data){
+                let roles = JSON.parse(data)
+                console.log(idrol_2);
+                selectRolesModal.innerHTML = ''
+                if (roles.roles) {
+                    for (const rol of roles.roles) {
+                        if (rol.id == idrol_2) {
+                            selectRolesModal.innerHTML += `<option value="${rol.id}" selected>${rol.rol}</option>`
+                        }else{
+                            selectRolesModal.innerHTML += `<option value="${rol.id}">${rol.rol}</option>`
+                        }
+                    }
+                }
+            }
+        });
+
+        document.querySelector('#idusuario').value = id;
+        $('#asignaSegundoRolModal').modal();
+    });
+});
 
 const sessionClose = (id) => {
     

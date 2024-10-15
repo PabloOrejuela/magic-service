@@ -84,11 +84,11 @@ class UsuarioModel extends Model {
             idroles,
             logged,
             rol,
+            idrol_2,
             admin,
             ventas,
             proveedores,
             reportes,
-            rol,
             direccion,
             estado,
             es_vendedor'
