@@ -77,19 +77,25 @@ const actualiza = (campo, id, valor) => {
     $.ajax({
         method:"GET",
         dataType:"json",
-        url: "ventas/actualizaValorCampoTicket",
+        url: "./actualizaValorCampoTicket",
         data: {
             id: id,
             campo: campo,
             valor: valor
         },
         beforeSend: function (f) {
-            alertaMensaje('Actualizando', 300, "info")
+            alertaMensaje('El dato se ha actualizado', 2500, "success")
         },
         success: function(data){
-            alertaMensaje('Dato actualizado', 300, "success")
+            
         }
     });
+}
+
+const actualizaGrid = () => {
+    setTimeout(function(){
+        location.replace('pedidos');
+    }, 2000);
 }
 
 btnNombreArreglo.forEach(link => {
@@ -107,7 +113,7 @@ btnNombreArreglo.forEach(link => {
         document.querySelector('#lblForm').value = arreglo;
         document.querySelector('#lblPedido').value = pedido;
     
-        $('#linkArregloPedido').modal();
+        $('#linkArregloPedido').modal({backdrop: 'static', keyboard: false});
 
         $.ajax({
             method:"GET",
