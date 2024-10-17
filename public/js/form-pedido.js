@@ -11,6 +11,12 @@ imptEmail.addEventListener('input', function(e){
     
 })
 
+const activarSubmit = () => {
+    
+    let btnSubmit = document.getElementById("btnEnviar")
+    btnSubmit.removeAttribute('disabled')
+}
+
 $('#idproducto').autocomplete({
   source: function(request, response){
     

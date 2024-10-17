@@ -421,8 +421,12 @@
                                             name="cant_arreglos"
                                         >
                                     </div>
+                                    
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary" onclick="pedidoInsert()" >Enviar</button>
+                                        <div class="row col-md-12 mb-3">
+                                            <button type="button" class="btn btn-light" onclick="activarSubmit()" id="btn-activar">Estoy listo y deseo continuar</button>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary" onclick="pedidoInsert()" id="btnEnviar" disabled>Enviar</button>
                                         <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
                                         <div class="row mt-3" id="varSistema">
                                             <div class="col-md-2">
@@ -497,6 +501,12 @@ window.addEventListener('load', function() {
         }
     });
 });
+
+window.addEventListener("keypress", function(event){
+    if (event.keyCode == 13){
+        event.preventDefault();
+    }
+}, false);
 
 $(document).ready(function(){
     $("#documento").on('change',function(){
