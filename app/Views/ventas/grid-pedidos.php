@@ -130,8 +130,9 @@
                                                         Registrar</a>
                                                     </td>';
                                                 }
-                                                
-                                                echo '<td id="hora_entrega'.$value->id.'" class="datos-negrita">
+
+                                                if ($value->rango_entrega_desde != '' && $value->rango_entrega_hasta != '') {
+                                                    echo '<td id="hora_entrega'.$value->id.'" class="datos-negrita">
                                                         <a 
                                                             type="button" 
                                                             id="horaEntrega_'.$value->id.'" 
@@ -142,8 +143,26 @@
                                                             data-desde="'.$value->rango_entrega_desde.'" 
                                                             data-hasta="'.$value->rango_entrega_hasta.'" 
                                                             data-bs-toggle="modal" 
-                                                            data-bs-target="#horaEntregaModal">'.$value->hora.'</a>
+                                                            data-bs-target="#horaEntregaModal">Desde: '.$value->rango_entrega_desde.' Hasta: '.$value->rango_entrega_hasta.'</a>
                                                     </td>';
+                                                } else {
+                                                    echo '<td id="hora_entrega'.$value->id.'" class="datos-negrita">
+                                                        <a 
+                                                            type="button" 
+                                                            id="horaEntrega_'.$value->id.'" 
+                                                            href="#" 
+                                                            data-id="'.$value->id.'"
+                                                            data-codigoPedido="'.$value->cod_pedido.'"
+                                                            data-value="'.$value->hora.'"
+                                                            data-desde="'.$value->rango_entrega_desde.'" 
+                                                            data-hasta="'.$value->rango_entrega_hasta.'" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#horaEntregaModal">Registrar</a>
+                                                    </td>';
+                                                }
+                                                
+                                                
+                                                
 
                                                 if ($value->mensajero) {
                                                     echo '<td id="mensajero'.$value->id.'">
