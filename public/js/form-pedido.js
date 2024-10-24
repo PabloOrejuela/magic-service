@@ -1,4 +1,5 @@
 aData = {}
+
 let imptEmail = document.getElementById("email")
 let sectores = document.getElementById("sectores")
 let telefono = document.getElementById("telefono")
@@ -114,10 +115,10 @@ function buscaTelefono(telefono){
         },
         success: function(res){
             
-            //let cliente = JSON.parse(data);
+            // let cliente = JSON.parse(data);
             
             if (res.respuesta[0] !== undefined) {
-                //console.log(data);
+                //console.log(res.respuesta[0]);
                 limpiarClienteDocumento();
                 document.getElementById('nombre').value = res.respuesta[0].nombre
                 document.getElementById('telefono').value = res.respuesta[0].telefono
@@ -126,13 +127,13 @@ function buscaTelefono(telefono){
                 document.getElementById('email').value = res.respuesta[0].email
                 document.getElementById('idcliente').value = res.respuesta[0].id
             }else {
-                alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor', 3000, 'error')
-                document.getElementById('nombre').value = ''
-                document.getElementById('telefono').value = ''
-                document.getElementById('telefono_2').value = ''
-                document.getElementById('documento').value = ''
-                document.getElementById('email').value = ''
-                document.getElementById('idcliente').value = ''
+                alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor o registre un nuevo cliente', 3000, 'error')
+                // document.getElementById('nombre').value = ''
+                // document.getElementById('telefono').value = ''
+                // document.getElementById('telefono_2').value = ''
+                // document.getElementById('documento').value = ''
+                // document.getElementById('email').value = ''
+                // document.getElementById('idcliente').value = ''
             }
         },
         error: function(data){

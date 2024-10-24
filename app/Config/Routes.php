@@ -107,6 +107,7 @@ $routes->get('usuario-create', 'Administracion::form_usuario_create');
 $routes->get('roles', 'Administracion::roles');
 $routes->get('getRoles', 'Administracion::getRoles');
 $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
+$routes->get('asigna-rol-2', 'Administracion::asigna_rol_2');
 $routes->get('desactivar', 'Administracion::desactivar');
 $routes->get('sign-off', 'Administracion::sign_off');
 $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');

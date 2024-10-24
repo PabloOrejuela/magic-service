@@ -84,6 +84,20 @@ class Administracion extends BaseController {
         echo json_encode($res);
     }
 
+    public function asigna_rol_2() {
+
+        $id = $this->request->getPostGet('id');
+        $idrol_2 = $this->request->getPostGet('idrol_2');
+
+        $data = [
+            'idrol_2' => $idrol_2
+        ];
+        
+        $res = $this->usuarioModel->update($id, $data);
+        
+        echo json_encode($res);
+    }
+
     public function productos() {
 
         $data = $this->acl();

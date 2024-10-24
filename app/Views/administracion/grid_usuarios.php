@@ -34,6 +34,7 @@
                                     $this->rolModel = new rolModel();
 
                                     if (isset($usuarios) && $usuarios != NULL) {
+                                        //echo '<pre>'.var_export($usuarios, true).'</pre>';exit;
 
                                         foreach ($usuarios as $key => $value) {
                                             $rol_2 = $this->rolModel->select('rol')->find($value->idrol_2);
@@ -51,6 +52,7 @@
                                                         <a
                                                             id="btn-register_'.$value->id.'"
                                                             data-id="'.$value->id.'"
+                                                            data-idrol="'.$value->idroles.'"
                                                             data-rol2="ASIGNAR"
                                                             data-idrol_2="'.$value->idrol_2.'"
                                                             data-bs-toggle="modal"
@@ -64,6 +66,7 @@
                                                         <a
                                                             id="btn-register_'.$value->id.'"
                                                             data-id="'.$value->id.'"
+                                                            data-idrol="'.$value->idroles.'"
                                                             data-rol2="'.$rol_2->rol.'"
                                                             data-idrol_2="'.$value->idrol_2.'"
                                                             data-bs-toggle="modal"
@@ -165,6 +168,7 @@
       <div class="modal-body">
       <h5 class="modal-title" id="staticBackdropLabel">Roles</h5>
       <input class="form-control" type="hidden" name="idusuario" id="idusuario">
+      <input class="form-control" type="hidden" name="idrol" id="idrol">
         <select 
             class="form-select" 
             id="select-roles" 
@@ -179,7 +183,7 @@
             type="button" 
             class="btn btn-secondary" 
             data-bs-dismiss="modal" 
-            onClick="asignaRol(document.getElementById('select-roles').value, document.getElementById('idusuario').value)"
+            onClick="asignaRol(document.getElementById('idusuario').value, document.getElementById('idrol').value, document.getElementById('select-roles').value)"
         >Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>

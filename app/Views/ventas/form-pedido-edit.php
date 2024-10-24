@@ -649,6 +649,12 @@ window.addEventListener('load', function() {
     
 });
 
+window.addEventListener("keypress", function(event){
+    if (event.keyCode == 13){
+        event.preventDefault();
+    }
+}, false);
+
 $(document).ready(function(){
     $("#documento").on('change',function(){
         if($("#documento").val() != ""){

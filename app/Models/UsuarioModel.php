@@ -22,6 +22,7 @@ class UsuarioModel extends Model {
         'password',
         'cedula',
         'idroles',
+        'idrol_2',
         'logged',
         'ip',
         'estado',

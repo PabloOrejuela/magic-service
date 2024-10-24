@@ -129,6 +129,7 @@ btnNombreArreglo.forEach(link => {
 
                 if (data.infoExtra) {
                     if (category == 1) {
+                        //Arreglo Frutal
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -190,6 +191,7 @@ btnNombreArreglo.forEach(link => {
                         `
                     }
                     if (category == 2) {
+                        //Arreglo Floral
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -248,20 +250,10 @@ btnNombreArreglo.forEach(link => {
                                     onchange="actualiza('globo', document.querySelector('#idarreglo').value, this.value);" 
                                 >
                             </div>
-                            <div class="mb-3">
-                                <label for="tarjeta" class="form-label">Tarjeta</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="tarjeta" 
-                                    placeholder="tarjeta"
-                                    value="${data.infoExtra.tarjeta}"
-                                    onchange="actualiza('tarjeta', document.querySelector('#idarreglo').value, this.value);"
-                                >
-                            </div>
                         `
                     }
                     if (category == 3) {
+                        //Desayuno Sorpresa
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -345,6 +337,7 @@ btnNombreArreglo.forEach(link => {
                         `
                     }
                     if (category == 4) {
+                        //Magic Box
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -428,6 +421,7 @@ btnNombreArreglo.forEach(link => {
                         `
                     }
                     if (category == 5) {
+                        //Bocaditos
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Recibe:</label>
@@ -468,6 +462,7 @@ btnNombreArreglo.forEach(link => {
                     }
                 }else{
                     if (category == 1) {
+                        //Arreglo Frutal
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -524,6 +519,7 @@ btnNombreArreglo.forEach(link => {
                         `
                     }
                     if (category == 2) {
+                        //Arreglo Floral
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -577,19 +573,10 @@ btnNombreArreglo.forEach(link => {
                                     onchange="actualiza('globo', document.querySelector('#idarreglo').value, this.value);"
                                 >
                             </div>
-                            <div class="mb-3">
-                                <label for="tarjeta" class="form-label">Tarjeta</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="tarjeta" 
-                                    placeholder="tarjeta"
-                                    onchange="actualiza('tarjeta', document.querySelector('#idarreglo').value, this.value);"
-                                >
-                            </div>
                         `
                     }
                     if (category == 3) {
+                        //Desayuno Sorpresa
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -666,6 +653,7 @@ btnNombreArreglo.forEach(link => {
                         `
                     }
                     if (category == 4) {
+                        //Magic Box
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Para:</label>
@@ -742,6 +730,7 @@ btnNombreArreglo.forEach(link => {
                         `
                     }
                     if (category == 5) {
+                        //Bocaditos
                         formulario.innerHTML += `
                             <div class="mb-3 mt-3">
                                 <label for="para" class="form-label">Recibe:</label>

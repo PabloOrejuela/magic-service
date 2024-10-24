@@ -135,13 +135,13 @@ function buscaTelefono(telefono){
               document.getElementById('email').value = res.respuesta[0].email
               document.getElementById('idcliente').value = res.respuesta[0].id
           }else {
-              alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor', 3000, 'error')
-              document.getElementById('nombre').value = ''
-              document.getElementById('telefono').value = ''
-              document.getElementById('telefono_2').value = ''
-              document.getElementById('documento').value = ''
-              document.getElementById('email').value = ''
-              document.getElementById('idcliente').value = ''
+              alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor o registre un nuevo cliente', 3000, 'error')
+              // document.getElementById('nombre').value = ''
+              // document.getElementById('telefono').value = ''
+              // document.getElementById('telefono_2').value = ''
+              // document.getElementById('documento').value = ''
+              // document.getElementById('email').value = ''
+              // document.getElementById('idcliente').value = ''
           }
       },
       error: function(data){

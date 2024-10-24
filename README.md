@@ -1,9 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    <li>Se implementó el botón de ESTOY LISTO... y se deshabilitó el enter en el Formulario de Pedido</li>
-    <li>El modal de información extra de cada pedido ya no se puede cerrar solo, hay que cerrarlo dando click en el botón de cerrar</li>
-    <li>El grid de pedidos ya se actualiza luego de cerrar el modal de información extra de cada pedido</li>
-    <li>En "Hora de entrega" en cada pedido muestra el valor de los campos DESDE Y HASTA </li>
+    <li>Implementada la funcionalidad de asignar un segundo rol a un usuario</li>
 </ul>
 
 </br>
