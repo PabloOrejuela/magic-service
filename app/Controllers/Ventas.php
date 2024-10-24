@@ -684,7 +684,6 @@ class Ventas extends BaseController {
                 $sin_remitente = 0;
             }
             
-
             $pedido = [
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $data['id'],
@@ -749,21 +748,21 @@ class Ventas extends BaseController {
                     ];
                     $this->clienteModel->update($clienteID, $cliente);
 
-                    //Inserto el nuevo producto
+                    //Inserto el nuevo pedido
                     if ($pedido) {
                         $this->pedidoModel->_insert($pedido);
-                        $mensaje = 1;
+
+                        //Inserto el detalle
+                        if ($detalleTemporal) {
+                            $this->detallePedidoModel->_insert($detalleTemporal);
+                            $mensaje = 1;
+                        }else{
+                            $mensaje = 'SIN DETALLE';
+                        }
                     }else{
                         $mensaje = 0;
                     }
-                    
-                    //Inserto el detalle
-                    if ($detalleTemporal) {
-                        $this->detallePedidoModel->_insert($detalleTemporal);
-                        $mensaje = 1;
-                    }else{
-                        $mensaje = 0;
-                    }
+
                     $this->session->set('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }else{
@@ -780,20 +779,24 @@ class Ventas extends BaseController {
                     //Inserto el cliente nuevo
                     $pedido['idcliente'] = $this->clienteModel->insert($cliente);
 
-                    //Inserto el detalle
-                    $this->detallePedidoModel->_insert($detalleTemporal);
-
                     //Inserto el nuevo pedido
-                    $this->pedidoModel->_insert($pedido);
+                    if ($pedido) {
+                        $this->pedidoModel->_insert($pedido);
+                        //Inserto el detalle
+                        if ($detalleTemporal) {
+                            $this->detallePedidoModel->_insert($detalleTemporal);
+                            $mensaje = 1;
+                        }else{
+                            $mensaje = 'SIN DETALLE';
+                        }
+                    }else{
+                        $mensaje = 0;
+                    }
 
-                    //Inserto el detalle
-                    $mensaje = 1;
                     $this->session->set('mensaje', $mensaje);
                     return redirect()->to('pedidos');
                 }
-                
             }
-            
         }else{
 
             $this->logout();
