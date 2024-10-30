@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -114,11 +116,11 @@ class Forge extends BaseForge
             }
         }
 
-        if (! empty($this->db->charset) && ! strpos($sql, 'CHARACTER SET') && ! strpos($sql, 'CHARSET')) {
+        if ($this->db->charset !== '' && ! strpos($sql, 'CHARACTER SET') && ! strpos($sql, 'CHARSET')) {
             $sql .= ' DEFAULT CHARACTER SET = ' . $this->db->escapeString($this->db->charset);
         }
 
-        if (! empty($this->db->DBCollat) && ! strpos($sql, 'COLLATE')) {
+        if ($this->db->DBCollat !== '' && ! strpos($sql, 'COLLATE')) {
             $sql .= ' COLLATE = ' . $this->db->escapeString($this->db->DBCollat);
         }
 
@@ -133,7 +135,7 @@ class Forge extends BaseForge
      * @param array|string $processedFields Processed column definitions
      *                                      or column names to DROP
      *
-     * @return list<string>|string SQL string
+     * @return         list<string>|string                            SQL string
      * @phpstan-return ($alterType is 'DROP' ? string : list<string>)
      */
     protected function _alterTable(string $alterType, string $table, $processedFields)

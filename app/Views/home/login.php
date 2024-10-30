@@ -15,7 +15,7 @@
         ?>
         <form action="<?= base_url(); ?>validate_login" method="post" class="form">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="user" placeholder="usuario" value="wolf">
+            <input type="text" class="form-control" name="user" placeholder="usuario" value="">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -24,7 +24,7 @@
           </div>
           <p id="error-message"><?= session('errors.user');?> </p>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Password" value="wolfabadon">
+            <input type="password" class="form-control" name="password" placeholder="Password" value="">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>

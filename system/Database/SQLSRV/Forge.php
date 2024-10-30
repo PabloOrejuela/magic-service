@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -12,7 +14,9 @@
 namespace CodeIgniter\Database\SQLSRV;
 
 use CodeIgniter\Database\BaseConnection;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Database\Forge as BaseForge;
+use Throwable;
 
 /**
  * Forge for SQLSRV
@@ -40,7 +44,7 @@ class Forge extends BaseForge
      *
      * @var string
      */
-    protected $createDatabaseIfStr = "DECLARE @DBName VARCHAR(255) = '%s'\nDECLARE @SQL VARCHAR(max) = 'IF DB_ID( ''' + @DBName + ''' ) IS NULL CREATE DATABASE ' + @DBName\nEXEC( @SQL )";
+    protected $createDatabaseIfStr = "DECLARE @DBName VARCHAR(255) = '%s'\nDECLARE @SQL VARCHAR(max) = 'IF DB_ID( ''' + @DBName + ''' ) IS NULL CREATE DATABASE %s'\nEXEC( @SQL )";
 
     /**
      * CREATE DATABASE IF statement
@@ -118,6 +122,53 @@ class Forge extends BaseForge
     }
 
     /**
+     * Create database
+     *
+     * @param bool $ifNotExists Whether to add IF NOT EXISTS condition
+     *
+     * @throws DatabaseException
+     */
+    public function createDatabase(string $dbName, bool $ifNotExists = false): bool
+    {
+        if ($ifNotExists) {
+            $sql = sprintf(
+                $this->createDatabaseIfStr,
+                $dbName,
+                $this->db->escapeIdentifier($dbName)
+            );
+        } else {
+            $sql = sprintf(
+                $this->createDatabaseStr,
+                $this->db->escapeIdentifier($dbName)
+            );
+        }
+
+        try {
+            if (! $this->db->query($sql)) {
+                // @codeCoverageIgnoreStart
+                if ($this->db->DBDebug) {
+                    throw new DatabaseException('Unable to create the specified database.');
+                }
+
+                return false;
+                // @codeCoverageIgnoreEnd
+            }
+
+            if (isset($this->db->dataCache['db_names'])) {
+                $this->db->dataCache['db_names'][] = $dbName;
+            }
+
+            return true;
+        } catch (Throwable $e) {
+            if ($this->db->DBDebug) {
+                throw new DatabaseException('Unable to create the specified database.', 0, $e);
+            }
+
+            return false; // @codeCoverageIgnore
+        }
+    }
+
+    /**
      * CREATE TABLE attributes
      */
     protected function _createTableAttributes(array $attributes): string
@@ -129,7 +180,7 @@ class Forge extends BaseForge
      * @param array|string $processedFields Processed column definitions
      *                                      or column names to DROP
      *
-     * @return false|list<string>|string SQL string or false
+     * @return         false|list<string>|string                            SQL string or false
      * @phpstan-return ($alterType is 'DROP' ? string : list<string>|false)
      */
     protected function _alterTable(string $alterType, string $table, $processedFields)
@@ -324,8 +375,18 @@ class Forge extends BaseForge
                 break;
 
             case 'ENUM':
-                $attributes['TYPE']       = 'TEXT';
-                $attributes['CONSTRAINT'] = null;
+                // in char(n) and varchar(n), the n defines the string length in
+                // bytes (0 to 8,000).
+                // https://learn.microsoft.com/en-us/sql/t-sql/data-types/char-and-varchar-transact-sql?view=sql-server-ver16#remarks
+                $maxLength = max(
+                    array_map(
+                        static fn ($value) => strlen($value),
+                        $attributes['CONSTRAINT']
+                    )
+                );
+
+                $attributes['TYPE']       = 'VARCHAR';
+                $attributes['CONSTRAINT'] = $maxLength;
                 break;
 
             case 'TIMESTAMP':

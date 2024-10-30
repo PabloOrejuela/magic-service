@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -84,7 +86,7 @@ class Forge extends BaseForge
      * @param array|string $processedFields Processed column definitions
      *                                      or column names to DROP
      *
-     * @return false|list<string>|string SQL string or false
+     * @return         false|list<string>|string                            SQL string or false
      * @phpstan-return ($alterType is 'DROP' ? string : list<string>|false)
      */
     protected function _alterTable(string $alterType, string $table, $processedFields)

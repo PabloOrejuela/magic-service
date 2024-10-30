@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -157,7 +159,7 @@ class Builder extends BaseBuilder
         $table = $this->QBFrom[0];
         $set   = $this->binds;
 
-        array_walk($set, static function (array &$item) {
+        array_walk($set, static function (array &$item): void {
             $item = $item[0];
         });
 
@@ -315,7 +317,7 @@ class Builder extends BaseBuilder
     /**
      * Generates a platform-specific batch update string from the supplied data
      *
-     * @used-by batchExecute
+     * @used-by batchExecute()
      *
      * @param string                 $table  Protected table name
      * @param list<string>           $keys   QBKeys
@@ -409,10 +411,8 @@ class Builder extends BaseBuilder
      * Returns cast expression.
      *
      * @TODO move this to BaseBuilder in 4.5.0
-     *
-     * @param float|int|string $expression
      */
-    private function cast($expression, ?string $type): string
+    private function cast(string $expression, ?string $type): string
     {
         return ($type === null) ? $expression : 'CAST(' . $expression . ' AS ' . strtoupper($type) . ')';
     }
@@ -431,7 +431,16 @@ class Builder extends BaseBuilder
             $this->QBOptions['fieldTypes'][$table] = [];
 
             foreach ($this->db->getFieldData($table) as $field) {
-                $this->QBOptions['fieldTypes'][$table][$field->name] = $field->type;
+                $type = $field->type;
+
+                // If `character` (or `char`) lacks a specifier, it is equivalent
+                // to `character(1)`.
+                // See https://www.postgresql.org/docs/current/datatype-character.html
+                if ($field->type === 'character') {
+                    $type = $field->type . '(' . $field->max_length . ')';
+                }
+
+                $this->QBOptions['fieldTypes'][$table][$field->name] = $type;
             }
         }
 
@@ -481,11 +490,11 @@ class Builder extends BaseBuilder
             // autoincrement identity field must use DEFAULT and not NULL
             // this could be removed in favour of leaving to developer but does make things easier and function like other DBMS
             foreach ($constraints as $constraint) {
-                $key = array_search(trim($constraint, '"'), $fieldNames, true);
+                $key = array_search(trim((string) $constraint, '"'), $fieldNames, true);
 
                 if ($key !== false) {
                     foreach ($values as $arrayKey => $value) {
-                        if (strtoupper($value[$key]) === 'NULL') {
+                        if (strtoupper((string) $value[$key]) === 'NULL') {
                             $values[$arrayKey][$key] = 'DEFAULT';
                         }
                     }

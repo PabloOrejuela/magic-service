@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -56,7 +58,7 @@ class CLIRequest extends Request
      *
      * @var string
      */
-    protected $method = 'cli';
+    protected $method = 'CLI';
 
     /**
      * Constructor
@@ -315,7 +317,7 @@ class CLIRequest extends Request
     /**
      * Checks this request type.
      *
-     * @param string $type HTTP verb or 'json' or 'ajax'
+     * @param         string                                                                    $type HTTP verb or 'json' or 'ajax'
      * @phpstan-param string|'get'|'post'|'put'|'delete'|'head'|'patch'|'options'|'json'|'ajax' $type
      */
     public function is(string $type): bool
