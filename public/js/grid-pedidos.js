@@ -84,7 +84,8 @@ const actualiza = (campo, id, valor) => {
             valor: valor
         },
         beforeSend: function (f) {
-            alertaMensaje('El dato se ha actualizado', 2500, "success")
+            alertaMensaje('El dato se ha actualizado', 500, "success")
+            //actualizaGrid()
         },
         success: function(data){
             
@@ -95,7 +96,7 @@ const actualiza = (campo, id, valor) => {
 const actualizaGrid = () => {
     setTimeout(function(){
         location.replace('pedidos');
-    }, 2000);
+    }, 500);
 }
 
 btnNombreArreglo.forEach(link => {
@@ -1026,7 +1027,7 @@ function actualizaObservacionPedido(){
             alertActualizaCampo()
             setTimeout(function(){
                 location.replace('pedidos');
-            }, 3000);
+            }, 2000);
             
         }
     });

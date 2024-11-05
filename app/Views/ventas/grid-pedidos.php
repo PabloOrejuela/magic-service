@@ -445,7 +445,7 @@
 
     $(document).ready(function () {
         let msj = document.getElementById('msj')
-        console.log(msj.value);
+        //console.log(msj.value);
         if (msj.value == 1) {
             alertaMensaje("El pedido se ha guardado correctamente", "2500", "success")
             actualizaMensaje()
