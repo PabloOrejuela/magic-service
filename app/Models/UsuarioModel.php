@@ -124,7 +124,7 @@ class UsuarioModel extends Model {
     function _getUsuariosRol($idrol){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select('*')->where('idroles', $idrol)->orwhere('es_vendedor',1);
+        $builder->select('*')->where('idroles', $idrol)->orwhere('es_vendedor',1)->where('estado', 1);
         $builder->orderBy('nombre', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {

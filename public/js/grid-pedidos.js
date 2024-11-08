@@ -866,7 +866,14 @@ botonesHorariosEntrega.forEach(btn => {
 botonesHoraSalidaPedido.forEach(btn => {
     btn.addEventListener('click', function() {
         let id = this.dataset.id;
-        //console.log(id);
+        let horaSalida = this.dataset.hora;
+
+        if (horaSalida != 'REGISTRAR' && horaSalida != null) {
+            document.querySelector('#hora_salida_pedido').value = horaSalida;
+        } else {
+            document.querySelector('#hora_salida_pedido').value = 'Registrar';
+        }
+        
         document.querySelector('#codigo_pedido').value = id;
         //console.log('abrir modal');
         $('#horaSalidaModal').modal();

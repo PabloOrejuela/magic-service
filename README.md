@@ -1,6 +1,6 @@
 <h3>Cambios</h3>
 <ul>
-    
+    <li>Se modificó la función que trae usuarios por su rol, ahora ya no devuelve a los usuarios inactivos</li>
 </ul>
 
 <h5>Fixes</h5>

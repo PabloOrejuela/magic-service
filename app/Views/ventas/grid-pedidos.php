@@ -113,7 +113,8 @@
                                                             type="button" 
                                                             id="sector_'.$value->id.'" 
                                                             href="#" 
-                                                            data-id="'.$value->cod_pedido.'" 
+                                                            data-id="'.$value->cod_pedido.'"
+                                                            data-hora="'.$value->hora_salida_pedido.'" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
                                                     </td>';
@@ -123,7 +124,8 @@
                                                             type="button" 
                                                             id="sector_'.$value->id.'" 
                                                             href="#" 
-                                                            data-id="'.$value->cod_pedido.'" 
+                                                            data-id="'.$value->cod_pedido.'"
+                                                            data-horaSalida="REGISTRAR" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#horaSalidaModal"
                                                         >
