@@ -7,6 +7,7 @@ btnAsignaSegundoRol.forEach(btn => {
         let idrol = this.dataset.idrol;
         let idrol_2 = this.dataset.idrol_2;
         let selectRolesModal = document.getElementById('select-roles')
+        let divNoasignar = document.querySelector('#div-noasignar')
 
         $.ajax({
             method:"GET",
@@ -23,6 +24,7 @@ btnAsignaSegundoRol.forEach(btn => {
                 if (roles.roles) { 
                     if (idrol_2 == 0) {
                         selectRolesModal.innerHTML += `<option value="0" selected>--Seleccione un rol--</option>`
+                        divNoasignar.style.display = "none";
                     }
                     for (const rol of roles.roles) {
                         if (idrol_2 == rol.id) {
@@ -37,6 +39,7 @@ btnAsignaSegundoRol.forEach(btn => {
 
         document.querySelector('#idusuario').value = id;
         document.querySelector('#idrol').value = idrol;
+        
         $('#asignaSegundoRolModal').modal();
     });
 });
@@ -53,19 +56,19 @@ const sessionClose = (id) => {
                 id: id,
             },
             beforeSend: function (f) {
-                alertProcesando("Cerrando sesión", "info")
+                alertProcesando("Cerrando sesión", 1000, "info")
             },
             success: function(res){
               
                 let resultado = JSON.parse(res)
                 if (resultado == 1) {
-                    alertProcesando("La sessión se ha cerrado", "info")
+                    alertProcesando("La sessión se ha cerrado", 1000, "info")
                     //PABLO luego hay que hacer que recargue la data por ajax
                     setTimeout(function(){
                         location.replace('usuarios')
-                    }, 2000)
+                    }, 1100)
                 }else{
-                    alertProcesando("No se pudo cerrar la sesión", "error")
+                    alertProcesando("No se pudo cerrar la sesión", 1000, "error")
                 }
             },
             error: function(resultado){
@@ -88,19 +91,19 @@ const userDelete = (id) => {
                 id: id,
             },
             beforeSend: function (f) {
-                alertProcesando("Inactivando usuario", "info")
+                alertProcesando("Inactivando usuario", 1000, "info")
             },
             success: function(res){
               
                 let resultado = JSON.parse(res)
                 if (resultado == 1) {
-                    alertProcesando("El usuario ya no está activo", "info")
+                    alertProcesando("El usuario ya no está activo", 1000,  "info")
                     //PABLO luego hay que hacer que recargue la data por ajax
                     setTimeout(function(){
                         location.replace('usuarios')
-                    }, 2000)
+                    }, 1100)
                 }else{
-                    alertProcesando("No se pudo desactivar el usuario", "error")
+                    alertProcesando("No se pudo desactivar el usuario", 1000, "error")
                 }
             },
             error: function(resultado){
@@ -123,18 +126,18 @@ const estadoVentas = (id, es_vendedor) => {
                 es_vendedor: es_vendedor
             },
             beforeSend: function (f) {
-                alertProcesando("Procesando", "info")
+                alertProcesando("Procesando", 1000,  "info")
             },
             success: function(res){
               
                 let resultado = JSON.parse(res)
                 if (resultado == 1) {
-                    alertProcesando("Se ha cambiado el valor", "info")
+                    alertProcesando("Se ha cambiado el valor", 1000, "info")
                     setTimeout(function(){
                         location.replace('usuarios')
-                    }, 2000)
+                    }, 1100)
                 }else{
-                    alertProcesando("No se pudo cambiar el valor", "error")
+                    alertProcesando("No se pudo cambiar el valor", 1000, "error")
                 }
             },
             error: function(resultado){
@@ -145,7 +148,7 @@ const estadoVentas = (id, es_vendedor) => {
     }
 }
 
-const asignaRol = (id, idrol, idrol_2) => {
+const asignaRol = (id, idrol, idrol_2, noAsignar) => {
     
     if (id != null && id != 0) {
         if (idrol != idrol_2) {
@@ -156,7 +159,8 @@ const asignaRol = (id, idrol, idrol_2) => {
                 method: 'get',
                 data: {
                     id: id,
-                    idrol_2: idrol_2
+                    idrol_2: idrol_2,
+                    noAsignar: noAsignar
                 },
                 beforeSend: function (f) {
                     //alertProcesando("Procesando", "info")
@@ -164,14 +168,15 @@ const asignaRol = (id, idrol, idrol_2) => {
                 success: function(res){
                 
                     let resultado = JSON.parse(res)
-
+                    
                     if (resultado == 1) {
-                        alertProcesando("Se ha asignado el segundo rol", "info")
+                        
+                        alertProcesando("Se ha modificado el segundo rol", 1000, "info")
                         setTimeout(function(){
                             location.replace('usuarios')
-                        }, 2000)
+                        }, 1100)
                     }else{
-                        alertProcesando("No se pudo asignar el segundo rol", "error")
+                        alertProcesando("No se pudo asignar el segundo rol", 1000, "error")
                     }
                 },
                 error: function(resultado){
@@ -179,17 +184,17 @@ const asignaRol = (id, idrol, idrol_2) => {
                 }
             });
         }else{ console.log(181);
-            alertProcesando("El usuario ya tiene ese rol asignado", "info")
+            alertProcesando("El usuario ya tiene ese rol asignado", 1000, "info")
         }
     }
 }
 
-const alertProcesando = (msg, icono) => {
+const alertProcesando = (msg, time, icono) => {
     const toast = Swal.mixin({
       toast: true,
       position: "top-end",
       showConfirmButton: false,
-      timer: 1500,
+      timer: time,
       //timerProgressBar: true,
       //height: '200rem',
       didOpen: (toast) => {
@@ -206,4 +211,4 @@ const alertProcesando = (msg, icono) => {
       icon: icono,
       title: msg,
     });
-  };
+};

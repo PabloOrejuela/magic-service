@@ -871,7 +871,7 @@ botonesHoraSalidaPedido.forEach(btn => {
         if (horaSalida != 'REGISTRAR' && horaSalida != null) {
             document.querySelector('#hora_salida_pedido').value = horaSalida;
         } else {
-            document.querySelector('#hora_salida_pedido').value = 'Registrar';
+            document.querySelector('#hora_salida_pedido').placeholder = 'Registrar hora de salida';
         }
         
         document.querySelector('#codigo_pedido').value = id;
@@ -1052,7 +1052,7 @@ function actualizaMensaje(){
         success: function(res){
 
             let msj = document.getElementById('msj')
-            msj,value = '3'
+            msj.value = '3'
         }
     });
 }
@@ -1110,7 +1110,7 @@ function actualizarHorarioEntrega(codigo_pedido, idpedido, entrega_desde, entreg
         success: function(data){
             let datos = JSON.parse(data);
 
-            alertaMensaje("Se ha actualizado el horario de entrega", "2500", "success")
+            alertaMensaje("Se ha actualizado el horario de entrega", "500", "success")
             setTimeout(function(){
                 location.replace('pedidos');
             }, 3000);

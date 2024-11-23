@@ -88,10 +88,18 @@ class Administracion extends BaseController {
 
         $id = $this->request->getPostGet('id');
         $idrol_2 = $this->request->getPostGet('idrol_2');
+        $noAsignar = $this->request->getPostGet('noAsignar');
 
-        $data = [
-            'idrol_2' => $idrol_2
-        ];
+        //Si está asignado no asignar le quitarmos el segundo rol
+        if ($noAsignar == 'true') {
+            $data = [
+                'idrol_2' => 0
+            ];
+        }else{
+            $data = [
+                'idrol_2' => $idrol_2
+            ];
+        }
         
         $res = $this->usuarioModel->update($id, $data);
         
@@ -891,7 +899,7 @@ class Administracion extends BaseController {
             }
             //Traigo los items de la tabla temporal, el idproducto y el idnew son el mismo
             $data['items'] = $this->itemsProductoTempModel->_getItemsNewProducto($newId);
-
+            //echo '<pre>'.var_export($data['producto'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Editar producto';
             $data['main_content']='administracion/form-product-edit';
@@ -909,6 +917,8 @@ class Administracion extends BaseController {
         
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
 
+            //Creo la ruta a las imágenes
+            $ruta = './public/images/productos/';
             
             //Recibo la imagen
             $imagen = $this->request->getFile('file-img');
@@ -923,6 +933,17 @@ class Administracion extends BaseController {
                 'imagenNew' => $imagen->getName()
             ];
 
+            //Obtengo los datos actuales del producto
+            $datosProducto = $this->productoModel->find($producto['idproducto']);
+
+            //Borro la imágen anterior
+            if (file_exists($ruta.$datosProducto->image.'.jpg')) {
+                if ($datosProducto->image) {
+                    unlink($ruta.$datosProducto->image.'.jpg');
+                    unlink($ruta.$datosProducto->image);
+                }
+            }
+
             //Creo el objeto de cambios
             $cambios = [
                 'idusuario' => $data['id'],
@@ -933,10 +954,7 @@ class Administracion extends BaseController {
             
             //Verifico si se sube otra imagen o no
             if ($producto['imagenNew'] != '') {
-                //Se ha elegido una nueva imágen
-                
-                //Creo la ruta a las imágenes
-                $ruta = './public/images/productos/';
+                //Se ha elegido una nueva imágen entonces procedo a cambiar la imagen
 
                 $producto['image'] = '';
                 
@@ -947,8 +965,10 @@ class Administracion extends BaseController {
                 }else{
                     //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
 
+                    $numRandom = rand(100,999);
+
                     //Muevo el archivo del temporal a la carpeta
-                    $producto['image'] = $producto['producto'];
+                    $producto['image'] = $producto['producto'].'-'.$numRandom;
                     $imagen->move($ruta, $producto['image'], true);
                     
                     $this->image->withFile($ruta.$producto['image'])

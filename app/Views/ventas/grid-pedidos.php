@@ -8,7 +8,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
-                        <div><input type="text" value="<?= session('mensaje')?>" id="msj" readonly></div>
+                        <div><input type="text" value="<?= session('mensaje'); ?>" id="msj" readonly></div>
                         <div>
                             <a href="<?= site_url().'pedidos-ventana/'; ?>"  class="btn btn-success mb-2" target="_blank">Abrir en nueva ventana</a>
                         </div>
@@ -446,8 +446,10 @@
 <script>
 
     $(document).ready(function () {
+        
         let msj = document.getElementById('msj')
-        //console.log(msj.value);
+        
+        //console.log('Mensaje: '+msj.value);
         if (msj.value == 1) {
             alertaMensaje("El pedido se ha guardado correctamente", "2500", "success")
             actualizaMensaje()
@@ -455,10 +457,11 @@
         }else if(msj.value == 'SIN DETALLE'){
             alertaMensaje("El pedido fue creado pero falta agregar arreglos", "2500", "warning")
             actualizaMensaje()
-        }else if(msj.value == 0 && msj.value !== ''){
+        }else if(msj.value == '0'){
             alertaMensaje("Hubo un problema y el pedido no se pudo guardar", "2500", "error")
             actualizaMensaje()
-        }else{
+        }else if(msj.value == 'SIN CODIGO'){
+            alertaMensaje("Hubo un problema, no se generó un código de pedido, inténtelo nuevamente", "2000", "error")
             actualizaMensaje()
         }
         

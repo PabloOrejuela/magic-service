@@ -107,7 +107,7 @@ class Home extends BaseController {
                         'logged' => 1,
                         'ip' => $ip
                     ];
-                    //echo '<pre>'.var_export($user, true).'</pre>';exit;
+                    //echo '<pre>'.var_export($sessiondata, true).'</pre>';exit;
                     $this->usuarioModel->update($iduser, $user);
                     $this->session->version = $this->configuracionModel->findAll();
                     

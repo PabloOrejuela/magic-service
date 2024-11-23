@@ -25,7 +25,7 @@
                                         <label for="cod_pedido">Pedido: </label>
                                         <input 
                                             type="text" 
-                                            class="form-control col-3" 
+                                            class="form-control col-4" 
                                             id="cod_pedido" 
                                             name="cod_pedido"
                                             placeholder="<?= $session->codigo_pedido ?>"
@@ -469,6 +469,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/form-pedido.js"></script>
 <script>
+
+
 
 //Traigo el detalle al cargar la página
 window.addEventListener('load', function() {

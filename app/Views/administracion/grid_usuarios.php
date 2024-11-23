@@ -159,36 +159,42 @@
 
 <!-- Asigna segundo rol-->
 <div class="modal fade" id="asignaSegundoRolModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Asignar un segundo rol</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <h5 class="modal-title" id="staticBackdropLabel">Roles</h5>
-      <input class="form-control" type="hidden" name="idusuario" id="idusuario">
-      <input class="form-control" type="hidden" name="idrol" id="idrol">
-        <select 
-            class="form-select" 
-            id="select-roles" 
-            name="idrol_2"
-            data-style="form-control" 
-            data-live-search="true" 
-        >
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button 
-            type="button" 
-            class="btn btn-secondary" 
-            data-bs-dismiss="modal" 
-            onClick="asignaRol(document.getElementById('idusuario').value, document.getElementById('idrol').value, document.getElementById('select-roles').value)"
-        >Actualizar</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Asignar un segundo rol</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5 class="modal-title" id="staticBackdropLabel">Roles</h5>
+                <input class="form-control" type="hidden" name="idusuario" id="idusuario">
+                <input class="form-control" type="hidden" name="idrol" id="idrol">
+                <select 
+                    class="form-select" 
+                    id="select-roles" 
+                    name="idrol_2"
+                    data-style="form-control" 
+                    data-live-search="true" 
+                >
+                </select>
+                <div class="form-check" id="div-noasignar">
+                    <input class="form-check-input" type="checkbox" value="" id="no-asignar-segundo-rol">
+                    <label class="form-check-label" for="no-asignar-segundo-rol">
+                        Deshabilitar el segundo rol
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button 
+                    type="button" 
+                    class="btn btn-secondary" 
+                    data-bs-dismiss="modal" 
+                    onClick="asignaRol(document.getElementById('idusuario').value, document.getElementById('idrol').value, document.getElementById('select-roles').value, document.getElementById('no-asignar-segundo-rol').checked)"
+                >Actualizar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <script src="<?= site_url(); ?>public/js/grid-usuarios.js"></script>

@@ -259,6 +259,7 @@ sectores.addEventListener("change", () => {
             if (valor != 0) {
                 alertCambioValor()
                 document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega)
+                document.getElementById('valor_mensajero_edit').value = '0.00'
             }else{
                 alertCambioValor()
                 document.getElementById("transporte").value = 0
@@ -267,7 +268,7 @@ sectores.addEventListener("change", () => {
             }
             
             sumarTotal()
-
+            
         },
         error: function(data){
             console.log("No existe el costo de entrega");
@@ -399,31 +400,39 @@ function eliminaProducto(idproducto, cod_pedido){
 
 function observacion(idproducto, cod_pedido){
   let observacion = document.getElementById("observa_"+idproducto).value
-  //console.log(observacion);
+  
   if (observacion != null && observacion != '') {
+    
+    $.ajax({
+        method: 'get',
+        dataType:"html",
+        url: 'detalle_pedido_insert_observacion_temp',
+        data: {
+            idproducto: idproducto,
+            observacion: observacion,
+            cod_pedido: cod_pedido,
+        },
+        success: function(resultado){
+            if (resultado == 0) {
 
-      $.ajax({
-          url: 'ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
-          success: function(resultado){
-              if (resultado == 0) {
+            }else{
+                //Exito
+                let detalle = JSON.parse(resultado);
 
-              }else{
-                  //Exito
-                  let detalle = JSON.parse(resultado);
+                if (detalle.error == '') {
+                    $("#tablaProductos tbody").empty();
+                    $("#tablaProductos tbody").append(detalle.datos);
+                    $("#total").val(detalle.total);
+                    $("#valor_neto").val(detalle.subtotal);
 
-                  if (detalle.error == '') {
-                      $("#tablaProductos tbody").empty();
-                      $("#tablaProductos tbody").append(detalle.datos);
-                      $("#total").val(detalle.total);
-                      $("#valor_neto").val(detalle.subtotal);
-
-                      limpiaLineaProducto()
-                      calculaValorNeto(cod_pedido);
-                      //sumarTotal()
-                  }
-              }
-          }
-      });
+                    limpiaLineaProducto()
+                    calculaValorNeto(cod_pedido);
+                    calcularMensajero();
+                    sumarTotal()
+                }
+            }
+        }
+    });
       
   }
 }
@@ -516,6 +525,7 @@ function calcularMensajero(){
       horarioExtra = 0
   }
 
+
   if (sectores == 0 || sectores == 18) {
     valorMensajero = "0.00"
   } else {
@@ -523,15 +533,16 @@ function calcularMensajero(){
     
   }
 
+  document.getElementById('valor_mensajero').value = valorMensajero
+  document.getElementById('valor_mensajero_mostrado').value = valorMensajero
+
   // /* Este es el cálculo. */
   if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
       total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
+      document.getElementById('valor_mensajero_mostrado').value = '0.00'
   }else{
       total = (parseFloat(total) + parseFloat(valorMensajero));
   }
-
-  document.getElementById('valor_mensajero').value = valorMensajero
-  document.getElementById('valor_mensajero_mostrado').value = valorMensajero
 
 }
 
@@ -552,6 +563,10 @@ $(document).ready(function(){
   });
 });
 
+// window.onbeforeunload = function(e) {
+//     $("#tablaProductos tbody").empty();
+//     return "You have some unsaved changes";
+// };
 
 const alertaMensaje = (msg, time, icon) => {
   const toast = Swal.mixin({

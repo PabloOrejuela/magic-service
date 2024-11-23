@@ -159,6 +159,7 @@ class PedidoModel extends Model {
     public function _insert($data) {
 
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        $created_at = date('Y-m-d H:i:s');
 
         //Inserto el nuevo producto
         $builder = $this->db->table($this->table);
@@ -234,6 +235,10 @@ class PedidoModel extends Model {
             $builder->set('valor_mensajero_edit', $data['valor_mensajero_edit']); 
         }
 
+        //Inserto las fechas de creación e inicializo la actualización
+        $builder->set('created_at', $created_at); 
+        $builder->set('updated_at', $created_at); 
+
         $builder->set('sin_remitente', $data['sin_remitente']); 
         $builder->insert();
         return  $this->db->insertID();
@@ -243,6 +248,7 @@ class PedidoModel extends Model {
     public function _update($data) {
 
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
+        $updated_at = date('Y-m-d H:i:s');
 
         //Actualizo el pedido
         $builder = $this->db->table($this->table);
@@ -345,6 +351,8 @@ class PedidoModel extends Model {
         if ($data['ref_pago'] != 'NULL' && $data['ref_pago'] != '') {
             $builder->set('ref_pago', $data['ref_pago']); 
         }
+
+        $builder->set('updated_at', $updated_at); 
 
         $builder->set('sin_remitente', $data['sin_remitente']); 
         $builder->where($this->table.'.id', $data['id']);

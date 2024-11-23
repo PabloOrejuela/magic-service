@@ -100,6 +100,13 @@ class DetallePedidoTempModel extends Model {
         $builder->delete();
     }
 
+    public function _eliminarProdsDetalle($cod_pedido){
+        
+        $builder = $this->db->table($this->table);
+        $builder->where('cod_pedido', $cod_pedido);
+        $builder->delete();
+    }
+
     public function _updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion){
         
         $builder = $this->db->table($this->table);

@@ -47,7 +47,7 @@ $routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_te
 $routes->get('detalle_pedido_insert_temp', 'Ventas::detalle_pedido_insert_temp');
 $routes->get('ventas/detalle_pedido_delete_producto_temp/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto_temp/$1/$2');
 $routes->get('detalle_pedido_update_precio_temp', 'Ventas::detalle_pedido_update_precio_temp');
-$routes->get('ventas/detalle_pedido_insert_observacion_temp/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion_temp/$1/$2/$3');
+$routes->get('detalle_pedido_insert_observacion_temp', 'Ventas::detalle_pedido_insert_observacion_temp');
 $routes->get('estadistica-ventas', 'Ventas::estadisticaVentas');
 $routes->get('getProductosAutocomplete', 'Ventas::getProductosAutocomplete');
 $routes->get('getItemsAutocomplete', 'Ventas::getItemsAutocomplete');
@@ -67,6 +67,7 @@ $routes->get('genera-codigo-pedido', 'Ventas::generaCodigoPedido');
 $routes->get('actualizaMensajeSession', 'Ventas::actualizaMensajeSession');
 $routes->get('actualizaValorCampoTicket', 'Ventas::actualizaValorCampoTicket');
 $routes->get('getAttrExtraTicket', 'Ventas::getAttrExtraTicket');
+$routes->get('deleteDetalleTemporal', 'Ventas::deleteDetalleTemporal');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');

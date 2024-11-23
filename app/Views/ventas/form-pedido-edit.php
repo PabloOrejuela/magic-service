@@ -25,7 +25,7 @@
                                         <label for="cod_pedido">Pedido: </label>
                                         <input 
                                             type="text" 
-                                            class="form-control col-3" 
+                                            class="form-control col-4" 
                                             id="cod_pedido" 
                                             name="cod_pedido"
                                             maxlength="5"

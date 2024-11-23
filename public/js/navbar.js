@@ -9,7 +9,7 @@ btnPedidonuevo.addEventListener('click', function(e) {
         + fecha.getDate().toString() 
         + fecha.getHours().toString() 
         + fecha.getMinutes().toString() 
-        + fecha.getSeconds().toString()
+        + addZero(fecha.getSeconds()).toString()
 
     //Aquí creo el nuevo código
     let id = this.dataset.id;
@@ -34,3 +34,8 @@ btnPedidonuevo.addEventListener('click', function(e) {
     });
     
 });
+
+function addZero(i) {
+    if (i < 10) {i = "0" + i}
+    return i;
+}

@@ -267,6 +267,7 @@ sectores.addEventListener("change", () => {
             if (valor != 0) {
                 alertCambioValor()
                 document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega)
+                document.getElementById('valor_mensajero_edit').value = '0.00'
             }else{
                 alertCambioValor()
                 document.getElementById("transporte").value = 0
@@ -534,15 +535,16 @@ function calcularMensajero(){
     
   }
 
+  document.getElementById('valor_mensajero').value = valorMensajero
+  document.getElementById('valor_mensajero_mostrado').value = valorMensajero
+
   // /* Este es el cálculo. */
   if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
       total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
+      document.getElementById('valor_mensajero_mostrado').value = '0.00'
   }else{
       total = (parseFloat(total) + parseFloat(valorMensajero));
   }
-
-  document.getElementById('valor_mensajero').value = valorMensajero
-  document.getElementById('valor_mensajero_mostrado').value = valorMensajero
 
 }
 

@@ -24,7 +24,7 @@ class Ventas extends BaseController {
             date_default_timezone_set('America/Guayaquil');
             $date = date('ymdHis');
             
-            //Borramos pedidos
+            //Borramos temporal de pedidos
             $this->detallePedidoTempModel->_deleteDetallesTempOld();
             
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
@@ -41,12 +41,25 @@ class Ventas extends BaseController {
                                                             ->findAll();
             //$data['detalle'] = $this->detallePedidoTempModel->_getDetallePedido($data['cod_pedido']);
 
-            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
+            
+            if ($data['cod_pedido'] != '' && isset($data['cod_pedido'])) {
 
-            $data['title']='Ordenes y pedidos';
-            $data['subtitle']='Nuevo pedido';
-            $data['main_content']='ventas/form-pedido';
-            return view('dashboard/index', $data);
+                //Busco arreglos con este código en la tabla de temporales y de detalle y los elimino 
+                $this->detallePedidoTempModel->_eliminarProdsDetalle($data['cod_pedido']);
+                
+                $data['title']='Ordenes y pedidos';
+                $data['subtitle']='Nuevo pedido';
+                $data['main_content']='ventas/form-pedido';
+                return view('dashboard/index', $data);
+            } else {
+                
+                $mensaje = 'SIN CODIGO';
+                $this->session->set('mensaje', $mensaje);
+                $data['title']='Pedidos';
+                $data['subtitle']='Listado de pedidos';
+                $data['main_content']='ventas/grid-pedidos';
+                return view('dashboard/index', $data);
+            }
             
         }else{
             $this->logout();
@@ -54,6 +67,10 @@ class Ventas extends BaseController {
         }
     }
 
+    /*
+     * Esta función recibe el código desde el archivo JS del navbar
+     * y guarda en sesión el codigo
+    */
     function generaCodigoPedido(){
 
         //Recibo el código
@@ -370,8 +387,11 @@ class Ventas extends BaseController {
         echo json_encode($res);
     }
 
-    function detalle_pedido_insert_observacion_temp($idproducto, $cod_pedido, $observacion){
+    function detalle_pedido_insert_observacion_temp(){
         $error = '';
+        $idproducto = $this->request->getPostGet('idproducto');
+        $cod_pedido = $this->request->getPostGet('cod_pedido');
+        $observacion = $this->request->getPostGet('observacion');
 
         $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
             
@@ -750,7 +770,8 @@ class Ventas extends BaseController {
 
                     //Inserto el nuevo pedido
                     if ($pedido) {
-                        $this->pedidoModel->_insert($pedido);
+                        $idPedidoInsertado = $this->pedidoModel->_insert($pedido);
+
 
                         //Inserto el detalle
                         if ($detalleTemporal) {
