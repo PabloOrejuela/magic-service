@@ -697,7 +697,7 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
-
+            
             if ($this->request->getPostGet('sin_remitente') != null) {
                 $sin_remitente = $this->request->getPostGet('sin_remitente');
             } else {
@@ -772,10 +772,11 @@ class Ventas extends BaseController {
                     if ($pedido) {
                         $idPedidoInsertado = $this->pedidoModel->_insert($pedido);
 
-
                         //Inserto el detalle
                         if ($detalleTemporal) {
                             $this->detallePedidoModel->_insert($detalleTemporal);
+                            $this->detallePedidoTempModel->_delete($detalleTemporal);
+                            
                             $mensaje = 1;
                         }else{
                             $mensaje = 'SIN DETALLE';
@@ -786,6 +787,7 @@ class Ventas extends BaseController {
 
                     $this->session->set('mensaje', $mensaje);
                     return redirect()->to('pedidos');
+
                 }else{
 
                     $cliente = [
@@ -803,9 +805,12 @@ class Ventas extends BaseController {
                     //Inserto el nuevo pedido
                     if ($pedido) {
                         $this->pedidoModel->_insert($pedido);
+
                         //Inserto el detalle
                         if ($detalleTemporal) {
                             $this->detallePedidoModel->_insert($detalleTemporal);
+                            $this->detallePedidoTempModel->_delete($detalleTemporal);
+
                             $mensaje = 1;
                         }else{
                             $mensaje = 'SIN DETALLE';

@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>Se hizo un cambio para que el nombre de cada arreglo del detalle en el grid de pedidos solo cambie a verde cuando tenga datos en todos los campos</li>
     <li>Se modificó el form pedido para que en caso de que se haya editado el valor del mensajero y luego se modifique descuento, valor del producto, sector, etc siempre se siga manteniendo el valor mostrado del mensajero en 0 y se muestre el valor editado</li>
     <li>Se implementó el check NO ASIGNAR SEGUNDO ROL, para poder quitar un segundo rol previamente asignado</li>
     <li>El grid de usuarios ahora se refresca mas rápido luego de un cambio</li>

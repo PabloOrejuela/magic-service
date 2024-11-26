@@ -50,8 +50,6 @@
                                                 $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
                                                 $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
 
-                                                
-                                                
                                                 echo '<tr class="item-list" data-id="'.$value->id.'">
                                                         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
                                                         <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
@@ -75,7 +73,8 @@
                                                 echo '<td id="cod_arreglo_'.$value->id.'"><ul>';
                                                 if (isset($detalle)) {
                                                     foreach ($detalle as $key => $d) {
-                                                        $attrExtArreg = $this->attrExtArregModel->_getAttrExtArreg($d->iddetalle);
+                                                        $attrExtArreg = $this->attrExtArregModel->_getAttrArreg($d->iddetalle, $d->idcategoria);
+                                                        
                                                         if ($attrExtArreg) {
                                                             echo '<li>
                                                                 <a 

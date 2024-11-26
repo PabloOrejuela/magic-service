@@ -90,15 +90,32 @@ class Administracion extends BaseController {
         $idrol_2 = $this->request->getPostGet('idrol_2');
         $noAsignar = $this->request->getPostGet('noAsignar');
 
+        //echo '<pre>'.var_export($idrol_2, true).'</pre>';exit;
         //Si está asignado no asignar le quitarmos el segundo rol
         if ($noAsignar == 'true') {
-            $data = [
-                'idrol_2' => 0
-            ];
+
+            if (isset($idrol_2) && $idrol_2 == 4) {
+                $data = [
+                    'idrol_2' => 0,
+                    'es_vendedor' => 0
+                ];
+            }else {
+                $data = [
+                    'idrol_2' => 0,
+                ];
+            }
+            
         }else{
-            $data = [
-                'idrol_2' => $idrol_2
-            ];
+            if (isset($idrol_2) && $idrol_2 == 4) {
+                $data = [
+                    'idrol_2' => $idrol_2,
+                    'es_vendedor' => 1
+                ];
+            }else {
+                $data = [
+                    'idrol_2' => $idrol_2,
+                ];
+            }
         }
         
         $res = $this->usuarioModel->update($id, $data);
@@ -968,7 +985,7 @@ class Administracion extends BaseController {
                     $numRandom = rand(100,999);
 
                     //Muevo el archivo del temporal a la carpeta
-                    $producto['image'] = $producto['producto'].'-'.$numRandom;
+                    $producto['image'] = $producto['producto'].'_'.$numRandom;
                     $imagen->move($ruta, $producto['image'], true);
                     
                     $this->image->withFile($ruta.$producto['image'])

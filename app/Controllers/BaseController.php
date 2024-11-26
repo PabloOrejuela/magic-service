@@ -100,13 +100,13 @@ abstract class BaseController extends Controller {
         $this->configuracionModel = new ConfiguracionModel($this->db);
         $this->horariosEntregaModel = new HorariosEntregaModel($this->db);
         $this->detallePedidoModel = new DetallePedidoModel($this->db);
+        $this->detallePedidoTempModel = new DetallePedidoTempModel($this->db);
+        $this->estadoPedidoModel = new EstadoPedidoModel($this->db);
         $this->sucursalModel = new SucursalModel($this->db);
         $this->proveedorModel = new ProveedorModel($this->db);
         $this->gastoModel = new GastoModel($this->db);
         $this->negocioModel = new NegocioModel($this->db);
         $this->tipoGastoModel = new TipoGastoModel($this->db);
-        $this->estadoPedidoModel = new EstadoPedidoModel($this->db);
-        $this->detallePedidoTempModel = new DetallePedidoTempModel($this->db);
         $this->kardexModel = new KardexModel($this->db);
         $this->movimientoInventarioModel = new MovimientoInventarioModel($this->db);
         $this->stockActualModel = new StockActualModel($this->db);

@@ -43,7 +43,7 @@ class AttrExtArregModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function _getAttrExtArreg($iddetalle){
+    public function _getAttrExtArreg($iddetalle, $idcategoria){
         $result = false;
         $builder = $this->db->table($this->table);
         $builder->select('*');
@@ -56,7 +56,7 @@ class AttrExtArregModel extends Model {
         return $result;
     }
 
-    public function _getAttrArreg($iddetalle){
+    public function _getAttrArreg($iddetalle, $idcategoria){
         $result = null;
         $builder = $this->db->table($this->table);
         $builder->select('*');
@@ -64,10 +64,78 @@ class AttrExtArregModel extends Model {
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
-                $result = $row;
+                $objeto = $row;
             }
+        }else{
+            $objeto = null;
         }
+
+        $res = $this->_isAttrComplete($objeto,  $idcategoria);
         //echo $this->db->getLastQuery();
-        return $result;
+        return $res;
+    }
+
+    /**
+     * undocumented function summary
+     *
+     * Undocumented function long description
+     *
+     * @param Type $var Description
+     * @return type
+     * @throws conditon
+     **/
+    public function _isAttrComplete($objeto, $idcategoria){
+        //verifico para cada categoría si tiene datos en cada campo
+        
+        if (isset($objeto) && $objeto != NULL) {
+            if ($idcategoria == 1) {
+                //Arreglo Frutal
+                $attrs = array('para','celular','mensaje_fresas','peluche','globo');
+                
+                if (trim($objeto->para) != '' && trim($objeto->celular) != '' && trim($objeto->mensaje_fresas) != '' && trim($objeto->peluche) != '' && trim($objeto->globo) != '') {
+                    return true;
+                } else {
+                    return false;
+                }
+                
+            }else if ($idcategoria == 2) {
+                //Arreglo Floral
+                $attrs = array('para','celular','mensaje_fresas','peluche','globo');
+                if (trim($objeto->para) != '' && trim($objeto->celular) != '' && trim($objeto->mensaje_fresas) != '' && trim($objeto->peluche) != '' && trim($objeto->globo) != '') {
+                    return true;
+                } else {
+                    return false;
+                }
+                
+            }else if ($idcategoria == 3) {
+                //Desayuno Sorpresa
+                $attrs = array('para','celular','mensaje_fresas','peluche','globo','bebida','huevo');
+                if (trim($objeto->para) != '' && trim($objeto->celular) != '' && trim($objeto->mensaje_fresas) != '' && trim($objeto->peluche) != '' && trim($objeto->globo) != '' && trim($objeto->bebida) != '' && trim($objeto->huevo) != '') {
+                    return true;
+                } else {
+                    return false;
+                }
+                
+            }else if ($idcategoria == 4) {
+                //Magic Box
+                $attrs = array('para','celular','mensaje_fresas','peluche','globo','frases_paredes','fotos');
+                if (trim($objeto->para) != '' && trim($objeto->celular) != '' && trim($objeto->mensaje_fresas) != '' && trim($objeto->peluche) != '' && trim($objeto->globo) != '' && trim($objeto->frases_paredes) != '' && trim($objeto->fotos) != '') {
+                    return true;
+                } else {
+                    return false;
+                }
+                
+            }else if ($idcategoria == 5) {
+                //Bocaditos
+                $attrs = array('para','celular','opciones');
+                if (trim($objeto->para) != '' && trim($objeto->celular) != '' && trim($objeto->opciones) != '') {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
     }
 }

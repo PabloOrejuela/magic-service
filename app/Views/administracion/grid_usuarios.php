@@ -77,7 +77,6 @@
                                                     </td>';
                                                 }
                                                 
-                                                
 
                                                 if ($value->es_vendedor == 0 && $value->rol != 'VENDEDOR') {
                                                     echo '<td id="td-ventas">

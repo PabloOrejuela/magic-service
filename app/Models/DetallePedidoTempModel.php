@@ -100,6 +100,24 @@ class DetallePedidoTempModel extends Model {
         $builder->delete();
     }
 
+    /**
+     * undocumented function summary
+     *
+     * Undocumented function long description
+     *
+     * @param Type $var Description
+     * @return type
+     * @throws conditon
+     **/
+    public function _delete($detalletemporal){
+        $builder = $this->db->table($this->table);
+        foreach ($detalletemporal as $key => $detalle) {
+            $builder->where('cod_pedido', $detalle->cod_pedido);
+            $builder->delete();
+        }
+    }
+
+
     public function _eliminarProdsDetalle($cod_pedido){
         
         $builder = $this->db->table($this->table);
