@@ -129,7 +129,10 @@ class UsuarioModel extends Model {
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
-                $result[] = $row;
+                if ($row->estado == 1) {
+                    $result[] = $row;
+                }
+                
             }
         }
         //echo $this->db->getLastQuery();

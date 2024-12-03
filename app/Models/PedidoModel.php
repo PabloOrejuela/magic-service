@@ -79,7 +79,7 @@ class PedidoModel extends Model {
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
-        $builder->orderBy('orden', 'ASC');
+        $builder->orderBy('orden', 'asc');
         //PABLO revisar que si es admin soplo traiga 300 ultimos y si es otro rol máximo 1000
         $builder->limit(300);
         $query = $builder->get();
@@ -234,6 +234,8 @@ class PedidoModel extends Model {
         if ($data['valor_mensajero_edit'] != 'NULL' && $data['valor_mensajero_edit'] != '') {
             $builder->set('valor_mensajero_edit', $data['valor_mensajero_edit']); 
         }
+
+        $builder->set('orden', 1); 
 
         //Inserto las fechas de creación e inicializo la actualización
         $builder->set('created_at', $created_at); 

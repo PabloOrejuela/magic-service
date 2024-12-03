@@ -9,6 +9,7 @@
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
                         <div><input type="text" value="<?= session('mensaje'); ?>" id="msj" readonly></div>
+                        <div><textarea class="form-control" placeholder="" id="mensaje"></textarea></div>
                         <div>
                             <a href="<?= site_url().'pedidos-ventana/'; ?>"  class="btn btn-success mb-2" target="_blank">Abrir en nueva ventana</a>
                         </div>

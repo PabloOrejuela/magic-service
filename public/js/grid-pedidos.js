@@ -924,6 +924,7 @@ setInterval(function(){
 function copyData(id){
     let cod_arreglo = ''
     let observacion = ''
+    let mensaje = document.getElementById('mensaje')
     $.ajax({
         type:"GET",
         dataType:"html",

@@ -703,6 +703,8 @@ class Ventas extends BaseController {
             } else {
                 $sin_remitente = 0;
             }
+
+            $pedidos = $this->pedidoModel->orderBy('orden', 'asc')->findAll();
             
             $pedido = [
                 'cod_pedido' => $cod_pedido,
@@ -742,6 +744,7 @@ class Ventas extends BaseController {
                 'email' => strtolower($this->request->getPostGet('email')),
             ];
             
+
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
@@ -770,6 +773,17 @@ class Ventas extends BaseController {
 
                     //Inserto el nuevo pedido
                     if ($pedido) {
+
+                        foreach ($pedidos as $p) {
+                            // $pedido['orden'] = $pedido['orden']+1;
+                            if ($p->orden != 0) {
+                                $datos = [
+                                    'orden' => $p->orden + 1
+                                ];
+    
+                                $this->pedidoModel->update($p->id, $datos);
+                            }
+                        }
                         $idPedidoInsertado = $this->pedidoModel->_insert($pedido);
 
                         //Inserto el detalle
@@ -799,11 +813,24 @@ class Ventas extends BaseController {
                         'email' => strtolower($this->request->getPostGet('email')),
                     ];
 
+
                     //Inserto el cliente nuevo
                     $pedido['idcliente'] = $this->clienteModel->insert($cliente);
 
                     //Inserto el nuevo pedido
                     if ($pedido) {
+                        
+
+                        foreach ($pedidos as $p) {
+                            // $pedido['orden'] = $pedido['orden']+1;
+                            if ($p->orden != 0) {
+                                $datos = [
+                                    'orden' => $p->orden + 1
+                                ];
+    
+                                $this->pedidoModel->update($p->id, $datos);
+                            }
+                        }
                         $this->pedidoModel->_insert($pedido);
 
                         //Inserto el detalle
