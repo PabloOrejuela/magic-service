@@ -540,15 +540,6 @@ $(document).ready(function(){
     });
 });
 
-$(document).ready(function(){
-    $("#valor_mensajero_edit").on('change',function(){
-        if($("#valor_mensajero_edit").val() !=""){
-            alertCambioValorMensajero()
-            document.getElementById('valor_mensajero_mostrado').value = "0.00"
-        }
-    });
-});
-
 const alertAgregaProducto = () => {
     Swal.fire({
         position: "center",

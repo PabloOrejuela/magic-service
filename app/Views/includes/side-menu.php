@@ -18,7 +18,7 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item subItem">
-            <a href="'.base_url().'ventas" class="nav-link">
+            <a href="'.base_url().'ventas" class="nav-link" id="btn-pedido-nuevo" data-id="'.session('id').'">
               <i class="far fa-circle nav-icon"></i>
               <p>Registrar pedido</p>
             </a>
@@ -217,3 +217,4 @@
   </ul>
 </nav>
 <script src="https://kit.fontawesome.com/90e597c088.js" crossorigin="anonymous"></script>
+<script src="<?= site_url(); ?>public/js/side-menu.js"></script>

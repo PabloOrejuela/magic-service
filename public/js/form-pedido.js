@@ -4,6 +4,7 @@ let imptEmail = document.getElementById("email")
 let sectores = document.getElementById("sectores")
 let telefono = document.getElementById("telefono")
 let telefono2 = document.getElementById("telefono_2")
+let valorMensajeroEdit = document.getElementById("valor_mensajero_edit")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -141,6 +142,13 @@ function buscaTelefono(telefono){
         }
     });
 }
+
+valorMensajeroEdit.addEventListener('change', function(e){
+    if(valorMensajeroEdit.value !="" && valorMensajeroEdit.value != '0'){
+        alertCambioValorMensajero()
+        document.getElementById('valor_mensajero_mostrado').value = "0.00"
+    }
+})
 
 function sumarTotal() {
   let descuento = 0;
