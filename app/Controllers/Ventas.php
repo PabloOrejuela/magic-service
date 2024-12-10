@@ -278,6 +278,27 @@ class Ventas extends BaseController {
         return true;
     }
 
+    function updateDevolucion(){
+        $id = $this->request->getPostGet('id');
+        $valor_devuelto = $this->request->getPostGet('valor_devuelto');
+        $observacionDevolucion = strtoupper($this->request->getPostGet('observacionDevolucion'));
+        
+        if ($valor_devuelto != '0.00' && $valor_devuelto != '') {
+            $data = [
+                'valor_devuelto' => $valor_devuelto,
+                'observacion_devolucion' => $observacionDevolucion
+            ];
+        } else {
+            $data = [
+                'valor_devuelto' => '0.00',
+                'observacion_devolucion' => ''
+            ];
+        }
+    
+        $this->pedidoModel->update($id, $data);
+        //return true;
+    }
+
     function deleteItemsTempProduct(){
 
         $idproducto = $this->request->getPostGet('idproducto');

@@ -68,6 +68,7 @@ $routes->get('actualizaMensajeSession', 'Ventas::actualizaMensajeSession');
 $routes->get('actualizaValorCampoTicket', 'Ventas::actualizaValorCampoTicket');
 $routes->get('getAttrExtraTicket', 'Ventas::getAttrExtraTicket');
 $routes->get('deleteDetalleTemporal', 'Ventas::deleteDetalleTemporal');
+$routes->get('updateDevolucion', 'Ventas::updateDevolucion');
 
 //Administración
 $routes->get('administracion', 'Administracion::index');

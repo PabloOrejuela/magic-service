@@ -6,6 +6,8 @@ let divBancos = document.querySelector("#div-bancos")
 let divDocPago = document.querySelector("#div-doc-pago")
 let telefono = document.getElementById("telefono")
 let telefono2 = document.getElementById("telefono_2")
+let divDevolucion = document.querySelector("#link-devolucion");
+let valorDevuelto = document.getElementById("valorDevuelto")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -23,6 +25,17 @@ formaPago.addEventListener("change", function () {
   }else{
     divBancos.style.display = "none";
     divDocPago.style.display = "none";
+  }
+});
+
+divDevolucion.addEventListener("click", function () {
+  
+  let divDevolucion = document.querySelector("#div-devolucion");
+
+  if (divDevolucion.style.display == "block") {
+    divDevolucion.style.display = "none"
+  } else {
+    divDevolucion.style.display = "block"
   }
 });
 
@@ -406,13 +419,46 @@ function eliminaProducto(idproducto, cod_pedido){
   calcularMensajero();
 }
 
+function devolucion(id){
+  let valorDevuelto = document.getElementById("valorDevuelto")
+  let observacionDevolucion = document.getElementById("observacionDevolucion")
+  
+  if (valorDevuelto != null && valorDevuelto != '') {
+      $.ajax({
+          url: "../updateDevolucion",
+          type: "GET",
+          dataType: "html",
+          data: {
+            id: id,
+            valor_devuelto: valorDevuelto.value,
+            observacionDevolucion: observacionDevolucion.value
+          },
+          success: function(resultado){
+              if (resultado == true) {
+                  alertaMensaje("El valor de la devolución se ha actualizado", 500, "error")
+              }else{
+                  //Exito
+                  alertaMensaje("El valor de la devolución no se pudo actualizar", 500, "success") 
+              }
+          }
+      });
+  }
+}
+
 function observacion(idproducto, cod_pedido){
   let observacion = document.getElementById("observa_"+idproducto).value
   //console.log(observacion);
   if (observacion != null && observacion != '') {
 
       $.ajax({
-          url: '../ventas/detalle_pedido_insert_observacion_temp/' + idproducto + '/' + cod_pedido+'/'+observacion,
+          url: "../detalle_pedido_insert_observacion_temp",
+          type: "GET",
+          dataType: "html",
+          data: {
+              idproducto: idproducto,
+              cod_pedido: cod_pedido,
+              observacion: observacion
+          },
           success: function(resultado){
               if (resultado == 0) {
 
@@ -444,32 +490,34 @@ function actualizaPrecio(idproducto, cod_pedido){
   if (precio != null && precio != '') {
 
       $.ajax({
-          url: '../detalle_pedido_update_precio_temp',
-          data: {
-              idproducto: idproducto,
-              cod_pedido: cod_pedido,
-              precio: precio,
-              cant: cant
-          },
-          success: function(resultado){
-              if (resultado == 0) {
+        url: "../detalle_pedido_update_precio_temp",
+        type: "GET",
+        dataType: "html",
+        data: {
+            idproducto: idproducto,
+            cod_pedido: cod_pedido,
+            precio: precio,
+            cant: cant
+        },
+        success: function(resultado){
+            if (resultado == 0) {
 
-              }else{
-                  //Exito
-                  let detalle = JSON.parse(resultado);
-                  //console.log(detalle);
-                  if (detalle.error == '') {
-                      $("#tablaProductos tbody").empty();
-                      $("#tablaProductos tbody").append(detalle.datos);
-                      $("#total").val(detalle.total);
-                      $("#valor_neto").val(detalle.subtotal);
+            }else{
+                //Exito
+                let detalle = JSON.parse(resultado);
+                console.log(detalle);
+                if (detalle.error == '') {
+                    $("#tablaProductos tbody").empty();
+                    $("#tablaProductos tbody").append(detalle.datos);
+                    $("#total").val(detalle.total);
+                    $("#valor_neto").val(detalle.subtotal);
 
-                      limpiaLineaProducto()
-                      calculaValorNeto(cod_pedido);
-                      sumarTotal()
-                  }
-              }
-          }
+                    limpiaLineaProducto()
+                    calculaValorNeto(cod_pedido);
+                    sumarTotal()
+                }
+            }
+        }
       });
       
   }
@@ -547,6 +595,13 @@ function calcularMensajero(){
   }
 
 }
+
+valorMensajeroEdit.addEventListener('change', function(e){
+  if(valorMensajeroEdit.value !="" && valorMensajeroEdit.value != '0'){
+      alertCambioValorMensajero()
+      document.getElementById('valor_mensajero_mostrado').value = "0.00"
+  }
+})
 
 $(document).ready(function(){
   $("#inputFecha").on('change',function(){

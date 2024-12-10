@@ -57,3 +57,13 @@
 #div-bancos, #div-doc-pago {
     display: none;
 }
+
+#div-devolucion{
+    border-radius: 7;
+    border: 1px solid rgba(126, 126, 126, 0.4);
+    padding: 7px;
+}
+
+#div-devoluciones{
+    margin-top: 30px;
+}

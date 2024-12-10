@@ -94,10 +94,21 @@ a{
 
 #btn-cancela{
   background-color: #e8c39e;
-  border: none;
+  border: 1px solid #e8c39e;
 }
 
 #btn-cancela:hover{
+  border: 1px solid #072a29;
+  background-color: #70665b;
+  color: blanchedalmond;
+}
+
+#link-devolucion{
+  background-color: #11f8ed;
+  border: 1px solid #11f8ed;
+}
+
+#link-devolucion:hover{
   border: 1px solid #072a29;
   background-color: #70665b;
   color: blanchedalmond;

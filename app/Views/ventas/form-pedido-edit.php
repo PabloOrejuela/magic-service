@@ -469,18 +469,37 @@
                                                 value="<?= $pedido->valor_mensajero_edit; ?>"
                                             >
                                         </div>
-                                        <div class="col-sm-4">
-                                            <input 
-                                                type="text" 
-                                                class="form-control inputValor valorImportante decimal" 
-                                                id="valor_mensajero_mostrado" 
-                                                placeholder="0.00" 
-                                                onchange="sumarTotal()" 
-                                                name="valor_mensajero_mostrado"
-                                                value="<?= $pedido->valor_mensajero; ?>"
-                                                readonly
-                                            >
-                                        </div>
+                                        <?php
+                                            if ($pedido->valor_mensajero_edit != '0.00') {
+                                                echo '<div class="col-sm-4">
+                                                        <input 
+                                                            type="text" 
+                                                            class="form-control inputValor valorImportante decimal" 
+                                                            id="valor_mensajero_mostrado" 
+                                                            placeholder="0.00" 
+                                                            onchange="sumarTotal()" 
+                                                            name="valor_mensajero_mostrado"
+                                                            value="0.00"
+                                                            readonly
+                                                        >
+                                                    </div>';
+                                            } else {
+                                                echo '<div class="col-sm-4">
+                                                    <input 
+                                                        type="text" 
+                                                        class="form-control inputValor valorImportante decimal" 
+                                                        id="valor_mensajero_mostrado" 
+                                                        placeholder="0.00" 
+                                                        onchange="sumarTotal()" 
+                                                        name="valor_mensajero_mostrado"
+                                                        value="'.$pedido->valor_mensajero.'"
+                                                        readonly
+                                                    >
+                                                </div>';
+                                            }
+                                            
+                                        ?>
+                                        
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-8">
@@ -559,7 +578,7 @@
                                             ?>
                                         </select>
                                     </div>
-                                    <div class="form-group" id="div-doc-pago">
+                                    <div class="form-group mb-3" id="div-doc-pago">
                                         <label for="ref_pago" >No. Documento del pago:</label>
                                         <input 
                                             type="text" 
@@ -570,14 +589,42 @@
                                             value="<?= $pedido->ref_pago; ?>"
                                         >
                                     </div>
-                                    <div id="error-message">
-                                    <?php 
-                                        echo session('errors.fecha_entrega');
-                                        echo session('errors.nombre');
-                                        echo session('errors.telefono');
-                                        echo session('errors.vendedor');
-                                        echo session('errors.sectores');
+
+                                    <hr class="divider mt-5 mb-3">
+                                    
+                                    <?php
+                                        
+                                        if (isset($pedido->valor_devuelto) && $pedido->valor_devuelto != '' && $pedido->valor_devuelto != '0.00') {
+                                            echo '<div class="form-group mb-3 mt-5" id="div-devolucion" style="display: block;">';
+                                        } else {
+                                            echo '<div class="form-group mb-3 mt-5" id="div-devolucion" style="display: none;">';
+                                        }
+                                        
                                     ?>
+                                    
+                                        <h4>Devolución:</h4>
+                                        <label for="valor-devuelto">Valor devuelto:</label>
+                                        <input 
+                                            onchange = "devolucion('<?= $pedido->id; ?>')"
+                                            idpedido="<?= $pedido->id; ?>" 
+                                            class="form-control decimal" 
+                                            type="text" 
+                                            name="valorDevuelto" 
+                                            id="valorDevuelto"
+                                            value="<?= $pedido->valor_devuelto; ?>"
+                                        >
+                                        <label for="observacionDevolucion" class="mt-3">Observación de la devolución:</label>
+                                        <textarea class="form-control" id="observacionDevolucion"><?= $pedido->observacion_devolucion; ?></textarea>
+                                    </div>
+
+                                    <div id="error-message">
+                                        <?php 
+                                            echo session('errors.fecha_entrega');
+                                            echo session('errors.nombre');
+                                            echo session('errors.telefono');
+                                            echo session('errors.vendedor');
+                                            echo session('errors.sectores');
+                                        ?>
                                     </div>
                                     
 
@@ -593,6 +640,7 @@
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary" >Enviar</button>
                                         <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
+                                        <a href="javascript:#" class="btn btn-light" id="link-devolucion">Registrar devolución</a>
                                         <div class="row mt-3" id="varSistema">
                                             <div class="col-md-2">
                                                 <label for="">Porcentaje de transporte</label>
@@ -685,14 +733,14 @@ $(document).ready(function(){
     });
 });
 
-$(document).ready(function(){
-    $("#valor_mensajero_edit").on('change',function(){
-        if($("#valor_mensajero_edit").val() !=""){
-            alertCambioValorMensajero()
-            document.getElementById('valor_mensajero_mostrado').value = "0.00"
-        }
-    });
-});
+// $(document).ready(function(){
+//     $("#valor_mensajero_edit").on('change',function(){
+//         if($("#valor_mensajero_edit").val() !=""){
+//             alertCambioValorMensajero()
+//             document.getElementById('valor_mensajero_mostrado').value = "0.00"
+//         }
+//     });
+// });
 
 const alertAgregaProducto = () => {
     Swal.fire({
