@@ -937,7 +937,8 @@ function copyData(id){
             let pedido = JSON.parse(resultado);
             cliente = pedido.datos.nombre
             sector = pedido.datos.sector
-            sector = pedido.datos.sector
+            desde = pedido.datos.rango_entrega_desde
+            hasta = pedido.datos.rango_entrega_hasta
             direccion = pedido.datos.dir_entrega
             ubicacion = pedido.datos.ubicacion
             horaEntrega = pedido.datos.hora
@@ -959,12 +960,12 @@ function copyData(id){
                         navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
                         + "\nCódigos: " + cod_arreglo 
-                        + "\nHora de entrega: " + horaEntrega)
+                        + "\nHora de entrega: " + desde + ' - ' + hasta)
                     }else{
                         navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
                         + "\nCódigos: " + cod_arreglo 
-                        + "\nHora de entrega: " + horaEntrega + "\nObservación: " + observacion)
+                        + "\nHora de entrega: " + desde+' - ' + hasta + "\nObservación: " + observacion)
                     }
                     alertaMensaje("La información se ha copiado!!!", 1500, 'info')
 
@@ -973,12 +974,12 @@ function copyData(id){
                         mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
                         + "\nCódigo: " + cod_arreglo 
-                        + "\nHora de entrega: " + horaEntrega
+                        + "\nHora de entrega: " + desde + ' - ' + hasta
                     }else{
                         mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
                         + "\nCódigo: " + cod_arreglo 
-                        + "\nHora de entrega: " + horaEntrega + "\nObservación: " + observacion
+                        + "\nHora de entrega: " + desde + ' - ' + hasta + "\nObservación: " + observacion
                     }
             
                     mensaje.select()
