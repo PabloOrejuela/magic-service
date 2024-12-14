@@ -1,5 +1,6 @@
 <h3>Cambios</h3>
 <ul>
+    <li>Se Implementó el campo de valor final luego de la devolución en el form de editar pedido</li>
     <li>Se hizo cambios en la función de actualización del pedido, ahora el detalle ya no borra los items de la tabla y los inserta sino que si existen los actualiza</li>
     <li>Se hizo un cambio en el Grid de usuarios, se cambió el ícono de tarro de basura por un switch de ON -OFF</li>
     <li>La función userDelete ya no solo desactiva el usuario sino que le cambia el estado</li>

@@ -8,6 +8,7 @@ let telefono = document.getElementById("telefono")
 let telefono2 = document.getElementById("telefono_2")
 let divDevolucion = document.querySelector("#link-devolucion");
 let valorDevuelto = document.getElementById("valorDevuelto")
+let valorMensajeroEdit = document.getElementById('valor_mensajero_edit')
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -422,6 +423,8 @@ function eliminaProducto(idproducto, cod_pedido){
 function devolucion(id){
   let valorDevuelto = document.getElementById("valorDevuelto")
   let observacionDevolucion = document.getElementById("observacionDevolucion")
+  let total = document.getElementById("total")
+  let totalFinal = document.getElementById("totalFinal")
   
   if (valorDevuelto != null && valorDevuelto != '') {
       $.ajax({
@@ -435,11 +438,13 @@ function devolucion(id){
           },
           success: function(resultado){
               if (resultado == true) {
-                  alertaMensaje("El valor de la devolución se ha actualizado", 500, "error")
+                
+                alertaMensaje("El valor de la devolución se ha actualizado", 500, "error")
               }else{
-                  //Exito
-                  alertaMensaje("El valor de la devolución no se pudo actualizar", 500, "success") 
+                //ERROR
+                alertaMensaje("El valor de la devolución no se pudo actualizar", 500, "success") 
               }
+              totalFinal.value = (total.value - valorDevuelto.value).toFixed(2)
           }
       });
   }

@@ -616,7 +616,20 @@
                                         <label for="observacionDevolucion" class="mt-3">Observación de la devolución:</label>
                                         <textarea class="form-control" id="observacionDevolucion" onchange = "devolucion('<?= $pedido->id; ?>')"><?= $pedido->observacion_devolucion; ?></textarea>
                                     </div>
-
+                                    <div class="form-group row">
+                                        <label for="total" class="col-sm-8 col-form-label">Valor final que el sistema registrará:</label>
+                                        <div class="col-sm-4">
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="totalFinal"
+                                                placeholder="0.00" 
+                                                name="totalFinal"
+                                                value = "<?= number_format($pedido->total - $pedido->valor_devuelto, 2) ?>"
+                                                readonly
+                                            >
+                                        </div>
+                                    </div>
                                     <div id="error-message">
                                         <?php 
                                             echo session('errors.fecha_entrega');
