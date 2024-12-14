@@ -82,7 +82,7 @@ class PedidoModel extends Model {
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
         $builder->orderBy('orden', 'asc');
-        //PABLO revisar que si es admin soplo traiga 300 ultimos y si es otro rol máximo 1000
+        //PABLO revisar que si es admin solo traiga 300 ultimos y si es otro rol máximo 1000
         $builder->limit(300);
         $query = $builder->get();
         if ($query->getResult() != null) {

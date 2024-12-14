@@ -63,6 +63,27 @@ class Administracion extends BaseController {
         echo json_encode($res);
     }
 
+    public function user_cambia_estado() {
+
+        $id = $this->request->getPostGet('id');
+        $estado = $this->request->getPostGet('estado');
+
+        if ($estado == 0) {
+            $data = [
+                'estado' => 1
+            ];
+
+        } else {
+            $data = [
+                'estado' => 0
+            ];
+        }
+        
+        $res = $this->usuarioModel->update($id, $data);
+        
+        echo json_encode($res);
+    }
+
     public function user_estado_ventas() {
 
         $id = $this->request->getPostGet('id');

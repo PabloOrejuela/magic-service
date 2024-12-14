@@ -79,31 +79,33 @@ const sessionClose = (id) => {
     }
 }
 
-const userDelete = (id) => {
-    
+const userDelete = (id, estado) => {
+    //Se cambi'o esta funci'on ahora cambia el estado
+    console.log(estado);
     if (id != null && id != 0) {
         
         $.ajax({
             dataType:"html",
-            url: "user-delete",
+            url: "user-cambia-estado",
             method: 'get',
             data: {
                 id: id,
+                estado: estado
             },
             beforeSend: function (f) {
-                alertProcesando("Inactivando usuario", 1000, "info")
+                alertProcesando("Inactivando usuario", 600, "info")
             },
             success: function(res){
               
                 let resultado = JSON.parse(res)
                 if (resultado == 1) {
-                    alertProcesando("El usuario ya no está activo", 1000,  "info")
-                    //PABLO luego hay que hacer que recargue la data por ajax
+                    alertProcesando("El usuario ya no está activo", 600,  "info")
+                    
                     setTimeout(function(){
                         location.replace('usuarios')
                     }, 1100)
                 }else{
-                    alertProcesando("No se pudo desactivar el usuario", 1000, "error")
+                    alertProcesando("No se pudo desactivar el usuario", 600, "error")
                 }
             },
             error: function(resultado){

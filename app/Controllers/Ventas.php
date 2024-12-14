@@ -294,7 +294,7 @@ class Ventas extends BaseController {
                 'observacion_devolucion' => ''
             ];
         }
-    
+        
         $this->pedidoModel->update($id, $data);
         //return true;
     }
@@ -884,6 +884,7 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
+            $detallePedido = $detalle = $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->find();
 
             $pedido = [
                 'id' => $this->request->getPostGet('idpedido'),
@@ -944,7 +945,7 @@ class Ventas extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
                 
-                //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
+                //Verifico que exista el cliente, si no existe lo creo y si existe solo inserto el id
                 $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($clienteID);
                 
                 if ($clienteExiste) {
@@ -977,11 +978,46 @@ class Ventas extends BaseController {
                     //Inserto el detalle actualizado (MODIFICAR ESTA FUNCION PARA USAR EL MODELO Y TENER HISTORIAL DE CAMBIOS)
                     if ($detalleTemporal) {
 
-                        //Elimino el detalle anterior antes de insertar el detalle actualizado
-                        $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->delete();
+                        //Borro los items que están en la tabla detalle y que fueron borrados de la temporal
+                        foreach ($detallePedido as $key => $value) {
+                            $existe = $this->detallePedidoTempModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->find();
 
-                        //Inserto el detalle editado
-                        $this->detallePedidoModel->_insert($detalleTemporal);
+                            if (!$existe) {
+                                //Borro ese item de la tala detalle pedido
+                                $this->detallePedidoModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->delete();
+                            }
+                        }
+                        
+                        //Hago update o Insert de los detalles
+                        foreach ($detalleTemporal as $key => $value) {
+                            $detalle = $this->detallePedidoModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->find();
+                            
+                            //VERIFICO SI EL ARREGLO EXISTE EN LA TABLA
+                            if ($detalle) {
+                                //Si existe ACTUALIZA
+                                $registro = [
+                                    'cantidad' => $value->cantidad,
+                                    'precio' => $value->precio,
+                                    'pvp' =>  $value->pvp,
+                                    'subtotal' => $value->subtotal,
+                                    'observacion' => $value->observacion,
+                                ];
+                                $this->detallePedidoModel->update($detalle[0]->id, $registro);
+                            } else {
+                                //Si no existe INSERTA
+                                $registro = [
+                                    'cod_pedido' => $value->cod_pedido,
+                                    'idproducto' => $value->idproducto,
+                                    'cantidad' => $value->cantidad,
+                                    'precio' => $value->precio,
+                                    'pvp' =>  $value->pvp,
+                                    'subtotal' => $value->subtotal,
+                                    'observacion' => $value->observacion,
+                                ];
+                                $this->detallePedidoModel->insert($registro);
+                            }
+
+                        }
 
                         //Borro el detalle temporal de la tabla temporal
                         $this->detallePedidoTempModel->where('cod_pedido', $cod_pedido)->delete();

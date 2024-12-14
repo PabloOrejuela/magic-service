@@ -124,25 +124,39 @@
 
                                                 if ($value->estado == 1) {
                                                     echo '<td>Activo</td>';
+                                                    echo '
+                                                        <td>
+                                                            <div class="contenedor button">
+                                                                <a 
+                                                                    type="button" 
+                                                                    id="btn-register" 
+                                                                    href="#" 
+                                                                    class="edit"
+                                                                    onclick="javascript:userDelete('.$value->id.', '.$value->estado.')"
+                                                                >
+                                                                    <img src="'.site_url().'public/images/ON.png" width="50" height="25" >
+                                                                </a>
+                                                            </div>
+                                                        </td>';
                                                 }else if($value->estado == 0){
                                                     echo '<td>Inactivo</td>';
+                                                    echo '
+                                                        <td>
+                                                            <div class="contenedor button">
+                                                                <a 
+                                                                    type="button" 
+                                                                    id="btn-register" 
+                                                                    href="#" 
+                                                                    class="edit"
+                                                                    onclick="javascript:userDelete('.$value->id.', '.$value->estado.')"
+                                                                >
+                                                                    <img src="'.site_url().'public/images/OFF.png" width="50" height="25" >
+                                                                </a>
+                                                            </div>
+                                                        </td>';
                                                 }
                                             
-                                            echo '
-                                                <td>
-                                                    <div class="contenedor button">
-                                                        <a 
-                                                            type="button" 
-                                                            id="btn-register" 
-                                                            href="#" 
-                                                            class="edit"
-                                                            onclick="javascript:userDelete('.$value->id.')"
-                                                        >
-                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                </tr>';
+                                            echo '</tr>';
                                         }
                                     }
                                 ?>

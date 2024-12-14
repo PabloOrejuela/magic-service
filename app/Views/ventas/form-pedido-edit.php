@@ -614,7 +614,7 @@
                                             value="<?= $pedido->valor_devuelto; ?>"
                                         >
                                         <label for="observacionDevolucion" class="mt-3">Observación de la devolución:</label>
-                                        <textarea class="form-control" id="observacionDevolucion"><?= $pedido->observacion_devolucion; ?></textarea>
+                                        <textarea class="form-control" id="observacionDevolucion" onchange = "devolucion('<?= $pedido->id; ?>')"><?= $pedido->observacion_devolucion; ?></textarea>
                                     </div>
 
                                     <div id="error-message">

@@ -86,7 +86,7 @@
                                                                     data-pedido="'.$d->cod_pedido.'"
                                                                     data-bs-toggle="modal"
                                                                     data-category="'.$d->idcategoria.'" 
-                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
+                                                                    data-bs-target="#linkArregloPedido">'.$d->iddetalle."-".$d->producto.'</a>
                                                             </li>';
                                                             echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
                                                         } else {
@@ -100,7 +100,7 @@
                                                                     data-bs-toggle="modal"
                                                                     data-category="'.$d->idcategoria.'" 
                                                                     style="color:#c70a0a;"
-                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
+                                                                    data-bs-target="#linkArregloPedido">'.$d->iddetalle."-".$d->producto.'</a>
                                                             </li>';
                                                             echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
                                                         }
