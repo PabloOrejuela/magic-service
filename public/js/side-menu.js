@@ -4,7 +4,7 @@ btnPedido.addEventListener('click', function(e) {
     //e.stopPropagation()
     console.log("CLICK");
     let fecha = new Date();
-    let tiempo = fecha.getFullYear().toString() 
+    let tiempo = (fecha.getYear()-100).toString() 
         + (fecha.getMonth() + 1).toString() 
         + fecha.getDate().toString() 
         + fecha.getHours().toString() 
