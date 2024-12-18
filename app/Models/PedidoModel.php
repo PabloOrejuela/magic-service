@@ -67,6 +67,7 @@ class PedidoModel extends Model {
                 banco,
                 fecha,
                 orden,
+                mensajero_extra,
                 valor_devuelto,
                 observacion_devolucion,
                 sin_remitente,
@@ -122,7 +123,7 @@ class PedidoModel extends Model {
         $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado, 
                 nombre,documento,clientes.id as idcliente,direccion,telefono,telefono_2,email,fecha_entrega,sin_remitente,valor_devuelto,
                 horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,observacion_devolucion,
-                pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,valor_mensajero,ref_pago,
+                pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,mensajero_extra,valor_mensajero,valor_mensajero_extra,ref_pago,
                 valor_mensajero_edit,transporte,cargo_horario,domingo,valor_neto,descuento,total,rango_entrega_desde,rango_entrega_hasta');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
@@ -355,6 +356,15 @@ class PedidoModel extends Model {
         if ($data['ref_pago'] != 'NULL' && $data['ref_pago'] != '') {
             $builder->set('ref_pago', $data['ref_pago']); 
         }
+
+        if ($data['mensajero_extra'] != 'NULL' && $data['mensajero_extra'] != '' && $data['mensajero_extra'] != '0') {
+            $builder->set('mensajero_extra', $data['mensajero_extra']); 
+            $builder->set('valor_mensajero_extra', $data['valor_mensajero_extra']); 
+        }else{
+            $builder->set('mensajero_extra', $data['mensajero_extra']); 
+            $builder->set('valor_mensajero_extra', '0.00'); 
+        }
+
 
         $builder->set('updated_at', $updated_at); 
 

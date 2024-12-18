@@ -625,6 +625,12 @@ $(document).ready(function(){
   });
 });
 
+const addMensajero = () => {
+  let divNuevoMensajero = document.getElementById("nuevoMensajero")
+
+  divNuevoMensajero.style.display = "block"
+}
+
 
 const alertaMensaje = (msg, time, icon) => {
   const toast = Swal.mixin({

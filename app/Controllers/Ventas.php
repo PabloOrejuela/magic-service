@@ -904,6 +904,7 @@ class Ventas extends BaseController {
                           
                 'vendedor' => $this->request->getPostGet('vendedor'),
                 'mensajero' => $this->request->getPostGet('mensajero'),
+                'mensajero_extra' => $this->request->getPostGet('mensajero_extra'),
                 'venta_extra' => $this->request->getPostGet('venta_extra'),
 
                 'formas_pago' => $this->request->getPostGet('formas_pago'),
@@ -920,6 +921,7 @@ class Ventas extends BaseController {
                 'cargo_domingo' => $this->request->getPostGet('cargo_domingo'),
                 'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
+                'valor_mensajero_extra' => $this->request->getPostGet('valor_mensajero_extra'),
                 'total' => $this->request->getPostGet('total'),
             ];
             

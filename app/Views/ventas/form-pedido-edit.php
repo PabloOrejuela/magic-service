@@ -540,6 +540,51 @@
                                             ?>
                                         </select>
                                     </div>
+
+                                    <a onclick="addMensajero()" class="btn btn-add-mensajero"><img src="<?= site_url(); ?>public/images/plus.png" width="15"> Agregar mensajero</a>
+                                    
+                                    <?php
+                                        
+                                        if (isset($pedido->mensajero_extra) && $pedido->mensajero_extra != '' && $pedido->mensajero_extra != '0.00') {
+                                            echo '<div class="form-group mb-3 mt-2" id="nuevoMensajero" style="display: block;">';
+                                        } else {
+                                            echo '<div class="form-group mb-3 mt-2" id="nuevoMensajero" style="display: none;">';
+                                        }
+                                        
+                                    ?>
+                                        <label for="mensajero_extra">Mensajero adicional:</label>
+                                        <select class="form-select form-control-border campos-nuevos" id="mensajero_extra" name="mensajero_extra">
+                                            <option value="0" selected>--Seleccionar un mensajero extra--</option>
+                                            <?php
+                                                if (isset($mensajeros)) {
+                                                    foreach ($mensajeros as $key => $mensajero) {
+                                                        if ($mensajero->id == $pedido->mensajero_extra) {
+                                                            echo '<option value="'.$mensajero->id.'" selected>'.$mensajero->nombre.'</option>';
+                                                        }else{
+                                                            echo '<option value="'.$mensajero->id.'">'.$mensajero->nombre.'</option>';
+                                                        }
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                        <div class="form-group row">
+                                            <label for="valor_mensajero_edit" class="col-sm-9 col-form-label">Valor mensajero extra:</label>
+                                            <div class="col-sm-3">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control inputValor cant decimal" 
+                                                    id="valor_mensajero_extra" 
+                                                    placeholder="0" 
+                                                    style="color:blue;"
+                                                    name="valor_mensajero_extra"
+                                                    value="<?= $pedido->valor_mensajero_extra; ?>"
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+
+
                                     <div class="form-group mb-3 mt-5">
                                         <h4 class="mt-3">Información financiera</h4>
                                         <label for="formas_pago">Forma de pago *:</label>
@@ -601,7 +646,6 @@
                                         }
                                         
                                     ?>
-                                    
                                         <h4>Devolución:</h4>
                                         <label for="valor-devuelto">Valor devuelto:</label>
                                         <input 

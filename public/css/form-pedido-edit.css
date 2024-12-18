@@ -67,3 +67,21 @@
 #div-devoluciones{
     margin-top: 30px;
 }
+
+.btn-add-mensajero{
+    margin: 0%;
+    padding: 0%;
+    background-color: transparent;
+}
+
+#nuevoMensajero{
+    display: none;
+}
+
+#mensajero_extra{
+    width: 100%;
+}
+
+#valor_mensajero_extra{
+    margin-top: 5px;
+}
