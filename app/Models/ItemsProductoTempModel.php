@@ -76,6 +76,7 @@ class ItemsProductoTempModel extends Model {
         $builder->where($this->table.'.idproducto', $idproducto);
         $builder->join('items', $this->table.'.item = items.id');
         $builder->join('productos', $this->table.'.idproducto = productos.id');
+        $builder->orderBy('item', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -103,6 +104,7 @@ class ItemsProductoTempModel extends Model {
             '.$this->table.'.idproducto as idproducto');
         $builder->where($this->table.'.new_id', $idNew);
         $builder->join('items', $this->table.'.item = items.id');
+        $builder->orderBy('item', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -254,6 +256,7 @@ class ItemsProductoTempModel extends Model {
             '.$this->table.'.idproducto as idproducto');
         $builder->where($this->table.'.new_id', $newId);
         $builder->join('items', $this->table.'.item = items.id');
+        $builder->orderBy('item', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

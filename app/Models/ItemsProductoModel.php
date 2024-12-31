@@ -167,7 +167,7 @@ class ItemsProductoModel extends Model {
         $builder->join('items', $this->table.'.item = items.id');
         $builder->join('productos', $this->table.'.idproducto = productos.id');
         $builder->where($this->table.'.idproducto', $idproducto);
-        
+        $builder->orderBy('item', 'asc');
         //$builder->join('items', 'items_productos.item = items.id');
         $query = $builder->get();
         if ($query->getResult() != null) {
