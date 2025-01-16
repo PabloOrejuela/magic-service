@@ -29,8 +29,7 @@ class Gastos extends BaseController {
             $data['main_content']='gastos/grid_gastos';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -59,8 +58,7 @@ class Gastos extends BaseController {
             $data['main_content']='gastos/form-gasto-new';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -97,7 +95,7 @@ class Gastos extends BaseController {
             }
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -134,7 +132,7 @@ class Gastos extends BaseController {
             }
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -164,22 +162,7 @@ class Gastos extends BaseController {
             $data['main_content']='gastos/form-gasto-edit';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
-    }
-
-    public function logout(){
-        //destruyo la session  y salgo
-        
-        $user = [
-            'id' => $this->session->idusuario,
-            'logged' => 0,
-            'ip' => 0
-        ];
-        //echo '<pre>'.var_export($user, true).'</pre>';exit;
-        $this->usuarioModel->_updateLoggin($user);
-        $this->session->destroy();
-        return redirect()->to('/');
     }
 }

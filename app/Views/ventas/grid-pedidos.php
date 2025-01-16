@@ -202,9 +202,17 @@
                                                                 <img src="'.site_url().'public/images/copy.png" width="25" >
                                                             </a>';
                                                 if ($verificaCampos == 0) {
-                                                    echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
-                                                            <img src="'.site_url().'public/images/btn-print.png" width="25"  >
-                                                        </a>';
+                                                    // echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
+                                                    //         <img src="'.site_url().'public/images/btn-print.png" width="25"  >
+                                                    //     </a>';
+                                                    echo '<a 
+                                                            type="button"
+                                                            class="btnAction" 
+                                                            target="_blank" 
+                                                            onclick="javascript:imprimirTicket('.$value->id.','.$value->cod_pedido.')"
+                                                        >
+                                                        <img src="'.site_url().'public/images/btn-print.png" width="25"  >
+                                                    </a>';
                                                 }else{
                                                     echo '<a type="button" href="#" class="btnAction">
                                                             <img src="'.site_url().'public/images/btn-print.png" width="25">

@@ -28,8 +28,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/admin_home';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -162,8 +161,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_productos';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -202,8 +200,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_sucursales';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -224,8 +221,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_sectores_entrega';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -246,8 +242,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/frm_edit_variables_sistema';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -266,8 +261,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_items';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -286,8 +280,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_items';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -314,8 +307,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/form-item-edit';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
     
@@ -490,8 +482,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_formas_pago';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     
     }
@@ -525,7 +516,7 @@ class Administracion extends BaseController {
             return redirect()->to('formas-pago');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -553,8 +544,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_instituciones_finacieras';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     
     }
@@ -573,8 +563,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/institucion-financiera-create';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -607,7 +596,7 @@ class Administracion extends BaseController {
             return redirect()->to('institucion-financiera');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -636,7 +625,7 @@ class Administracion extends BaseController {
             
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -663,8 +652,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_usuarios';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     
     }
@@ -683,8 +671,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/frm_estado';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -716,8 +703,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/grid_roles';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     
     }
@@ -742,7 +728,7 @@ class Administracion extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
-            $data['categorias'] = $this->categoriaModel->findAll();
+            $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
             $data['productos'] = $this->productoModel->findAll();
 
             //delete de los items de la tabla temporal de hace un día
@@ -760,8 +746,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/form-new-product';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -824,7 +809,7 @@ class Administracion extends BaseController {
             return redirect()->to('productos');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -888,7 +873,7 @@ class Administracion extends BaseController {
 
             return redirect()->to('productos');
         }else{
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -908,8 +893,7 @@ class Administracion extends BaseController {
             
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -944,8 +928,7 @@ class Administracion extends BaseController {
             
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -1079,7 +1062,7 @@ class Administracion extends BaseController {
             return redirect()->to('productos');
             
         }else{
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -1150,7 +1133,7 @@ class Administracion extends BaseController {
             return redirect()->to('productos');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -1177,8 +1160,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/form-sucursal-new';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -1196,8 +1178,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/form-item-new';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -1227,7 +1208,7 @@ class Administracion extends BaseController {
             
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -1256,7 +1237,7 @@ class Administracion extends BaseController {
             
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -1274,8 +1255,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/form-pago-create';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -1294,8 +1274,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/form-user-new';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -1331,7 +1310,7 @@ class Administracion extends BaseController {
             
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -1370,7 +1349,7 @@ class Administracion extends BaseController {
             
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -1400,7 +1379,7 @@ class Administracion extends BaseController {
             
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -1420,8 +1399,7 @@ class Administracion extends BaseController {
             $data['main_content']='administracion/form-user-edit';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -1441,20 +1419,6 @@ class Administracion extends BaseController {
 
     public function form_sucursal_edit($id){
         echo 'Formulario para EDITAR datos de una sucursal DESHABILITADO';
-    }
-
-    public function logout(){
-        //destruyo la session  y salgo
-        
-        $user = [
-            'id' => $this->session->idusuario,
-            'logged' => 0,
-            'ip' => 0
-        ];
-        //echo '<pre>'.var_export($user, true).'</pre>';exit;
-        $this->usuarioModel->_updateLoggin($user);
-        $this->session->destroy();
-        return redirect()->to('/');
     }
 
     public function list_items(){

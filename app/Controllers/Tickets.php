@@ -642,11 +642,6 @@ class Tickets extends BaseController {
             }
             
         }
-
-        
-
-
-
         $pdf->Output('Ticket.pdf');    // send the file inline to the browser (default).
     }
 

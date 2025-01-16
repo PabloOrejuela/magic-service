@@ -30,8 +30,7 @@ class Clientes extends BaseController {
             $data['main_content']='clientes/form_lista_clientes';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -57,7 +56,7 @@ class Clientes extends BaseController {
             return redirect()->to('clientes');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -82,8 +81,7 @@ class Clientes extends BaseController {
             $data['main_content']='clientes/form-cliente-new';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -119,7 +117,7 @@ class Clientes extends BaseController {
             }
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -145,8 +143,7 @@ class Clientes extends BaseController {
             $data['main_content']='clientes/form-cliente-edit';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -174,8 +171,7 @@ class Clientes extends BaseController {
             return view('dashboard/index', $data);
 
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -240,7 +236,7 @@ class Clientes extends BaseController {
             }
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 }

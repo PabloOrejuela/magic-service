@@ -99,6 +99,46 @@ const actualizaGrid = () => {
     }, 500);
 }
 
+const imprimirTicket = async (id, codPedido) => {
+
+    
+    const respuestaHttp = await fetch("http://localhost:8000/imprimir",
+    {
+        method: "POST",
+        serial: "",
+        nombreImpresora: "POS-58-Series",
+        operaciones: [
+          {
+            nombre: "Iniciar",
+            argumentos: []
+          },{
+            nombre: "GenerarImagenAPartirDePaginaWebEImprimir",
+            argumentos: ["<p>Hola Mundo</p>", 380, 380, 0]
+          }
+        ]
+    });
+
+    
+
+    // $.ajax({
+    //     method:"POST",
+    //     dataType:"json",
+    //     url: "./actualizaValorCampoTicket",
+    //     data: {
+    //         id: id,
+    //         campo: campo,
+    //         valor: valor
+    //     },
+    //     beforeSend: function (f) {
+    //         alertaMensaje('El dato se ha actualizado', 500, "success")
+    //         //actualizaGrid()
+    //     },
+    //     success: function(data){
+            
+    //     }
+    // });
+}
+
 btnNombreArreglo.forEach(link => {
     link.addEventListener('click', function(e){
         e.stopPropagation()
@@ -918,7 +958,7 @@ setInterval(function(){
 
     //mostrar todo el grid
     
-}, 240000)
+}, 120000)
 
 
 function copyData(id){

@@ -29,8 +29,7 @@ class Inventarios extends BaseController {
             $data['main_content']='inventarios/grid_inventarios';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -49,8 +48,7 @@ class Inventarios extends BaseController {
             $data['main_content']='inventarios/frm_gestion_inventarios';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -69,8 +67,7 @@ class Inventarios extends BaseController {
             $data['main_content']='inventarios/grid_kardex';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 
@@ -126,19 +123,5 @@ class Inventarios extends BaseController {
             }
             return redirect()->to('gestion-inventario');
         }
-    }
-
-    public function logout(){
-        //destruyo la session  y salgo
-        
-        $user = [
-            'id' => $this->session->idusuario,
-            'logged' => 0,
-            'ip' => 0
-        ];
-        //echo '<pre>'.var_export($user, true).'</pre>';exit;
-        $this->usuarioModel->_updateLoggin($user);
-        $this->session->destroy();
-        return redirect()->to('/');
     }
 }

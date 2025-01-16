@@ -12,5 +12,4 @@ class Login extends BaseController {
         $data['main_content']='home/login';
         return view('includes/template_login', $data);  
     }
-
 }

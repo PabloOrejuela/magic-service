@@ -38,8 +38,7 @@ class Reportes extends BaseController {
             $data['main_content']='reportes/form-reporte';
             return view('dashboard/index', $data);
         }else{
-            $this->logout();
-            return redirect()->to('/');
+            return redirect()->to('logout');
         }
     }
 

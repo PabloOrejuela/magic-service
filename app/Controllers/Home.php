@@ -40,7 +40,6 @@ class Home extends BaseController {
             return redirect()->to('pedidos');
         }else{
             $this->logout();
-            return redirect()->to('/');
         }
     }
 
@@ -138,7 +137,9 @@ class Home extends BaseController {
             'ip' => 0
         ];
         //echo '<pre>'.var_export($user, true).'</pre>';exit;
-        $this->usuarioModel->update($iduser, $user);
+        if ($iduser) {
+            $this->usuarioModel->update($iduser, $user);
+        }
         $this->session->destroy();
         return redirect()->to('/');
     }
