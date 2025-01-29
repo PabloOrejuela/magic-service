@@ -72,6 +72,9 @@ class Ventas extends BaseController {
     */
     function generaCodigoPedido(){
 
+        //En caso de que se haya quedado un código en sesión lo borro
+        $this->session->set('codigo_pedido', '');
+
         //Recibo el código
         $codigo = $this->request->getPostGet('codigo');
 
@@ -714,7 +717,7 @@ class Ventas extends BaseController {
         $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
-            $cod_pedido = $this->request->getPostGet('cod_pedido');
+            $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
             
             if ($this->request->getPostGet('sin_remitente') != null) {
@@ -792,6 +795,13 @@ class Ventas extends BaseController {
 
                     //Inserto el nuevo pedido
                     if ($pedido) {
+                        //Verifico si el código de pedido existe
+                        $codPedidoExists = $this->pedidoModel->where('cod_pedido', $pedido['cod_pedido'])->findAll();
+
+                        if ($codPedidoExists) {
+                            $aleatorio = rand(0, 100);
+                            $pedido['cod_pedido'] = $pedido['cod_pedido'] + $aleatorio;
+                        }
 
                         foreach ($pedidos as $p) {
                             // $pedido['orden'] = $pedido['orden']+1;
@@ -839,6 +849,14 @@ class Ventas extends BaseController {
                     //Inserto el nuevo pedido
                     if ($pedido) {
                         
+                        //Verifico si el código de pedido existe 
+                        //PABLO PROBABLEMENTE DEBO PONER ESTO EN UNA FUNCIÓN APARTE
+                        $codPedidoExists = $this->pedidoModel->where('cod_pedido', $pedido['cod_pedido'])->findAll();
+
+                        if ($codPedidoExists) {
+                            $aleatorio = rand(0, 100);
+                            $pedido['cod_pedido'] = $pedido['cod_pedido'] + $aleatorio;
+                        }
 
                         foreach ($pedidos as $p) {
                             // $pedido['orden'] = $pedido['orden']+1;

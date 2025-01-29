@@ -14,7 +14,7 @@ class AttrExtArregModel extends Model {
     protected $protectFields    = true;
     protected $allowedFields    = [
         'iddetalle','para','celular','mensaje_fresas','peluche','globo','tarjeta',
-        'opciones','bebida','huevo','frases_paredes','fotos'
+        'opciones','bebida','huevo','frases_paredes','fotos','complementos'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -44,20 +44,22 @@ class AttrExtArregModel extends Model {
     protected $afterDelete    = [];
 
     public function _getAttrExtArreg($iddetalle, $idcategoria){
-        $result = false;
+        $objeto = false;
         $builder = $this->db->table($this->table);
         $builder->select('*');
         $builder->where('iddetalle', $iddetalle);
         $query = $builder->get();
         if ($query->getResult() != null) {
-            $result = true;
+            foreach ($query->getResult() as $row) {
+                $objeto = $row;
+            }
         }
         //echo $this->db->getLastQuery();
-        return $result;
+        return $objeto;
     }
 
     public function _getAttrArreg($iddetalle, $idcategoria){
-        $result = null;
+        $objeto = null;
         $builder = $this->db->table($this->table);
         $builder->select('*');
         $builder->where('iddetalle', $iddetalle);

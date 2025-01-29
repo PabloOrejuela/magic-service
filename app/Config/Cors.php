@@ -102,4 +102,14 @@ class Cors extends BaseConfig
          */
         'maxAge' => 7200,
     ];
+
+    public array $printTicket = [
+        'allowedOrigins'         => ['http://localhost:8000/imprimir'],
+        'allowedOriginsPatterns' => [],
+        'supportsCredentials'    => true,
+        'allowedHeaders'         => ['Authorization', 'Content-Type'],
+        'exposedHeaders'         => [],
+        'allowedMethods'         => ['GET', 'POST', 'PUT', 'DELETE'],
+        'maxAge'                 => 7200,
+    ];
 }

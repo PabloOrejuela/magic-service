@@ -42,8 +42,8 @@ $routes->get('insertAttrArreglo', 'Ventas::insertAttrArreglo');
 $routes->get('ventas/getEstadosPedido', 'Ventas::getEstadosPedido');
 $routes->get('ventas/getMensajeros', 'Ventas::getMensajeros');
 $routes->get('getHorasEntrega', 'Ventas::getHorasEntrega');
-//$routes->get('imprimirTicket/(:num)/(:any)', 'Tickets::imprimirTicket/$1/$2');
-$routes->get('imprimirTicket', 'Tickets::imprimirTicket');
+$routes->get('imprimirTicket/(:num)/(:any)', 'Tickets::imprimirTicket/$1/$2');
+//$routes->get('imprimirTicket', 'Tickets::imprimirTicket');
 $routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
 $routes->get('detalle_pedido_insert_temp', 'Ventas::detalle_pedido_insert_temp');
 $routes->get('ventas/detalle_pedido_delete_producto_temp/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto_temp/$1/$2');
@@ -165,3 +165,10 @@ $routes->get('kardex-item/(:num)', 'Inventarios::kardexItem/$1');
 //REPORTES
 $routes->get('reporte', 'Reportes::frmReporte');
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
+
+
+// $routes->group('printTicket', ['filter' => 'cors:printTicket'], static function (RouteCollection $routes): void {
+//     $routes->resource('http://localhost:8000/imprimir');
+
+//     $routes->options('http://localhost:8000/imprimir', static function () {});
+// });

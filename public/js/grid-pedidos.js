@@ -167,7 +167,7 @@ btnNombreArreglo.forEach(link => {
                 //alertaMensaje('Procesando', 300, "info")
             },
             success: function(data){
-
+console.log(data);
                 if (data.infoExtra) {
                     if (category == 1) {
                         //Arreglo Frutal
@@ -373,6 +373,17 @@ btnNombreArreglo.forEach(link => {
                                     placeholder="huevo"
                                     value="${data.infoExtra.huevo}" 
                                     onchange="actualiza('huevo', document.querySelector('#idarreglo').value, this.value);"
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <label for="huevo" class="form-label">Complementos</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="complementos" 
+                                    placeholder="complementos"
+                                    value="${data.infoExtra.complementos}" 
+                                    onchange="actualiza('complementos', document.querySelector('#idarreglo').value, this.value);"
                                 >
                             </div>
                         `
@@ -689,6 +700,16 @@ btnNombreArreglo.forEach(link => {
                                     id="huevo" 
                                     placeholder="huevo"
                                     onchange="actualiza('huevo', document.querySelector('#idarreglo').value, this.value);"
+                                >
+                            </div>
+                            <div class="mb-3">
+                                <label for="huevo" class="form-label">Complementos</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="complementos" 
+                                    placeholder="complementos"
+                                    onchange="actualiza('complementos', document.querySelector('#idarreglo').value, this.value);"
                                 >
                             </div>
                         `

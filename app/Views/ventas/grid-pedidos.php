@@ -44,9 +44,19 @@
                                         $this->detallePedidoModel = new DetallePedidoModel();
                                         $this->pedidoModel = new PedidoModel();
                                         $pedidos = $this->pedidoModel->_getPedidos();
+                                        $nombresDias = array(
+                                            'Sunday'=>"Dom", 
+                                            'Monday'=>"Lun", 
+                                            'Tuesday'=>"Mar", 
+                                            'Wednesday'=>"Mier", 
+                                            'Thursday'=>"Jue", 
+                                            'Friday'=>"Vier", 
+                                            'Saturday'=>"Sáb"
+                                        );
 
                                         if (isset($pedidos) && $pedidos != NULL) {
                                             foreach ($pedidos as $key => $value) {
+                                                $nombreDia = $nombresDias[date('l', strtotime($value->fecha_entrega))];
                                                 
                                                 $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
                                                 $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
@@ -55,7 +65,7 @@
                                                         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
                                                         <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                     if ($value->fecha_entrega) {
-                                                        echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$value->fecha_entrega.'</td>';
+                                                        echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$value->fecha_entrega.'-'.$nombreDia.'</td>';
                                                     }else{
                                                         echo '<td>Registrar fecha de entrega</td>';
                                                     }
@@ -202,17 +212,17 @@
                                                                 <img src="'.site_url().'public/images/copy.png" width="25" >
                                                             </a>';
                                                 if ($verificaCampos == 0) {
-                                                    // echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
-                                                    //         <img src="'.site_url().'public/images/btn-print.png" width="25"  >
-                                                    //     </a>';
-                                                    echo '<a 
-                                                            type="button"
-                                                            class="btnAction" 
-                                                            target="_blank" 
-                                                            onclick="javascript:imprimirTicket('.$value->id.','.$value->cod_pedido.')"
-                                                        >
-                                                        <img src="'.site_url().'public/images/btn-print.png" width="25"  >
-                                                    </a>';
+                                                    echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
+                                                            <img src="'.site_url().'public/images/btn-print.png" width="25"  >
+                                                        </a>';
+                                                    // echo '<a 
+                                                    //         type="button"
+                                                    //         class="btnAction" 
+                                                    //         target="_blank" 
+                                                    //         onclick="javascript:imprimirTicket('.$value->id.','.$value->cod_pedido.')"
+                                                    //     >
+                                                    //     <img src="'.site_url().'public/images/btn-print.png" width="25"  >
+                                                    // </a>';
                                                 }else{
                                                     echo '<a type="button" href="#" class="btnAction">
                                                             <img src="'.site_url().'public/images/btn-print.png" width="25">
