@@ -38,7 +38,7 @@
                                     <div class="form-group row">
                                         <label for="fecha" class="col-sm-5 col-form-label">Fecha de entrega *:</label>
                                         <div class="col-sm-6">
-                                            <input type="date" class="form-control" id="inputFecha" name="fecha_entrega"  min="<?= date('Y-m-d') ?>" value="<?= old('fecha_entrega')?>">
+                                            <input type="date" class="form-control" id="inputFecha" name="fecha_entrega" id="fecha_entrega" min="<?= date('Y-m-d') ?>" value="<?= old('fecha_entrega')?>">
                                             <p id="error-message"><?= session('errors.fecha_entrega');?> </p>
                                         </div>
                                     </div>

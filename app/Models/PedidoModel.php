@@ -143,7 +143,7 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,
-                nombre as cliente,direccion,telefono,telefono_2,fecha_entrega,
+                nombre as cliente,direccion,telefono,telefono_2,fecha_entrega,rango_entrega_desde,rango_entrega_hasta,
                 hora,fecha,observaciones,pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');

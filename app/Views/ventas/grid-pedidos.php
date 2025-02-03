@@ -45,13 +45,13 @@
                                         $this->pedidoModel = new PedidoModel();
                                         $pedidos = $this->pedidoModel->_getPedidos();
                                         $nombresDias = array(
-                                            'Sunday'=>"Dom", 
-                                            'Monday'=>"Lun", 
-                                            'Tuesday'=>"Mar", 
-                                            'Wednesday'=>"Mier", 
-                                            'Thursday'=>"Jue", 
-                                            'Friday'=>"Vier", 
-                                            'Saturday'=>"Sáb"
+                                            'Sunday'=>"Domingo", 
+                                            'Monday'=>"Lunes", 
+                                            'Tuesday'=>"Martes", 
+                                            'Wednesday'=>"Miércoles", 
+                                            'Thursday'=>"Jueves", 
+                                            'Friday'=>"Viernes", 
+                                            'Saturday'=>"Sábado"
                                         );
 
                                         if (isset($pedidos) && $pedidos != NULL) {
@@ -65,7 +65,7 @@
                                                         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
                                                         <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                     if ($value->fecha_entrega) {
-                                                        echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$value->fecha_entrega.'-'.$nombreDia.'</td>';
+                                                        echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$nombreDia.' '.$value->fecha_entrega.'</td>';
                                                     }else{
                                                         echo '<td>Registrar fecha de entrega</td>';
                                                     }

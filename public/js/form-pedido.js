@@ -14,9 +14,25 @@ imptEmail.addEventListener('input', function(e){
 })
 
 const activarSubmit = () => {
+
+    //Verifica si ya están lo campos mandatorios del formulario
+    let fechaEntrega = document.getElementById("inputFecha") // != ''
+    let horarioEntrega = document.getElementById("horario_entrega") // != 3
+    let celular = document.getElementById("telefono") // != ''
+    let nombreCliente = document.getElementById("nombre") // != ''
+    let vendedor = document.getElementById("vendedor") // != 0
+    let sectorEntrega = document.getElementById("sectores") // != 0
+    let tablaProductos = document.getElementById("tablaProductos") //Al menos un producto
+
     
-    let btnSubmit = document.getElementById("btnEnviar")
-    btnSubmit.removeAttribute('disabled')
+    if (fechaEntrega.value != '' && horarioEntrega.value != 3 && celular.value != '' && nombreCliente.value != '' && vendedor.value != 0 && sectorEntrega.value != 0 && tablaProductos.lastElementChild.innerText != "") {
+        let btnSubmit = document.getElementById("btnEnviar")
+        btnSubmit.removeAttribute('disabled')
+    }else{
+        alertaMensaje("ATENCION:  Faltan datos IMPORTANTES por llenar, el pedido no se puede enviar", 1900, "warning")
+    }
+    
+    
 }
 
 $('#idproducto').autocomplete({
