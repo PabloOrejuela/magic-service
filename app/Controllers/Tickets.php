@@ -269,6 +269,22 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    font-size: 0.8em;
+                                    text-align: justify;"
+                                >Observación del arreglo: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    font-size: '.$fontSizeObservaArreglo.'em;
+                                    text-align: justify;"
+                                >'.$arreglo->observacion.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
                                     font-size: 0.9em;
                                     height: 40px"
                                 >Para: </td>
@@ -344,22 +360,6 @@ class Tickets extends BaseController {
                                     height: 20px"
                                 >'.$atributos->globo.'</td>
                             </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    font-size: 0.9em;
-                                    text-align: justify;"
-                                >Observación del arreglo: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    font-size: '.$fontSizeObservaArreglo.'em;
-                                    text-align: justify;"
-                                >'.$arreglo->observacion.'</td>
-                            </tr>
                         </table>
                     ';
                     $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
@@ -409,6 +409,22 @@ class Tickets extends BaseController {
                                     width:65%;
                                     font-size: 0.9em;"
                                 >'.$arreglo->producto.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    font-size: 0.8em;
+                                    text-align: justify;"
+                                >Observación del desayuno: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    font-size: '.$fontSizeComplementos.'em;
+                                    text-align: justify;"
+                                >'.$arreglo->observacion.'</td>
                             </tr>
                             <tr>
                                 <td 
@@ -578,6 +594,22 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    font-size: 0.8em;
+                                    text-align: justify;"
+                                >Observación de la Magic Box: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    font-size: '.$fontSizeObservaArreglo.'em;
+                                    text-align: justify;"
+                                >'.$arreglo->observacion.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
                                     font-size: 0.9em;"
                                 >Para: </td>
                                 <td 
@@ -671,22 +703,6 @@ class Tickets extends BaseController {
                                     font-size: 0.9em;"
                                 >'.$atributos->fotos.'</td>
                             </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    font-size: 0.9em;
-                                    text-align: justify;"
-                                >Observación de la Magic Box: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    font-size: '.$fontSizeObservaArreglo.'em;
-                                    text-align: justify;"
-                                >'.$arreglo->observacion.'</td>
-                            </tr>
                         </table>
                     ';
                     $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
@@ -730,6 +746,22 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    font-size: 0.8em;
+                                    text-align: justify;"
+                                >Observación de Bocaditos: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    font-size: '.$fontSizeObservaArreglo.'em;
+                                    text-align: justify;"
+                                >'.$arreglo->observacion.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
                                     font-size: 0.9em;"
                                 >Recibe: </td>
                                 <td 
@@ -766,22 +798,6 @@ class Tickets extends BaseController {
                                     width:65%;
                                     font-size: 0.9em;"
                                 >'.$atributos->opciones.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    font-size: 0.9em;
-                                    text-align: justify;"
-                                >Observación de Bocaditos: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    font-size: '.$fontSizeObservaArreglo.'em;
-                                    text-align: justify;"
-                                >'.$arreglo->observacion.'</td>
                             </tr>
                         </table>
                     ';
