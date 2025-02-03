@@ -87,7 +87,7 @@ class ProductoModel extends Model {
     function _getProductos(){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria,'.$this->table.'.updated_at, attr_temporal, precio');
+        $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria,'.$this->table.'.updated_at, attr_temporal, precio,image');
         $builder->join('categorias', $this->table.'.idcategoria = categorias.id');
         $query = $builder->get();
         if ($query->getResult() != null) {

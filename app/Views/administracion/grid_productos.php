@@ -22,6 +22,7 @@
                             <thead>
                                 <th>No.</th>
                                 <th>Producto</th>
+                                <th>Imagen</th>
                                 <th>Categoria</th>
                                 <th>Precio</th>
                                 <th class="centrado">Estado</th>
@@ -42,8 +43,15 @@
                                                     <a href="'.site_url().'product-edit/'.$value->id.'" 
                                                         id="link-editar"
                                                     >'.$value->producto.'</a>
-                                                </td>
-                                                <td>'.$value->categoria.'</td>
+                                                </td>';
+                                            if (isset($value->image) && $value->image != '') {
+                                                echo '<td><img src="'.site_url().'/public/images/productos/'.$value->image.'.jpg" class="img-thumbnail" alt="'.$value->producto.'"></td>';
+                                            } else {
+                                                echo '<td>Sin Imágen</td>';
+                                            }
+                                            
+                                                
+                                            echo  '<td>'.$value->categoria.'</td>
                                                 <td class="right">'.$value->precio.'</td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td class="centrado" id="estado_'.$value->id.'">Activo</td>';
