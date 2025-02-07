@@ -182,7 +182,7 @@
                                             >
                                         </div>
                                         <div class="col-md-8">
-                                            <label for="producto">Producto:</label>
+                                            <label for="producto">Producto *:</label>
                                             <input 
                                                 type="text"
                                                 class="form-control" 

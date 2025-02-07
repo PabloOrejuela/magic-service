@@ -17,7 +17,6 @@ const activarSubmit = () => {
 
     //Verifica si ya están lo campos mandatorios del formulario
     let fechaEntrega = document.getElementById("inputFecha") // != ''
-    let horarioEntrega = document.getElementById("horario_entrega") // != 3
     let celular = document.getElementById("telefono") // != ''
     let nombreCliente = document.getElementById("nombre") // != ''
     let vendedor = document.getElementById("vendedor") // != 0
@@ -25,7 +24,8 @@ const activarSubmit = () => {
     let tablaProductos = document.getElementById("tablaProductos") //Al menos un producto
 
     
-    if (fechaEntrega.value != '' && horarioEntrega.value != 3 && celular.value != '' && nombreCliente.value != '' && vendedor.value != 0 && sectorEntrega.value != 0 && tablaProductos.lastElementChild.innerText != "") {
+    if (fechaEntrega.value != '' && celular.value != '' && nombreCliente.value != '' && vendedor.value != 0 
+        && sectorEntrega.value != 0 && tablaProductos.lastElementChild.innerText != "") {
         let btnSubmit = document.getElementById("btnEnviar")
         btnSubmit.removeAttribute('disabled')
     }else{
