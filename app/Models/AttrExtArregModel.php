@@ -14,7 +14,7 @@ class AttrExtArregModel extends Model {
     protected $protectFields    = true;
     protected $allowedFields    = [
         'iddetalle','para','celular','mensaje_fresas','peluche','globo','tarjeta',
-        'opciones','bebida','huevo','frases_paredes','fotos','complementos'
+        'opciones','bebida','huevo','frases_paredes','fotos','complementos','info_cat_complementos'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -135,7 +135,16 @@ class AttrExtArregModel extends Model {
                 } else {
                     return false;
                 }
+            }else if ($idcategoria == 6) {
+                //Bocaditos
+                $attrs = array('info_cat_complementos');
+                if (trim($objeto->info_cat_complementos) != '') {
+                    return true;
+                } else {
+                    return false;
+                }
             }
+            
         } else {
             return false;
         }

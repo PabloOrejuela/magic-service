@@ -83,6 +83,7 @@ class Tickets extends BaseController {
 
         $pdf->SetFont('helvetica', 'B', 8, '', false);
 
+        //Cabecera del ticket
         $html = '';
         $html .= '
             <table style="border: 0.1px solid rgb(0, 0, 0);padding: 2px;margin: top 0px;">
@@ -205,17 +206,7 @@ class Tickets extends BaseController {
                 </tr>
             
         ';
-        /*
-        writeHTMLCell(float $w, float $h, float|null $x, float|null $y[, string $html = '' ]
-                [, mixed $border = 0 ][, int $ln = 0 ][, bool $fill = false ]
-                [, bool $reseth = true ][, string $align = '' ][, bool $autopadding = true ]) : mixed
-        */
-        //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=true, $align='L', $autopadding=false);
         
-        //$posY += 85;
-
-        //Para cada arreglo traigo los atributos de cada arreglo
-        //echo '<pre>'.var_export($arreglos, true).'</pre>';exit;
 
         foreach ($arreglos as $key => $arreglo) {
             
@@ -366,10 +357,9 @@ class Tickets extends BaseController {
                             </tr>
                         
                     ';
-                    //$html .= '</table>';
-                    //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
+                    
                 }
-                //$posY += 90;
+                
 
             } else if($arreglo->idcategoria == 3) {
                 //Form Attr Desayunos
@@ -567,9 +557,7 @@ class Tickets extends BaseController {
                             </tr>
                         
                     ';
-                    // $html .= '</table>';
-                    // $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y='1', $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
-                    //$posY += 80;
+                    
                 }
             } else if($arreglo->idcategoria == 4) {
                 //Form Attr Magic Box
@@ -749,8 +737,7 @@ class Tickets extends BaseController {
                             </tr>
                         
                     ';
-                    //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
-                    //$posY += 80;
+                    
                 }
             } else if($arreglo->idcategoria == 5) {
                 //Form Attr Magic Box
@@ -855,9 +842,60 @@ class Tickets extends BaseController {
                             </tr>
                         
                     ';
-                    //$html .= '</table>';
-                    //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
-                    //$posY += 80;
+                    
+                }
+            }else if($arreglo->idcategoria == 6){
+                //Form Attr Complementos
+                $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
+                if ($atributos) {
+                    //Form Bocaditos
+
+                    //Campo Observación del arreglo
+                    $numCaracterObservaArreglo = strlen($arreglo->observacion);
+                    if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
+                        $fontSizeObservaArreglo = 0.8;
+                    } else if($numCaracterObservaArreglo >= 150){
+                        $fontSizeObservaArreglo = 0.7;
+                    }else{
+                        $fontSizeObservaArreglo = 0.9;
+                    }
+
+                    $html .= '<tr><td></td><td></td></tr>';
+                    $html .= '
+                        
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Producto: </td>
+                                <td 
+                                    style="font-weight: bold;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >'.$arreglo->producto.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Información: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >'.$atributos->info_cat_complementos.'</td>
+                            </tr>
+                    ';
                 }
             }
             

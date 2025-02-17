@@ -72,7 +72,7 @@ let formAttrModal = document.querySelector('#link-borra-imagen')
  * @author Pablo Orejuela
  **/
 const actualiza = (campo, id, valor) => {
-    
+    console.log(id);
     //llamo a la funcion AJAX que hace la actualización
     $.ajax({
         method:"GET",
@@ -167,7 +167,7 @@ btnNombreArreglo.forEach(link => {
                 //alertaMensaje('Procesando', 300, "info")
             },
             success: function(data){
-console.log(data);
+
                 if (data.infoExtra) {
                     if (category == 1) {
                         //Arreglo Frutal
@@ -512,6 +512,23 @@ console.log(data);
                             </div>
                         `
                     }
+                    if (category == 6) {
+                        //Complementos
+                        formulario.innerHTML += `
+                            <div class="mb-3 mt-3">
+                                <label for="para" class="form-label">Información:</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="info_cat_complementos" 
+                                    placeholder="Información"
+                                    value="${data.infoExtra.info_cat_complementos}" 
+                                    onchange="actualiza('info_cat_complementos', document.querySelector('#idarreglo').value, this.value);"
+                                    required
+                                >
+                            </div>
+                        `
+                    }
                 }else{
                     if (category == 1) {
                         //Arreglo Frutal
@@ -824,6 +841,22 @@ console.log(data);
                                     id="opciones" 
                                     placeholder="opciones"
                                     onchange="actualiza('opciones', document.querySelector('#idarreglo').value, this.value);"
+                                >
+                            </div>
+                        `
+                    }
+                    if (category == 6) {
+                        //Complementos
+                        formulario.innerHTML += `
+                            <div class="mb-3 mt-3">
+                                <label for="para" class="form-label">Información:</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="info_cat_complementos" 
+                                    placeholder="Información"
+                                    onchange="actualiza('info_cat_complementos', document.querySelector('#idarreglo').value, this.value);"
+                                    required
                                 >
                             </div>
                         `
