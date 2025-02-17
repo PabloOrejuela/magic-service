@@ -51,7 +51,7 @@ class Tickets extends BaseController {
         // Colors, line width and bold font
         $pdf->SetFillColor(255, 0, 0);
         $pdf->SetTextColor(0,0,0);
-        $pdf->SetDrawColor(128, 0, 0);
+        $pdf->SetDrawColor(0, 0, 0);
         $pdf->SetLineWidth(0.2);
 
         //$width = 0;
@@ -79,28 +79,27 @@ class Tickets extends BaseController {
             $fontSizeObservaPedido = 0.9;
         }
         
-         
         $pdf->AddPage(); 
 
         $pdf->SetFont('helvetica', 'B', 8, '', false);
 
         $html = '';
         $html .= '
-            <table style="border: 0.5px solid rgb(0,0,0);padding: 2px;margin: top 0px;">
+            <table style="border: 0.1px solid rgb(0, 0, 0);padding: 2px;margin: top 0px;">
                 <tr>
                     <td 
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
                         font-size: 0.8em;
-                        height: 15px"
+                        height: auto"
                     >No. Pedido: </td>
                     <td 
                         style="font-weight: bold;
                         border: 0.5px solid #000;
                         width:65%;
                         font-size: 0.8em;
-                        height: 15px"
+                        height: auto"
                     >'.$datosPedido->cod_pedido.'</td>
                 </tr>
                 <tr>
@@ -109,14 +108,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         font-size: 0.8em;
-                        height: 15px"
+                        height: auto"
                     >Fecha: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
                         font-size: 0.8em;
-                        height: 15px"
+                        height: auto"
                     >'.$nombreDia.' '.date('d-m-Y', strtotime($datosPedido->fecha_entrega)).'</td>
                 </tr>
                 <tr>
@@ -125,14 +124,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         font-size: 0.8em;
-                        height: 35px"
+                        height: 25px"
                     >Cliente: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
                         font-size: 0.8em;
-                        height: 35px"
+                        height: 25px"
                         
                     >'.$datosPedido->cliente.'</td>
                 </tr>
@@ -142,14 +141,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         font-size: 0.8em;
-                        height: 35px"
+                        height: 25px"
                     >Hora de entrega: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
                         font-size: 0.8em;
-                        height: 35px"
+                        height: 25px"
                     >Desde:'.$datosPedido->rango_entrega_desde.' | Hasta: '.$datosPedido->rango_entrega_hasta.'</td>
                 </tr>
                 <tr>
@@ -158,14 +157,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         font-size: 0.8em;
-                        height: 50px"
+                        height: auto"
                     >Dirección: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
                         font-size: '.$fontSize.'em;
-                        height: 50px"
+                        height: auto"
                     >'.$datosPedido->dir_entrega.'</td>
                 </tr>
                 <tr>
@@ -174,14 +173,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         font-size: 0.8em;
-                        height: 15px"
+                        height: auto"
                     >Sector: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
                         font-size: 0.8em;
-                        height: 15px"
+                        height: auto"
                     >'.$datosPedido->sector.'</td>
                 </tr>
                 <tr>
@@ -191,7 +190,8 @@ class Tickets extends BaseController {
                         width:35%;
                         font-size: 0.8em;
                         text-align: left;
-                        height: auto;overflow: hidden;
+                        height: auto;
+                        overflow: hidden;
                         white-space: nowrap"
                     >Observación del pedido: </td>
                     <td 
@@ -200,19 +200,19 @@ class Tickets extends BaseController {
                         width:65%;
                         font-size: '.$fontSizeObservaPedido.'em;
                         text-align: justify;
-                        height: 50px"
+                        height: auto"
                     >'.$datosPedido->observaciones.'</td>
                 </tr>
-            </table>
+            
         ';
         /*
         writeHTMLCell(float $w, float $h, float|null $x, float|null $y[, string $html = '' ]
                 [, mixed $border = 0 ][, int $ln = 0 ][, bool $fill = false ]
                 [, bool $reseth = true ][, string $align = '' ][, bool $autopadding = true ]) : mixed
         */
-        $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=true, $align='L', $autopadding=false);
+        //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=true, $align='L', $autopadding=false);
         
-        $posY += 85;
+        //$posY += 85;
 
         //Para cada arreglo traigo los atributos de cada arreglo
         //echo '<pre>'.var_export($arreglos, true).'</pre>';exit;
@@ -247,20 +247,22 @@ class Tickets extends BaseController {
                         $fontSizeObservaArreglo = 0.9;
                     }
 
-                    $html = '';
+                    $html .= '<tr><td></td><td></td></tr>';
                     $html .= '
-                        <table style="border: 0.5px solid rgb(0,0,0);padding: 2px;">
+                        
                             <tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Producto: </td>
                                 <td 
                                     style="font-weight: bold;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$arreglo->producto.'</td>
                             </tr>
@@ -269,6 +271,7 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;
                                     text-align: justify;"
                                 >Observación del arreglo: </td>
@@ -276,6 +279,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: '.$fontSizeObservaArreglo.'em;
                                     text-align: justify;"
                                 >'.$arreglo->observacion.'</td>
@@ -286,14 +290,14 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:35%;
                                     font-size: 0.8em;
-                                    height: 40px"
+                                    height: 25px"
                                 >Para: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
                                     font-size: 0.8em;
-                                    height: 40px"
+                                    height: 25px"
                                 >'.$atributos->para.'</td>
                             </tr>
                             <tr>
@@ -302,14 +306,14 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:35%;
                                     font-size: 0.8em;
-                                    height: 40px"
+                                    height: 25px"
                                 >Celular: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
                                     font-size: 0.8em;
-                                    height: 40px"
+                                    height: 25px"
                                 >'.$atributos->celular.'</td>
                             </tr>
                             <tr>
@@ -318,14 +322,14 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:35%;
                                     font-size: 0.8em;
-                                    height: 60px"
+                                    height: auto"
                                 >Mensaje Fresas: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
                                     font-size: '.$fontSizeMensajeFresas.'em;
-                                    height: 60px"
+                                    height: auto"
                                 >'.$atributos->mensaje_fresas.'</td>
                             </tr>
                             <tr>
@@ -334,14 +338,14 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:35%;
                                     font-size: 0.8em;
-                                    height: 20px"
+                                    height: auto"
                                 >Peluche: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
                                     font-size: 0.8em;"
-                                    height: 20px
+                                    height: auto
                                 >'.$atributos->peluche.'</td>
                             </tr>
                             <tr>
@@ -350,21 +354,22 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:35%;
                                     font-size: 0.8em;
-                                    height: 20px"
+                                    height: auto"
                                 >Globo: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
                                     font-size: 0.8em;
-                                    height: 20px"
+                                    height: auto"
                                 >'.$atributos->globo.'</td>
                             </tr>
-                        </table>
+                        
                     ';
-                    $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
+                    //$html .= '</table>';
+                    //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
                 }
-                $posY += 90;
+                //$posY += 90;
 
             } else if($arreglo->idcategoria == 3) {
                 //Form Attr Desayunos
@@ -393,20 +398,22 @@ class Tickets extends BaseController {
                         $fontSizeMensajeFresas = 0.9;
                     }
 
-                    $html = '';
+                    $html .= '<tr><td></td><td></td></tr>';
                     $html .= '
-                        <table style="border: 0.5px solid rgb(0,0,0);padding: 2px;">
+                        
                             <tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Producto: </td>
                                 <td 
                                     style="font-weight: bold;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$arreglo->producto.'</td>
                             </tr>
@@ -415,6 +422,7 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;
                                     text-align: justify;"
                                 >Observación del desayuno: </td>
@@ -422,6 +430,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: '.$fontSizeComplementos.'em;
                                     text-align: justify;"
                                 >'.$arreglo->observacion.'</td>
@@ -431,12 +440,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >Para: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >'.$atributos->para.'</td>
                             </tr>
@@ -445,12 +456,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >Celular: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >'.$atributos->celular.'</td>
                             </tr>
@@ -459,12 +472,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Mensaje Fresas: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: '.$fontSizeMensajeFresas.'em;"
                                 >'.$atributos->mensaje_fresas.'</td>
                             </tr>
@@ -473,12 +488,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Peluche: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->peluche.'</td>
                             </tr>
@@ -487,12 +504,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Globo: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->globo.'</td>
                             </tr>
@@ -501,12 +520,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Bebida del desayuno: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->bebida.'</td>
                             </tr>
@@ -515,12 +536,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Huevo: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->huevo.'</td>
                             </tr>
@@ -529,6 +552,7 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.65em;
                                     text-align: left;"
                                 >Información complementaria</td>
@@ -536,14 +560,16 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: '.$fontSizeComplementos.'em;
                                     text-align: left;"
                                 >'.$atributos->complementos.'</td>
                             </tr>
-                        </table>
+                        
                     ';
-                    $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
-                    $posY += 80;
+                    // $html .= '</table>';
+                    // $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y='1', $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
+                    //$posY += 80;
                 }
             } else if($arreglo->idcategoria == 4) {
                 //Form Attr Magic Box
@@ -572,20 +598,22 @@ class Tickets extends BaseController {
                         $fontSizeMensajeFresas = 0.9;
                     }
 
-                    $html = '';
+                    $html .= '<tr><td></td><td></td></tr>';
                     $html .= '
-                        <table style="border: 0.5px solid rgb(0,0,0);padding: 2px;">
+                        
                             <tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Producto: </td>
                                 <td 
                                     style="font-weight: bold;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$arreglo->producto.'</td>
                             </tr>
@@ -594,6 +622,7 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;
                                     text-align: justify;"
                                 >Observación de la Magic Box: </td>
@@ -601,6 +630,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: '.$fontSizeObservaArreglo.'em;
                                     text-align: justify;"
                                 >'.$arreglo->observacion.'</td>
@@ -610,12 +640,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >Para: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >'.$atributos->para.'</td>
                             </tr>
@@ -624,12 +656,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >Celular: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: 25px;
                                     font-size: 0.8em;"
                                 >'.$atributos->celular.'</td>
                             </tr>
@@ -638,12 +672,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Mensaje Fresas: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: '.$fontSizeMensajeFresas.'em;"
                                 >'.$atributos->mensaje_fresas.'</td>
                             </tr>
@@ -652,12 +688,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Peluche: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->peluche.'</td>
                             </tr>
@@ -666,12 +704,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Globo: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->globo.'</td>
                             </tr>
@@ -680,12 +720,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Frases paredes: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->frases_paredes.'</td>
                             </tr>
@@ -694,19 +736,21 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Fotos: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->fotos.'</td>
                             </tr>
-                        </table>
+                        
                     ';
-                    $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
-                    $posY += 80;
+                    //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
+                    //$posY += 80;
                 }
             } else if($arreglo->idcategoria == 5) {
                 //Form Attr Magic Box
@@ -724,20 +768,22 @@ class Tickets extends BaseController {
                         $fontSizeObservaArreglo = 0.9;
                     }
 
-                    $html = '';
+                    $html .= '<tr><td></td><td></td></tr>';
                     $html .= '
-                        <table style="border: 0.5px solid rgb(0,0,0);padding: 2px;">
+                        
                             <tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Producto: </td>
                                 <td 
                                     style="font-weight: bold;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$arreglo->producto.'</td>
                             </tr>
@@ -746,6 +792,7 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;
                                     text-align: justify;"
                                 >Observación de Bocaditos: </td>
@@ -753,6 +800,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: '.$fontSizeObservaArreglo.'em;
                                     text-align: justify;"
                                 >'.$arreglo->observacion.'</td>
@@ -762,12 +810,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: 20px;
                                     font-size: 0.8em;"
                                 >Recibe: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: 20px;
                                     font-size: 0.8em;"
                                 >'.$atributos->para.'</td>
                             </tr>
@@ -776,12 +826,14 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: 20px;
                                     font-size: 0.8em;"
                                 >Celular: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: 20px;
                                     font-size: 0.8em;"
                                 >'.$atributos->celular.'</td>
                             </tr>
@@ -790,23 +842,28 @@ class Tickets extends BaseController {
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
                                     width:35%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >Opciones: </td>
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
+                                    height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->opciones.'</td>
                             </tr>
-                        </table>
+                        
                     ';
-                    $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
-                    $posY += 80;
+                    //$html .= '</table>';
+                    //$pdf->writeHTMLCell($w=47, $h=2, $x='1', $y=$posY+2, $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
+                    //$posY += 80;
                 }
             }
             
         }
+        $html .= '</table>';
+        $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y='1', $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
         $pdf->Output('Ticket.pdf');    // send the file inline to the browser (default).
     }
 

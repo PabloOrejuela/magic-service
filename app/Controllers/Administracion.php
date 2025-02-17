@@ -1073,6 +1073,8 @@ class Administracion extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
 
             $idproductoOld = $this->request->getPostGet('idproducto');
+            $new_id = $this->request->getPostGet('new_id');
+            
             $imagen = $this->request->getFile('file-img');
             $producto = [
                 'idusuario' => $data['id'],
@@ -1124,11 +1126,16 @@ class Administracion extends BaseController {
 
             $items = $this->itemsProductoTempModel->_getItemsProducto($idproductoOld);
 
-            //Inserto el nuevo producto
-            $idproducto = $this->productoModel->_insertPersonalizado($producto);
+            if ($items) {
+                //Inserto el nuevo producto
+                $idproducto = $this->productoModel->_insertPersonalizado($producto);
+
+                //Recibo el id insertado y hago el insert de los items del producto
+                $this->itemsProductoModel->_insertItemsPersonalizado($idproducto, $items);
+            }
             
-            //Recibo el id insertado y hago el insert de los items del producto
-            $this->itemsProductoModel->_insertItemsPersonalizado($idproducto, $items);
+            //Borro el temporal del producto original de la tabla items temporales
+            $this->itemsProductoTempModel->where('new_id', $new_id)->delete();
 
             return redirect()->to('productos');
         }else{

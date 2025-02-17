@@ -105,6 +105,7 @@ $(document).ready(function(){
                     
                     if (res.itemsTemp) {
                         for(let item of res.itemsTemp){
+                            
                             document.getElementById("new_id").value = item.new_id
                             tablaItemsBody.innerHTML += `<tr>
                                 <td>${item.id}</td><td>${item.item}</td>
@@ -467,8 +468,19 @@ function deleteItem(idItem){
     });
 }
 
-function cancelar(){
-    
+function cancelar(new_id){
+    //Elimino los temporales
+    $.ajax({
+        url: 'deleteItemsTempProductCotizador',
+        method: 'get',
+        data: {
+            new_id: new_id,
+        },
+        success: function(resultado){
+            console.log(new_id);
+        }
+    });
+
     location.replace('./inicio');
 }
 

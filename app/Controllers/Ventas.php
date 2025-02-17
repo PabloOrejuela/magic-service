@@ -304,8 +304,16 @@ class Ventas extends BaseController {
 
         $idproducto = $this->request->getPostGet('idproducto');
 
-        $this->itemsProductoTempModel->_deleteItems($idproducto);
+        $res = $this->itemsProductoTempModel->_deleteItems($idproducto);
+        return true;
+    }
 
+    function deleteItemsTempProductCotizador(){
+
+        $new_id = $this->request->getPostGet('new_id');
+
+        $this->itemsProductoTempModel->where('new_id', $new_id)->delete();
+        //echo $this->db->getLastQuery();exit;
         return true;
     }
 
@@ -643,7 +651,8 @@ class Ventas extends BaseController {
     public function insertProductTemp($idproducto, $items){
         $itemsTemp = NULL;
         $lastId = $this->productoModel->_getLastId();
-        $newId = $idproducto.$lastId;
+        $newId = $idproducto.$lastId.$this->session->id.rand(1,99);
+
         foreach ($items as $key => $item) {
             $this->itemsProductoTempModel->_insertNewItemTemp($idproducto, $newId, $item);
         }

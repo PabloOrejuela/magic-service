@@ -46,23 +46,25 @@ class ItemsProductoModel extends Model {
         //Inserto el nuevo producto
         $builder = $this->db->table($this->table);
 
-        //recorro el arreglo y grabo 
-        foreach ($data as $key => $value) {
+        if ($data) {
+            //recorro el arreglo y grabo 
+            foreach ($data as $key => $value) {
 
-            if ($idproducto != 'NULL' && $idproducto != '') {
-                $builder->set('idproducto', $idproducto);
-            }
+                if ($idproducto != 'NULL' && $idproducto != '') {
+                    $builder->set('idproducto', $idproducto);
+                }
 
-            if ($value != 'NULL' && $value != '') {
-                $builder->set('item', $key);
-            }
+                if ($value != 'NULL' && $value != '') {
+                    $builder->set('item', $key);
+                }
 
-            if ($value != 'NULL' && $value != '') {
-                $builder->set('cantidad', $value);
-            }
-            
-            $builder->insert();
-        }    
+                if ($value != 'NULL' && $value != '') {
+                    $builder->set('cantidad', $value);
+                }
+                
+                $builder->insert();
+            }  
+        }  
     }
 
     public function _insertItemsPersonalizado($idproducto, $data) {
@@ -73,41 +75,43 @@ class ItemsProductoModel extends Model {
         $builder = $this->db->table($this->table);
 
         //recorro el arreglo y grabo 
-        foreach ($data as $key => $value) {
+        if ($data) {
+            foreach ($data as $key => $value) {
 
-            if ($idproducto != 'NULL' && $idproducto != '') {
-                $builder->set('idproducto', $idproducto);
-            }
-
-            if ($value->id != 'NULL' && $value->id != '') {
-                $builder->set('item', $value->id);
-            }
-
-            if ($value->porcentaje != 'NULL' && $value->porcentaje != '') {
-                $builder->set('porcentaje', $value->porcentaje);
-            }
-
-            if ($value->precio_unitario != 'NULL' && $value->precio_unitario != '') {
-                $builder->set('precio_unitario', $value->precio_unitario);
-            }
-
-            if ($value->precio_actual != 'NULL' && $value->precio_actual != '') {
-                $builder->set('precio_actual', $value->precio_actual);
-            }
-
-            if ($value->pvp	 != 'NULL' && $value->pvp	 != '') {
-                $builder->set('pvp	', $value->pvp	);
-            }
-
-            if ($value->cantidad != 'NULL' && $value->cantidad != '') {
-                $builder->set('cantidad', 1);
-            }
-
-            $builder->set('created_at', date('Y-m-d h:m:s'));
-            $builder->set('updated_at', date('Y-m-d h:m:s'));
-            
-            $builder->insert();
-        }    
+                if ($idproducto != 'NULL' && $idproducto != '') {
+                    $builder->set('idproducto', $idproducto);
+                }
+    
+                if ($value->id != 'NULL' && $value->id != '') {
+                    $builder->set('item', $value->id);
+                }
+    
+                if ($value->porcentaje != 'NULL' && $value->porcentaje != '') {
+                    $builder->set('porcentaje', $value->porcentaje);
+                }
+    
+                if ($value->precio_unitario != 'NULL' && $value->precio_unitario != '') {
+                    $builder->set('precio_unitario', $value->precio_unitario);
+                }
+    
+                if ($value->precio_actual != 'NULL' && $value->precio_actual != '') {
+                    $builder->set('precio_actual', $value->precio_actual);
+                }
+    
+                if ($value->pvp	 != 'NULL' && $value->pvp	 != '') {
+                    $builder->set('pvp	', $value->pvp	);
+                }
+    
+                if ($value->cantidad != 'NULL' && $value->cantidad != '') {
+                    $builder->set('cantidad', 1);
+                }
+    
+                $builder->set('created_at', date('Y-m-d h:m:s'));
+                $builder->set('updated_at', date('Y-m-d h:m:s'));
+                
+                $builder->insert();
+            }    
+        }
     }
 
     public function _updateItemsProducto($idproducto, $data) {

@@ -62,6 +62,7 @@ $routes->get('updatePvpTempProduct', 'Ventas::updatePvpTempProduct');
 $routes->get('deleteItemTempProduct', 'Ventas::deleteItemTempProduct');
 $routes->get('cotizador', 'Ventas::cotizador');
 $routes->get('deleteItemsTempProduct', 'Ventas::deleteItemsTempProduct');
+$routes->get('deleteItemsTempProductCotizador', 'Ventas::deleteItemsTempProductCotizador');
 $routes->get('updatePrecioActualTempProduct', 'Ventas::updatePrecioActualTempProduct');
 $routes->get('get_detallle', 'Ventas::getDetallle');
 $routes->get('genera-codigo-pedido', 'Ventas::generaCodigoPedido');
