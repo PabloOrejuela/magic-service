@@ -886,6 +886,7 @@ botonesMensajero.forEach(btn => {
                 let datos = JSON.parse(data)
                 selectMensajeroModal.innerHTML = ''
                 if (datos) {
+                    selectMensajeroModal.innerHTML += `<option value="0" selected>--Registrar mensajero--</option>`
                     for (const dato of datos) {
                         if (dato.nombre == mensajero) {
                             selectMensajeroModal.innerHTML += `<option value="${dato.id}" selected>${dato.nombre}</option>`
