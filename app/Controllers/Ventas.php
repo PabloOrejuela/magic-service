@@ -1146,7 +1146,8 @@ class Ventas extends BaseController {
     }
 
     function getMensajeros(){
-        $mensajeros = $this->usuarioModel->_getUsuariosRol(5);
+        
+        $mensajeros = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
 
         echo json_encode($mensajeros);
     }
@@ -1183,10 +1184,8 @@ class Ventas extends BaseController {
             $data['pedidos'] = $this->pedidoModel->_getPedidos();
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
-            $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
-            //$this->session->set('mensaje', 3);
-            
-            //echo '<pre>'.var_export($data['pedidos'], true).'</pre>';exit;
+            $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
+
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
             $data['main_content']='ventas/grid-pedidos';
@@ -1235,7 +1234,7 @@ class Ventas extends BaseController {
             }
 
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
-            $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
+            $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
             $data['formas_pago'] = $this->formaPagoModel->where('estado',1)->orderBy('forma_pago', 'asc')->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
             $data['productos'] = $this->productoModel->findAll();
@@ -1266,7 +1265,7 @@ class Ventas extends BaseController {
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['pedidos'] = $this->pedidoModel->_getPedidos();
-            $data['mensajeros'] = $this->usuarioModel->_getUsuariosRol(5);
+            $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
             //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Pedidos';

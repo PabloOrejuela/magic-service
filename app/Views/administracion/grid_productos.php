@@ -22,7 +22,7 @@
                             <thead>
                                 <th>No.</th>
                                 <th>Producto</th>
-                                <th>Imagen</th>
+                                <th id="td-imagen">Imagen</th>
                                 <th>Categoria</th>
                                 <th>Precio</th>
                                 <th class="centrado">Estado</th>
@@ -45,9 +45,9 @@
                                                     >'.$value->producto.'</a>
                                                 </td>';
                                             if (isset($value->image) && $value->image != '') {
-                                                echo '<td><img src="'.site_url().'/public/images/productos/'.$value->image.'.jpg" class="img-thumbnail" alt="'.$value->producto.'"></td>';
+                                                echo '<td class="centrado"><img src="'.site_url().'/public/images/productos/'.$value->image.'.jpg" class="img-thumbnail" alt="'.$value->producto.'"></td>';
                                             } else {
-                                                echo '<td>Sin Imágen</td>';
+                                                echo '<td class="centrado">Sin Imágen</td>';
                                             }
                                             
                                                 

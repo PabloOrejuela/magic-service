@@ -32,5 +32,9 @@
 }
 
 .img-thumbnail{
-    height: 70px;
+    height: 60px;
+}
+
+#td-imagen{
+    width: 35px;
 }
