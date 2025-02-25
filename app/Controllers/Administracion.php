@@ -184,6 +184,30 @@ class Administracion extends BaseController {
         echo json_encode($sucursales);
     }
 
+
+    public function productosRelacionados($item){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $data['session'] = $this->session;
+
+            $data['productos'] = $this->itemsProductoModel
+                            ->select('items_productos.id as id,idproducto,producto,image')
+                            ->where('item', $item)
+                            ->join('productos', 'productos.id=items_productos.idproducto')
+                            ->orderBy('producto', 'asc')
+                            ->findAll();
+
+            $data['title']='Administración';
+            $data['subtitle']='Productos relacionados';
+            $data['main_content']='administracion/productos_relacionados_item';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function sucursales() {
         
         $data = $this->acl();

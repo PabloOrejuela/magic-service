@@ -22,6 +22,7 @@
                                 <th>Item</th>
                                 <th class="col-md-1">Precio</th>
                                 <th class="col-md-1">Cuantificable</th>
+                                <th class="col-md-2">Productos relacionados</th>
                                 <th class="col-md-1">Estado</th>
                             </thead>
                             <tbody>
@@ -44,6 +45,11 @@
                                                 }else if($value->cuantificable == 0){
                                                     echo '<td class="centrado"><span id="span-cuantificable">No</span><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'"></td>';
                                                 }
+                                            echo '<td class="centrado">
+                                                    <a href="'.site_url().'productos-relacionados/'.$value->id.'" id="link-editar">
+                                                        <img src="'.site_url().'/public/images/list.png" class="img-thumbnail" alt="Productos relacionados">
+                                                    </a>
+                                                </td>';
                                                 if ($value->estado == 1) {
                                                     echo '<td class="centrado">Activo</td>';
                                                 }else if($value->estado == 0){

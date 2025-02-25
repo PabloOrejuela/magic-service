@@ -122,7 +122,7 @@ $routes->get('actualizaPrecioItem', 'Administracion::actualizaPrecioItem');
 $routes->get('actualizaPermiso', 'Administracion::actualizaPermiso');
 $routes->get('list-items', 'Administracion::list_items');
 $routes->get('set-arreg-temp-definitivo/(:num)', 'Administracion::set_arreg_temp_definitivo/$1');
-
+$routes->get('productos-relacionados/(:num)', 'Administracion::productosRelacionados/$1');
 $routes->get('sucursales', 'Administracion::sucursales');
 $routes->get('sucursal-create', 'Administracion::form_sucursal_create');
 $routes->post('sucursal-insert', 'Administracion::sucursal_insert');
