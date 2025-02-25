@@ -2,6 +2,7 @@
 <h5>Cambios en el cotizador</h5>
 <ul>
     <li>Se implementó un link en cada item para poder ver un reposte de los productos que lo contienen</li>
+    <li>La validación de "Sin remitente" de los pedidos ahora está validada en el ticket</li>
 </ul>
 
 <h5>Fixes</h5>

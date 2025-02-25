@@ -9,9 +9,10 @@ use CodeIgniter\HTTP\ResponseInterface;
 class Tickets extends BaseController {
 
     function imprimirTicket($id, $cod_pedido){
-        //echo "imprimiendo";
+
         //Traigo los datos del pedido para la cabecera
         $datosPedido = $this->pedidoModel->_getDatosPedidoTicket($id);
+        //echo '<pre>'.var_export($datosPedido, true).'</pre>';exit;
         $this->ticketPdf($datosPedido);
 
     }
@@ -31,6 +32,10 @@ class Tickets extends BaseController {
             'Saturday'=>"Sábado"
         );
 
+        //VALIDACION DE SIN REMITENTE
+        $datosPedido->sin_remitente != 1 ? $cliente = $datosPedido->cliente : $cliente = 'Sin Remitente';
+
+        //ESTABLEZCO EL NOMBRE DEL DÍA DE LA SEMANA        
         $nombreDia = $nombresDias[date('l', strtotime($datosPedido->fecha_entrega))];
 
         //Traigo los arreglo del pedido
@@ -134,7 +139,7 @@ class Tickets extends BaseController {
                         font-size: 0.8em;
                         height: 25px"
                         
-                    >'.$datosPedido->cliente.'</td>
+                    >'.$cliente.'</td>
                 </tr>
                 <tr>
                     <td 
