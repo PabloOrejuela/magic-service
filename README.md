@@ -1,6 +1,7 @@
 <h3>Cambios</h3>
 <h5>Cambios en el cotizador</h5>
 <ul>
+    <li>Se implementó el reporte de items sensibles de temporada</li>
     <li>Implementado el botón para copiar datos de confirmación del pedido</li>
     <li>En los tickets ahora las tablas de los atributos de los arreglos de todas las categorías salen tengan o no todos los atributos</li>
     <li>Se implementó un link en cada item para poder ver un reposte de los productos que lo contienen</li>
