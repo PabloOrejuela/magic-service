@@ -33,7 +33,17 @@
     outline:none;
     overflow:hidden;
     font-size: 0.01em;
-    display: block;
+    display: none;
+}
+
+#taDataConfirmapedido{
+    background-color:transparent;
+    color: #000;
+    border: none;
+    outline:none;
+    overflow:hidden;
+    font-size: 0.01em;
+    display: none;
 }
 
 #msj{
@@ -66,4 +76,8 @@
     font-weight: bold;
     padding: 10px;
     background-color: rgb(184, 45, 27, 1);
+}
+
+#btn-copy-pedido{
+    display: none;
 }

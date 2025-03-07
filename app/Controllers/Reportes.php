@@ -119,6 +119,33 @@ class Reportes extends BaseController {
         // }        
     }
 
+    /**
+     *
+     * Reporte de la cantidad de items sensibles que se necesitan en temporadas altas 
+     * dependiando de los pedidos en un rango de fechas
+     *
+     * @param Type $var Description
+     * @return type void
+     * @throws conditon
+     **/
+    public function reporteItemsSensibles(){
+        $data = $this->acl();
+        
+        if ($data['logged'] == 1 && $this->session->clientes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte de items sensibles por rango de fechas';
+            $data['main_content']='reportes/frm_reporte_items_sensibles';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function reporteListItems(){
 
         $items = $this->itemModel->findAll();

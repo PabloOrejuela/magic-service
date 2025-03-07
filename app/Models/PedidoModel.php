@@ -95,6 +95,23 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getPedidosRangoFechas($fechaInicio, $fechaFinal){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('id,cod_pedido,fecha_entrega');
+        $builder->where('estado', 1);
+        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getHistorialPedidos($idcliente){
         $result = NULL;
         $builder = $this->db->table($this->table);

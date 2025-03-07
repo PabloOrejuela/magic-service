@@ -210,6 +210,12 @@
               <p>Reporte de Procedencias</p>
             </a>
           </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'reporte-items-sensibles" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Reporte Items sensibles</p>
+            </a>
+          </li>
         </ul>
       </li>';
     }

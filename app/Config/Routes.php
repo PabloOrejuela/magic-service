@@ -89,6 +89,8 @@ $routes->get('items', 'Administracion::items');
 $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
 $routes->post('item-create', 'Administracion::itemCreate');
 $routes->post('item-update', 'Administracion::item_update');
+$routes->get('item-sensible-update/(:num)/(:num)', 'Administracion::itemSensibleUpdate/$1/$2');
+$routes->get('getCantidadItemsSensibles', 'Administracion::getCantidadItemsSensibles');
 $routes->get('getItemsProducto/(:num)', 'Administracion::getItemsProducto/$1');
 $routes->get('frm-item-create', 'Administracion::form_item_create');
 $routes->get('item-delete/(:num)', 'Administracion::item_delete/$1');
@@ -166,6 +168,7 @@ $routes->get('kardex-item/(:num)', 'Inventarios::kardexItem/$1');
 //REPORTES
 $routes->get('reporte', 'Reportes::frmReporte');
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
+$routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');
 
 
 // $routes->group('printTicket', ['filter' => 'cors:printTicket'], static function (RouteCollection $routes): void {

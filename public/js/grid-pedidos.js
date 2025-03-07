@@ -1050,7 +1050,7 @@ function copyData(id){
             }
 
             if (window.isSecureContext) {
-
+                console.log('SECURE');
                     if (observacion == '') {
                         navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
@@ -1065,6 +1065,7 @@ function copyData(id){
                     alertaMensaje("La información se ha copiado!!!", 1500, 'info')
 
                 } else {
+                    console.log('InSECURE');
                     if (observacion == '') {
                         mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
@@ -1081,6 +1082,78 @@ function copyData(id){
                     mensaje.setSelectionRange(0, 9999999)
                     document.execCommand('copy')
                     alertaMensaje("La información se ha copiado!!!", 1500, 'info')
+                }
+        }
+    });
+}
+
+//ESTA FUNCIÓN ES LA QUE MANEJA LA COPIA DE DATOS DE CONFIRMACIÓN DE PEDIDO
+function copyDataConfirmaPedido(id){
+    let cod_arreglo = ''
+    let observacion = ''
+    let mensaje = document.getElementById('taDataConfirmapedido')
+    $.ajax({
+        type:"GET",
+        dataType:"html",
+        url: "getDatosPedido/"+id,
+        //data:"codigo="+valor,
+        beforeSend: function (f) {
+            //$('#cliente').html('Cargando ...');
+        },
+        success: function(resultado){
+            let pedido = JSON.parse(resultado);
+            cliente = pedido.datos.nombre
+            sector = pedido.datos.sector
+            desde = pedido.datos.rango_entrega_desde
+            hasta = pedido.datos.rango_entrega_hasta
+            direccion = pedido.datos.dir_entrega
+            ubicacion = pedido.datos.ubicacion
+            horaEntrega = pedido.datos.hora
+            if (typeof pedido.datos.observaciones != 'undefined') {
+                observacion = pedido.datos.observaciones
+            }
+            
+
+            //detalle
+            if (pedido.detalle) {
+                for (const cod of pedido.detalle) {
+                    cod_arreglo += cod.producto + ' / '
+                }
+            }
+
+            if (window.isSecureContext) {
+                console.log('SECURE CONFIRMA PEDIDO');
+                    if (observacion == '') {
+                        navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
+                        + "\nCódigos: " + cod_arreglo 
+                        + "\nHora de entrega: " + desde + ' - ' + hasta)
+                    }else{
+                        navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
+                        + "\nCódigos: " + cod_arreglo 
+                        + "\nHora de entrega: " + desde+' - ' + hasta + "\nObservación: " + observacion)
+                    }
+                    alertaMensaje("La información DE CONFIRMACION DE PEDIDO se ha copiado!!!", 1500, 'info')
+
+                } else {
+                    console.log('InSECURE CONFIRMA PEDIDO');
+                    if (observacion == '') {
+                        mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
+                        + "\nCódigo: " + cod_arreglo 
+                        + "\nHora de entrega: " + desde + ' - ' + hasta
+                    }else{
+                        mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
+                        + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
+                        + "\nCódigo: " + cod_arreglo 
+                        + "\nHora de entrega: " + desde + ' - ' + hasta + "\nObservación: " + observacion
+                    }
+            
+                    mensaje.select()
+                    mensaje.setSelectionRange(0, 9999999)
+                    document.execCommand('copy')
+                    alertaMensaje("La información DE CONFIRMACION DE PEDIDO se ha copiado!!!", 1500, 'info')
                 }
         }
     });

@@ -22,6 +22,7 @@
                                 <th>Item</th>
                                 <th class="col-md-1">Precio</th>
                                 <th class="col-md-1">Cuantificable</th>
+                                <th class="col-md-1">Sensible a temporada</th>
                                 <th class="col-md-2">Productos relacionados</th>
                                 <th class="col-md-1">Estado</th>
                             </thead>
@@ -41,10 +42,43 @@
                                                     >
                                                 </td>';
                                                 if ($value->cuantificable == 1) {
-                                                    echo '<td class="centrado"><span id="span-cuantificable">Si</span><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked></td>';
+                                                    echo '<td class="centrado">
+                                                            <span id="span-cuantificable">Si </span>
+                                                            <input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'" checked>
+                                                        </td>';
                                                 }else if($value->cuantificable == 0){
-                                                    echo '<td class="centrado"><span id="span-cuantificable">No</span><input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'"></td>';
+                                                    echo '<td class="centrado">
+                                                            <span id="span-cuantificable">No </span>
+                                                            <input class="form-check-input" type="checkbox" name="cuantificable" value="1" id="'.$value->id.'">
+                                                        </td>';
                                                 }
+
+                                                if ($value->sensible_temporada == 1) {
+                                                    echo '<td class="centrado">
+                                                            <a 
+                                                                type="button" 
+                                                                id="btn-sensible" 
+                                                                class="btnAction"
+                                                                href="'.site_url().'item-sensible-update/'.$value->id.'/'.$value->sensible_temporada.'"
+                                                                data-id="'.$value->id.'"
+                                                                data-sensible="'.$value->sensible_temporada.'"
+                                                            >SI
+                                                            </a>
+                                                        </td>';
+                                                }else if($value->sensible_temporada == 0){
+                                                    echo '<td class="centrado">
+                                                            <a 
+                                                                type="button" 
+                                                                id="btn-sensible" 
+                                                                class="btnAction"
+                                                                href="'.site_url().'item-sensible-update/'.$value->id.'/'.$value->sensible_temporada.'"
+                                                                data-id="'.$value->id.'"
+                                                                data-sensible="'.$value->sensible_temporada.'"
+                                                            >NO
+                                                            </a>
+                                                        </td>';
+                                                }
+
                                             echo '<td class="centrado">
                                                     <a href="'.site_url().'productos-relacionados/'.$value->id.'" id="link-editar">
                                                         <img src="'.site_url().'/public/images/list.png" class="img-thumbnail" alt="Productos relacionados">

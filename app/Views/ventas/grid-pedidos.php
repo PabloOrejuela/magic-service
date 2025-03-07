@@ -10,13 +10,19 @@
                         <h3><?= $subtitle; ?></h3>
                         <div><input type="text" value="<?= session('mensaje'); ?>" id="msj" readonly></div>
                         <div><textarea class="form-control" placeholder="" id="mensaje"></textarea></div>
+
+                        <!-- Este textarea es para poder copiar los datos de la confirmación del pedido --->
+                        <div><textarea class="form-control" placeholder="" id="taDataConfirmapedido"></textarea></div>
+
                         <div>
                             <a href="<?= site_url().'pedidos-ventana/'; ?>"  class="btn btn-success mb-2" target="_blank">Abrir en nueva ventana</a>
                         </div>
+
                         <div class="botones mb-2">
                             <a href="<?= base_url(); ?>ventas" class="btn btn-primary" id="btn-pedido-2" data-id="<?= session('id') ?>">Registrar Nuevo Pedido</a>
                             <a href="<?= base_url(); ?>cotizador" class="btn btn-primary" id="btn-cotizador">Cotizador</a>
                         </div>
+
                         <form action="#" method="post">
                             <table id="datatablesSimple" class="table table-bordered table-striped">
                                 <thead>
@@ -204,39 +210,36 @@
                                                         <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">Registrar</a>
                                                     </td>';
                                                 }
-        
-                                                
+                                                            
                                                 echo '<td>
                                                         <div class="contenedor" id="btn-copy">
                                                             <a type="button" class="btnAction" href="javascript:copyData('.$value->id.')">
-                                                                <img src="'.site_url().'public/images/copy.png" width="25" >
+                                                                <img src="'.site_url().'public/images/copy.png" width="25" />
                                                             </a>';
-                                                if ($verificaCampos == 0) {
-                                                    echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
-                                                            <img src="'.site_url().'public/images/btn-print.png" width="25"  >
-                                                        </a>';
-                                                    // echo '<a 
-                                                    //         type="button"
-                                                    //         class="btnAction" 
-                                                    //         target="_blank" 
-                                                    //         onclick="javascript:imprimirTicket('.$value->id.','.$value->cod_pedido.')"
-                                                    //     >
-                                                    //     <img src="'.site_url().'public/images/btn-print.png" width="25"  >
-                                                    // </a>';
-                                                }else{
-                                                    echo '<a type="button" href="#" class="btnAction">
-                                                            <img src="'.site_url().'public/images/btn-print.png" width="25">
-                                                        </a>';
-                                                }
-                                                if (true) {
-                                                    echo '<a type="button" href="'.site_url().'verHistorialPedido/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
-                                                            <img src="'.site_url().'public/images/note-task.png" width="25"  >
-                                                        </a>';
-                                                }else{
-                                                    echo '<a type="button" href="#" class="btnAction">
-                                                            <img src="'.site_url().'public/images/note-task.png" width="25">
-                                                        </a>';
-                                                }
+                                                        if ($verificaCampos == 0) {
+                                                            echo '<a type="button" href="'.site_url().'imprimirTicket/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
+                                                                    <img src="'.site_url().'public/images/btn-print.png" width="25"  />
+                                                                </a>';
+                                                        }else{
+                                                            echo '<a type="button" href="#" class="btnAction">
+                                                                    <img src="'.site_url().'public/images/btn-print.png" width="25">
+                                                                </a>';
+                                                        }
+                                                echo    '</div>';
+                                                echo    '<div>';
+                                                        if (true) {
+                                                            echo '<a type="button" href="'.site_url().'verHistorialPedido/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
+                                                                    <img src="'.site_url().'public/images/note-task.png" width="25"  />
+                                                                </a>';
+                                                        }else{
+                                                            echo '<a type="button" href="#" class="btnAction">
+                                                                    <img src="'.site_url().'public/images/note-task.png" width="25" />
+                                                                </a>';
+                                                        }
+
+                                                            echo '<a type="button" class="btnAction" href="javascript:copyDataConfirmaPedido('.$value->id.')" id="btn-copy-pedido">
+                                                                    <img src="'.site_url().'public/images/copy-data.png" width="25"  />
+                                                                </a>';
                                                             
                                                 echo    '</div></td></tr>';
                                             }

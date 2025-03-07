@@ -184,6 +184,25 @@ class Administracion extends BaseController {
         echo json_encode($sucursales);
     }
 
+    public function itemSensibleUpdate($item, $sensible){
+        
+        if ($sensible == 1) {
+            $data = [
+                'sensible_temporada' => 0
+            ];
+            
+        } else {
+            $data = [
+                'sensible_temporada' => 1
+            ];
+        }
+
+        $this->itemModel->update($item, $data);
+
+        $data['session'] = $this->session;
+
+        return redirect()->to('items');
+    }
 
     public function productosRelacionados($item){
         $data = $this->acl();
@@ -737,6 +756,54 @@ class Administracion extends BaseController {
 
         echo json_encode($data);
     }
+
+    function getCantidadItemsSensibles(){
+        $fechaInicio= $this->request->getPostGet('fechaInicio');
+        $fechaFinal= $this->request->getPostGet('fechaFinal');
+
+        $itemsArray = NULL;
+        $consolidadoArray = NULL;
+        $data['error'] = '';
+
+        //Hago la consulta
+        $pedidos = $this->pedidoModel->_getPedidosRangoFechas($fechaInicio, $fechaFinal);
+        $itemsSensibles = $this->itemModel->select('id,item')->where('sensible_temporada', 1)->findAll();
+        foreach ($itemsSensibles as $its) {
+            $itemSensibleArray[] = $its->id;
+        }
+
+        if ($pedidos) {
+            
+            foreach ($pedidos as $key => $pedido) {
+                //extraigo el detalle de cada pedido
+                $detalles = $this->detallePedidoModel->select('id,cod_pedido,idproducto,cantidad')->where('cod_pedido', $pedido->cod_pedido)->findAll();
+                foreach ($detalles as $key => $detalle) {
+                    //echo $detalle->idproducto.'<br>';
+                    $itemsProductos = $this->itemsProductoModel->select('items_productos.item as item,items.item as nombre_item, idproducto,porcentaje')
+                                                                ->join('items','items.id=items_productos.item')
+                                                                ->where('idproducto', $detalle->idproducto)->findAll();
+                    //echo '<pre>'.var_export($itemsProductos, true).'</pre>';exit;
+                    foreach ($itemsProductos as $key => $item) {
+                        if (in_array($item->item, $itemSensibleArray)) {
+                            $itemsArray[] = [
+                                'idproducto' => $detalle->idproducto,
+                                'cod_pedido' => $detalle->cod_pedido,
+                                'item' => $item->item,
+                                'nombreItem' => $item->nombre_item,
+                                'cantidad' => $detalle->cantidad,
+                                'porcentaje' => $item->porcentaje
+                            ];
+                        }
+                    }
+                }
+            }
+        }else{
+            $data['error'] = "ERROR";
+        }
+        $data['itemsSensibles'] = $itemsSensibles;
+        $data['resultado'] = $itemsArray;
+        echo json_encode($data);
+    }     
 
     /**
      * Formulario para crear un nuevo producto

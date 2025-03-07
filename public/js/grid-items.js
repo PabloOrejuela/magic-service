@@ -1,4 +1,10 @@
 let inputPrice = document.getElementById("input-precio")
+let btnSensible = document.getElementById("btn-sensible")
+
+btnSensible.addEventListener('click', function(e) {
+    console.log("actualizando");
+})
+
 
 function changeData(id){
     let inputPrecio = document.getElementById("input-precio_"+id)
@@ -27,6 +33,8 @@ function changeData(id){
         }
     });
 }
+
+
 
 const alertProcesando = (msg, icono) => {
     const toast = Swal.mixin({

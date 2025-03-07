@@ -306,7 +306,7 @@
                                                             
                                                             echo '<tr id="fila_'.$numFila.'">';
                                                             echo '<td>'.$numFila.'</td>';
-                                                            echo '<td>'.$row->id.'</td>';
+                                                            echo '<td>'.$row->idproducto.'</td>';
                                                             echo '<td>'.$row->producto.'</td>';
                                                             echo '<td>
                                                                         <input 
