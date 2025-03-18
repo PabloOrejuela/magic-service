@@ -24,7 +24,6 @@ class Clientes extends BaseController {
             $data['session'] = $this->session;
             $data['clientes'] = $this->clienteModel->_getClientes();
 
-            //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
             $data['title']='Clientes';
             $data['subtitle']='Gestión de clientes';
             $data['main_content']='clientes/form_lista_clientes';

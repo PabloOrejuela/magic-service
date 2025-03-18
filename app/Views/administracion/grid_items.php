@@ -62,7 +62,7 @@
                                                                 href="'.site_url().'item-sensible-update/'.$value->id.'/'.$value->sensible_temporada.'"
                                                                 data-id="'.$value->id.'"
                                                                 data-sensible="'.$value->sensible_temporada.'"
-                                                            >SI
+                                                            ><img src="'.site_url().'public/images/ON.png" width="50" height="25" >
                                                             </a>
                                                         </td>';
                                                 }else if($value->sensible_temporada == 0){
@@ -74,7 +74,7 @@
                                                                 href="'.site_url().'item-sensible-update/'.$value->id.'/'.$value->sensible_temporada.'"
                                                                 data-id="'.$value->id.'"
                                                                 data-sensible="'.$value->sensible_temporada.'"
-                                                            >NO
+                                                            ><img src="'.site_url().'public/images/OFF.png" width="50" height="25" >
                                                             </a>
                                                         </td>';
                                                 }

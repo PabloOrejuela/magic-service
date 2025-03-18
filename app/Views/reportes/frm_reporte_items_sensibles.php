@@ -43,9 +43,9 @@
                         <div class="row col-md-12">
                             <table class="table table-striped mt-3" id="table-productos">
                             <thead >
-                                <th>ID</th>
-                                <th class="col-sm-2">Item</th>
-                                <th class="col-sm-4" id="label-thead">Unidades necesarias</th>
+                                <th class="col-sm-1">ID</th>
+                                <th class="col-sm-4">Item</th>
+                                <th class="col-sm-2" id="label-thead">Unidades necesarias</th>
                             </thead>
                             <tbody id='tablaItemsSensiblesBody'></tbody>
                             </table>
