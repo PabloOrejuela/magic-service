@@ -38,4 +38,18 @@ class BancoModel extends Model {
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    function _getBanco($banco){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('*')->where('id', $banco);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
 }

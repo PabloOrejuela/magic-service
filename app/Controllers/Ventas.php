@@ -762,6 +762,7 @@ class Ventas extends BaseController {
                 'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
+                'idnegocio' => 1,
             ];
             //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
 
@@ -948,6 +949,7 @@ class Ventas extends BaseController {
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'valor_mensajero_extra' => $this->request->getPostGet('valor_mensajero_extra'),
                 'total' => $this->request->getPostGet('total'),
+                'idnegocio' => 1,
             ];
             
             $pedidoProcedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['id'])->first();

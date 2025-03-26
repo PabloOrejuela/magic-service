@@ -95,6 +95,69 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getPedidosRangoFechasProcedencias($fechaInicio, $fechaFinal){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
+        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
+        $builder->where($this->table.'.estado', 1);
+        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getPedidosRangoFechasReportes($fechaInicio, $fechaFinal){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
+        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
+        $builder->where($this->table.'.estado', 1);
+        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getPedidosReporteDiario($fecha){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
+        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
+        $builder->where($this->table.'.estado', 1);
+        $builder->where('fecha', $fecha);
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getPedidosRangoFechas($fechaInicio, $fechaFinal){
         $result = NULL;
         $builder = $this->db->table($this->table);
@@ -256,6 +319,7 @@ class PedidoModel extends Model {
         }
 
         $builder->set('orden', 1); 
+        $builder->set('idnegocio', $data['idnegocio']); 
 
         //Inserto las fechas de creación e inicializo la actualización
         $builder->set('created_at', $created_at); 
@@ -382,7 +446,7 @@ class PedidoModel extends Model {
             $builder->set('valor_mensajero_extra', '0.00'); 
         }
 
-
+        $builder->set('idnegocio', $data['idnegocio']); 
         $builder->set('updated_at', $updated_at); 
 
         $builder->set('sin_remitente', $data['sin_remitente']); 

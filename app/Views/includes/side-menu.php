@@ -199,13 +199,13 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item subItem">
-            <a href="'.base_url().'reporte" class="nav-link">
+            <a href="'.base_url().'reporte_diario_ventas" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Control diario de ventas</p>
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="#" class="nav-link">
+            <a href="'.base_url().'reporte-procedencias" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte de Procedencias</p>
             </a>

@@ -1,13 +1,4 @@
-<style>
-    label{
-        margin-bottom: 1px;
-    }
-
-    #mensaje{
-        font-size: 1.2em;
-        margin-left:5px;
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-procedencia.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -20,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'reporte';?>" method="post">
+                    <form action="<?= site_url().'reporte-procedencias';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">
@@ -47,7 +38,7 @@
                                         class="form-control text" 
                                         id="fecha_inicio" 
                                         name="fecha_inicio" 
-                                        value="<?= set_value('fecha_inicio'); ?>" 
+                                        value="<?= date('Y-m-d'); ?>" 
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
@@ -59,7 +50,7 @@
                                         class="form-control text" 
                                         id="fecha_final" 
                                         name="fecha_final" 
-                                        value="<?= set_value('fecha_final'); ?>" 
+                                        value="<?= date('Y-m-d'); ?>" 
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.fecha_final');?> </p>
@@ -94,4 +85,6 @@
         </div>
     </div>
 </section> <!-- /.card -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/frm-reporte-procedencias.js"></script>
 

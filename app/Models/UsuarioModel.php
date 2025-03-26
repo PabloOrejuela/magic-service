@@ -121,6 +121,21 @@ class UsuarioModel extends Model {
         return $result;
     }
 
+    function _getNombreUsuario($id){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('nombre')->where('id', $id);
+        $builder->orderBy('nombre', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row->nombre;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getUsuariosRol($idrol){
         $result = NULL;
         $builder = $this->db->table($this->table);

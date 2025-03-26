@@ -166,7 +166,14 @@ $routes->get('registraMovimientoStock', 'Inventarios::registraMovimientoStock');
 $routes->get('kardex-item/(:num)', 'Inventarios::kardexItem/$1');
 
 //REPORTES
-$routes->get('reporte', 'Reportes::frmReporte');
+$routes->get('reporte-procedencias', 'Reportes::frmReporteProcedencias');
+$routes->post('reporte-procedencias', 'Reportes::reporteProcedencias');
+$routes->post('reporte-procedencias-excel', 'Reportes::reporteProcedenciasExcel');
+
+$routes->get('reporte_diario_ventas', 'Reportes::frmReporteDiarioVentas');
+$routes->post('reporte_diario_ventas', 'Reportes::reporteDiarioVentas');
+$routes->post('reporte_diario_ventas_excel', 'Reportes::reporteDiarioVentasExcel');
+
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
 $routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');
 
