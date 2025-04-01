@@ -40,6 +40,12 @@
     display: none;
 }
 
+#vendedor{
+    width:50%;
+    font-size: 1.2em;
+  }
+  
+
 .form-select{
     font-size: 1.2em !important;
 }

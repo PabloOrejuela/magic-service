@@ -116,6 +116,33 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getPedidosRangoFechasVendedor($objeto){
+
+        $fechaInicio = $objeto['fecha_inicio'];
+        $fechaFinal = $objeto['fecha_final'];
+        $negocio = $objeto['negocio'];
+        $vendedor = $objeto['vendedor'];
+
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,vendedor,venta_extra');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
+        $builder->where($this->table.'.estado', 1);
+        $builder->where($this->table.'.idnegocio', $negocio);
+        $builder->where($this->table.'.vendedor', $vendedor);
+        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getPedidosRangoFechasReportes($fechaInicio, $fechaFinal){
         $result = NULL;
         $builder = $this->db->table($this->table);

@@ -3,7 +3,7 @@
 }
 
 .div.dataTables_length select{
-    width: 150px; important!;
+    width: 150px !important;
 }
 
 .grid{

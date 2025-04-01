@@ -14,7 +14,7 @@ const cadenafecha = fecha.getFullYear() + '-' + ((fecha.getMonth()+1) > 9 ? (fec
  *  Detecta el index y modifica las fechas
 */
 selectSugest.addEventListener('change', function(e) {
-    
+
     if (selectSugest.selectedIndex == 1) {
 
         //día actual
@@ -30,7 +30,6 @@ selectSugest.addEventListener('change', function(e) {
 
         let inicioSemana = 0 
         let finSemana = 0
-        
 
         if (fecha.getDay() == 1) {
             inicioSemana = fecha.getDate()
@@ -39,7 +38,7 @@ selectSugest.addEventListener('change', function(e) {
             inicioSemana = (fecha.getDate() - (fecha.getDay() - 1))
             finSemana = (fecha.getDate() + (7 - fecha.getDay()))
         }
-        
+
         //Semana actual
         fechaInicio.value = cadenafecha + '-' + inicioSemana.toString()
         fechaFinal.value = cadenafecha + '-' + finSemana.toString()

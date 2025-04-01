@@ -1,7 +1,20 @@
 .menu-icon{
     color: rgb(255,255, 255, 0.75);
     font-weight: bold;
-    font-size: 0.9em;
+    font-size: 0.8em;
     margin-right: 3px;
     padding: 3px auto;
 }
+
+.nav-icon{
+    font-size: 0.8em;
+}
+
+.nav-link{
+    font-size: 0.9em;
+}
+
+.subItem{
+    font-size: 0.8em;
+    margin-right: 2px;
+  }

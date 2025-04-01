@@ -88,8 +88,7 @@ a{
 
 .navbar-light .navbar-nav .nav-link {
   color: #000;
-  font-size:1.3em;
-  
+  font-size:1em;
 }
 
 #btn-cancela{
@@ -156,11 +155,6 @@ a{
 
 #formas_pago, #select-banco {
   width:60%;
-  font-size: 1.2em;
-}
-
-#vendedor{
-  width:50%;
   font-size: 1.2em;
 }
 
@@ -342,10 +336,6 @@ a{
   width: auto;
   background-color: #d3d3d3;
   font-weight: bold;
-}
-
-.subItem{
-  font-size: 0.9em;
 }
 
 .card-title{

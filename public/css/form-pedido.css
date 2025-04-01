@@ -44,3 +44,9 @@
     height: 5px;
     background-color: rgba(21, 121, 12, 0.3)
 }
+
+#vendedor{
+    width:50%;
+    font-size: 1.2em;
+  }
+  

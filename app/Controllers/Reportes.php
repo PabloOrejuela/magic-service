@@ -141,11 +141,72 @@ class Reportes extends BaseController {
         }
     }
 
+    public function frmReporteEstadisticasVendedor(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+            $data['vendedores'] = $this->usuarioModel->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte de estadísticas por vendedor';
+            $data['main_content']='reportes/frm_reporte_estadisticas_vendedor';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function reporteEstadisticasVendedor(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+            $data['vendedores'] = $this->usuarioModel->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
+                'fecha_final' => $this->request->getPostGet('fecha_final'),
+                'sugest' => $this->request->getPostGet('sugest'),
+                'vendedor' => $this->request->getPostGet('vendedor'),
+            ];
+
+            $this->validation->setRuleGroup('reporteEstadisticasVendedor');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                //echo '<pre>'.var_export($datos, true).'</pre>';exit;
+                $data['res'] = $this->pedidoModel->_getPedidosRangoFechasVendedor($datos);
+                $data['datos'] = $datos;
+                
+                $data['title']='Reportes';
+                $data['subtitle']='Reporte de estadísticas por vendedor';
+                $data['main_content']='reportes/reporte_estadisticas_vendedor';
+                return view('dashboard/index', $data);
+            }
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function reporteDiarioVentasExcel(){
 
         //DECLARO VARIABLES
         $negocio = 1;
-           
 
         if ($this->request->getPostGet('negocio') != 0) {
             $negocio = $this->request->getPostGet('negocio');
@@ -167,7 +228,7 @@ class Reportes extends BaseController {
         $phpExcel = new Spreadsheet();
         $phpExcel
             ->getProperties()
-            ->setCreator("MYRP")
+            ->setCreator("Magic Service")
             ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
             ->setTitle('Reporte de Control Diario de Ventas')
             ->setSubject('Reportes Magic Service')
@@ -393,191 +454,415 @@ class Reportes extends BaseController {
         // }        
     }
 
-    // public function reporteProcedenciasExcel(){
+    public function reporteEstadisticasVendedorExcel(){
 
-    //     //DECLARO VARIABLES
-    //     $negocio = 1;
+        $datos = [
+            'negocio' => $this->request->getPostGet('negocio'),
+            'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
+            'fecha_final' => $this->request->getPostGet('fecha_final'),
+            'sugest' => $this->request->getPostGet('sugest'),
+            'vendedor' => $this->request->getPostGet('vendedor'),
+        ];
+
+        $res = $this->pedidoModel->_getPedidosRangoFechasVendedor($datos);
+
+        //echo '<pre>'.var_export($res, true).'</pre>';exit;
+
+        $fila = 1;
+
+        //Creo la hoja
+        $phpExcel = new Spreadsheet();
+        $phpExcel
+            ->getProperties()
+            ->setCreator("Magic Service")
+            ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
+            ->setTitle('Reporte de Estadisticas de vendedor')
+            ->setSubject('Reportes Magic Service')
+            ->setDescription('Reporte con datos de el vendedor en un rango de tiempo definido')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('Reportes');
+
+        $nombreDelDocumento = "MagicService - Reporte de estadisticas del vendedor.xlsx";
+
+        //Selecciono la pestaña
+        $hoja = $phpExcel->getActiveSheet();
+
+        $styleCabecera = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'FF8000',
+                ],
+                'endColor' => [
+                    'argb' => 'FF8000',
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleSubtitulo = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $styleSubtituloDerecha = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleTextoCentrado = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleCurrency = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleCurrencyBold = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleFila = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $currencyMask = new Currency(
+            '$',
+            2,
+            Currency::SYMBOL_WITH_SPACING,
+            Number::WITH_THOUSANDS_SEPARATOR,
+            Currency::TRAILING_SYMBOL,
+            
+        );
+
+        $phpExcel->getActiveSheet()->getStyle('A1:G1')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->mergeCells('A1:G1');
+
+        //COLUMNAS
+        foreach (range('A','G') as $col) {
+            $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        
+
+        //TITULO
+        $hoja->setCellValue('A'.$fila, "REPORTE DE ESTADÍSTICAS DE VENDEDOR");
+
+        $fila++;
+
+        //CABECERA
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        
+        $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+        
+        $hoja->setCellValue('B'.$fila, $datos['negocio'] == 1 ? 'MAGIC SERVICE' : 'KARANA');
+        $fila++;
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "DESDE:");
+        $hoja->setCellValue('B'.$fila, $datos['fecha_inicio']);
+        $fila++;
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+
+
+        $fila +=2;
+
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':G'.$fila)->applyFromArray($styleCabecera);
+        //Edito la info que va a ir en el archivo excel
+        $hoja->setCellValue('A'.$fila, "No.");
+        $hoja->setCellValue('B'.$fila, "FECHA");
+        $hoja->setCellValue('C'.$fila, "CLIENTE");
+        $hoja->setCellValue('D'.$fila, "VALOR TOTAL");
+        $hoja->setCellValue('E'.$fila, "CATEGORIA");
+        $hoja->setCellValue('F'.$fila, "VENDEDOR");
+        $hoja->setCellValue('G'.$fila, "VENTA EXTRA");
+
+        $fila++;
+        
+        //datos
+        if ($res) {
+            $num = 1;
+            $suma = 0;
+            foreach ($res as $key => $result) {
+                //echo '<pre>'.var_export($result, true).'</pre>';exit;
+                
+                $vendedor = $this->usuarioModel->_getNombreUsuario($result->vendedor);
+                $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
+                $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila.':G'.$fila)
+                    ->getBorders()
+                    ->getOutline()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+                $hoja->setCellValue('A'.$fila, $num);
+                $hoja->setCellValue('B'.$fila, $result->fecha);
+                $hoja->setCellValue('C'.$fila, $result->cliente);
+
+                $phpExcel->getActiveSheet()->getCell('D'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+                $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleCurrency);
+                $hoja->setCellValue('D'.$fila, number_format($result->total, 2, '.'));
+
+                $hoja->setCellValue('E'.$fila, 'CATEGORIA');
+                $hoja->setCellValue('F'.$fila, $vendedor);
+
+                $phpExcel->getActiveSheet()->getStyle('G'.$fila)->applyFromArray($styleTextoCentrado);
+                if ($result->venta_extra == 1) {
+                    $hoja->setCellValue('G'.$fila, 'SI');
+                } else {
+                    $hoja->setCellValue('G'.$fila, 'NO');
+                }
+                
+                $fila++;
+                $num++;
+                $suma += $result->total;
+            }
+            $phpExcel->getActiveSheet()->getStyle('C'.$fila)->applyFromArray($styleSubtituloDerecha);
+            $hoja->setCellValue('C'.$fila, 'TOTAL:');
+
+            $phpExcel->getActiveSheet()->getCell('D'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+            $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleCurrencyBold);
+            $hoja->setCellValue('D'.$fila, number_format($suma, 2, '.'));
+        }else{
+            $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
+            $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
+        }
+
+        
+
+        //Creo el writter y guardo la hoja
+        $writter = new XlsxWriter($phpExcel, 'Xlsx');
+        
+        //Cabeceras para descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
+        
+        $r = $writter->save('php://output');exit;
+        // if ($r) {
+        //     return redirect()->to('cargar_info_view');
+        // }else{
+        //     $error = 'Hubo un error u no se pudo descargar';
+        //     return redirect()->to('cargar_info_view');
+        // }        
+    }
+
+    public function reporteProcedenciasExcel(){
+
+        //DECLARO VARIABLES
+        $negocio = 1;
            
 
-    //     if ($this->request->getPostGet('negocio') != 0) {
-    //         $negocio = $this->request->getPostGet('negocio');
-    //     }
+        if ($this->request->getPostGet('negocio') != 0) {
+            $negocio = $this->request->getPostGet('negocio');
+        }
 
-    //     $datos = [
-    //         'negocio' => $negocio,
-    //         'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
-    //         'fecha_final' => $this->request->getPostGet('fecha_final'),
-    //         'sugest' => $this->request->getPostGet('sugest'),
-    //     ];
+        $datos = [
+            'negocio' => $negocio,
+            'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
+            'fecha_final' => $this->request->getPostGet('fecha_final'),
+            'sugest' => $this->request->getPostGet('sugest'),
+        ];
 
-    //     $res = $this->pedidoModel->_getPedidosRangoFechasProcedencias($datos['fecha_inicio'], $datos['fecha_final']);
+        $res = $this->pedidoModel->_getPedidosRangoFechasProcedencias($datos['fecha_inicio'], $datos['fecha_final']);
 
 
-    //     $fila = 1;
+        $fila = 1;
 
-    //     //Creo la hoja
-    //     $phpExcel = new Spreadsheet();
-    //     $phpExcel
-    //         ->getProperties()
-    //         ->setCreator("MYRP")
-    //         ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
-    //         ->setTitle('Reporte de Procedencias')
-    //         ->setSubject('Reportes Magic Service')
-    //         ->setDescription('Reporte con datos de las procedencias')
-    //         ->setKeywords('etiquetas o palabras clave separadas por espacios')
-    //         ->setCategory('Reportes');
+        //Creo la hoja
+        $phpExcel = new Spreadsheet();
+        $phpExcel
+            ->getProperties()
+            ->setCreator("Magic Service")
+            ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
+            ->setTitle('Reporte de Procedencias')
+            ->setSubject('Reportes Magic Service')
+            ->setDescription('Reporte con datos de las procedencias')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('Reportes');
 
-    //     $nombreDelDocumento = "MagicService - Reporte de Procedencias.xlsx";
+        $nombreDelDocumento = "MagicService - Reporte de Procedencias.xlsx";
 
-    //     //Selecciono la pestaña
-    //     $hoja = $phpExcel->getActiveSheet();
+        //Selecciono la pestaña
+        $hoja = $phpExcel->getActiveSheet();
 
-    //     $styleCabecera = [
-    //         'font' => [
-    //             'bold' => true,
-    //         ],
-    //         'fill' => [
-    //             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
-    //             'rotation' => 90,
-    //             'startColor' => [
-    //                 'argb' => 'FF8000',
-    //             ],
-    //             'endColor' => [
-    //                 'argb' => 'FF8000',
-    //             ],
-    //         ],
-    //         'alignment' => [
-    //             'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-    //         ]
-    //     ];
+        $styleCabecera = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'FF8000',
+                ],
+                'endColor' => [
+                    'argb' => 'FF8000',
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
 
-    //     $styleSubtitulo = [
-    //         'font' => [
-    //             'bold' => true,
-    //         ],
-    //         'alignment' => [
-    //             'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
-    //         ]
-    //     ];
+        $styleSubtitulo = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
 
-    //     $styleTextoCentrado = [
-    //         'font' => [
-    //             'bold' => false,
-    //         ],
-    //         'alignment' => [
-    //             'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-    //         ]
-    //     ];
+        $styleTextoCentrado = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
 
-    //     $styleCurrency = [
-    //         'font' => [
-    //             'bold' => false,
-    //         ],
-    //         'alignment' => [
-    //             'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
-    //         ]
-    //     ];
+        $styleCurrency = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
 
-    //     $styleFila = [
-    //         'font' => [
-    //             'bold' => false,
-    //         ],
-    //         'alignment' => [
-    //             'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
-    //         ]
-    //     ];
+        $styleFila = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
 
-    //     $currencyMask = new Currency(
-    //         '$',
-    //         2,
-    //         Currency::SYMBOL_WITH_SPACING,
-    //         Number::WITH_THOUSANDS_SEPARATOR,
-    //         Currency::TRAILING_SYMBOL,
+        $currencyMask = new Currency(
+            '$',
+            2,
+            Currency::SYMBOL_WITH_SPACING,
+            Number::WITH_THOUSANDS_SEPARATOR,
+            Currency::TRAILING_SYMBOL,
             
-    //     );
+        );
 
-    //     $phpExcel->getActiveSheet()->getStyle('A1:E1')->applyFromArray($styleCabecera);
-    //     $phpExcel->getActiveSheet()->mergeCells('A1:E1');
+        $phpExcel->getActiveSheet()->getStyle('A1:E1')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->mergeCells('A1:E1');
 
-    //     //COLUMNAS
-    //     foreach (range('A','G') as $col) {
-    //         $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
-    //     }
+        //COLUMNAS
+        foreach (range('A','G') as $col) {
+            $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
         
 
-    //     //TITULO
-    //     $hoja->setCellValue('A'.$fila, "REPORTE DE PROCEDENCIAS");
+        //TITULO
+        $hoja->setCellValue('A'.$fila, "REPORTE DE PROCEDENCIAS");
 
-    //     $fila++;
+        $fila++;
 
-    //     //CABECERA
-    //     $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
-    //     $hoja->setCellValue('A'.$fila, "NEGOCIO:");
-    //     $hoja->setCellValue('B'.$fila, $datos['negocio']);
-    //     $fila++;
-    //     $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
-    //     $hoja->setCellValue('A'.$fila, "DESDE:");
-    //     $hoja->setCellValue('B'.$fila, $datos['fecha_inicio']);
-    //     $fila++;
-    //     $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
-    //     $hoja->setCellValue('A'.$fila, "HASTA:");
-    //     $hoja->setCellValue('B'.$fila, $datos['fecha_final']);
+        //CABECERA
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+        $hoja->setCellValue('B'.$fila, $datos['negocio']);
+        $fila++;
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "DESDE:");
+        $hoja->setCellValue('B'.$fila, $datos['fecha_inicio']);
+        $fila++;
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "HASTA:");
+        $hoja->setCellValue('B'.$fila, $datos['fecha_final']);
 
-    //     $fila +=2;
+        $fila +=2;
 
-    //     $phpExcel->getActiveSheet()->getStyle('A'.$fila.':E'.$fila)->applyFromArray($styleCabecera);
-    //     //Edito la info que va a ir en el archivo excel
-    //     $hoja->setCellValue('A'.$fila, "FECHA");
-    //     $hoja->setCellValue('B'.$fila, "CLIENTE");
-    //     $hoja->setCellValue('C'.$fila, "VALOR TOTAL");
-    //     $hoja->setCellValue('D'.$fila, "PROCEDENCIA");
-    //     $hoja->setCellValue('E'.$fila, "NEGOCIO");
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':E'.$fila)->applyFromArray($styleCabecera);
+        //Edito la info que va a ir en el archivo excel
+        $hoja->setCellValue('A'.$fila, "FECHA");
+        $hoja->setCellValue('B'.$fila, "CLIENTE");
+        $hoja->setCellValue('C'.$fila, "VALOR TOTAL");
+        $hoja->setCellValue('D'.$fila, "PROCEDENCIA");
+        $hoja->setCellValue('E'.$fila, "NEGOCIO");
 
-    //     $fila++;
+        $fila++;
         
-    //     //datos
-    //     if ($res) {
-    //         foreach ($res as $key => $result) {
-    //             $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
-    //             $hoja->setCellValue('A'.$fila, $result->fecha);
-    //             $hoja->setCellValue('B'.$fila, $result->cliente);
+        //datos
+        if ($res) {
+            foreach ($res as $key => $result) {
+                $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, $result->fecha);
+                $hoja->setCellValue('B'.$fila, $result->cliente);
                 
-    //             $phpExcel->getActiveSheet()->getCell('C'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-    //             $phpExcel->getActiveSheet()->getStyle('C'.$fila)->applyFromArray($styleCurrency);
-    //             $hoja->setCellValue('C'.$fila, number_format($result->total, 2, '.'));
+                $phpExcel->getActiveSheet()->getCell('C'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+                $phpExcel->getActiveSheet()->getStyle('C'.$fila)->applyFromArray($styleCurrency);
+                $hoja->setCellValue('C'.$fila, number_format($result->total, 2, '.'));
 
-    //             $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleTextoCentrado);
-    //             if ($result->procedencia == "Seleccionar procedencia") {
-    //                 $hoja->setCellValue('D'.$fila, 'Indeterminada');
-    //             } else {
-    //                 $hoja->setCellValue('D'.$fila, $result->procedencia);
-    //             }
+                $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleTextoCentrado);
+                if ($result->procedencia == "Seleccionar procedencia") {
+                    $hoja->setCellValue('D'.$fila, 'Indeterminada');
+                } else {
+                    $hoja->setCellValue('D'.$fila, $result->procedencia);
+                }
 
-    //             $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleTextoCentrado);
-    //             $hoja->setCellValue('E'.$fila, $result->negocio);
-    //             $fila++;
-    //         }
-    //     }else{
+                $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleTextoCentrado);
+                $hoja->setCellValue('E'.$fila, $result->negocio);
+                $fila++;
+            }
+        }else{
 
-    //     }
+        }
 
-    //     //Creo el writter y guardo la hoja
+        //Creo el writter y guardo la hoja
         
-    //     $writter = new XlsxWriter($phpExcel, 'Xlsx');
+        $writter = new XlsxWriter($phpExcel, 'Xlsx');
         
-    //     //Cabeceras para descarga
-    //     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    //     header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
-    //     header('Cache-Control: max-age=0');
+        //Cabeceras para descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
         
-    //     $r = $writter->save('php://output');exit;
-    //     // if ($r) {
-    //     //     return redirect()->to('cargar_info_view');
-    //     // }else{
-    //     //     $error = 'Hubo un error u no se pudo descargar';
-    //     //     return redirect()->to('cargar_info_view');
-    //     // }        
-    // }
+        $r = $writter->save('php://output');exit;
+        // if ($r) {
+        //     return redirect()->to('cargar_info_view');
+        // }else{
+        //     $error = 'Hubo un error u no se pudo descargar';
+        //     return redirect()->to('cargar_info_view');
+        // }        
+    }
 
     /**
      *
@@ -721,84 +1006,6 @@ class Reportes extends BaseController {
         }
     
         //Creo el writter y guardo la hoja
-        $writter = new XlsxWriter($phpExcel, 'Xlsx');
-        
-        //Cabeceras para descarga
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
-        header('Cache-Control: max-age=0');
-        
-        $r = $writter->save('php://output');exit;
-        // if ($r) {
-        //     return redirect()->to('cargar_info_view');
-        // }else{
-        //     $error = 'Hubo un error u no se pudo descargar';
-        //     return redirect()->to('cargar_info_view');
-        // }        
-    }
-
-
-    public function pruebaExcel(){
-
-        $fila = 2;
-
-        //Creo la hoja
-        $phpExcel = new Spreadsheet();
-        $phpExcel
-            ->getProperties()
-            ->setCreator("MYRP")
-            ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
-            ->setTitle('Prod 3 - Registros')
-            ->setSubject('Reportes MYRP')
-            ->setDescription('Reporte con los registros del Producto 3')
-            ->setKeywords('etiquetas o palabras clave separadas por espacios')
-            ->setCategory('Registros');
-
-        $nombreDelDocumento = "Prod 3 - Registros.xlsx";
-
-        //Selecciono la pestaña
-        $hoja = $phpExcel->getActiveSheet();
-
-        $styleCabecera = [
-            'font' => [
-                'bold' => true,
-            ],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-            ]
-        ];
-
-        $styleFila = [
-            'font' => [
-                'bold' => false,
-            ],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
-            ]
-        ];
-
-        $phpExcel->getActiveSheet()->getStyle('A1:N1')->applyFromArray($styleCabecera);
-
-        //Edito la info que va a ir en el archivo excel
-        $hoja->setCellValue('A1', "AMIE");
-        $hoja->setCellValue('B1', "CENTRO EDUCATIVO");
-        $hoja->setCellValue('C1', "CIUDAD");
-        $hoja->setCellValue('D1', "PROVINCIA");
-        $hoja->setCellValue('E1', "NOMBRE");
-        $hoja->setCellValue('F1', "DOCUMENTO");
-        $hoja->setCellValue('G1', "NACIONALIDAD");
-        $hoja->setCellValue('H1', "ETNIA");
-        $hoja->setCellValue('I1', "EDAD");
-        $hoja->setCellValue('J1', "GÉNERO");
-        $hoja->setCellValue('K1', "DISCAPACIDAD");
-        $hoja->setCellValue('L1', "TIPO DISCAPACIDAD");
-        $hoja->setCellValue('M1', "TELEFONO");
-        $hoja->setCellValue('N1', "EMAIL");
-
-       
-
-        //Creo el writter y guardo la hoja
-        
         $writter = new XlsxWriter($phpExcel, 'Xlsx');
         
         //Cabeceras para descarga

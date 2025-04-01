@@ -9,13 +9,13 @@
     if ($session->ventas == 1) {
       echo '
         <li class="nav-item">
-        <a href="#" class="nav-link" id="btnVentas">
-          <i class="fa-brands fa-shopify menu-icon"></i>
-          <p>
-            Ventas
-            <i class="right fas fa-angle-left"></i>
-          </p>
-        </a>
+          <a href="#" class="nav-link" id="btnVentas">
+            <i class="fa-brands fa-shopify menu-icon"></i>
+            <p>
+              Ventas
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
         <ul class="nav nav-treeview">
           <li class="nav-item subItem">
             <a href="'.base_url().'ventas" class="nav-link" id="btn-pedido-nuevo" data-id="'.session('id').'">
@@ -208,6 +208,18 @@
             <a href="'.base_url().'reporte-procedencias" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte de Procedencias</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'reporte-estadisticas-vendedor" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Reporte Estadísticas de vendedor</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'reporte-master-ingresos" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Reporte Master de Ingresos</p>
             </a>
           </li>
           <li class="nav-item subItem">

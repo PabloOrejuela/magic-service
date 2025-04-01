@@ -174,6 +174,10 @@ $routes->get('reporte_diario_ventas', 'Reportes::frmReporteDiarioVentas');
 $routes->post('reporte_diario_ventas', 'Reportes::reporteDiarioVentas');
 $routes->post('reporte_diario_ventas_excel', 'Reportes::reporteDiarioVentasExcel');
 
+$routes->get('reporte-estadisticas-vendedor', 'Reportes::frmReporteEstadisticasVendedor');
+$routes->post('reporte-estadisticas-vendedor', 'Reportes::reporteEstadisticasVendedor');
+$routes->post('reporte-estadisticas-vendedor-excel', 'Reportes::reporteEstadisticasVendedorExcel');
+
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
 $routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');
 

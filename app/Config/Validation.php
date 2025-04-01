@@ -337,4 +337,20 @@ class Validation extends BaseConfig
             'required' => 'El campo "ID" es obligatorio',
         ],
     ];
+
+    public $reporteEstadisticasVendedor = [
+        'vendedor'  => 'required|greater_than[0]',
+        'negocio'  => 'required|greater_than[0]',
+    ];
+
+    public $reporteEstadisticasVendedor_errors = [
+        'vendedor' => [
+            'required' => 'El campo "Vendedor" es obligatorio',
+            'greater_than' => 'El campo "Vendedor" es obligatorio',
+        ],
+        'negocio' => [
+            'required' => 'El campo "Negocio" es obligatorio',
+            'greater_than' => 'El campo "Negocio" es obligatorio',
+        ],
+    ];
 }

@@ -221,6 +221,52 @@ class Tickets extends BaseController {
 
                 //Campo Mensaje fresas
 
+                //Campo Observación del arreglo
+                $numCaracterObservaArreglo = strlen($arreglo->observacion);
+                if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
+                    $fontSizeObservaArreglo = 0.8;
+                } else if($numCaracterObservaArreglo >= 150){
+                    $fontSizeObservaArreglo = 0.7;
+                }else{
+                    $fontSizeObservaArreglo = 0.9;
+                }
+
+                $html .= '<tr><td></td><td></td></tr>';
+                $html .= '<tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >Producto: </td>
+                            <td 
+                                style="font-weight: bold;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >'.$arreglo->producto.'</td>
+                        </tr>
+                        <tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;
+                                text-align: justify;"
+                            >Observación del arreglo: </td>
+                            <td 
+                                style="font-weight: normal;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: '.$fontSizeObservaArreglo.'em;
+                                text-align: justify;"
+                            >'.$arreglo->observacion.'</td>
+                        </tr>';
+
                 if ($atributos) {
                     //Form Attr extra Frutales y florales
 
@@ -234,54 +280,7 @@ class Tickets extends BaseController {
                         $fontSizeMensajeFresas = 0.9;
                     }
 
-                    //Campo Observación del arreglo
-                    $numCaracterObservaArreglo = strlen($arreglo->observacion);
-                    if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
-                        $fontSizeObservaArreglo = 0.8;
-                    } else if($numCaracterObservaArreglo >= 150){
-                        $fontSizeObservaArreglo = 0.7;
-                    }else{
-                        $fontSizeObservaArreglo = 0.9;
-                    }
-
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación del arreglo: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: '.$fontSizeObservaArreglo.'em;
-                                    text-align: justify;"
-                                >'.$arreglo->observacion.'</td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -365,44 +364,8 @@ class Tickets extends BaseController {
                     ';
                     
                 }else{
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación del arreglo: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 1em;
-                                    text-align: justify;"
-                                ></td>
-                            </tr>
-                            <tr>
+
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -489,11 +452,9 @@ class Tickets extends BaseController {
             } else if($arreglo->idcategoria == 3) {
                 //Form Attr Desayunos
                 $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
-                
-                if ($atributos) {
-                    
 
-                    //Campo Observación del arreglo
+                //Campo Observación del arreglo
+                if ($atributos) {
                     $numCaracterComplementos = strlen($atributos->complementos);
                     if ($numCaracterComplementos >= 80 && $numCaracterComplementos < 150) {
                         $fontSizeComplementos = 0.7;
@@ -513,44 +474,53 @@ class Tickets extends BaseController {
                         $fontSizeMensajeFresas = 0.9;
                     }
 
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación del desayuno: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: '.$fontSizeComplementos.'em;
-                                    text-align: justify;"
-                                >'.$arreglo->observacion.'</td>
-                            </tr>
-                            <tr>
+                }else{
+                    $fontSizeComplementos = 0.9;
+                    $fontSizeMensajeFresas = 0.9;
+                }
+
+                
+                $html .= '<tr><td></td><td></td></tr>';
+                $html .= '
+                    
+                        <tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >Producto: </td>
+                            <td 
+                                style="font-weight: bold;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >'.$arreglo->producto.'</td>
+                        </tr>
+                        <tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;
+                                text-align: justify;"
+                            >Observación del desayuno: </td>
+                            <td 
+                                style="font-weight: normal;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: '.$fontSizeComplementos.'em;
+                                text-align: justify;"
+                            >'.$arreglo->observacion.'</td>
+                        </tr>';
+                
+                if ($atributos) {
+
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -684,44 +654,7 @@ class Tickets extends BaseController {
                     ';
                     
                 }else{
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación del desayuno: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 1em;
-                                    text-align: justify;"
-                                ></td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -858,18 +791,54 @@ class Tickets extends BaseController {
                 //Form Attr Magic Box
                 $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
 
+                //Campo Observación del arreglo
+                $numCaracterObservaArreglo = strlen($arreglo->observacion);
+                if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
+                    $fontSizeObservaArreglo = 0.8;
+                } else if($numCaracterObservaArreglo >= 150){
+                    $fontSizeObservaArreglo = 0.7;
+                }else{
+                    $fontSizeObservaArreglo = 0.9;
+                }
+
+                $html .= '<tr><td></td><td></td></tr>';
+                $html .= '<tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >Producto: </td>
+                            <td 
+                                style="font-weight: bold;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >'.$arreglo->producto.'</td>
+                        </tr>
+                        <tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;
+                                text-align: justify;"
+                            >Observación de la Magic Box: </td>
+                            <td 
+                                style="font-weight: normal;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: '.$fontSizeObservaArreglo.'em;
+                                text-align: justify;"
+                            >'.$arreglo->observacion.'</td>
+                        </tr>';
+
                 if ($atributos) {
                     //Form Attr extra Frutales y florales
-
-                    //Campo Observación del arreglo
-                    $numCaracterObservaArreglo = strlen($arreglo->observacion);
-                    if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
-                        $fontSizeObservaArreglo = 0.8;
-                    } else if($numCaracterObservaArreglo >= 150){
-                        $fontSizeObservaArreglo = 0.7;
-                    }else{
-                        $fontSizeObservaArreglo = 0.9;
-                    }
 
                     //Campo Mensaje fresas
                     $numCaracterMensajeFresas = strlen($atributos->mensaje_fresas);
@@ -881,44 +850,7 @@ class Tickets extends BaseController {
                         $fontSizeMensajeFresas = 0.9;
                     }
 
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación de la Magic Box: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: '.$fontSizeObservaArreglo.'em;
-                                    text-align: justify;"
-                                >'.$arreglo->observacion.'</td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -1029,49 +961,10 @@ class Tickets extends BaseController {
                                     height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->fotos.'</td>
-                            </tr>
-                        
-                    ';
+                            </tr>';
                     
                 }else{
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación de la Magic Box: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 1em;
-                                    text-align: justify;"
-                                ></td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -1182,64 +1075,62 @@ class Tickets extends BaseController {
                                     height: auto;
                                     font-size: 0.8em;"
                                 ></td>
-                            </tr>
-                        
-                    ';
+                            </tr>';
                 }
             } else if($arreglo->idcategoria == 5) {
-                //Form Attr Magic Box
+                //Form Attr Bocaditos
                 $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
+
+                //Campo Observación del arreglo
+                $numCaracterObservaArreglo = strlen($arreglo->observacion);
+                if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
+                    $fontSizeObservaArreglo = 0.8;
+                } else if($numCaracterObservaArreglo >= 150){
+                    $fontSizeObservaArreglo = 0.7;
+                }else{
+                    $fontSizeObservaArreglo = 0.9;
+                }
+
+                $html .= '<tr><td></td><td></td></tr>';
+                $html .= '<tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >Producto: </td>
+                            <td 
+                                style="font-weight: bold;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >'.$arreglo->producto.'</td>
+                        </tr>
+                        <tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;
+                                text-align: justify;"
+                            >Observación de Bocaditos: </td>
+                            <td 
+                                style="font-weight: normal;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: '.$fontSizeObservaArreglo.'em;
+                                text-align: justify;"
+                            >'.$arreglo->observacion.'</td>
+                        </tr>';
+
                 if ($atributos) {
                     //Form Bocaditos
 
-                    //Campo Observación del arreglo
-                    $numCaracterObservaArreglo = strlen($arreglo->observacion);
-                    if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
-                        $fontSizeObservaArreglo = 0.8;
-                    } else if($numCaracterObservaArreglo >= 150){
-                        $fontSizeObservaArreglo = 0.7;
-                    }else{
-                        $fontSizeObservaArreglo = 0.9;
-                    }
-
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación de Bocaditos: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: '.$fontSizeObservaArreglo.'em;
-                                    text-align: justify;"
-                                >'.$arreglo->observacion.'</td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -1286,49 +1177,10 @@ class Tickets extends BaseController {
                                     height: auto;
                                     font-size: 0.8em;"
                                 >'.$atributos->opciones.'</td>
-                            </tr>
-                        
-                    ';
+                            </tr>';
                     
                 }else{
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;
-                                    text-align: justify;"
-                                >Observación de Bocaditos: </td>
-                                <td 
-                                    style="font-weight: normal;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 1em;
-                                    text-align: justify;"
-                                ></td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -1375,48 +1227,43 @@ class Tickets extends BaseController {
                                     height: auto;
                                     font-size: 0.8em;"
                                 ></td>
-                            </tr>
-                        
-                    ';
+                            </tr>';
                 }
             }else if($arreglo->idcategoria == 6){
                 //Form Attr Complementos
                 $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
 
-                //echo '<pre>'.var_export($atributos, true).'</pre>';exit;
+                //Campo Observación del arreglo
+                $numCaracterObservaArreglo = strlen($arreglo->observacion);
+                if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
+                    $fontSizeObservaArreglo = 0.8;
+                } else if($numCaracterObservaArreglo >= 150){
+                    $fontSizeObservaArreglo = 0.7;
+                }else{
+                    $fontSizeObservaArreglo = 0.9;
+                }
+
+                $html .= '<tr><td></td><td></td></tr>';
+                $html .= '<tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >Producto: </td>
+                            <td 
+                                style="font-weight: bold;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >'.$arreglo->producto.'</td>
+                        </tr>';
+
                 if ($atributos) {
                     //Form Bocaditos
-
-                    //Campo Observación del arreglo
-                    $numCaracterObservaArreglo = strlen($arreglo->observacion);
-                    if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
-                        $fontSizeObservaArreglo = 0.8;
-                    } else if($numCaracterObservaArreglo >= 150){
-                        $fontSizeObservaArreglo = 0.7;
-                    }else{
-                        $fontSizeObservaArreglo = 0.9;
-                    }
-
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -1434,26 +1281,7 @@ class Tickets extends BaseController {
                             </tr>
                     ';
                 }else{
-                    $html .= '<tr><td></td><td></td></tr>';
-                    $html .= '
-                        
-                            <tr>
-                                <td 
-                                    style="font-weight:bold;
-                                    border: 0.5px solid #000;
-                                    width:35%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >Producto: </td>
-                                <td 
-                                    style="font-weight: bold;
-                                    border: 0.5px solid #000;
-                                    width:65%;
-                                    height: auto;
-                                    font-size: 0.8em;"
-                                >'.$arreglo->producto.'</td>
-                            </tr>
-                            <tr>
+                    $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
                                     border: 0.5px solid #000;
@@ -1478,28 +1306,4 @@ class Tickets extends BaseController {
         $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y='1', $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
         $pdf->Output('Ticket.pdf');    // send the file inline to the browser (default).
     }
-
-    // function ticketPdf2($id, $cod_pedido){
-    //     $rows = 3;
-    //     $content_line = array("1", "2", "3", "4");
-    //     //$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-    //     //$tcpdf = new TCPDF;
-    //     //IMPORTANTE ESTA LÍNEA
-    //     $this->response->setHeader('Content-Type', 'application/pdf'); 
-
-    //     $pdf->AddPage('L', array(57,32));
-    //     $pdf->SetFont('dejavusans');
-    //     $pdf->SetAutoPageBreak(true, 0);
-    //     $html ="
-    //             <table class='domi'>
-    //                 <tbody >";
-    //                 for($i=0; $i<$rows; $i++){
-    //                     $style=' style="font-size:12px"';
-    //                     "<tr><td".$style."><b>".$content_line[$i]."</b></td></tr>";
-    //                 }
-    //                 "</tbody>
-    //             </table>";
-    //     $pdf->writeHTMLCell($w=48, $h=2, $x='1', $y='1', $html, $border=1, $ln=1, $fill=0, $reseth=false, $align='C', $autopadding=true);
-    //     $pdf->Output("Ticket.pdf", 'I');
-    // }
 }
