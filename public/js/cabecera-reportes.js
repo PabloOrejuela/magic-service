@@ -1,20 +1,36 @@
 let selectSugest = document.getElementById('sugest')
 let fechaInicio = document.getElementById('fecha_inicio')
 let fechaFinal = document.getElementById('fecha_final')
+let btnReporteProcedenciaExcel = document.getElementById('btnGeneraReporteExcel')
 let fecha = new Date();
 
+
 const meses = new Array ("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+const diasAnio = {
+    "1" : 31, 
+    "2" : 28, 
+    "3" : 31, 
+    "4" : 30, 
+    "5" : 31, 
+    "6" : 30, 
+    "7": 31, 
+    "8" : 31, 
+    "9" : 30, 
+    "10" : 31, 
+    "11": 30, 
+    "12" : 31
+}
 const diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+let mesActual = fecha.getMonth()+1
+let anioActual = fecha.getFullYear()
 
-const cadenafecha = fecha.getFullYear() + '-' + ((fecha.getMonth()+1) > 9 ? (fecha.getMonth()+1) : '0'+(fecha.getMonth()+1))
-
-
+let cadenafecha = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+mesActual)
 
 /*
  *  Detecta el index y modifica las fechas
 */
 selectSugest.addEventListener('change', function(e) {
-
+    
     if (selectSugest.selectedIndex == 1) {
 
         //día actual
@@ -28,25 +44,36 @@ selectSugest.addEventListener('change', function(e) {
         fechaFinal.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
     }else if(selectSugest.selectedIndex == 3){
 
-        let inicioSemana = 0 
-        let finSemana = 0
-
         if (fecha.getDay() == 1) {
             inicioSemana = fecha.getDate()
             finSemana = fecha.getDate() + 6
+
+            //Semana actual
+            fechaInicio.value = cadenafecha + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
+            fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
         }else{
-            inicioSemana = (fecha.getDate() - (fecha.getDay() - 1))
-            finSemana = (fecha.getDate() + (7 - fecha.getDay()))
+            let diaActual = fecha.getDate()
+            let diaSemana = fecha.getDay()
+
+            if (diaActual < 7) {
+                inicioSemana = (diaActual - (diaSemana - 1))
+                cadenafechaInicio = anioActual + '-' + (mesActual-1 > 9 ? mesActual-1 : '0'+(parseInt(mesActual)-1))
+
+                for (let i = 0; i <= 6; i++) {
+                    if (inicioSemana == i) {
+                        inicioSemana = diasAnio[mesActual-1] - i
+                        finSemana = (fecha.getDate() + (7 - fecha.getDay()))
+    
+                        fechaInicio.value = cadenafechaInicio + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
+                        fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
+                    }
+                }
+            }
         }
-
-        //Semana actual
-        fechaInicio.value = cadenafecha + '-' + inicioSemana.toString()
-        fechaFinal.value = cadenafecha + '-' + finSemana.toString()
-
     }
 
-
 })
+
 
 const alertaMensaje = (msg, time, icon) => {
     const toast = Swal.mixin({

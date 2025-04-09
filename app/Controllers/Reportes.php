@@ -75,23 +75,18 @@ class Reportes extends BaseController {
 
             $data['sugest'] = $this->sugest;
             $data['negocios'] = $this->negocioModel->findAll();
-
+            
             //DECLARO VARIABLES
-            $negocio = 1;
-           
-
-            if ($this->request->getPostGet('negocio') != 0) {
-                $negocio = $this->request->getPostGet('negocio');
-            }
             
             $datos = [
-                'negocio' => $negocio,
+                'negocio' => $this->request->getPostGet('negocio'),
                 'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
                 'fecha_final' => $this->request->getPostGet('fecha_final'),
                 'sugest' => $this->request->getPostGet('sugest'),
             ];
 
-            $data['res'] = $this->pedidoModel->_getPedidosRangoFechasProcedencias($datos['fecha_inicio'], $datos['fecha_final']);
+            $data['res'] = $this->pedidoModel->_getPedidosRangoFechasProcedencias($datos['fecha_inicio'], $datos['fecha_final'], $datos['negocio']);
+            
             $data['datos'] = $datos;
             //echo '<pre>'.var_export($data['res']->fecha , true).'</pre>';exit;
 
@@ -114,22 +109,13 @@ class Reportes extends BaseController {
 
             $data['sugest'] = $this->sugest;
             $data['negocios'] = $this->negocioModel->findAll();
-
-            //DECLARO VARIABLES
-            $negocio = 1;
-           
-
-            if ($this->request->getPostGet('negocio') != 0) {
-                $negocio = $this->request->getPostGet('negocio');
-            }
             
             $datos = [
-                'negocio' => $negocio,
+                'negocio' => $this->request->getPostGet('negocio'),
                 'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
-                'sugest' => $this->request->getPostGet('sugest'),
             ];
 
-            $data['res'] = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio']);
+            $data['res'] = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['negocio']);
             $data['datos'] = $datos;
 
             $data['title']='Reportes';
@@ -205,20 +191,12 @@ class Reportes extends BaseController {
 
     public function reporteDiarioVentasExcel(){
 
-        //DECLARO VARIABLES
-        $negocio = 1;
-
-        if ($this->request->getPostGet('negocio') != 0) {
-            $negocio = $this->request->getPostGet('negocio');
-        }
-
         $datos = [
-            'negocio' => $negocio,
+            'negocio' => $this->request->getPostGet('negocio'),
             'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
-            'sugest' => $this->request->getPostGet('sugest'),
         ];
 
-        $res = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio']);
+        $res = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['negocio']);
 
         //echo '<pre>'.var_export($res, true).'</pre>';exit;
 
@@ -341,8 +319,22 @@ class Reportes extends BaseController {
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         
         $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+
+        if ($datos['negocio'] == 0) {
+
+            $hoja->setCellValue('B'.$fila,'TODOS');
+
+        } else if ($datos['negocio'] == 1){
+
+            $hoja->setCellValue('B'.$fila,'MAGIC SERVICE');
+
+        } else if ($datos['negocio'] ==2){
+
+            $hoja->setCellValue('B'.$fila,'KARANA');
+
+        }
         
-        $hoja->setCellValue('B'.$fila, $datos['negocio'] == 1 ? 'MAGIC SERVICE' : 'KARANA');
+        
         $fila++;
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('A'.$fila, "DESDE:");
@@ -360,7 +352,7 @@ class Reportes extends BaseController {
         $hoja->setCellValue('C'.$fila, "CLIENTE");
         $hoja->setCellValue('D'.$fila, "BANCO/PLATAFORMA");
         $hoja->setCellValue('E'.$fila, "VALOR TOTAL");
-        $hoja->setCellValue('F'.$fila, "CATEGORIA");
+        $hoja->setCellValue('F'.$fila, "NEGOCIO");
         $hoja->setCellValue('G'.$fila, "VENDEDOR");
         $hoja->setCellValue('H'.$fila, "VENTA EXTRA");
         $hoja->setCellValue('I'.$fila, "OBSERVACION PEDIDO");
@@ -398,7 +390,7 @@ class Reportes extends BaseController {
                 $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleCurrency);
                 $hoja->setCellValue('E'.$fila, number_format($result->total, 2, '.'));
 
-                $hoja->setCellValue('F'.$fila, 'CATEGORIA');
+                $hoja->setCellValue('F'.$fila, $result->negocio);
                 $hoja->setCellValue('G'.$fila, $vendedor);
 
                 $phpExcel->getActiveSheet()->getStyle('H'.$fila)->applyFromArray($styleTextoCentrado);
@@ -679,23 +671,19 @@ class Reportes extends BaseController {
     }
 
     public function reporteProcedenciasExcel(){
-
+        
         //DECLARO VARIABLES
-        $negocio = 1;
-           
-
-        if ($this->request->getPostGet('negocio') != 0) {
-            $negocio = $this->request->getPostGet('negocio');
-        }
 
         $datos = [
-            'negocio' => $negocio,
+            'negocio' => $this->request->getPostGet('negocio'),
             'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
             'fecha_final' => $this->request->getPostGet('fecha_final'),
             'sugest' => $this->request->getPostGet('sugest'),
         ];
 
-        $res = $this->pedidoModel->_getPedidosRangoFechasProcedencias($datos['fecha_inicio'], $datos['fecha_final']);
+        $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
+        
+        $res = $this->pedidoModel->_getPedidosRangoFechasProcedencias($datos['fecha_inicio'], $datos['fecha_final'], $datos['negocio']);
 
 
         $fila = 1;
@@ -713,7 +701,7 @@ class Reportes extends BaseController {
             ->setCategory('Reportes');
 
         $nombreDelDocumento = "MagicService - Reporte de Procedencias.xlsx";
-
+        
         //Selecciono la pestaña
         $hoja = $phpExcel->getActiveSheet();
 
@@ -798,7 +786,12 @@ class Reportes extends BaseController {
         //CABECERA
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('A'.$fila, "NEGOCIO:");
-        $hoja->setCellValue('B'.$fila, $datos['negocio']);
+        if ($datosNegocio) {
+            $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
+        }else{
+            $hoja->setCellValue('B'.$fila, 'TODOS');
+        }
+        
         $fila++;
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('A'.$fila, "DESDE:");
@@ -851,9 +844,11 @@ class Reportes extends BaseController {
         $writter = new XlsxWriter($phpExcel, 'Xlsx');
         
         //Cabeceras para descarga
+        header('Content-Disposition: attachment;filename="'.urlencode($nombreDelDocumento).'"');
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
         header('Cache-Control: max-age=0');
+        
         
         $r = $writter->save('php://output');exit;
         // if ($r) {

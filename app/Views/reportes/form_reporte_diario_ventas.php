@@ -21,7 +21,7 @@
                                         id="negocio" 
                                         name="negocio" 
                                     >
-                                        <option value="0" selected>--Opciones--</option>
+                                    <option value="0" selected>-- Mostrar todos --</option>
                                         <?php
                                             if (isset($negocios)) {
                                                 foreach ($negocios as $key => $negocio) {
@@ -38,7 +38,7 @@
                                         class="form-control text" 
                                         id="fecha_inicio" 
                                         name="fecha_inicio" 
-                                        value="<?= set_value('fecha_inicio'); ?>" 
+                                        value="<?= date("Y-m-d");?>" 
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
@@ -57,5 +57,5 @@
     </div>
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= site_url(); ?>public/js/frm-reporte-diario-ventas.js"></script>
+<script src="<?= site_url(); ?>public/js/cabecera-reportes.js"></script>
 

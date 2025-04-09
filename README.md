@@ -1,6 +1,8 @@
 <h3>Cambios</h3>
 <h5>Reportes</h5>
 <ul>
+    <li>En reporte de Control Diario de Ventas ahora ya muestra todos cuando no se selecciona el negocio en la cabecera del reporte</li>
+    <li>En reporte de Control Diario de Ventas se cambió la columna categoría por negocio</li>
     <li>Reporte de estadísticas por vendedor</li>
     <li>Se optimizó el código del controlador Tickets</li>
     <li>Reporte de procedencias</li>

@@ -95,7 +95,7 @@ class PedidoModel extends Model {
         return $result;
     }
 
-    function _getPedidosRangoFechasProcedencias($fechaInicio, $fechaFinal){
+    function _getPedidosRangoFechasProcedencias($fechaInicio, $fechaFinal, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio');
@@ -104,8 +104,14 @@ class PedidoModel extends Model {
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
         $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
         $builder->where($this->table.'.estado', 1);
-        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
-        $builder->orderBy('orden', 'asc');
+
+        //Si se ha seleccionado un negocio
+        if ($negocio != 0) {
+            $builder->where($this->table.'.idnegocio', $negocio);
+        }
+        
+        $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('fecha', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -164,14 +170,20 @@ class PedidoModel extends Model {
         return $result;
     }
 
-    function _getPedidosReporteDiario($fecha){
+    function _getPedidosReporteDiario($fecha, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
         $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
+
+        //Si se ha seleccionado un negocio
+        if ($negocio != 0) {
+            $builder->where($this->table.'.idnegocio', $negocio);
+        }
+
         $builder->where($this->table.'.estado', 1);
         $builder->where('fecha', $fecha);
         $builder->orderBy('orden', 'asc');

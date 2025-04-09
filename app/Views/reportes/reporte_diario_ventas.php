@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'reporte_diario_ventas_excel';?>" method="post">
+                    <form action="<?= site_url().'reporte_diario_ventas';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-10">
                                 <div class="form-group col-md-3">
@@ -21,7 +21,7 @@
                                         id="negocio" 
                                         name="negocio" 
                                     >
-                                        <option value="0" selected>--Opciones--</option>
+                                    <option value="0" selected>-- Mostrar todos --</option>
                                         <?php
                                             if (isset($negocios)) {
                                                 foreach ($negocios as $key => $negocio) {
@@ -60,7 +60,7 @@
                                     <th class="col-sm-4">CLIENTE</th>
                                     <th class="col-sm-4">BANCO/PLATAFORMA</th>
                                     <th class="col-sm-2">VALOR TOTAL</th>
-                                    <th class="col-sm-2">CATEGORIA</th>
+                                    <th class="col-sm-2">NEGOCIO</th>
                                     <th class="col-sm-2">VENDEDOR</th>
                                     <th class="col-sm-2">VENTA EXTRA</th>
                                     <th class="col-sm-2">OBSERVACION PEDIDO</th>
@@ -75,7 +75,7 @@
                                         $this->usuarioModel = new UsuarioModel();
 
                                         $num = 1;
-
+                                        $suma = 0;
 
                                         if ($res) {
                                             foreach ($res as $key => $resultado) {
@@ -93,7 +93,7 @@
                                                 }
                                                 
                                                 echo '<td>'.$resultado->total.'</td>';
-                                                echo '<td>Categoria</td>';
+                                                echo '<td>'.$resultado->negocio.'</td>';
 
                                                 echo '<td>'.$vendedor.'</td>';  
 
@@ -106,28 +106,56 @@
                                                 
                                                 echo '<td>'.$resultado->observaciones.'</td>';
 
-                                                if ($resultado->estado == 3 || $resultado->estado == 4) {
-                                                    echo '<td>SI</td>';
+                                                if ($resultado->pagado == 1) {
+                                                    echo '<td>
+                                                            <div class="form-check" id="divchkpagado">
+                                                                <input class="form-check-input" type="checkbox" value="1" id="chkpagado" data-codigo="'.$resultado->cod_pedido.'" data-idpedido="'.$resultado->id.'" checked>
+                                                            </div>
+                                                        </td>';
                                                 } else {
-                                                    echo '<td>NO</td>';
+                                                    echo '<td>
+                                                            <div class="form-check" id="divchkpagado">
+                                                                <input class="form-check-input" type="checkbox" value="1" id="chkpagado" data-codigo="'.$resultado->cod_pedido.'" data-idpedido="'.$resultado->id.'">
+                                                            </div>
+                                                        </td>';
                                                 }
 
                                                 echo '</tr>';
+                                                $suma += $resultado->total;
                                                 $num++;
-                                            }
-                                        }
 
-                                        //echo form_hidden('my_array', 5);
-                                    ?>
-                                </tbody>
+                                            }
+                                            echo '<tr><td colspan="3"></td><td id="text-result-bold">TOTAL: </td><td id="text-result-bold">'.number_format($suma, 2).'</td><td colspan="2"></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->                        
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
+                                    <a class="btn btn-primary" href="'.site_url().'reporte-diario-ventas-excel?negocio='.$datos['negocio'].'&fecha_inicio='.$datos['fecha_inicio'].'">Descargar reporte en excel</a>
+                                    <a href="'.site_url().'reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                </div>
+                                                    ';
+                                        }else{
+                                            echo '<tr>';
+                                            echo '<td colspan="10">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
+                                            echo '</tr>';
+
+                                            echo '
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
                         <!-- /.card-body -->                        
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar" target="_self">Descargar reporte en excel</button>
-                            <a href="<?= site_url(); ?>reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
+                            <a href="'.site_url().'reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                         </div>
+
+                                            ';
+                                        }
+                                    ?>
                     </form>
                 </div>
             </div>
@@ -135,5 +163,7 @@
     </div>
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= site_url(); ?>public/js/frm-reporte-diario-ventas.js"></script>
+<script src="<?= site_url(); ?>public/js/reporte-diario-ventas.js"></script>
+<script src="<?= site_url(); ?>public/js/cabecera-reportes.js"></script>
+
 

@@ -8,5 +8,13 @@ label{
 }
 
 #table-resultados{
-    font-size: 0.6em;
+    font-size: 0.7em;
+}
+
+#text-result-bold{
+    font-weight: bold;
+}
+
+#divchkpagado{
+    font-size: 1.2em !important;
 }

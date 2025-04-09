@@ -72,7 +72,7 @@ let formAttrModal = document.querySelector('#link-borra-imagen')
  * @author Pablo Orejuela
  **/
 const actualiza = (campo, id, valor) => {
-    console.log(id);
+    //console.log(id);
     //llamo a la funcion AJAX que hace la actualización
     $.ajax({
         method:"GET",

@@ -169,14 +169,18 @@ $routes->get('kardex-item/(:num)', 'Inventarios::kardexItem/$1');
 $routes->get('reporte-procedencias', 'Reportes::frmReporteProcedencias');
 $routes->post('reporte-procedencias', 'Reportes::reporteProcedencias');
 $routes->post('reporte-procedencias-excel', 'Reportes::reporteProcedenciasExcel');
+$routes->get('reporte-procedencias-excel', 'Reportes::reporteProcedenciasExcel');
 
 $routes->get('reporte_diario_ventas', 'Reportes::frmReporteDiarioVentas');
 $routes->post('reporte_diario_ventas', 'Reportes::reporteDiarioVentas');
 $routes->post('reporte_diario_ventas_excel', 'Reportes::reporteDiarioVentasExcel');
+$routes->get('reporte-diario-ventas-excel', 'Reportes::reporteDiarioVentasExcel');
+$routes->get('item-pagado-update', 'Administracion::item_pagado_update');
 
 $routes->get('reporte-estadisticas-vendedor', 'Reportes::frmReporteEstadisticasVendedor');
 $routes->post('reporte-estadisticas-vendedor', 'Reportes::reporteEstadisticasVendedor');
 $routes->post('reporte-estadisticas-vendedor-excel', 'Reportes::reporteEstadisticasVendedorExcel');
+
 
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
 $routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');
