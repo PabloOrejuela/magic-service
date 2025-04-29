@@ -1,0 +1,35 @@
+label{
+    margin-bottom: 1px;
+}
+
+#mensaje{
+    font-size: 1.2em;
+    margin-left:5px;
+}
+
+#td-resultados{
+    font-size: 1.2em;
+    text-align: center !important;
+}
+
+#td-suma{
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: right !important;
+}
+
+#text-result-bold{
+    font-weight: bold;
+    text-align: right;
+}
+
+#resultado-total{
+    text-align: right;
+}
+
+#encabezado{
+    color: #FFF;
+    font-weight: bold;
+    background-color: #FF8000;
+    vertical-align: middle !important;
+}

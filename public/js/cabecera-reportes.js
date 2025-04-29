@@ -29,7 +29,7 @@ let cadenafecha = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+mesActual)
 /*
  *  Detecta el index y modifica las fechas
 */
-selectSugest.addEventListener('change', function(e) {
+selectSugest.addEventListener('change', function(e) { 
     
     if (selectSugest.selectedIndex == 1) {
 
@@ -44,17 +44,19 @@ selectSugest.addEventListener('change', function(e) {
         fechaFinal.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
     }else if(selectSugest.selectedIndex == 3){
 
+        let diaActual = fecha.getDate()
+        let diaSemana = fecha.getDay()
+            
+        //Semana actual
         if (fecha.getDay() == 1) {
             inicioSemana = fecha.getDate()
             finSemana = fecha.getDate() + 6
 
-            //Semana actual
             fechaInicio.value = cadenafecha + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
             fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
         }else{
-            let diaActual = fecha.getDate()
-            let diaSemana = fecha.getDay()
-
+            
+            
             if (diaActual < 7) {
                 inicioSemana = (diaActual - (diaSemana - 1))
                 cadenafechaInicio = anioActual + '-' + (mesActual-1 > 9 ? mesActual-1 : '0'+(parseInt(mesActual)-1))
@@ -68,12 +70,44 @@ selectSugest.addEventListener('change', function(e) {
                         fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
                     }
                 }
+            }else{
+                inicioSemana = getInicioSemana(diaSemana, diaActual)
+                cadenafechaInicio = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+(parseInt(mesActual)))
+                console.log(inicioSemana);
+
+                fechaInicio.value = cadenafechaInicio + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
+                fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
             }
         }
     }
 
 })
 
+const getInicioSemana = (diaSemana, diaActual) => {
+    
+    if (diaSemana == 1) {
+        
+        return diaActual
+    }else if(diaSemana == 2){
+        
+        return diaActual - 1
+    }else if(diaSemana == 3){
+        
+        return diaActual - 2
+    }else if(diaSemana == 4){
+        
+        return (parseInt(diaActual) - 3)
+    }else if(diaSemana == 5){
+        
+        return diaActual - 4
+    }else if(diaSemana == 6){
+        
+        return diaActual - 5
+    }else if(diaSemana == 7){
+        
+        return diaActual - 6
+    }
+}
 
 const alertaMensaje = (msg, time, icon) => {
     const toast = Swal.mixin({

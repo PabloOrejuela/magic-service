@@ -32,6 +32,24 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                </div>
+                               <div class="form-group col-md-3">
+                                    <label for="negocio">Vendedor:</label>
+                                    <select 
+                                        class="form-select form-control-border" 
+                                        id="vendedor" 
+                                        name="vendedor" 
+                                    >
+                                        <option value="0" selected>--Seleccionar vendedor--</option>
+                                        <?php
+                                            if (isset($vendedores)) {
+                                                foreach ($vendedores as $key => $vendedor) {
+                                                    echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).' >'.$vendedor->nombre.'</option>';
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                    <p id="error-message"><?= session('errors.vendedor');?> </p>
+                               </div>
                                <div class="form-group col-md-2">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
                                     <input 
@@ -56,26 +74,8 @@
                                     >
                                     <p id="error-message"><?= session('errors.fecha_final');?> </p>
                                </div>
-                               <div class="form-group col-md-3">
-                                    <label for="negocio">Vendedor:</label>
-                                    <select 
-                                        class="form-select form-control-border" 
-                                        id="vendedor" 
-                                        name="vendedor" 
-                                    >
-                                        <option value="0" selected>--Seleccionar vendedor--</option>
-                                        <?php
-                                            if (isset($vendedores)) {
-                                                foreach ($vendedores as $key => $vendedor) {
-                                                    echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).' >'.$vendedor->nombre.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                    <p id="error-message"><?= session('errors.vendedor');?> </p>
-                               </div>
                                <div class="form-group col-md-2">
-                                    <label for="sugest">Opciones:</label>
+                                    <label for="sugest">Más fechas:</label>
                                     <select 
                                         class="form-select form-control-border" 
                                         id="sugest" 

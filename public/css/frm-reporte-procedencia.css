@@ -13,4 +13,9 @@ label{
 
 #text-result-bold{
     font-weight: bold;
+    text-align: right;
+}
+
+#resultado-total{
+    text-align: right;
 }

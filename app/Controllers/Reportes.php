@@ -12,6 +12,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
 
 class Reportes extends BaseController {
+    
 
     private $sugest = [
         1 => 'Día actual', 
@@ -25,6 +26,19 @@ class Reportes extends BaseController {
         $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
         $data['nombre'] = $this->session->nombre;
         return $data;
+    }
+
+    public function item_pagado_update() {
+
+        $id = $this->request->getPostGet('id');
+
+        $data = [
+            'pagado' => $this->request->getPostGet('pagado')
+        ];
+
+        $this->pedidoModel->update($id, $data);
+        
+        return redirect()->to('reporte_diario_ventas');
     }
 
     public function frmReporteDiarioVentas(){
@@ -65,6 +79,25 @@ class Reportes extends BaseController {
         }
     }
 
+    public function frmReporteMasterIngresos(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte Master de Ingresos';
+            $data['main_content']='reportes/form_reporte_master_ingresos';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function reporteProcedencias(){
         
         $data = $this->acl();
@@ -96,6 +129,101 @@ class Reportes extends BaseController {
             return view('dashboard/index', $data);
         }else{
             return redirect()->to('logout');
+        }
+    }
+
+    public function reporteMasterIngresos(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('mes'),
+            ];
+
+            $this->validation->setRuleGroup('reporteMasterIngresos');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+                $data['res'] = NULL;
+                $data['inicioMes'] = date('w', strtotime($datos['fecha'].'-01'));
+                $data['finMes'] = date('w', strtotime($datos['fecha'].'-'.$data['numDias']));
+                $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
+                $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
+
+                //Obtengo los resultados de las ventas de cada día del mes elegido
+                for ($i = 1; $i <= $data['numDias']; $i++) { 
+                    $dia = $datos['fecha'].'-'.($i > 9 ? $i : '0'.$i);
+                    
+                    //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
+                    $res[$i]['res'] = $this->pedidoModel->_getSumatorialPedidosDia($dia, $datos['negocio']);
+                    $res[$i]['dia'] = date('N', strtotime($dia));
+                }
+
+                $data['res'] = $res;
+                $data['datos'] = $datos;
+
+                $data['title']='Reportes';
+                $data['subtitle']='Reporte Master de Ingresos';
+                $data['main_content']='reportes/reporte_master_ingresos';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function cadenaInicio($inicioMes){
+        if ($inicioMes == 2) {
+            $dia = 2;
+            return '<td></td>';
+        }else if($inicioMes == 3) {
+            $dia = 3;
+            return '<td></td><td></td>';
+        }else if($inicioMes == 4) {
+            $dia = 4;
+            return '<td></td><td></td><td></td>';
+        }else if($inicioMes == 5) {
+            $dia = 5;
+            return '<td></td><td></td><td></td><td></td>';
+        }else if($inicioMes == 6) {
+            $dia = 6;
+            return '<td></td><td></td><td></td><td></td><td></td>';
+        }else if($inicioMes == 0) {
+            $dia = 0;
+            return '<td></td><td></td><td></td><td></td><td></td><td></td>';
+        }
+    }
+
+    public function cadenaFinal($finMes){
+        if ($finMes == 2) {
+            return '<td></td><td></td><td></td><td></td><td></td>';
+        }else if($finMes == 3) {
+            return '<td></td><td></td><td></td><td></td>';
+        }else if($finMes == 4) {
+            return '<td></td><td></td><td></td>';
+        }else if($finMes == 5) {
+            return '<td></td><td></td>';
+        }else if($finMes == 6) {
+            return '<td></td>';
+        }else if($finMes == 1) {
+            return '<td></td><td></td><td></td><td></td><td></td><td></td>';
         }
     }
 
@@ -195,6 +323,8 @@ class Reportes extends BaseController {
             'negocio' => $this->request->getPostGet('negocio'),
             'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
         ];
+
+        $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
 
         $res = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['negocio']);
 
@@ -301,11 +431,11 @@ class Reportes extends BaseController {
             
         );
 
-        $phpExcel->getActiveSheet()->getStyle('A1:J1')->applyFromArray($styleCabecera);
-        $phpExcel->getActiveSheet()->mergeCells('A1:J1');
+        $phpExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->mergeCells('A1:K1');
 
         //COLUMNAS
-        foreach (range('A','J') as $col) {
+        foreach (range('A','K') as $col) {
             $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         
@@ -320,18 +450,10 @@ class Reportes extends BaseController {
         
         $hoja->setCellValue('A'.$fila, "NEGOCIO:");
 
-        if ($datos['negocio'] == 0) {
-
-            $hoja->setCellValue('B'.$fila,'TODOS');
-
-        } else if ($datos['negocio'] == 1){
-
-            $hoja->setCellValue('B'.$fila,'MAGIC SERVICE');
-
-        } else if ($datos['negocio'] ==2){
-
-            $hoja->setCellValue('B'.$fila,'KARANA');
-
+        if ($datosNegocio) {
+            $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
+        }else{
+            $hoja->setCellValue('B'.$fila, 'TODOS');
         }
         
         
@@ -345,18 +467,19 @@ class Reportes extends BaseController {
 
         $fila +=2;
 
-        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':J'.$fila)->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':K'.$fila)->applyFromArray($styleCabecera);
         //Edito la info que va a ir en el archivo excel
         $hoja->setCellValue('A'.$fila, "No.");
-        $hoja->setCellValue('B'.$fila, "FECHA");
-        $hoja->setCellValue('C'.$fila, "CLIENTE");
-        $hoja->setCellValue('D'.$fila, "BANCO/PLATAFORMA");
-        $hoja->setCellValue('E'.$fila, "VALOR TOTAL");
-        $hoja->setCellValue('F'.$fila, "NEGOCIO");
-        $hoja->setCellValue('G'.$fila, "VENDEDOR");
-        $hoja->setCellValue('H'.$fila, "VENTA EXTRA");
-        $hoja->setCellValue('I'.$fila, "OBSERVACION PEDIDO");
-        $hoja->setCellValue('J'.$fila, "PAGO COMPROBADO");
+        $hoja->setCellValue('B'.$fila, "CODIGO");
+        $hoja->setCellValue('C'.$fila, "FECHA");
+        $hoja->setCellValue('D'.$fila, "CLIENTE");
+        $hoja->setCellValue('E'.$fila, "BANCO/PLATAFORMA");
+        $hoja->setCellValue('F'.$fila, "VALOR TOTAL");
+        $hoja->setCellValue('G'.$fila, "NEGOCIO");
+        $hoja->setCellValue('H'.$fila, "VENDEDOR");
+        $hoja->setCellValue('I'.$fila, "VENTA EXTRA");
+        $hoja->setCellValue('J'.$fila, "OBSERVACION PEDIDO");
+        $hoja->setCellValue('K'.$fila, "PAGO COMPROBADO");
 
         $fila++;
         
@@ -364,52 +487,63 @@ class Reportes extends BaseController {
         if ($res) {
             $num = 1;
             $suma = 0;
+            $totalKarana = 0;
+            $totalMagicService = 0;
+
             foreach ($res as $key => $result) {
                 //echo '<pre>'.var_export($result, true).'</pre>';exit;
                 
                 $vendedor = $this->usuarioModel->_getNombreUsuario($result->vendedor);
                 $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
                 $phpExcel->getActiveSheet()
-                    ->getStyle('A'.$fila.':J'.$fila)
+                    ->getStyle('A'.$fila.':K'.$fila)
                     ->getBorders()
                     ->getOutline()
                     ->setBorderStyle(Border::BORDER_THIN)
                     ->setColor(new Color('FFFFFFF'));
                 $hoja->setCellValue('A'.$fila, $num);
-                $hoja->setCellValue('B'.$fila, $result->fecha);
-                $hoja->setCellValue('C'.$fila, $result->cliente);
+                $hoja->setCellValue('B'.$fila, $result->cod_pedido);
+                $hoja->setCellValue('C'.$fila, $result->fecha);
+                $hoja->setCellValue('D'.$fila, $result->cliente);
 
                 if ($result->banco != 0) {
                     $banco = $this->bancoModel->_getBanco($result->banco);
-                    $hoja->setCellValue('D'.$fila, $banco->banco);
+                    $hoja->setCellValue('E'.$fila, $banco->banco);
                 }else{
-                    $hoja->setCellValue('D'.$fila, 'No definido');
+                    $hoja->setCellValue('E'.$fila, 'No definido');
                 }
                 
                 $phpExcel->getActiveSheet()->getCell('E'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
                 $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleCurrency);
-                $hoja->setCellValue('E'.$fila, number_format($result->total, 2, '.'));
+                $hoja->setCellValue('F'.$fila, number_format($result->total, 2, '.'));
 
-                $hoja->setCellValue('F'.$fila, $result->negocio);
-                $hoja->setCellValue('G'.$fila, $vendedor);
+                $hoja->setCellValue('G'.$fila, $result->negocio);
+                $hoja->setCellValue('H'.$fila, $vendedor);
 
-                $phpExcel->getActiveSheet()->getStyle('H'.$fila)->applyFromArray($styleTextoCentrado);
+                $phpExcel->getActiveSheet()->getStyle('I'.$fila)->applyFromArray($styleTextoCentrado);
                 if ($result->venta_extra == 1) {
-                    $hoja->setCellValue('H'.$fila, 'SI');
+                    $hoja->setCellValue('I'.$fila, 'SI');
                 } else {
-                    $hoja->setCellValue('H'.$fila, 'NO');
+                    $hoja->setCellValue('I'.$fila, 'NO');
                 }
 
-                $phpExcel->getActiveSheet()->getStyle('I'.$fila)->applyFromArray($styleFila);
-                $hoja->setCellValue('I'.$fila, $result->observaciones);
+                $phpExcel->getActiveSheet()->getStyle('J'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('J'.$fila, $result->observaciones);
 
-                $phpExcel->getActiveSheet()->getStyle('J'.$fila)->applyFromArray($styleTextoCentrado);
-                if ($result->estado == 3 || $result->estado == 4) {
+                $phpExcel->getActiveSheet()->getStyle('K'.$fila)->applyFromArray($styleTextoCentrado);
 
-                    $hoja->setCellValue('J'.$fila, 'SI');
+                if ($result->pagado == 1) {
+
+                    $hoja->setCellValue('K'.$fila, 'SI');
                 } else {
 
-                    $hoja->setCellValue('J'.$fila, 'NO');
+                    $hoja->setCellValue('K'.$fila, 'NO');
+                }
+
+                if ($result->idnegocio == 1) {
+                    $totalMagicService += $result->total;
+                }elseif ($result->idnegocio == 2) {
+                    $totalKarana += $result->total;
                 }
                 
                 $fila++;
@@ -417,17 +551,36 @@ class Reportes extends BaseController {
                 $suma += $result->total;
             }
             $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleSubtituloDerecha);
-            $hoja->setCellValue('D'.$fila, 'TOTAL:');
+            $hoja->setCellValue('E'.$fila, 'TOTAL:');
 
-            $phpExcel->getActiveSheet()->getCell('E'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-            $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleCurrencyBold);
-            $hoja->setCellValue('E'.$fila, number_format($suma, 2, '.'));
+            $phpExcel->getActiveSheet()->getCell('F'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+            $phpExcel->getActiveSheet()->getStyle('F'.$fila)->applyFromArray($styleCurrencyBold);
+            $hoja->setCellValue('F'.$fila, number_format($suma, 2, '.'));
         }else{
             $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
         }
 
+        $fila++;
+
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':B'.$fila)->applyFromArray($styleCabecera);
+        $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+        $hoja->setCellValue('B'.$fila, "TOTAL:");
         
+
+        $fila++;
+        $hoja->setCellValue('A'.$fila, "MAGIC SERVICE:");
+
+        $phpExcel->getActiveSheet()->getCell('B'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+        $phpExcel->getActiveSheet()->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
+        $hoja->setCellValue('B'.$fila, number_format($totalMagicService, 2));
+
+        $fila++;
+        $hoja->setCellValue('A'.$fila, "KARANA:");
+        
+        $phpExcel->getActiveSheet()->getCell('B'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+        $phpExcel->getActiveSheet()->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
+        $hoja->setCellValue('B'.$fila, number_format($totalKarana, 2));        
 
         //Creo el writter y guardo la hoja
         $writter = new XlsxWriter($phpExcel, 'Xlsx');
@@ -452,9 +605,11 @@ class Reportes extends BaseController {
             'negocio' => $this->request->getPostGet('negocio'),
             'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
             'fecha_final' => $this->request->getPostGet('fecha_final'),
-            'sugest' => $this->request->getPostGet('sugest'),
             'vendedor' => $this->request->getPostGet('vendedor'),
         ];
+
+        $vendedor = $this->usuarioModel->_getNombreUsuario($datos['vendedor']);
+        $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
 
         $res = $this->pedidoModel->_getPedidosRangoFechasVendedor($datos);
 
@@ -474,7 +629,7 @@ class Reportes extends BaseController {
             ->setKeywords('etiquetas o palabras clave separadas por espacios')
             ->setCategory('Reportes');
 
-        $nombreDelDocumento = "MagicService - Reporte de estadisticas del vendedor.xlsx";
+        $nombreDelDocumento = "MagicService - Reporte de estadisticas del vendedor $vendedor.xlsx";
 
         //Selecciono la pestaña
         $hoja = $phpExcel->getActiveSheet();
@@ -571,7 +726,7 @@ class Reportes extends BaseController {
         
 
         //TITULO
-        $hoja->setCellValue('A'.$fila, "REPORTE DE ESTADÍSTICAS DE VENDEDOR");
+        $hoja->setCellValue('A'.$fila, "REPORTE DE ESTADÍSTICAS DE VENDEDOR: ". $vendedor);
 
         $fila++;
 
@@ -579,14 +734,21 @@ class Reportes extends BaseController {
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         
         $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+
+        if ($datosNegocio) {
+            $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
+        }else{
+            $hoja->setCellValue('B'.$fila, 'TODOS');
+        }
         
-        $hoja->setCellValue('B'.$fila, $datos['negocio'] == 1 ? 'MAGIC SERVICE' : 'KARANA');
         $fila++;
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('A'.$fila, "DESDE:");
         $hoja->setCellValue('B'.$fila, $datos['fecha_inicio']);
         $fila++;
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "HASTA:");
+        $hoja->setCellValue('B'.$fila, $datos['fecha_final']);
 
 
         $fila +=2;
@@ -597,7 +759,7 @@ class Reportes extends BaseController {
         $hoja->setCellValue('B'.$fila, "FECHA");
         $hoja->setCellValue('C'.$fila, "CLIENTE");
         $hoja->setCellValue('D'.$fila, "VALOR TOTAL");
-        $hoja->setCellValue('E'.$fila, "CATEGORIA");
+        $hoja->setCellValue('E'.$fila, "NEGOCIO");
         $hoja->setCellValue('F'.$fila, "VENDEDOR");
         $hoja->setCellValue('G'.$fila, "VENTA EXTRA");
 
@@ -626,7 +788,7 @@ class Reportes extends BaseController {
                 $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleCurrency);
                 $hoja->setCellValue('D'.$fila, number_format($result->total, 2, '.'));
 
-                $hoja->setCellValue('E'.$fila, 'CATEGORIA');
+                $hoja->setCellValue('E'.$fila, $result->negocio);
                 $hoja->setCellValue('F'.$fila, $vendedor);
 
                 $phpExcel->getActiveSheet()->getStyle('G'.$fila)->applyFromArray($styleTextoCentrado);
@@ -684,7 +846,6 @@ class Reportes extends BaseController {
         $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
         
         $res = $this->pedidoModel->_getPedidosRangoFechasProcedencias($datos['fecha_inicio'], $datos['fecha_final'], $datos['negocio']);
-
 
         $fila = 1;
 
@@ -776,7 +937,6 @@ class Reportes extends BaseController {
         foreach (range('A','G') as $col) {
             $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
-        
 
         //TITULO
         $hoja->setCellValue('A'.$fila, "REPORTE DE PROCEDENCIAS");
@@ -786,6 +946,7 @@ class Reportes extends BaseController {
         //CABECERA
         $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+
         if ($datosNegocio) {
             $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
         }else{
@@ -859,6 +1020,264 @@ class Reportes extends BaseController {
         // }        
     }
 
+    public function reporteMasterIngresosExcel(){
+
+        $datos = [
+            'negocio' => $this->request->getPostGet('negocio'),
+            'fecha' => $this->request->getPostGet('mes'),
+        ];
+
+        $fecha = explode('-', $datos['fecha']);
+        $mes = $fecha[1];
+        $anio = $fecha[0];
+        $numDias = cal_days_in_month(0, $mes, $anio);
+        $res = NULL;
+        $inicioMes = date('w', strtotime($datos['fecha'].'-01'));
+        $finMes = date('w', strtotime($datos['fecha'].'-'.$numDias));
+        // $cadenaInicio = $this->cadenaInicioExcel($inicioMes);
+        // $cadenaFinal = $this->cadenaFinalExcel($finMes);
+
+        $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
+
+        //Obtengo los resultados de las ventas de cada día del mes elegido
+        for ($i = 1; $i <= $numDias; $i++) { 
+            $dia = $datos['fecha'].'-'.($i > 9 ? $i : '0'.$i);
+            
+            //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
+            $res[$i]['res'] = $this->pedidoModel->_getSumatorialPedidosDia($dia, $datos['negocio']);
+            $res[$i]['dia'] = date('N', strtotime($dia));
+        }
+
+        $fila = 1;
+
+        //Creo la hoja
+        $phpExcel = new Spreadsheet();
+        $phpExcel
+            ->getProperties()
+            ->setCreator("Magic Service")
+            ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
+            ->setTitle('Reporte Master de Ingresos')
+            ->setSubject('Reportes Magic Service')
+            ->setDescription('Reporte con la sumatoria de las ventas de cada día organizado por fechas')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('Reportes');
+
+        $nombreDelDocumento = "MagicService - Reporte Master de Ingresos.xlsx";
+
+        //Selecciono la pestaña
+        $hoja = $phpExcel->getActiveSheet();
+
+        $styleCabecera = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'FF8000',
+                ],
+                'endColor' => [
+                    'argb' => 'FF8000',
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleSubtitulo = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $styleSubtituloDerecha = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleTextoCentrado = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleCurrency = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleCurrencyBold = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleFila = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $currencyMask = new Currency(
+            '$',
+            2,
+            Currency::SYMBOL_WITH_SPACING,
+            Number::WITH_THOUSANDS_SEPARATOR,
+            Currency::TRAILING_SYMBOL,
+            
+        );
+        
+        $hoja->getStyle('A1:H1')->applyFromArray($styleCabecera);
+        $hoja->mergeCells('A1:H1');
+
+        //COLUMNAS
+        foreach (range('A','H') as $col) {
+            $hoja->getColumnDimension($col)->setAutoSize(true);
+        }
+        
+
+        //TITULO
+        $hoja->setCellValue('A'.$fila, "REPORTE MASTER DE INGRESOS");
+
+        $fila++;
+
+        //CABECERA
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        
+        $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+
+        if ($datosNegocio) {
+            $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
+        }else{
+            $hoja->setCellValue('B'.$fila, 'TODOS');
+        }
+        
+        
+        $fila++;
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "MES:");
+        $hoja->setCellValue('B'.$fila, $datos['fecha']);
+
+        $fila++;
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+
+        $fila +=2;
+
+        $hoja->getStyle('A'.$fila.':H'.$fila)->applyFromArray($styleCabecera);
+        $hoja->mergeCells('A'.$fila.':G'.$fila); 
+
+        //Edito la info que va a ir en el archivo excel
+        $hoja->setCellValue('A'.$fila, "VENTAS DIARIAS DE TODO EL MES");
+        $hoja->setCellValue('H'.$fila, "TOTAL DE VENTAS SEMANAL");
+
+        $fila +=2;
+
+        $hoja->getStyle('A'.$fila.':H'.$fila)->applyFromArray($styleCabecera);
+        //Edito la info que va a ir en el archivo excel
+        $hoja->setCellValue('A'.$fila, "LUNES");
+        $hoja->setCellValue('B'.$fila, "MARTES");
+        $hoja->setCellValue('C'.$fila, "MIERCOLES");
+        $hoja->setCellValue('D'.$fila, "JUEVES");
+        $hoja->setCellValue('E'.$fila, "VIERNES");
+        $hoja->setCellValue('F'.$fila, "SABADO");
+        $hoja->setCellValue('G'.$fila, "DOMINGO");
+        $hoja->setCellValue('H'.$fila, '');
+
+        $fila++;
+        
+        $dia = 1;
+        $sumaSemana = 0;
+        $sumaTotal = 0;
+        $cols = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G'];
+
+        $fila = 9;
+
+        //datos
+        if ($res) {
+
+            foreach ($res as $key => $result) {
+                if ($result['dia'] == 7) {
+                    if ($result['res']) {
+                        $hoja->setCellValue($cols[$result['dia']].$fila, number_format($result['res'], 2));
+                        $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
+                        $fila++;
+                    }else{
+                        $hoja->setCellValue($cols[$result['dia']].$fila, '0.00');
+                        $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
+                        $fila++;
+                    }
+                    $sumaTotal += $sumaSemana;
+                    $sumaSemana = 0;
+                }else{
+                    $hoja->getStyle('A'.$fila.':H'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                    $sumaSemana += $result['res'];
+                    
+                    if ($result['res']) {
+                        $hoja->setCellValue($cols[$result['dia']].$fila, number_format($result['res'], 2));
+                        
+                    }else{
+                        $hoja->setCellValue($cols[$result['dia']].$fila, '0.00');
+                    }
+                }
+                
+            }
+            if ($finMes != 0) {
+                $sumaTotal += $sumaSemana;
+                $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
+            }
+            
+
+        }else{
+            $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
+            $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
+        }
+        //TOTAL
+        $fila++;
+        $hoja->setCellValue("G".$fila, "TOTAL DEL MES:");
+        $hoja->getStyle('H'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+        $hoja->setCellValue("H".$fila, number_format($sumaTotal, 2));
+
+             
+
+        //Creo el writter y guardo la hoja
+        $writter = new XlsxWriter($phpExcel, 'Xlsx');
+        
+        //Cabeceras para descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
+        
+        $r = $writter->save('php://output');exit;
+        // if ($r) {
+        //     return redirect()->to('cargar_info_view');
+        // }else{
+        //     $error = 'Hubo un error u no se pudo descargar';
+        //     return redirect()->to('cargar_info_view');
+        // }        
+    }
+
     /**
      *
      * Reporte de la cantidad de items sensibles que se necesitan en temporadas altas 
@@ -887,7 +1306,7 @@ class Reportes extends BaseController {
     }
 
     public function reporteListItems(){
-
+        
         $items = $this->itemModel->findAll();
 
         $fila = 3;

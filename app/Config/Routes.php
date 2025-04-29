@@ -175,11 +175,15 @@ $routes->get('reporte_diario_ventas', 'Reportes::frmReporteDiarioVentas');
 $routes->post('reporte_diario_ventas', 'Reportes::reporteDiarioVentas');
 $routes->post('reporte_diario_ventas_excel', 'Reportes::reporteDiarioVentasExcel');
 $routes->get('reporte-diario-ventas-excel', 'Reportes::reporteDiarioVentasExcel');
-$routes->get('item-pagado-update', 'Administracion::item_pagado_update');
+$routes->get('item-pagado-update', 'Reportes::item_pagado_update');
 
 $routes->get('reporte-estadisticas-vendedor', 'Reportes::frmReporteEstadisticasVendedor');
 $routes->post('reporte-estadisticas-vendedor', 'Reportes::reporteEstadisticasVendedor');
-$routes->post('reporte-estadisticas-vendedor-excel', 'Reportes::reporteEstadisticasVendedorExcel');
+$routes->get('reporte-estadisticas-vendedor-excel', 'Reportes::reporteEstadisticasVendedorExcel');
+
+$routes->get('reporte-master-ingresos', 'Reportes::frmReporteMasterIngresos');
+$routes->post('reporte-master-ingresos', 'Reportes::reporteMasterIngresos');
+$routes->get('reporte-master-ingresos-excel', 'Reportes::reporteMasterIngresosExcel');
 
 
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');

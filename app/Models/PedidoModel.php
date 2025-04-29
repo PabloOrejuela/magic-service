@@ -135,7 +135,12 @@ class PedidoModel extends Model {
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
         $builder->where($this->table.'.estado', 1);
-        $builder->where($this->table.'.idnegocio', $negocio);
+
+        //Si se ha seleccionado un negocio
+        if ($negocio != 0) {
+            $builder->where($this->table.'.idnegocio', $negocio);
+        }
+
         $builder->where($this->table.'.vendedor', $vendedor);
         $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $builder->orderBy('orden', 'asc');
@@ -170,10 +175,34 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getPedidoMasterIngresosMesReportes($negocio, $mes){
+
+        $fechaInicio = $mes.'-01';
+        $fechaFinal = $mes.'-31';
+        $result = NULL;
+
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
+        $builder->where($this->table.'.estado', 1);
+        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->where($this->table.'.idnegocio', $negocio);
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getPedidosReporteDiario($fecha, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
@@ -191,6 +220,25 @@ class PedidoModel extends Model {
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
                 $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getSumatorialPedidosDia($fecha, $negocio){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('fecha,sum(total) as suma,pedidos.estado as estado,idnegocio');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->where($this->table.'.idnegocio', $negocio);
+        $builder->where($this->table.'.estado', 1);
+        $builder->where('fecha', $fecha);
+        $builder->groupBy('idnegocio');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row->suma; 
             }
         }
         //echo $this->db->getLastQuery();

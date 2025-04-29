@@ -11,10 +11,20 @@ label{
     font-size: 0.7em;
 }
 
+#table-totales{
+    font-size: 0.7em;
+    width: 30%;
+}
+
 #text-result-bold{
     font-weight: bold;
+    text-align: right;
 }
 
 #divchkpagado{
     font-size: 1.2em !important;
+}
+
+#resultado-total{
+    text-align: right;
 }

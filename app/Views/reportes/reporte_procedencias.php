@@ -105,7 +105,7 @@
                                                 echo '<td>'.$num.'</td>';
                                                 echo '<td>'.$resultado->fecha.'</td>';
                                                 echo '<td>'.$resultado->cliente.'</td>';
-                                                echo '<td>'.$resultado->total.'</td>';
+                                                echo '<td id="resultado-total">'.$resultado->total.'</td>';
 
                                                 if ($resultado->procedencia == 'Seleccionar procedencia') {
                                                     echo '<td>Indeterminada</td>';
@@ -120,10 +120,10 @@
                                                 
                                             }
                                             echo '<tr><td colspan="2"></td><td id="text-result-bold">TOTAL: </td><td id="text-result-bold">'.number_format($suma, 2).'</td><td colspan="2"></td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                </tbody>
+                                </table>
                             </div>
+                        </div>
                             <!-- /.card-body -->                        
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>

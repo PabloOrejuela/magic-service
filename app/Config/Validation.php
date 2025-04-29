@@ -340,7 +340,6 @@ class Validation extends BaseConfig
 
     public $reporteEstadisticasVendedor = [
         'vendedor'  => 'required|greater_than[0]',
-        'negocio'  => 'required|greater_than[0]',
     ];
 
     public $reporteEstadisticasVendedor_errors = [
@@ -348,6 +347,13 @@ class Validation extends BaseConfig
             'required' => 'El campo "Vendedor" es obligatorio',
             'greater_than' => 'El campo "Vendedor" es obligatorio',
         ],
+    ];
+
+    public $reporteMasterIngresos = [
+        'negocio'  => 'required|greater_than[0]',
+    ];
+
+    public $reporteMasterIngresos_errors = [
         'negocio' => [
             'required' => 'El campo "Negocio" es obligatorio',
             'greater_than' => 'El campo "Negocio" es obligatorio',

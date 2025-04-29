@@ -21,7 +21,7 @@
                                         id="negocio" 
                                         name="negocio" 
                                     >
-                                        <option value="0" selected>--Opciones--</option>
+                                        <option value="0" selected>-- Mostrar todos --</option>
                                         <?php
                                             if (isset($negocios)) {
                                                 foreach ($negocios as $key => $negocio) {
@@ -35,7 +35,24 @@
                                             }
                                         ?>
                                     </select>
-                                    <p id="error-message"><?= session('errors.negocio');?> </p>
+                               </div>
+                               <div class="form-group col-md-3">
+                                    <label for="negocio">Vendedor:</label>
+                                    <select 
+                                        class="form-select form-control-border" 
+                                        id="vendedor" 
+                                        name="vendedor" 
+                                    >
+                                        <option value="0" selected>--Seleccionar vendedor--</option>
+                                        <?php
+                                            if (isset($vendedores)) {
+                                                foreach ($vendedores as $key => $vendedor) {
+                                                    echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).' >'.$vendedor->nombre.'</option>';
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                    <p id="error-message"><?= session('errors.vendedor');?> </p>
                                </div>
                                <div class="form-group col-md-2">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
@@ -61,26 +78,8 @@
                                     >
                                     <p id="error-message"><?= session('errors.fecha_final');?> </p>
                                </div>
-                               <div class="form-group col-md-3">
-                                    <label for="negocio">Vendedor:</label>
-                                    <select 
-                                        class="form-select form-control-border" 
-                                        id="vendedor" 
-                                        name="vendedor" 
-                                    >
-                                        <option value="0" selected>--Seleccionar vendedor--</option>
-                                        <?php
-                                            if (isset($vendedores)) {
-                                                foreach ($vendedores as $key => $vendedor) {
-                                                    echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).' >'.$vendedor->nombre.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                    <p id="error-message"><?= session('errors.vendedor');?> </p>
-                               </div>
                                <div class="form-group col-md-2">
-                                    <label for="sugest">Opciones:</label>
+                                    <label for="sugest">Más fechas:</label>
                                     <select 
                                         class="form-select form-control-border" 
                                         id="sugest" 
@@ -133,7 +132,7 @@
                                                 echo '<td>'.$num.'</td>';
                                                 echo '<td>'.$resultado->fecha.'</td>';
                                                 echo '<td>'.$resultado->cliente.'</td>';    
-                                                echo '<td>'.$resultado->total.'</td>';
+                                                echo '<td id="resultado-total">'.$resultado->total.'</td>';
                                                 echo '<td>'.$resultado->negocio.'</td>';
 
                                                 echo '<td>'.$vendedor.'</td>';  
@@ -148,7 +147,7 @@
                                                 $suma += $resultado->total;
                                                 $num++;
                                             }
-                                            echo '<tr><td colspan="3"></td><td id="text-result-bold">TOTAL: </td><td id="text-result-bold">'.number_format($suma, 2).'</td><td colspan="2"></td></tr>
+                                            echo '<tr><td colspan="2"></td><td id="text-result-bold">TOTAL: </td><td id="text-result-bold">'.number_format($suma, 2).'</td><td colspan="3"></td></tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -156,8 +155,14 @@
                                 <!-- /.card-body -->                        
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                    <a class="btn btn-primary" href="'.site_url().'reporte-diario-ventas-excel?negocio='.$datos['negocio'].'&fecha_inicio='.$datos['fecha_inicio'].'">Descargar reporte en excel</a>
-                                    <a href="'.site_url().'reporte-procedencias" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                    <a 
+                                        class="btn btn-primary" 
+                                        href="'.site_url().'reporte-estadisticas-vendedor-excel?negocio='.$datos['negocio']
+                                        .'&fecha_inicio='.$datos['fecha_inicio']
+                                        .'&fecha_final='.$datos['fecha_final']
+                                        .'&vendedor='.$resultado->vendedor.'">Descargar reporte en excel</a>
+
+                                    <a href="'.site_url().'reporte-estadisticas-vendedor" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                 </div>
                                                     ';
 
@@ -174,7 +179,7 @@
                         <!-- /.card-body -->                        
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                            <a href="'.site_url().'reporte-procedencias" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                            <a href="'.site_url().'reporte-estadisticas-vendedor" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                         </div>
 
                                             ';

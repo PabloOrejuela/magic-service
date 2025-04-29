@@ -118,7 +118,6 @@ abstract class BaseController extends Controller {
         $this->attrExtArregModel = new AttrExtArregModel($this->db);
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
 
-
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
         $this->request = \Config\Services::request();

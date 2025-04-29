@@ -41,6 +41,7 @@
                                                         onchange="changeData('.$value->id.')" 
                                                     >
                                                 </td>';
+                                                
                                                 if ($value->cuantificable == 1) {
                                                     echo '<td class="centrado">
                                                             <span id="span-cuantificable">Si </span>
