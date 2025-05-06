@@ -98,6 +98,25 @@ class Reportes extends BaseController {
         }
     }
 
+    public function frmReporteMasterGastos(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte Master de Gastos';
+            $data['main_content']='reportes/form_reporte_master_gastos';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function reporteProcedencias(){
         
         $data = $this->acl();
@@ -181,6 +200,65 @@ class Reportes extends BaseController {
                 $data['title']='Reportes';
                 $data['subtitle']='Reporte Master de Ingresos';
                 $data['main_content']='reportes/reporte_master_ingresos';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function reporteMasterGastos(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('mes'),
+            ];
+
+            $this->validation->setRuleGroup('reporteMasterIngresos');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+                $data['res'] = NULL;
+                $data['inicioMes'] = date('w', strtotime($datos['fecha'].'-01'));
+                $data['finMes'] = date('w', strtotime($datos['fecha'].'-'.$data['numDias']));
+                // $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
+                // $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
+
+                //Obtengo los gastos fijos del mes
+                $tipoGasto = 3;
+                $data['gastoFijo'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+
+                //Obtengo los gastos variables del mes
+                $tipoGasto = 2;
+                $data['gastoVariable'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+
+                //Obtengo los Insumos proveedores del mes
+                $tipoGasto = 1;
+                $data['gastoInsumosProveedores'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+ 
+                $data['datos'] = $datos;
+
+                $data['title']='Reportes';
+                $data['subtitle']='Reporte Master de Gastos';
+                $data['main_content']='reportes/reporte_master_gastos';
                 return view('dashboard/index', $data);
             }
 
@@ -1010,6 +1088,266 @@ class Reportes extends BaseController {
         header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
         header('Cache-Control: max-age=0');
         
+        
+        $r = $writter->save('php://output');exit;
+        // if ($r) {
+        //     return redirect()->to('cargar_info_view');
+        // }else{
+        //     $error = 'Hubo un error u no se pudo descargar';
+        //     return redirect()->to('cargar_info_view');
+        // }        
+    }
+
+    public function reporteMasterGastosExcel(){
+
+        $datos = [
+            'negocio' => $this->request->getPostGet('negocio'),
+            'mes' => $this->request->getPostGet('mes'),
+        ];
+
+        $fecha = explode('-', $datos['mes']);
+        $mes = $fecha[1];
+        $anio = $fecha[0];
+        $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+        $data['res'] = NULL;
+        $data['inicioMes'] = date('w', strtotime($datos['mes'].'-01'));
+        $data['finMes'] = date('w', strtotime($datos['mes'].'-'.$data['numDias']));
+
+        $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
+
+        //Obtengo los gastos fijos del mes
+        $tipoGasto = 3;
+        $data['gastoFijo'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
+
+        //Obtengo los gastos variables del mes
+        $tipoGasto = 2;
+        $data['gastoVariable'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
+
+        //Obtengo los Insumos proveedores del mes
+        $tipoGasto = 1;
+        $data['gastoInsumosProveedores'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
+
+
+        $fila = 1;
+
+        //Creo la hoja
+        $phpExcel = new Spreadsheet();
+        $phpExcel
+            ->getProperties()
+            ->setCreator("Magic Service")
+            ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
+            ->setTitle('Reporte Master de Ingresos')
+            ->setSubject('Reportes Magic Service')
+            ->setDescription('Reporte con la sumatoria de las ventas de cada día organizado por fechas')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('Reportes');
+
+        $nombreDelDocumento = "MagicService - Reporte Master de Ingresos.xlsx";
+
+        //Selecciono la pestaña
+        $hoja = $phpExcel->getActiveSheet();
+
+        $styleCabecera = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'FF8000',
+                ],
+                'endColor' => [
+                    'argb' => 'FF8000',
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleSubtitulo = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $styleSubtituloDerecha = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleTextoCentrado = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleCurrency = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleCurrencyBold = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleFila = [
+            'font' => [
+                'bold' => false,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $currencyMask = new Currency(
+            '$',
+            2,
+            Currency::SYMBOL_WITH_SPACING,
+            Number::WITH_THOUSANDS_SEPARATOR,
+            Currency::TRAILING_SYMBOL,
+            
+        );
+        
+        $hoja->getStyle('A1:H1')->applyFromArray($styleCabecera);
+        $hoja->mergeCells('A1:H1');
+
+        //COLUMNAS
+        foreach (range('A','H') as $col) {
+            $hoja->getColumnDimension($col)->setAutoSize(true);
+        }
+        
+
+        //TITULO
+        $hoja->setCellValue('A'.$fila, "REPORTE MASTER DE INGRESOS");
+
+        $fila++;
+
+        //CABECERA
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        
+        $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+
+        if ($datosNegocio) {
+            $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
+        }else{
+            $hoja->setCellValue('B'.$fila, 'TODOS');
+        }
+        
+        
+        $fila++;
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "MES:");
+        $hoja->setCellValue('B'.$fila, $datos['fecha']);
+
+        $fila++;
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+
+        $fila +=2;
+
+        $hoja->getStyle('A'.$fila.':H'.$fila)->applyFromArray($styleCabecera);
+        $hoja->mergeCells('A'.$fila.':G'.$fila); 
+
+        //Edito la info que va a ir en el archivo excel
+        $hoja->setCellValue('A'.$fila, "VENTAS DIARIAS DE TODO EL MES");
+        $hoja->setCellValue('H'.$fila, "TOTAL DE VENTAS SEMANAL");
+
+        $fila +=2;
+
+        $hoja->getStyle('A'.$fila.':H'.$fila)->applyFromArray($styleCabecera);
+        //Edito la info que va a ir en el archivo excel
+        $hoja->setCellValue('A'.$fila, "LUNES");
+        $hoja->setCellValue('B'.$fila, "MARTES");
+        $hoja->setCellValue('C'.$fila, "MIERCOLES");
+        $hoja->setCellValue('D'.$fila, "JUEVES");
+        $hoja->setCellValue('E'.$fila, "VIERNES");
+        $hoja->setCellValue('F'.$fila, "SABADO");
+        $hoja->setCellValue('G'.$fila, "DOMINGO");
+        $hoja->setCellValue('H'.$fila, '');
+
+        $fila++;
+        
+        $dia = 1;
+        $sumaSemana = 0;
+        $sumaTotal = 0;
+        $cols = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G'];
+
+        $fila = 9;
+
+        //datos
+        if ($res) {
+
+            foreach ($res as $key => $result) {
+                if ($result['dia'] == 7) {
+                    if ($result['res']) {
+                        $hoja->setCellValue($cols[$result['dia']].$fila, number_format($result['res'], 2));
+                        $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
+                        $fila++;
+                    }else{
+                        $hoja->setCellValue($cols[$result['dia']].$fila, '0.00');
+                        $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
+                        $fila++;
+                    }
+                    $sumaTotal += $sumaSemana;
+                    $sumaSemana = 0;
+                }else{
+                    $hoja->getStyle('A'.$fila.':H'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                    $sumaSemana += $result['res'];
+                    
+                    if ($result['res']) {
+                        $hoja->setCellValue($cols[$result['dia']].$fila, number_format($result['res'], 2));
+                        
+                    }else{
+                        $hoja->setCellValue($cols[$result['dia']].$fila, '0.00');
+                    }
+                }
+                
+            }
+            if ($finMes != 0) {
+                $sumaTotal += $sumaSemana;
+                $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
+            }
+            
+
+        }else{
+            $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
+            $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
+        }
+        //TOTAL
+        $fila++;
+        $hoja->setCellValue("G".$fila, "TOTAL DEL MES:");
+        $hoja->getStyle('H'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+        $hoja->setCellValue("H".$fila, number_format($sumaTotal, 2));
+
+             
+
+        //Creo el writter y guardo la hoja
+        $writter = new XlsxWriter($phpExcel, 'Xlsx');
+        
+        //Cabeceras para descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
         
         $r = $writter->save('php://output');exit;
         // if ($r) {

@@ -48,7 +48,6 @@ class Proveedores extends BaseController {
             
             $data['session'] = $this->session;
 
-            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Proveedores';
             $data['subtitle']='Registrar Proveedor';
             $data['main_content']='proveedores/form-proveedor-new';

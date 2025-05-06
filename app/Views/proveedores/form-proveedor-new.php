@@ -1,8 +1,4 @@
-<style>
-    .text {
-        text-transform: uppercase;
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/form-proveedor-new.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -11,7 +7,7 @@
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle; ?></h3>
+                        <h3 class="card-title"><?= $subtitle;?></h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
@@ -70,7 +66,7 @@
                             </div>
                         </div>
                         <!-- /.card-body -->
-                        <?= form_hidden('id', 0); ?>
+                        
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
                             <a href="<?= site_url(); ?>proveedores" class="btn btn-light cancelar" id="btn-cancela">Cancelar</a>

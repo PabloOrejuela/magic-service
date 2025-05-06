@@ -1,9 +1,4 @@
-<style>
-    .text {
-        text-transform: uppercase;
-    }
-
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/form-proveedor-new.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">

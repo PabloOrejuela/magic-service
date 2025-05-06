@@ -127,11 +127,11 @@ $routes->get('set-arreg-temp-definitivo/(:num)', 'Administracion::set_arreg_temp
 $routes->get('productos-relacionados/(:num)', 'Administracion::productosRelacionados/$1');
 $routes->get('sucursales', 'Administracion::sucursales');
 $routes->get('sucursal-create', 'Administracion::form_sucursal_create');
+$routes->get('sucursal-delete/(:num)', 'Administracion::sucursal_delete/$1');
 $routes->post('sucursal-insert', 'Administracion::sucursal_insert');
 $routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
 $routes->get('updateSucursalSector/(:num)/(:num)/(:any)', 'Administracion::updateSucursalSector/$1/$2/$3');
 $routes->get('getSucursales', 'Administracion::getSucursales');
-
 
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');
@@ -139,7 +139,6 @@ $routes->get('proveedor-create', 'Proveedores::create');
 $routes->post('proveedor-insert', 'Proveedores::insert');
 $routes->get('proveedor-edit/(:num)', 'Proveedores::edit/$1');
 $routes->post('proveedor-update', 'Proveedores::update');
-
 
 //Gastos
 $routes->get('gastos', 'Gastos::index');
@@ -184,6 +183,10 @@ $routes->get('reporte-estadisticas-vendedor-excel', 'Reportes::reporteEstadistic
 $routes->get('reporte-master-ingresos', 'Reportes::frmReporteMasterIngresos');
 $routes->post('reporte-master-ingresos', 'Reportes::reporteMasterIngresos');
 $routes->get('reporte-master-ingresos-excel', 'Reportes::reporteMasterIngresosExcel');
+
+$routes->get('reporte-master-gastos', 'Reportes::frmReporteMasterGastos');
+$routes->post('reporte-master-gastos', 'Reportes::reporteMasterGastos');
+$routes->get('reporte-master-gastos-excel', 'Reportes::reporteMasterGastosExcel');
 
 
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');

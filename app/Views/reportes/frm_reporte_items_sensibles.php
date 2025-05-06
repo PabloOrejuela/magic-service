@@ -32,7 +32,6 @@
                                     class="form-control text" 
                                     id="fecha_final" 
                                     name="fecha_final" 
-                                    max="<?= date('Y-m-d') ?>"
                                     required
                                 >
                                 <p id="error-message"><?= session('errors.fecha_final');?> </p>

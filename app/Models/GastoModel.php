@@ -56,4 +56,24 @@ class GastoModel extends Model {
         //echo $this->db->getLastQuery();
         return $result;
     }
+
+    function _getGastosTipoGasto($tipoGasto, $idnegocio, $fechaInicio, $fechaFinal){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('valor,'.$this->table.'.documento as documento,sucursal,negocio,proveedores.nombre as proveedor,tipo_gasto,fecha,'.$this->table.'.id as id');
+        $builder->join('sucursales', 'sucursales.id='.$this->table.'.idsucursal');
+        $builder->join('negocios', 'negocios.id='.$this->table.'.idnegocio');
+        $builder->join('proveedores', 'proveedores.id='.$this->table.'.idproveedor');
+        $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto');
+        $builder->where('idtipogasto', $tipoGasto);
+        $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        // echo $this->db->getLastQuery();
+        return $result;
+    }
 }

@@ -223,6 +223,12 @@
             </a>
           </li>
           <li class="nav-item subItem">
+            <a href="'.base_url().'reporte-master-gastos" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Reporte Master de Gastos</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
             <a href="'.base_url().'reporte-items-sensibles" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte Items sensibles</p>

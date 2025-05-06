@@ -1501,6 +1501,26 @@ class Administracion extends BaseController {
         }
     }
 
+    public function sucursal_delete($id){
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['roles'] = $this->rolModel->findAll();
+            $data['usuario'] = $this->usuarioModel->find($id);
+
+            //Borro los sectores de entrega relacionados
+            //$this->sectoresEntregaModel->where('idsucursal', $id)->delete($id);
+            $this->sucursalModel->delete($id);
+            
+            return redirect()->to('sucursales');
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     function updateSucursalSector($sector, $sucursal, $costo_entrega){
         
         $mensaje = '';

@@ -1,25 +1,4 @@
-<style>
-    .inputValor{
-        text-align: right;
-    }
-
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
-    .input {
-        border-radius: 300px;
-        width: 250px;
-    }
-    .row {
-        margin-bottom: 20px;
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/grid-sucursales.css">
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
@@ -33,6 +12,7 @@
                             <a type="button" href="<?= site_url().'sucursal-create/'; ?>" class="btn btn-success mb-2" >Registrar una nueva Sucursal</a>
                         </div>
                         <form action="#" method="post">
+                            <p id="mensaje-warning">* Recuerde que borrar una sucursal borra también los sectores de entrega relacionados a esa sucursal y toda la información que está relacionada con los sectores de entrega, por ejemplo los pedidos.</p>
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             <thead>
                                 <th>No.</th>
@@ -50,7 +30,7 @@
                                                 <td>'.$value->direccion.'</td>';
                                             echo '<td>
                                                     <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
+                                                        <a type="button" id="btn-register" href="'.site_url().'sucursal-delete/'.$value->id.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>
