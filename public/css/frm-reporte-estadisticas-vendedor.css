@@ -24,3 +24,8 @@ label{
 #resultado-total{
     text-align: right;
 }
+
+#text-result-bold-centered{
+    font-weight: bold;
+    text-align: center;
+}

@@ -124,6 +124,7 @@
 
                                         $num = 1;
                                         $suma = 0;
+                                        $ventasExtras = 0;
 
                                         if ($res) {
                                             foreach ($res as $key => $resultado) {
@@ -139,15 +140,19 @@
 
                                                 if ($resultado->venta_extra == 1) {
                                                     echo '<td>SI</td>';
+                                                    $ventasExtras++;
                                                 } else {
                                                     echo '<td>NO</td>';
                                                 }
-
                                                 echo '</tr>';
                                                 $suma += $resultado->total;
                                                 $num++;
                                             }
-                                            echo '<tr><td colspan="2"></td><td id="text-result-bold">TOTAL: </td><td id="text-result-bold">'.number_format($suma, 2).'</td><td colspan="3"></td></tr>
+                                            echo '<tr>
+                                                    <td colspan="2"></td><td id="text-result-bold">TOTAL: </td>
+                                                    <td id="text-result-bold">'.number_format($suma, 2).'</td>
+                                                    <td colspan="2"></td><td id="text-result-bold-centered">'.$ventasExtras.'</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

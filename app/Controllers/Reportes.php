@@ -342,8 +342,8 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
             $data['negocios'] = $this->negocioModel->findAll();
-            $data['vendedores'] = $this->usuarioModel->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
-
+            $data['vendedores'] = $this->usuarioModel->where('estado', 1)->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
+            
             $data['title']='Reportes';
             $data['subtitle']='Reporte de estadísticas por vendedor';
             $data['main_content']='reportes/frm_reporte_estadisticas_vendedor';
@@ -847,6 +847,7 @@ class Reportes extends BaseController {
         if ($res) {
             $num = 1;
             $suma = 0;
+            $ventasExtras = 0;
             foreach ($res as $key => $result) {
                 //echo '<pre>'.var_export($result, true).'</pre>';exit;
                 
@@ -871,6 +872,7 @@ class Reportes extends BaseController {
 
                 $phpExcel->getActiveSheet()->getStyle('G'.$fila)->applyFromArray($styleTextoCentrado);
                 if ($result->venta_extra == 1) {
+                    $ventasExtras++;
                     $hoja->setCellValue('G'.$fila, 'SI');
                 } else {
                     $hoja->setCellValue('G'.$fila, 'NO');
@@ -886,6 +888,9 @@ class Reportes extends BaseController {
             $phpExcel->getActiveSheet()->getCell('D'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
             $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleCurrencyBold);
             $hoja->setCellValue('D'.$fila, number_format($suma, 2, '.'));
+
+            $phpExcel->getActiveSheet()->getStyle('G'.$fila)->applyFromArray($styleTextoCentrado);
+            $hoja->setCellValue('G'.$fila, $ventasExtras);
         }else{
             $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
