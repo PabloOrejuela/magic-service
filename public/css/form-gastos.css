@@ -12,3 +12,15 @@ label{
 .content-header{
     padding: 3px 0.5rem;
 }
+
+#div-proveedores{
+    display: none;
+}
+
+#div-gastovariable{
+    display: none;
+}
+
+#div-gastofijo{
+    display: none;
+}

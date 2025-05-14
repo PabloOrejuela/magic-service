@@ -1,13 +1,9 @@
-<style>
-    .text {
-        text-transform: uppercase;
-    }
-</style>
-<section class="content">
+<link rel="stylesheet" href="<?= site_url(); ?>/public/css/form-gastos.css">
+<section class="content mb-5 frm-gastos">
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-7">
+            <div class="col-md-7 mb-3 mt-0">
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
@@ -18,7 +14,7 @@
                     <form action="<?= site_url().'gasto-insert';?>" method="post">
                         <div class="card-body">
                             <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="sucursal">Sucursal *:</label>
                                 <select 
                                     class="form-select form-control-border" 
@@ -37,7 +33,7 @@
                                 </select>
                                 <p id="error-message"><?= session('errors.sucursal');?> </p>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="negocio">Negocio *:</label>
                                 <select 
                                     class="form-select form-control-border" 
@@ -56,25 +52,7 @@
                                 </select>
                                 <p id="error-message"><?= session('errors.negocio');?> </p>
                             </div>
-                            <div class="form-group col-md-12">
-                                <label for="proveedor">Proveedor *:</label>
-                                <select 
-                                    class="form-select form-control-border" 
-                                    id="proveedor" 
-                                    name="proveedor" 
-                                >
-                                    <option value="0" selected>--Seleccionar proveedor--</option>
-                                    <?php
-                                        if (isset($proveedores)) {
-                                            foreach ($proveedores as $key => $value) {
-                                                echo '<option value="'.$value->id.'" '.set_select('proveedor', $value->id, false).' >'.$value->nombre.'</option>';
-                                            }
-                                        }
-                                    ?>
-                                </select>
-                                <p id="error-message"><?= session('errors.proveedor');?> </p>
-                            </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="tipo">Tipo de gasto *:</label>
                                 <select 
                                     class="form-select form-control-border" 
@@ -92,7 +70,55 @@
                                 </select>
                                 <p id="error-message"><?= session('errors.tipo');?> </p>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6" id="div-proveedores">
+                                <label for="proveedor">Proveedor *:</label>
+                                <select 
+                                    class="form-select form-control-border" 
+                                    id="proveedor" 
+                                    name="proveedor" 
+                                >
+                                    <option value="0" selected>--Seleccionar proveedor--</option>
+                                    <?php
+                                        if (isset($proveedores)) {
+                                            foreach ($proveedores as $key => $value) {
+                                                echo '<option value="'.$value->id.'" '.set_select('proveedor', $value->id, false).' >'.$value->nombre.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                                <p id="error-message"><?= session('errors.proveedor');?> </p>
+                            </div>
+                            <div class="form-group col-md-12" id="div-gastovariable">
+                                <label for="detalleGastoVariable">Gasto variable:</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control text" 
+                                    id="detalleGastoVariable" 
+                                    name="detalleGastoVariable" 
+                                    placeholder="Detalle gasto variable" 
+                                    value="<?= old('detalleGastoVariable'); ?>" 
+                                >
+                                <p id="error-message"><?= session('errors.detalleGastoVariable');?> </p>
+                            </div>
+                            <div class="form-group col-md-6"  id="div-gastofijo">
+                                <label for="gastofijo">Gasto fijo *:</label>
+                                <select 
+                                    class="form-select form-control-border" 
+                                    id="gastofijo" 
+                                    name="gastofijo" 
+                                >
+                                    <option value="0" selected>--Seleccionar un gasto fijo--</option>
+                                    <?php
+                                        if (isset($gastos_fijos)) {
+                                            foreach ($gastos_fijos as $key => $gastoFijo) {
+                                                echo '<option value="'.$gastoFijo->id.'" '.set_select('proveedor', $gastoFijo->id, false).' >'.$gastoFijo->gasto_fijo.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                                <p id="error-message"><?= session('errors.gastofijo');?> </p>
+                            </div>
+                            <div class="form-group col-md-4">
                                 <label for="fecha">Fecha *:</label>
                                 <input 
                                     type="date" 
@@ -105,7 +131,7 @@
                                 <p id="error-message"><?= session('errors.fecha');?> </p>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="documento">No. Documento / Factura *:</label>
+                                <label for="documento">No. Documento / Factura:</label>
                                 <input 
                                     type="text" 
                                     class="form-control text" 
@@ -113,11 +139,10 @@
                                     name="documento" 
                                     placeholder="Número de documento" 
                                     value="<?= old('documento'); ?>" 
-                                    required
                                 >
                                 <p id="error-message"><?= session('errors.documento');?> </p>
                             </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-3">
                                 <label for="valor">Valor pagado *:</label>
                                 <input 
                                     type="text" 
@@ -143,6 +168,8 @@
         </div>
     </div>
 </section> <!-- /.card -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/form-gasto-new.js"></script>
 <script>
     $(document).ready(function(){
         $("#celular_contacto").on( "change", function() {

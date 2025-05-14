@@ -45,8 +45,8 @@ class GastoModel extends Model {
         $builder->select('valor,'.$this->table.'.documento as documento,sucursal,negocio,proveedores.nombre as proveedor,tipo_gasto,fecha,'.$this->table.'.id as id');
         $builder->join('sucursales', 'sucursales.id='.$this->table.'.idsucursal');
         $builder->join('negocios', 'negocios.id='.$this->table.'.idnegocio');
-        $builder->join('proveedores', 'proveedores.id='.$this->table.'.idproveedor');
-        $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto');
+        $builder->join('proveedores', 'proveedores.id='.$this->table.'.idproveedor', 'left');
+        $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto', 'left');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

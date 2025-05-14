@@ -17,6 +17,7 @@ use App\Models\ConfiguracionModel;
 use App\Models\DetallePedidoModel;
 use App\Models\DetallePedidoTempModel;
 use App\Models\EstadoPedidoModel;
+use App\Models\GastoFijoModel;
 use App\Models\GastoModel;
 use App\Models\FormaPagoModel;
 use App\Models\HorariosEntregaModel;
@@ -87,7 +88,7 @@ abstract class BaseController extends Controller {
 
         // Preload any models, libraries, etc, here.
         $this->db = \Config\Database::connect();
-        $this->usuarioModel = new UsuarioModel($this->db);
+        $this->attrExtArregModel = new AttrExtArregModel($this->db);
         $this->clienteModel = new ClienteModel($this->db);
         $this->formaPagoModel = new FormaPagoModel($this->db);
         $this->productoModel = new ProductoModel($this->db);
@@ -104,6 +105,7 @@ abstract class BaseController extends Controller {
         $this->estadoPedidoModel = new EstadoPedidoModel($this->db);
         $this->sucursalModel = new SucursalModel($this->db);
         $this->proveedorModel = new ProveedorModel($this->db);
+        $this->gastoFijoModel = new GastoFijoModel($this->db);
         $this->gastoModel = new GastoModel($this->db);
         $this->negocioModel = new NegocioModel($this->db);
         $this->tipoGastoModel = new TipoGastoModel($this->db);
@@ -115,7 +117,8 @@ abstract class BaseController extends Controller {
         $this->procedenciaModel = new ProcedenciaModel($this->db);
         $this->pedidoProcedenciaModel = new PedidoProcedenciaModel($this->db);
         $this->productoCambiosModel = new ProductoCambiosModel($this->db);
-        $this->attrExtArregModel = new AttrExtArregModel($this->db);
+        
+        $this->usuarioModel = new UsuarioModel($this->db);
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
 
         // E.g.: $this->session = \Config\Services::session();

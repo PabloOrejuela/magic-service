@@ -51,6 +51,7 @@ class Gastos extends BaseController {
             $data['negocios'] = $this->negocioModel->orderBy('negocio', 'asc')->findAll();
             $data['proveedores'] = $this->proveedorModel->orderBy('nombre', 'asc')->findAll();
             $data['tipos_gasto'] = $this->tipoGastoModel->orderBy('tipo_gasto', 'asc')->findAll();
+            $data['gastos_fijos'] = $this->gastoFijoModel->orderBy('id', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Gastos';
@@ -74,12 +75,14 @@ class Gastos extends BaseController {
                 'idproveedor' => strtoupper($this->request->getPostGet('proveedor')),
                 'idtipogasto' => strtoupper($this->request->getPostGet('tipo')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
+                'detalleGastoVariable' => strtoupper($this->request->getPostGet('detalleGastoVariable')),
+                'gastofijo' => strtoupper($this->request->getPostGet('gastofijo')),
+                'descripcion' => strtoupper($this->request->getPostGet('descripcion')),
                 'valor' => strtoupper($this->request->getPostGet('valor')),
                 'fecha' => strtoupper($this->request->getPostGet('fecha')),
             ];
-
+            
             $this->validation->setRuleGroup('gasto');
-        
         
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
@@ -87,9 +90,9 @@ class Gastos extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
-                //echo '<pre>'.var_export($gasto, true).'</pre>';exit;
+                // echo '<pre>'.var_export($gasto, true).'</pre>';exit;
 
-                //Inserto el nuevo cliente
+                //Inserto el nuevo gasto
                 $this->gastoModel->insert($gasto);
                 return redirect()->to('gastos');
             }
@@ -113,9 +116,12 @@ class Gastos extends BaseController {
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'valor' => strtoupper($this->request->getPostGet('valor')),
                 'fecha' => $this->request->getPostGet('fecha'),
+                'detalleGastoVariable' => strtoupper($this->request->getPostGet('detalleGastoVariable')),
+                'gastofijo' => strtoupper($this->request->getPostGet('gastofijo')),
+                'descripcion' => strtoupper($this->request->getPostGet('descripcion')),
             ];
 
-            $this->validation->setRuleGroup('gasto');
+            $this->validation->setRuleGroup('gastoUpdate');
         
         
             if (!$this->validation->withRequest($this->request)->run()) {
@@ -124,8 +130,7 @@ class Gastos extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
-                //echo '<pre>'.var_export($id, true).'</pre>';exit;
-
+                
                 //Inserto el nuevo cliente
                 $this->gastoModel->update($id, $gasto);
                 return redirect()->to('gastos');
@@ -153,8 +158,9 @@ class Gastos extends BaseController {
             $data['sucursales'] = $this->sucursalModel->findAll();
             $data['negocios'] = $this->negocioModel->findAll();
             $data['proveedores'] = $this->proveedorModel->findAll();
-            $data['tipos_gasto'] = $this->tipoGastoModel->findAll();
+            $data['tipos_gasto'] = $this->tipoGastoModel->orderBy('tipo_gasto', 'asc')->findAll();
             $data['gasto'] = $this->gastoModel->find($id);
+            $data['gastos_fijos'] = $this->gastoFijoModel->orderBy('id', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['gasto'], true).'</pre>';exit;
             $data['title']='Gastos';

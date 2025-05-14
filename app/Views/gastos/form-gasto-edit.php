@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'gasto-update';?>" method="post">
                         <div class="card-body">
                             <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="sucursal">Sucursal *:</label>
                                 <select 
                                     class="form-select form-control-border" 
@@ -34,6 +34,8 @@
                                                     }
                                                 }
                                             }
+                                        }else{
+                                            echo '<option value="0" selected>SIN DATOS</option>';
                                         }
                                     ?>
                                 </select>
@@ -59,42 +61,24 @@
                                                     }
                                                 }
                                             }
+                                        }else{
+                                            echo '<option value="0" selected>SIN DATOS</option>';
                                         }
                                     ?>
                                 </select>
                                 <p id="error-message"><?= session('errors.negocio');?> </p>
                             </div>
-                            <div class="form-group col-md-12">
-                                <label for="proveedor" class="mb-0">Proveedor *:</label>
-                                <select 
-                                    class="form-select form-control-border" 
-                                    id="proveedor" 
-                                    name="proveedor" 
-                                >
-                                    <option value="0" selected>--Seleccionar proveedor--</option>
-                                    <?php
-                                        if (isset($proveedores)) {
-                                            foreach ($proveedores as $key => $value) {
-                                                if ($value->id == $gasto->idproveedor) {
-                                                    echo '<option value="'.$value->id.'" selected>'.$value->nombre.'</option>';
-                                                }else{
-                                                    echo '<option value="'.$value->id.'" >'.$value->nombre.'</option>';
-                                                }
-                                            }
-                                        }
-                                    ?>
-                                </select>
-                                <p id="error-message"><?= session('errors.proveedor');?> </p>
-                            </div>
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-6">
                                 <label for="tipo">Tipo de gasto *:</label>
                                 <select 
                                     class="form-select form-control-border" 
                                     id="tipo" 
                                     name="tipo" 
+                                    disabled
                                 >
                                     <option value="0" selected>--Seleccionar tipo de gasto--</option>
                                     <?php
+                                    
                                         if (isset($tipos_gasto)) {
                                             foreach ($tipos_gasto as $key => $value) {
                                                 if ($value->id == $gasto->idtipogasto) {
@@ -103,12 +87,88 @@
                                                     echo '<option value="'.$value->id.'" >'.$value->tipo_gasto.'</option>';
                                                 }
                                             }
+                                        }else{
+                                            echo '<option value="0" selected>SIN DATOS</option>';
                                         }
                                     ?>
                                 </select>
                                 <p id="error-message"><?= session('errors.tipo');?> </p>
                             </div>
-                            <div class="form-group col-md-12">
+                            
+                            <?php 
+                                
+                                if ($gasto->idtipogasto == 1) {
+                                    echo '
+                                        <div class="form-group col-md-6" id="div-proveedores" style="display:block">
+                                            <label for="proveedor" class="mb-0">Proveedor *:</label>
+                                            <select 
+                                                class="form-select form-control-border" 
+                                                id="proveedor" 
+                                                name="proveedor" 
+                                                disabled
+                                            >
+                                                <option value="0" selected>--Seleccionar proveedor--</option>';
+                                                    if (isset($proveedores)) {
+                                                        foreach ($proveedores as $key => $value) {
+                                                            if ($value->id == $gasto->idproveedor) {
+                                                                echo '<option value="'.$value->id.'" selected>'.$value->nombre.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$value->id.'" >'.$value->nombre.'</option>';
+                                                            }
+                                                        }
+                                                    }else{
+                                                        echo '<option value="0" selected>SIN DATOS</option>';
+                                                    }
+                                        echo    '</select>
+                                            <p id="error-message">'.session('errors.proveedor').'</p>
+                                        </div>';
+                                }
+
+                                if ($gasto->idtipogasto == 2) {
+                                    echo '
+                                        <div class="form-group col-md-6" id="div-gastovariable" style="display:block">
+                                            <label for="detalleGastoVariable">Gasto variable:</label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control text" 
+                                                id="detalleGastoVariable" 
+                                                name="detalleGastoVariable" 
+                                                placeholder="Detalle gasto variable" 
+                                                value="'.$gasto->detalleGastoVariable.'" 
+                                                readonly
+                                            >
+                                            <p id="error-message">'.session('errors.detalleGastoVariable').'</p>
+                                        </div>';
+                                }
+
+                                if ($gasto->idtipogasto == 3) {
+                                    echo '
+                                        <div class="form-group col-md-6" id="div-gastofijo" style="display:block">
+                                            <label for="gastofijo">Gasto fijo *:</label>
+                                            <select 
+                                                class="form-select form-control-border" 
+                                                id="gastofijo" 
+                                                name="gastofijo" 
+                                                disabled
+                                            >
+                                                <option value="0" selected>--Seleccionar proveedor--</option>';
+                                                    if (isset($gastos_fijos)) {
+                                                        foreach ($gastos_fijos as $key => $gastoFijo) {
+                                                            if ($gastoFijo->id == $gasto->gastofijo) {
+                                                                echo '<option value="'.$gastoFijo->id.'" selected>'.$gastoFijo->gasto_fijo.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$gastoFijo->id.'" >'.$gastoFijo->gasto_fijo.'</option>';
+                                                            }
+                                                        }
+                                                    }else{
+                                                        echo '<option value="0" selected>SIN DATOS</option>';
+                                                    }
+                                            echo    '</select>
+                                                <p id="error-message">'.session('errors.gastofijo').'</p>
+                                            </div>';
+                                }
+                            ?>
+                            <div class="form-group col-md-4">
                                 <label for="fecha">Fecha *:</label>
                                 <input 
                                     type="date" 
@@ -148,6 +208,7 @@
                             </div>
                         </div>
                         <?= form_hidden('id', $gasto->id); ?>
+                        <?= form_hidden('tipo', $gasto->idtipogasto); ?>
                         <!-- /.card-body -->                        
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Actualizar</button>
@@ -159,6 +220,8 @@
         </div>
     </div>
 </section> <!-- /.card -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/form-gasto-new.js"></script>
 <script>
     $(document).ready(function(){
         $("#celular_contacto").on( "change", function() {

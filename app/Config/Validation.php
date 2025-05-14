@@ -263,9 +263,7 @@ class Validation extends BaseConfig
     public $gasto = [
         'sucursal'   => 'greater_than[0]',
         'negocio'   => 'greater_than[0]',
-        'proveedor'   => 'greater_than[0]',
         'tipo'   => 'greater_than[0]',
-        'documento'   => 'required',
         'valor'   => 'required',
     ]; 
 
@@ -276,14 +274,31 @@ class Validation extends BaseConfig
         'negocio' => [
             'greater_than' => 'El campo "Negocio" es obligatorio',
         ],
-        'proveedor' => [
-            'greater_than' => 'El campo "Proveedor" es obligatorio',
-        ],
         'tipo' => [
             'greater_than' => 'El campo "Tipo" es obligatorio',
         ],
-        'documento' => [
-            'required' => 'El campo "Documento / Factura" es obligatorio',
+        'valor' => [
+            'required' => 'El campo "Valor pagado" es obligatorio',
+        ],
+    ];
+
+    public $gastoUpdate = [
+        'sucursal'   => 'greater_than[0]',
+        'negocio'   => 'greater_than[0]',
+        'tipo'   => 'greater_than[0]',
+        'fecha'   => 'required',
+        'valor'   => 'required',
+    ]; 
+
+    public $gastoUpdate_errors = [
+        'sucursal' => [
+            'greater_than' => 'El campo "Sucursal" es obligatorio',
+        ],
+        'negocio' => [
+            'greater_than' => 'El campo "Negocio" es obligatorio',
+        ],
+        'tipo' => [
+            'greater_than' => 'El campo "Tipo" es obligatorio',
         ],
         'valor' => [
             'required' => 'El campo "Valor pagado" es obligatorio',
