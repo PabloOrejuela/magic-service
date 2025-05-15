@@ -501,14 +501,15 @@ btnNombreArreglo.forEach(link => {
                             </div>
                             <div class="mb-3">
                                 <label for="opciones" class="form-label">Opciones</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="opciones" 
-                                    placeholder="opciones"
-                                    value="${data.infoExtra.opciones}" 
-                                    onchange="actualiza('opciones', document.querySelector('#idarreglo').value, this.value);"
-                                >
+                                <div class="form-floating">
+                                    <textarea 
+                                        class="form-control" 
+                                        placeholder="opciones" 
+                                        id="opciones" 
+                                        rows="25"
+                                        onchange="actualiza('opciones', document.querySelector('#idarreglo').value, this.value);"
+                                    >${data.infoExtra.opciones}</textarea>
+                                </div>
                             </div>
                         `
                     }
@@ -835,13 +836,15 @@ btnNombreArreglo.forEach(link => {
                             </div>
                             <div class="mb-3">
                                 <label for="opciones" class="form-label">Opciones</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="opciones" 
-                                    placeholder="opciones"
-                                    onchange="actualiza('opciones', document.querySelector('#idarreglo').value, this.value);"
-                                >
+                                <div class="form-floating">
+                                    <textarea 
+                                        class="form-control" 
+                                        placeholder="opciones" 
+                                        id="opciones" 
+                                        rows="25"
+                                        onchange="actualiza('opciones', document.querySelector('#idarreglo').value, this.value);"
+                                    ></textarea>
+                                </div>
                             </div>
                         `
                     }

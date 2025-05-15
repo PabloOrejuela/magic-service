@@ -61,6 +61,12 @@
     border: none;
 }
 
+#opciones{
+    font-size: 0.7em;
+    padding: 7px;
+}
+
+
 .form-label{
     margin-bottom: 0px;
 }
