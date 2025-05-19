@@ -46,33 +46,43 @@
                                </div>
                             </div>
                         </div>
-                        <div class="card-body mt-2">
+                        <div class="card-body mt-1">
                             <div class="row col-md-12">
                                 <div class="row col-md-4">
                                     <table class="table table-bordered mt-3" id="table-resultados-ingresos">
                                         <thead>
                                             <th class="col-sm-1">FECHA</th>
                                             <th class="col-sm-1">GASTOS FIJOS</th>
-                                            <th class="col-sm-1">TOTAL</th>
+                                            <?php
+                                                $totalEgresos = 0;
+                                                $totalGastosFijos = 0;
+                                                $totalGastoVariable = 0;
+                                                $totalGastoInsumosProveedores = 0;
+
+                                                if ($gastoFijo) {
+                                                    
+                                                    foreach ($gastoFijo as $key => $gasto) {
+                                                        $totalGastosFijos += $gasto->valor;
+                                                    }
+
+                                                }
+                                                echo '<th class="col-sm-1" id="text-result-bold">'.number_format($totalGastosFijos, 2).'</th>';
+                                            ?>
                                         </thead>
                                         <tbody>
                                             <?php
-                                                $totalEgresos = 0;
                                                 if ($gastoFijo) {
-                                                    $totalGastosFijos = 0;
                                                     foreach ($gastoFijo as $key => $gasto) {
                                                         echo '<tr>
                                                             <td>'.$gasto->fecha.'</td>
                                                             <td>'.$gasto->proveedor.'</td>
                                                             <td id="resultado-total">'.$gasto->valor.'</td>
                                                         </tr>';
-                                                        $totalGastosFijos += $gasto->valor;
                                                     }
-                                                    echo '<tr> 
-                                                            <td colspan="2" id="td-totales-bold">Total Gastos Fijos:</td>
-                                                            <td id="text-result-bold">'.$totalGastosFijos.'</td></tr>';
                                                 } else {
-                                                    # code...
+                                                    echo '<tr>
+                                                            <td>No hay datos que mostrar</td>
+                                                        </tr>';
                                                 }
                                             ?>
                                         </tbody>
@@ -84,25 +94,30 @@
                                         <thead>
                                             <th class="col-sm-1">FECHA</th>
                                             <th class="col-sm-1">GASTOS VARIABLES</th>
-                                            <th class="col-sm-1">TOTAL</th>
+                                            <?php
+                                                if ($gastoVariable) {
+
+                                                    foreach ($gastoVariable as $key => $gasto) {
+                                                        $totalGastoVariable += $gasto->valor;
+                                                    }
+                                                }
+                                                echo '<th class="col-sm-1" id="text-result-bold">'.number_format($totalGastoVariable, 2).'</th>';
+                                            ?>
                                         </thead>
                                         <tbody>
                                             <?php
                                                 if ($gastoVariable) {
-                                                    $totalGastoVariable = 0;
                                                     foreach ($gastoVariable as $key => $gasto) {
                                                         echo '<tr>
                                                             <td>'.$gasto->fecha.'</td>
                                                             <td>'.$gasto->proveedor.'</td>
                                                             <td id="resultado-total">'.$gasto->valor.'</td>
                                                         </tr>';
-                                                        $totalGastoVariable += $gasto->valor;
                                                     }
-                                                    echo '<tr>
-                                                            <td colspan="2" id="td-totales-bold">Total Gastos Variables:</td>
-                                                            <td id="text-result-bold">'.$totalGastoVariable.'</td></tr>';
                                                 } else {
-                                                    # code...
+                                                    echo '<tr>
+                                                            <td>No hay datos que mostrar</td>
+                                                        </tr>';
                                                 }
                                             ?>
                                         </tbody>
@@ -114,35 +129,41 @@
                                         <thead>
                                             <th class="col-sm-1">FECHA</th>
                                             <th class="col-sm-1">INSUMOS PROVEEDORES</th>
-                                            <th class="col-sm-1">TOTAL</th>
+                                            <?php
+                                                if ($gastoInsumosProveedores) {
+                                                    
+                                                    foreach ($gastoInsumosProveedores as $key => $gasto) {
+                                                        $totalGastoInsumosProveedores += $gasto->valor;
+                                                    }
+                                                    
+                                                }
+                                                echo '<th class="col-sm-1" id="text-result-bold">'.number_format($totalGastoInsumosProveedores, 2).'</th>';
+                                            ?>
                                         </thead>
                                         <tbody>
                                             <?php
                                                 if ($gastoInsumosProveedores) {
-                                                    $totalGastoInsumosProveedores = 0;
                                                     foreach ($gastoInsumosProveedores as $key => $gasto) {
                                                         echo '<tr>
                                                             <td>'.$gasto->fecha.'</td>
                                                             <td>'.$gasto->proveedor.'</td>
                                                             <td id="resultado-total">'.$gasto->valor.'</td>
                                                         </tr>';
-                                                        $totalGastoInsumosProveedores += $gasto->valor;
                                                     }
-                                                    echo '<tr>
-                                                            <td colspan="2" id="td-totales-bold">Total Gasto Insumos:</td>
-                                                            <td id="text-result-bold">'.$totalGastoInsumosProveedores.'</td></tr>';
                                                 } else {
-                                                    # code...
+                                                    echo '<tr>
+                                                            <td>No hay datos que mostrar</td>
+                                                        </tr>';
                                                 }
                                             ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div class="row col-md-2">
+                            <div class="row col-md-3">
                                 <table class="table table-bordered mt-3" id="table-resultados-ingresos">
                                     <tbody>
-                                        <tr><td id="td-totales-bold">TOTAL DE EGRESOS: </td>
+                                        <tr><td id="td-totales-bold">TOTAL DE EGRESOS POR GASTOS: </td>
                                         <?php
                                             if ($gastoFijo) {
                                                 $totalEgresos = $totalGastosFijos + $totalGastoVariable + $totalGastoInsumosProveedores;

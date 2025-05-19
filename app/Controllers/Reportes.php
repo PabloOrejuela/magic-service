@@ -245,7 +245,7 @@ class Reportes extends BaseController {
                 //Obtengo los gastos fijos del mes
                 $tipoGasto = 3;
                 $data['gastoFijo'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
-
+                
                 //Obtengo los gastos variables del mes
                 $tipoGasto = 2;
                 $data['gastoVariable'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
