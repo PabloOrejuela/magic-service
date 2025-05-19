@@ -8,5 +8,6 @@
 
 <h5>Fixes</h5>
 <ul>
+    <li>Corregido error en el reporte master de gastos cuando se seleciona una fecha sin gastos</li>
     <li>Corregido un error que no calculaba el fin de semana cuando el día actual es domingo</li>
 </ul>

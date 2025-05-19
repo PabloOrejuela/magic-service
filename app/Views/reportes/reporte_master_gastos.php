@@ -144,9 +144,13 @@
                                     <tbody>
                                         <tr><td id="td-totales-bold">TOTAL DE EGRESOS: </td>
                                         <?php
-                                            $totalEgresos = $totalGastosFijos + $totalGastoVariable + $totalGastoInsumosProveedores;
+                                            if ($gastoFijo) {
+                                                $totalEgresos = $totalGastosFijos + $totalGastoVariable + $totalGastoInsumosProveedores;
 
-                                            echo '<td id="result-bold">'.number_format($totalEgresos, 2).'</td>';
+                                                echo '<td id="result-bold">'.number_format($totalEgresos, 2).'</td>';
+                                            }else{
+                                                echo '<td id="result-bold">'.number_format("0", 2).'</td>';
+                                            }
                                         ?>
                                         </tr>
                                     </tbody>
