@@ -86,9 +86,16 @@ selectSugest.addEventListener('change', function(e) {
                     }
                 }
             }else{
+                if (diaSemana == 0) {
+                    finSemana = fecha.getDate()
+                }else{
+                    finSemana = (fecha.getDate() + (7 - fecha.getDay()))
+                }
+                
+
                 inicioSemana = getInicioSemana(diaSemana, diaActual)
                 cadenafechaInicio = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+(parseInt(mesActual)))
-                console.log(inicioSemana);
+                console.log(finSemana);
 
                 fechaInicio.value = cadenafechaInicio + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
                 if (finSemana >= diasMes) {
@@ -109,7 +116,7 @@ const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
 const getInicioSemana = (diaSemana, diaActual) => {
     
     if (diaSemana == 1) {
-        
+        //lunes
         return diaActual
     }else if(diaSemana == 2){
         
@@ -126,7 +133,7 @@ const getInicioSemana = (diaSemana, diaActual) => {
     }else if(diaSemana == 6){
         
         return diaActual - 5
-    }else if(diaSemana == 7){
+    }else if(diaSemana == 0){
         
         return diaActual - 6
     }

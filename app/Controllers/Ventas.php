@@ -728,6 +728,12 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
+            $dnegocio = 1;
+
+            //Si el pedido tiene el detalle de bocaditos $idnegocio = 2, es decir se un pedido de karana
+            if ($detalleTemporal[0]->idcategoria == 5) {
+                $idnegocio = 2;
+            }
             
             if ($this->request->getPostGet('sin_remitente') != null) {
                 $sin_remitente = $this->request->getPostGet('sin_remitente');
@@ -762,9 +768,10 @@ class Ventas extends BaseController {
                 'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
-                'idnegocio' => 1,
+                'idnegocio' => $idnegocio
+                
             ];
-            //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+            
 
             $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [
@@ -831,6 +838,7 @@ class Ventas extends BaseController {
                             $this->detallePedidoTempModel->_delete($detalleTemporal);
                             
                             $mensaje = 1;
+
                         }else{
                             $mensaje = 'SIN DETALLE';
                         }

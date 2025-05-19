@@ -1128,8 +1128,10 @@ class Tickets extends BaseController {
                         </tr>';
 
                 if ($atributos) {
-                    //Form Bocaditos
-
+                    //Form Bocaditos              
+                    
+                    $cadena = str_replace(",", "<br/>", $atributos->opciones);
+                    
                     $html .= '<tr>
                                 <td 
                                     style="font-weight:bold;
@@ -1170,13 +1172,14 @@ class Tickets extends BaseController {
                                     height: auto;
                                     font-size: 0.8em;"
                                 >Opciones: </td>
+                                
                                 <td 
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
                                     font-size: 0.8em;"
-                                >'.$atributos->opciones.'</td>
+                                >'.$cadena.'</td>
                             </tr>';
                     
                 }else{
