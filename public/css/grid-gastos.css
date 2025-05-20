@@ -9,3 +9,24 @@
 .grid{
     font-size: 0.8em;
 }
+
+#div-filtros{
+    font-size: 0.8em;
+}
+
+.label{
+    margin-bottom: 3px !important;
+}
+
+#mes{
+    font-size: 1em;
+    margin-bottom: 0% !important;
+}
+
+#btnFiltro{
+    margin-top: 0%;
+}
+
+#btn-cancela{
+    margin-top: 0%;
+}

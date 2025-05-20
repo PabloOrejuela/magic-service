@@ -1,6 +1,7 @@
 <h3>Cambios</h3>
 <h5>Reportes</h5>
 <ul>
+    <li>Modificado el grid de gastos, ahora tiene un filtro por mes además se le agregó las columnas de campos de cada tipo de gasto</li>>
     <li>Terminado el reporte Master de gastos HTML y Excel</li>
     <li>En el reporte Master de gastos ee hizo algunos cambios y se puso los totales de cada tipo de gasto en la fila de arriba de cada tabla</li>
     <li>Se creó la tabla de gastos fijos</li>

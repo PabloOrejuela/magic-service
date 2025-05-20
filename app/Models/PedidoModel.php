@@ -203,10 +203,11 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
-        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
-        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
+        //$builder->select('cod_pedido,total');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos', 'left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id','left');
 
         //Si se ha seleccionado un negocio
         if ($negocio != 0) {

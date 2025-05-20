@@ -19,14 +19,18 @@
                                         type="month" 
                                         class="form-control text" 
                                         id="mes" 
-                                        name="mes"
-                                        value="0000-00-00"
+                                        name="mes" 
+                                        value="<?= $mes; ?>" 
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
                             </div>
-                            <div class="form-group col-md-4 mb-4"><button type="submit" class="btn btn-primary mb-4" id="btnFiltro">Filtrar</button></div>
+                            <div class="form-group col-md-5 mb-5">
+                                <button type="submit" class="btn btn-primary" id="btnFiltro">Filtrar</button>
+                                <a href="<?= site_url(); ?>gastos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Ver todos</a>
+                            </div>
+                            
                         </form>
                         <table id="datatablesSimple" class="table table-bordered table-striped grid">
                             

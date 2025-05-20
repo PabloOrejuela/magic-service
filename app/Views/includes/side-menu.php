@@ -229,7 +229,7 @@
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-devoluciones-mensual" class="nav-link">
+            <a href="'.base_url().'reporte-devoluciones" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte de devoluciones mensual</p>
             </a>

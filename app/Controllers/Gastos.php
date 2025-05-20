@@ -33,6 +33,35 @@ class Gastos extends BaseController {
         }
     }
 
+    public function gridGastoFiltrado(){
+        
+        $data = $this->acl();
+        
+        if ($data['logged'] == 1 && $this->session->gastos == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['mes'] = $this->request->getPostGet('mes');
+
+            $fecha = explode('-', $data['mes']);
+            $mes = $fecha[1];
+            $anio = $fecha[0];
+            $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+            $data['res'] = NULL;
+            $data['inicioMes'] = date('w', strtotime($data['mes'].'-01'));
+            $data['finMes'] = date('w', strtotime($data['mes'].'-'.$data['numDias']));
+
+            $data['gastos'] = $this->gastoModel->_getGastosFiltrado($data['mes'].'-01', $data['mes'].'-'.$data['numDias']);
+
+            $data['title']='Gastos';
+            $data['subtitle']='Gastos';
+            $data['main_content']='gastos/grid_gastos_filtrado';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     /**
      * Formulario para crear un nuevo GASTO
      *

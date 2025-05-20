@@ -117,6 +117,25 @@ class Reportes extends BaseController {
         }
     }
 
+    public function frmReporteDevoluciones(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte mensual de devoluciones';
+            $data['main_content']='reportes/form_reporte_devoluciones';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function reporteProcedencias(){
         
         $data = $this->acl();
@@ -267,6 +286,66 @@ class Reportes extends BaseController {
         }
     }
 
+    public function reporteDevoluciones(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('mes'),
+            ];
+            echo '<h1>REPORTE EN DESARROLLO</h1>';
+            echo '<pre>'.var_export($datos, true).'</pre>';exit;
+            $this->validation->setRuleGroup('reporteMasterIngresos');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+                $data['res'] = NULL;
+                $data['inicioMes'] = date('w', strtotime($datos['fecha'].'-01'));
+                $data['finMes'] = date('w', strtotime($datos['fecha'].'-'.$data['numDias']));
+                // $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
+                // $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
+
+                //Obtengo los gastos fijos del mes
+                $tipoGasto = 3;
+                $data['gastoFijo'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+                
+                //Obtengo los gastos variables del mes
+                $tipoGasto = 2;
+                $data['gastoVariable'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+
+                //Obtengo los Insumos proveedores del mes
+                $tipoGasto = 1;
+                $data['gastoInsumosProveedores'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+ 
+                $data['datos'] = $datos;
+
+                $data['title']='Reportes';
+                $data['subtitle']='Reporte Master de Gastos';
+                $data['main_content']='reportes/reporte_master_gastos';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function cadenaInicio($inicioMes){
         if ($inicioMes == 2) {
             $dia = 2;
@@ -324,6 +403,7 @@ class Reportes extends BaseController {
             $data['res'] = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['negocio']);
             $data['datos'] = $datos;
 
+            //secho '<pre>'.var_export($data['res'], true).'</pre>';exit;
             $data['title']='Reportes';
             $data['subtitle']='Reporte de Control Diario de Ventas';
             $data['main_content']='reportes/reporte_diario_ventas';

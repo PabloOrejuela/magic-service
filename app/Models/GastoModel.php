@@ -42,11 +42,32 @@ class GastoModel extends Model {
     function _getGastos(){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select('valor,'.$this->table.'.documento as documento,sucursal,negocio,proveedores.nombre as proveedor,tipo_gasto,fecha,'.$this->table.'.id as id');
+        $builder->select('valor,'.$this->table.'.documento as documento,sucursal,negocio,proveedores.nombre as proveedor,tipo_gasto,gasto_fijo,fecha,'.$this->table.'.id as id,detalleGastoVariable');
         $builder->join('sucursales', 'sucursales.id='.$this->table.'.idsucursal');
         $builder->join('negocios', 'negocios.id='.$this->table.'.idnegocio');
         $builder->join('proveedores', 'proveedores.id='.$this->table.'.idproveedor', 'left');
         $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto', 'left');
+        $builder->join('gastos_fijos', 'gastos_fijos.id='.$this->table.'.gastofijo','left');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getGastosFiltrado($fechaInicio, $fechaFinal){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('valor,'.$this->table.'.documento as documento,sucursal,negocio,proveedores.nombre as proveedor,tipo_gasto,gasto_fijo,fecha,'.$this->table.'.id as id,detalleGastoVariable');
+        $builder->join('sucursales', 'sucursales.id='.$this->table.'.idsucursal');
+        $builder->join('negocios', 'negocios.id='.$this->table.'.idnegocio');
+        $builder->join('proveedores', 'proveedores.id='.$this->table.'.idproveedor', 'left');
+        $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto', 'left');
+        $builder->join('gastos_fijos', 'gastos_fijos.id='.$this->table.'.gastofijo','left');
+        $builder->where("fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

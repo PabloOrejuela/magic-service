@@ -142,6 +142,7 @@ $routes->post('proveedor-update', 'Proveedores::update');
 
 //Gastos
 $routes->get('gastos', 'Gastos::index');
+$routes->post('gastos', 'Gastos::gridGastoFiltrado');
 $routes->get('gasto-create', 'Gastos::create');
 $routes->post('gasto-insert', 'Gastos::insert');
 $routes->get('gasto-edit/(:num)', 'Gastos::edit/$1');
@@ -187,6 +188,10 @@ $routes->get('reporte-master-ingresos-excel', 'Reportes::reporteMasterIngresosEx
 $routes->get('reporte-master-gastos', 'Reportes::frmReporteMasterGastos');
 $routes->post('reporte-master-gastos', 'Reportes::reporteMasterGastos');
 $routes->get('reporte-master-gastos-excel', 'Reportes::reporteMasterGastosExcel');
+
+$routes->get('reporte-devoluciones', 'Reportes::frmReporteDevoluciones');
+$routes->post('reporte-devoluciones', 'Reportes::reporteDevoluciones');
+$routes->get('reporte-devoluciones-excel', 'Reportes::reporteDevolucionesExcel');
 
 
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
