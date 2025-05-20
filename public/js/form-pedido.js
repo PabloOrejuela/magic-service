@@ -571,13 +571,16 @@ function calcularMensajero(){
 }
 
 $(document).ready(function(){
+
+let valorDomingo = document.getElementById('valorDomingo').value 
+
   $("#inputFecha").on('change',function(){
       if($("#inputFecha").val() !=""){
           valor = $("#inputFecha").val();
           
           diaSemana = getDayOfWeek(valor)
           if (diaSemana == 6) {
-              document.getElementById("cargo_domingo").value = 2
+              document.getElementById("cargo_domingo").value = valorDomingo
           }else{
               document.getElementById("cargo_domingo").value = 0
           }
