@@ -58,7 +58,7 @@
                                                 $totalGastosFijos = 0;
                                                 $totalGastoVariable = 0;
                                                 $totalGastoInsumosProveedores = 0;
-
+                                            ///echo '<pre>'.var_export($gastoFijo, true).'</pre>';exit;
                                                 if ($gastoFijo) {
                                                     
                                                     foreach ($gastoFijo as $key => $gasto) {
@@ -75,7 +75,7 @@
                                                     foreach ($gastoFijo as $key => $gasto) {
                                                         echo '<tr>
                                                             <td>'.$gasto->fecha.'</td>
-                                                            <td>'.$gasto->proveedor.'</td>
+                                                            <td>'.$gasto->gasto_fijo.'</td>
                                                             <td id="resultado-total">'.$gasto->valor.'</td>
                                                         </tr>';
                                                     }
@@ -110,7 +110,7 @@
                                                     foreach ($gastoVariable as $key => $gasto) {
                                                         echo '<tr>
                                                             <td>'.$gasto->fecha.'</td>
-                                                            <td>'.$gasto->proveedor.'</td>
+                                                            <td>'.$gasto->detalleGastoVariable.'</td>
                                                             <td id="resultado-total">'.$gasto->valor.'</td>
                                                         </tr>';
                                                     }
@@ -179,14 +179,14 @@
                             </div>
                                 
                             <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                    <a 
-                                        class="btn btn-primary" 
-                                        href="'.site_url().'reporte-master-gastos-excel?negocio='.$datos['negocio'].'&mes='.$datos['fecha'].'"
-                                        id="btn-reporte-excel"
-                                    >Descargar reporte en excel</a>
-                                    <a href="'.site_url().'reporte-procedencias" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
-                                </div>
+                                <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
+                                <a 
+                                    class="btn btn-primary" 
+                                    href="<?= site_url();?>reporte-master-gastos-excel?negocio=<?=$datos['negocio']?>&mes=<?= $datos['fecha']?>"
+                                    id="btn-reporte-excel-res"
+                                >Descargar reporte en excel</a>
+                                <a href="<?= site_url();?>reporte-master-gastos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                            </div>
                     </form>
                 </div>
             </div>

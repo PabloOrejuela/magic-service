@@ -1122,15 +1122,15 @@ class Reportes extends BaseController {
 
         //Obtengo los gastos fijos del mes
         $tipoGasto = 3;
-        $data['gastoFijo'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
+        $gastoFijo = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
 
         //Obtengo los gastos variables del mes
         $tipoGasto = 2;
-        $data['gastoVariable'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
+        $gastoVariable = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
 
         //Obtengo los Insumos proveedores del mes
         $tipoGasto = 1;
-        $data['gastoInsumosProveedores'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
+        $gastoInsumosProveedores = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
 
 
         $fila = 1;
@@ -1141,13 +1141,13 @@ class Reportes extends BaseController {
             ->getProperties()
             ->setCreator("Magic Service")
             ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
-            ->setTitle('Reporte Master de Ingresos')
+            ->setTitle('Reporte Master de Gastos')
             ->setSubject('Reportes Magic Service')
-            ->setDescription('Reporte con la sumatoria de las ventas de cada día organizado por fechas')
+            ->setDescription('Reporte de los gastos del mes organizados por tipo de gasto')
             ->setKeywords('etiquetas o palabras clave separadas por espacios')
             ->setCategory('Reportes');
 
-        $nombreDelDocumento = "MagicService - Reporte Master de Ingresos.xlsx";
+        $nombreDelDocumento = "MagicService - Reporte Master de Gastos.xlsx";
 
         //Selecciono la pestaña
         $hoja = $phpExcel->getActiveSheet();
@@ -1168,6 +1168,25 @@ class Reportes extends BaseController {
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleCabeceraTotales = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'FF8000',
+                ],
+                'endColor' => [
+                    'argb' => 'FF8000',
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
             ]
         ];
 
@@ -1234,23 +1253,34 @@ class Reportes extends BaseController {
             
         );
         
-        $hoja->getStyle('A1:H1')->applyFromArray($styleCabecera);
-        $hoja->mergeCells('A1:H1');
+        $hoja->getStyle('A1:K1')->applyFromArray($styleCabecera);
+        $hoja->mergeCells('A1:K1');
 
         //COLUMNAS
-        foreach (range('A','H') as $col) {
+        foreach (range('A','K') as $col) {
             $hoja->getColumnDimension($col)->setAutoSize(true);
         }
         
 
         //TITULO
+        $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
         $hoja->setCellValue('A'.$fila, "REPORTE MASTER DE INGRESOS");
 
-        $fila++;
+        $fila += 2;
 
         //CABECERA
         $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
-        
+        $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila.':B'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
         $hoja->setCellValue('A'.$fila, "NEGOCIO:");
 
         if ($datosNegocio) {
@@ -1261,90 +1291,204 @@ class Reportes extends BaseController {
         
         
         $fila++;
+        $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila.':B'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
         $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('A'.$fila, "MES:");
-        $hoja->setCellValue('B'.$fila, $datos['fecha']);
+        $hoja->setCellValue('B'.$fila, $datos['mes']);
 
         $fila++;
         $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
 
         $fila +=2;
 
-        $hoja->getStyle('A'.$fila.':H'.$fila)->applyFromArray($styleCabecera);
-        $hoja->mergeCells('A'.$fila.':G'.$fila); 
-
-        //Edito la info que va a ir en el archivo excel
-        $hoja->setCellValue('A'.$fila, "VENTAS DIARIAS DE TODO EL MES");
-        $hoja->setCellValue('H'.$fila, "TOTAL DE VENTAS SEMANAL");
-
-        $fila +=2;
-
-        $hoja->getStyle('A'.$fila.':H'.$fila)->applyFromArray($styleCabecera);
-        //Edito la info que va a ir en el archivo excel
-        $hoja->setCellValue('A'.$fila, "LUNES");
-        $hoja->setCellValue('B'.$fila, "MARTES");
-        $hoja->setCellValue('C'.$fila, "MIERCOLES");
-        $hoja->setCellValue('D'.$fila, "JUEVES");
-        $hoja->setCellValue('E'.$fila, "VIERNES");
-        $hoja->setCellValue('F'.$fila, "SABADO");
-        $hoja->setCellValue('G'.$fila, "DOMINGO");
-        $hoja->setCellValue('H'.$fila, '');
-
-        $fila++;
         
-        $dia = 1;
-        $sumaSemana = 0;
-        $sumaTotal = 0;
-        $cols = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G'];
+        //$hoja->mergeCells('A'.$fila.':K'.$fila); 
 
-        $fila = 9;
+        //$hoja->getStyle('A'.$fila.':K'.$fila)->applyFromArray($styleCabecera);
+        //Edito la info que va a ir en el archivo excel
 
-        //datos
-        if ($res) {
+        $totalEgresos = 0;
+        $totalGastosFijos = 0;
+        $totalGastoVariable = 0;
+        $totalGastoInsumosProveedores = 0;
 
-            foreach ($res as $key => $result) {
-                if ($result['dia'] == 7) {
-                    if ($result['res']) {
-                        $hoja->setCellValue($cols[$result['dia']].$fila, number_format($result['res'], 2));
-                        $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
-                        $fila++;
-                    }else{
-                        $hoja->setCellValue($cols[$result['dia']].$fila, '0.00');
-                        $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
-                        $fila++;
-                    }
-                    $sumaTotal += $sumaSemana;
-                    $sumaSemana = 0;
-                }else{
-                    $hoja->getStyle('A'.$fila.':H'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
-                    $sumaSemana += $result['res'];
-                    
-                    if ($result['res']) {
-                        $hoja->setCellValue($cols[$result['dia']].$fila, number_format($result['res'], 2));
-                        
-                    }else{
-                        $hoja->setCellValue($cols[$result['dia']].$fila, '0.00');
-                    }
-                }
-                
+        if ($gastoFijo) {
+            
+            foreach ($gastoFijo as $key => $gasto) {
+                $totalGastosFijos += $gasto->valor;
             }
-            if ($finMes != 0) {
-                $sumaTotal += $sumaSemana;
-                $hoja->setCellValue('H'.$fila, number_format($sumaSemana, 2));
+
+        }
+
+        if ($gastoVariable) {
+
+            foreach ($gastoVariable as $key => $gasto) {
+                $totalGastoVariable += $gasto->valor;
+            }
+        }
+
+        if ($gastoInsumosProveedores) {
+                                                    
+            foreach ($gastoInsumosProveedores as $key => $gasto) {
+                $totalGastoInsumosProveedores += $gasto->valor;
             }
             
-
-        }else{
-            $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
-            $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
         }
-        //TOTAL
-        $fila++;
-        $hoja->setCellValue("G".$fila, "TOTAL DEL MES:");
-        $hoja->getStyle('H'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
-        $hoja->setCellValue("H".$fila, number_format($sumaTotal, 2));
+        
 
-             
+        $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila.':C'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+        $hoja->setCellValue('A'.$fila, "FECHA");
+        $hoja->setCellValue('B'.$fila, "GASTOS FIJOS");
+        $hoja->getStyle('C'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+        $hoja->getStyle('C'.$fila)->applyFromArray($styleCabeceraTotales);
+        
+        $hoja->setCellValue('C'.$fila, number_format($totalGastosFijos, 2));
+
+        $hoja->getStyle('D'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('D'.$fila, "");
+
+        $phpExcel->getActiveSheet()
+                    ->getStyle('E'.$fila.':G'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+        $hoja->getStyle('E'.$fila.':G'.$fila)->applyFromArray($styleCabecera);
+        $hoja->setCellValue('E'.$fila, "FECHA");
+        $hoja->setCellValue('F'.$fila, "GASTOS VARIABLES");
+        $hoja->getStyle('G'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+        $hoja->getStyle('G'.$fila)->applyFromArray($styleCabeceraTotales);
+        $hoja->setCellValue('G'.$fila, number_format($totalGastoVariable, 2));
+
+        $hoja->getStyle('H'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('H'.$fila, "");
+
+        $phpExcel->getActiveSheet()
+                    ->getStyle('I'.$fila.':K'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+        $hoja->getStyle('I'.$fila.':K'.$fila)->applyFromArray($styleCabecera);
+        $hoja->setCellValue('I'.$fila, "FECHA");
+        $hoja->setCellValue('J'.$fila, "INSUMOS PROVEEDORES");
+        $hoja->getStyle('K'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+        $hoja->getStyle('K'.$fila)->applyFromArray($styleCabeceraTotales);
+        $hoja->setCellValue('K'.$fila, number_format($totalGastoInsumosProveedores, 2));
+
+        $fila = 8;
+        
+        if ($gastoFijo) {
+            foreach ($gastoFijo as $key => $gasto) {
+
+                $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila.':C'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+                $hoja->setCellValue("A".$fila, $gasto->fecha);
+                $hoja->setCellValue("B".$fila, $gasto->gasto_fijo);
+                $hoja->getStyle('C'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->setCellValue("C".$fila, $gasto->valor);
+                $fila++;
+            }
+        } else {
+            
+            $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila.':C'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+            $hoja->setCellValue("A".$fila, "No hay datos");
+            $hoja->setCellValue("B".$fila, "");
+            $hoja->setCellValue("C".$fila, "");
+        }
+
+        $fila = 8;
+
+        if ($gastoVariable) {
+            foreach ($gastoVariable as $key => $gasto) {
+                
+                $phpExcel->getActiveSheet()
+                    ->getStyle('E'.$fila.':G'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+                $hoja->setCellValue("E".$fila, $gasto->fecha);
+                $hoja->setCellValue("F".$fila, $gasto->detalleGastoVariable);
+                $hoja->getStyle('G'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->setCellValue("G".$fila, $gasto->valor);
+                $fila++;
+            }
+        } else {
+            $phpExcel->getActiveSheet()
+                    ->getStyle('E'.$fila.':G'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+            $hoja->setCellValue("E".$fila, "No hay datos");
+            $hoja->setCellValue("F".$fila, "");
+            $hoja->setCellValue("G".$fila, "");
+        }
+
+        $fila = 8;
+
+        if ($gastoInsumosProveedores) {
+            foreach ($gastoInsumosProveedores as $key => $gasto) {
+                $phpExcel->getActiveSheet()
+                    ->getStyle('I'.$fila.':K'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+                $hoja->setCellValue("I".$fila, $gasto->fecha);
+                $hoja->setCellValue("J".$fila, $gasto->proveedor);
+                $hoja->getStyle('K'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->setCellValue("K".$fila, $gasto->valor);
+                $fila++;
+            }
+        } else {
+            $phpExcel->getActiveSheet()
+                    ->getStyle('I'.$fila.':K'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+            $hoja->setCellValue("I".$fila, "No hay datos");
+            $hoja->setCellValue("J".$fila, "");
+            $hoja->setCellValue("K".$fila, "");
+        }
+
+        $fila +=3;
+
+        $totalEgresos = $totalGastosFijos + $totalGastoVariable + $totalGastoInsumosProveedores;
+
+        $phpExcel->getActiveSheet()
+                    ->getStyle('A'.$fila.':B'.$fila)
+                    ->getBorders()
+                    ->getAllBorders()
+                    ->setBorderStyle(Border::BORDER_THIN)
+                    ->setColor(new Color('FFFFFFF'));
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleCabecera);
+        $hoja->setCellValue("A".$fila, 'TOTAL DE EGRESOS POR GASTOS:');
+        $hoja->getStyle('B'.$fila)->applyFromArray($styleSubtituloDerecha);
+        $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+        $hoja->setCellValue("B".$fila, $totalEgresos);
 
         //Creo el writter y guardo la hoja
         $writter = new XlsxWriter($phpExcel, 'Xlsx');

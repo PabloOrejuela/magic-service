@@ -728,7 +728,7 @@ class Ventas extends BaseController {
         if ($data['logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
-            $dnegocio = 1;
+            $idnegocio = 1;
 
             //Si el pedido tiene el detalle de bocaditos $idnegocio = 2, es decir se un pedido de karana
             if ($detalleTemporal[0]->idcategoria == 5) {
