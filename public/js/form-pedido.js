@@ -145,12 +145,6 @@ function buscaTelefono(telefono){
                 document.getElementById('idcliente').value = res.respuesta[0].id
             }else {
                 alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor o registre un nuevo cliente', 3000, 'error')
-                // document.getElementById('nombre').value = ''
-                // document.getElementById('telefono').value = ''
-                // document.getElementById('telefono_2').value = ''
-                // document.getElementById('documento').value = ''
-                // document.getElementById('email').value = ''
-                // document.getElementById('idcliente').value = ''
             }
         },
         error: function(data){
@@ -309,6 +303,7 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
   let horarioExtra = 0
 
   let total = document.getElementById("total")
+  let idnegocio = document.getElementById("idnegocio")
 
   transporte = document.getElementById("transporte").value
   cargoDomingo = document.getElementById("cargo_domingo").value
@@ -332,31 +327,54 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
   
   if (idproducto != null && idproducto != 0 && idproducto > 0) {
       
-      $.ajax({
-          url: 'detalle_pedido_insert_temp',
-          data: {
-              idproducto: idproducto,
-              cantidad: cantidad,
-              cod_pedido: cod_pedido,
-          },
-          success: function(resultado){
-              if (resultado == 0) {
-              }else{
-                  alertAgregaProducto()
+    $.ajax({
+        url: 'detalle_pedido_insert_temp',
+        data: {
+            idproducto: idproducto,
+            cantidad: cantidad,
+            cod_pedido: cod_pedido,
+            idnegocio: idnegocio.value
+        },
+        success: function(resultado){
+            if (resultado == 0) {
+            }else{
+                    alertAgregaProducto()
 
-                  let detalle = JSON.parse(resultado);
-                  //console.log(parseFloat(detalle.total) + parseFloat(extras));
-                  if (detalle.error == '') {
-                      $("#tablaProductos tbody").empty();
-                      $("#tablaProductos tbody").append(detalle.datos);
-                      //$("#total").val(detalle.total);
-                      total.value = (parseFloat(detalle.total) + extras).toFixed(2)
-                      document.getElementById('valor_neto').value = detalle.total
-                      limpiaLineaProducto()
-                  }
-              }
-          }
-      });
+                    let detalle = JSON.parse(resultado);
+                    console.log(detalle.datos);
+
+                    $("#tablaProductos tbody").empty();
+                    $("#tablaProductos tbody").append(detalle.datos);
+                    //$("#total").val(detalle.total);
+                    total.value = (parseFloat(detalle.total) + extras).toFixed(2)
+                    document.getElementById('valor_neto').value = detalle.total
+
+                    //idnegocio.value = detalle.negocio
+
+                    if (detalle.error == "No se puede agregar productos de Magic Service a un pedido de KARANA") {
+                        alertaMensaje(detalle.error, 2000,"error")
+                    }
+
+                    if (detalle.error == "No se puede agregar productos de KARANA a un pedido de MAGIC SERVICE") {
+                        alertaMensaje(detalle.error, 2000,"error")
+                        document.getElementById("idnegocio").value = ''
+                    }
+
+                    if (detalle.error == "SI se puede agregar productos de KARANA a un pedido de KARANA") {
+                        //alertaMensaje(detalle.error, 1000,"success")
+                        alertAgregaProducto()
+                    }
+
+                    if (detalle.error == "SI se puede agregar productos de MAGIC SERVICE a un pedido de MAGIC SERVICE") {
+                        //alertaMensaje(detalle.error, 1000,"success")
+                        alertAgregaProducto()
+                    }
+                    
+                    limpiaLineaProducto()
+                
+            }
+        }
+    });
       
   }
   calculaValorNeto(cod_pedido);
@@ -403,10 +421,13 @@ function eliminaProducto(idproducto, cod_pedido){
                   if (detalle.error == '') {
                       $("#tablaProductos tbody").empty();
                       $("#tablaProductos tbody").append(detalle.datos);
+                      let idnegocio = document.getElementById("idnegocio")
                       //$("#total").val(detalle.total);
                       //$("#valor_neto").val(detalle.subtotal);
                       total.value = (parseFloat(detalle.total) + extras).toFixed(2)
                       document.getElementById('valor_neto').value = detalle.subtotal
+                      idnegocio.value = ''
+                      
                       alertEliminaProducto()
                       limpiaLineaProducto()
                   }else{

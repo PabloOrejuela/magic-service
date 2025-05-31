@@ -181,15 +181,14 @@
                                 <p id="error-message"><?= session('errors.fecha');?> </p>
                             </div>
                             <div class="form-group col-md-12">
-                                <label for="documento">No. Documento / Factura *:</label>
+                                <label for="documento">No. Documento / Factura:</label>
                                 <input 
                                     type="text" 
                                     class="form-control text" 
                                     id="documento" 
                                     name="documento" 
                                     placeholder="Número de documento" 
-                                    value="<?= $gasto->documento; ?>" 
-                                    required
+                                    value="<?= $gasto->documento; ?>"
                                 >
                                 <p id="error-message"><?= session('errors.documento');?> </p>
                             </div>

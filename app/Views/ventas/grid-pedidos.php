@@ -7,7 +7,7 @@
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card">
                     <div class="card-body">
-                        <h3><?= $subtitle; ?></h3>
+                        <h3><?= $subtitle; ?>
                         <div><input type="text" value="<?= session('mensaje'); ?>" id="msj" readonly></div>
                         <div><textarea class="form-control" placeholder="" id="mensaje"></textarea></div>
 
@@ -179,9 +179,7 @@
                                                     </td>';
                                                 }
                                                 
-                                                
-                                                
-
+                                            
                                                 if ($value->mensajero) {
                                                     echo '<td id="mensajero'.$value->id.'">
                                                         <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
@@ -469,7 +467,7 @@
     $(document).ready(function () {
         
         let msj = document.getElementById('msj')
-        
+        console.log(msj);
         //console.log('Mensaje: '+msj.value);
         if (msj.value == 1) {
             alertaMensaje("El pedido se ha guardado correctamente", "2500", "success")
@@ -484,6 +482,7 @@
         }else if(msj.value == 'SIN CODIGO'){
             alertaMensaje("Hubo un problema, no se generó un código de pedido, inténtelo nuevamente", "2000", "error")
             actualizaMensaje()
+            msj.value = '3'
         }
         
         $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";

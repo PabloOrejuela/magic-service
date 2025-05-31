@@ -80,7 +80,7 @@ class Ventas extends BaseController {
 
         //pongo el código en la sesion
         $this->session->set('codigo_pedido', $codigo);
-
+        
         $data['resultado'] = "Exito";
         echo json_encode($data);
     }
@@ -120,7 +120,6 @@ class Ventas extends BaseController {
         $cliente['respuesta'] = $this->clienteModel->where('telefono', $telefono)->orWhere('telefono_2', $telefono)->find();
         //echo $this->db->getLastQuery();
         
-        //echo '<pre>'.var_export($cliente, true).'</pre>';exit;
         echo json_encode($cliente);
         //echo view('clientes_select', $data);
     }
@@ -372,10 +371,141 @@ class Ventas extends BaseController {
         $idproducto = $this->request->getPostGet('idproducto');
         $cantidad = $this->request->getPostGet('cantidad');
         $cod_pedido = $this->request->getPostGet('cod_pedido');
+        $idnegocio = $this->request->getPostGet('idnegocio');
         
         $error = '';
 
         $producto = $this->productoModel->find($idproducto);
+
+        if ($idnegocio == '') {
+            
+            if ($producto->idcategoria == 5) {
+                $idnegocio = "KARANA";
+            } else {
+                $idnegocio = "MAGIC SERVICE";
+            }
+        }
+        
+        //verifico que exista el producto
+        if ($producto) {
+            
+            //Verifico si es que el pedido ya tiene detalle
+            //$detalleExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+            $detalleExiste = $this->detallePedidoTempModel->orderBy('id', 'asc')->limit(1)->findAll();
+            
+            //Si el pedido ya tiene detalle
+            if ($detalleExiste) {
+                
+                //Verifico si el producto del detalle tiene la misma categoría
+                $prodDetalle = $this->productoModel->where('id', $detalleExiste[0]->idproducto)->findAll();
+
+
+                if ($prodDetalle[0]->idcategoria == 5 && $producto->idcategoria != 5) {
+                    //Si tanto la categoría del proddetalle es != 5 y la categía del producto que deseamos agregar es != 5  es producto de Magic service
+                    $error = "No se puede agregar productos de Magic Service a un pedido de KARANA";
+
+                }else if($prodDetalle[0]->idcategoria == 5 && $producto->idcategoria == 5){
+                    
+                    //Si tanto la categoría del proddetalle es 5 y la categía del producto que deseamos agregar es 5  es producto de KARANA
+                    $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+                    
+                    $cantidad = $datosExiste->cantidad + $cantidad;
+                
+                    $precio = $datosExiste->precio;
+                    if ($datosExiste->pvp != '0.00') {
+                        $subtotal = ($cantidad * $datosExiste->pvp);
+                    }else{
+                        $subtotal = ($cantidad * $datosExiste->precio);
+                    }
+                
+                    $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                    $error = "SI se puede agregar productos de KARANA a un pedido de KARANA";
+                    
+                }else if($producto->idcategoria != 5 && $prodDetalle[0]->idcategoria != 5){
+                    
+                    //Si tanto la categoría del proddetalle es != 5 y la categía del producto que deseamos agregar es != 5  es producto de Magic service
+                    $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+                    
+                    if ($datosExiste) {
+                        $cantidad = $datosExiste->cantidad + $cantidad;
+                        $precio = $datosExiste->precio;
+
+                        if ($datosExiste->pvp != '0.00') {
+                            $subtotal = ($cantidad * $datosExiste->pvp);
+                        }else{
+                            $subtotal = ($cantidad * $datosExiste->precio);
+                        }
+                        $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+
+                    }else{
+                        
+                        $cantidad = 1;
+                        $precio = $producto->precio;
+                        $subtotal = $cantidad * $producto->precio;
+
+                        $data = [
+                            'cod_pedido' => $cod_pedido,
+                            'idproducto' => $idproducto,
+                            'cantidad' => $cantidad,
+                            'precio' => $producto->precio,
+                            'pvp' => $producto->precio,
+                            'subtotal' => $subtotal,
+                        ];
+                        
+                        $this->detallePedidoTempModel->insert($data);
+                    }
+                    
+                    $error = "SI se puede agregar productos de MAGIC SERVICE a un pedido de MAGIC SERVICE";
+                }else if($producto->idcategoria == 5 && $prodDetalle[0]->idcategoria != 5){
+                    
+                    //Si la categoría del proddetalle es == 5 (KARANA) y la categoría del producto que deseamos agregar es != 5  es producto de Magic service
+                    $error = "No se puede agregar productos de KARANA a un pedido de MAGIC SERVICE";
+                }
+
+            } else {
+                
+                $subtotal = ($cantidad * $producto->precio);
+                
+                $data = [
+                    'cod_pedido' => $cod_pedido,
+                    'idproducto' => $idproducto,
+                    'cantidad' => $cantidad,
+                    'precio' => $producto->precio,
+                    'pvp' => $producto->precio,
+                    'subtotal' => $subtotal,
+                ];
+                
+                $this->detallePedidoTempModel->insert($data);
+                $res['datos'] = $this->cargaProductos_temp($cod_pedido);
+                
+            }
+        }else{
+            $error = 'No existe el producto';
+        }
+        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
+        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['negocio'] = $idnegocio;
+        $res['error'] = $error;
+        echo json_encode($res);
+    }
+
+    function detalle_pedido_insert_temp_old(){
+
+        $idproducto = $this->request->getPostGet('idproducto');
+        $cantidad = $this->request->getPostGet('cantidad');
+        $cod_pedido = $this->request->getPostGet('cod_pedido');
+        
+        $error = '';
+
+        $producto = $this->productoModel->find($idproducto);
+
+        if ($producto->idcategoria == 5) {
+            $negocio = 2;
+        } else {
+            $negocio = 1;
+        }
+        
         
         if ($producto) {
             $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
@@ -390,12 +520,12 @@ class Ventas extends BaseController {
                     $subtotal = ($cantidad * $datosExiste->precio);
                 }
                
-                // echo '<pre>'.var_export($subtotal, true).'</pre>';exit;
+                
                 $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
 
             }else{
                 $subtotal = ($cantidad * $producto->precio);
-                // echo '<pre>'.var_export($subtotal, true).'</pre>';exit;
+                
                 $data = [
                     'cod_pedido' => $cod_pedido,
                     'idproducto' => $idproducto,
@@ -414,6 +544,7 @@ class Ventas extends BaseController {
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
+        $res['negocio'] = $negocio;
         echo json_encode($res);
     }
 
@@ -729,10 +860,12 @@ class Ventas extends BaseController {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
             $idnegocio = 1;
-
+            
             //Si el pedido tiene el detalle de bocaditos $idnegocio = 2, es decir se un pedido de karana
             if ($detalleTemporal[0]->idcategoria == 5) {
                 $idnegocio = 2;
+            }else{
+                $idnegocio = 1;
             }
             
             if ($this->request->getPostGet('sin_remitente') != null) {

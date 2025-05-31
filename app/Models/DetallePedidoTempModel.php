@@ -54,8 +54,10 @@ class DetallePedidoTempModel extends Model {
         $builder->select('*');
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
+        $builder->orderBy('id', 'asc');
+        $builder->limit(1);
         $result = $builder->get()->getRow();
-        //echo $this->db->getLastQuery();
+        //echo $this->db->getLastQuery();exit;
         return $result;
     }
 

@@ -174,10 +174,25 @@
                                         </select>
                                     </div>
                                     <p id="error-message"><?= session('errors.vendedor');?> </p>
-                                    <div class="form-check mb-5">
-                                        <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" <?php echo set_checkbox('venta_extra', '0'); ?> >
-                                        <label class="form-check-label" for="venta_extra">Venta extra</label>
+                                    <div class="form-group row">
+                                        <div class="col-md-7">
+                                            <div class="form-check mb-5">
+                                                <input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" <?php echo set_checkbox('venta_extra', '0'); ?> >
+                                                <label class="form-check-label" for="venta_extra">Venta extra</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5" id="div-negocio">
+                                            <input 
+                                                type="text" 
+                                                class="form-control"
+                                                id="idnegocio" 
+                                                name="idnegocio"
+                                                value="" 
+                                                readonly
+                                            >
+                                        </div>
                                     </div>
+                                    
                                     <div class="form-group row">
                                         <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
                                         <div class="col-md-2" style="display:none;">
@@ -482,6 +497,10 @@
 //Traigo el detalle al cargar la página
 window.addEventListener('load', function() {
     let codigoPedido = document.getElementById('cod_pedido').value
+    // let idnegocio = document.getElementById('idnegocio').value
+    
+    // idnegocio.value = ''
+    $("#tablaProductos tbody").empty();
 
     $.ajax({
         method: 'get',
@@ -495,7 +514,7 @@ window.addEventListener('load', function() {
         },
         success: function(resultado){
             let dato = JSON.parse(resultado);
-            //console.log(dato);
+            
             if (dato != 0) {
                 //alertCambioValor()
             }else{

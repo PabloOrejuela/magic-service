@@ -201,7 +201,7 @@
           <li class="nav-item subItem">
             <a href="'.base_url().'reporte_diario_ventas" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Control diario de ventas</p>
+              <p>Control de ventas</p>
             </a>
           </li>
           <li class="nav-item subItem">

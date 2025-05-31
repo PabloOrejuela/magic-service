@@ -89,7 +89,6 @@ class Home extends BaseController {
                         'rol' => $usuario->rol,
                         'cedula' => $usuario->cedula,
                         'logged' => $usuario->logged,
-                        'rol' => $usuario->rol,
                         'admin' => $usuario->admin,
                         'ventas' => $usuario->ventas,
                         'clientes' => $usuario->clientes,

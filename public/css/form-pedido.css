@@ -48,5 +48,22 @@
 #vendedor{
     width:50%;
     font-size: 1.2em;
-  }
+}
+
+#div-negocio{
+    padding-right: 5px;
+    text-align: right;
+}
+
+#idnegocio{
+    background-color: transparent;
+    border: none;
+    border-radius: 0%;
+    color: rgb(175, 170, 170, 0.4);
+    float: right;
+    font-size: 1.4em;
+    margin-right: 5px;
+    text-align: right;
+    box-shadow: none;
+}
   

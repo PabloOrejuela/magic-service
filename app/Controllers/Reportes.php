@@ -16,8 +16,8 @@ class Reportes extends BaseController {
 
     private $sugest = [
         1 => 'Día actual', 
-        2 =>'Ultimo mes', 
-        3 =>'Ultima semana', 
+        2 => 'Ultimo mes', 
+        3 => 'Ultima semana', 
     ];
 
     public function acl() {
@@ -52,7 +52,7 @@ class Reportes extends BaseController {
             $data['negocios'] = $this->negocioModel->findAll();
 
             $data['title']='Reportes';
-            $data['subtitle']='Reporte de Control Diario de Ventas';
+            $data['subtitle']='Reporte de Control de Ventas';
             $data['main_content']='reportes/form_reporte_diario_ventas';
             return view('dashboard/index', $data);
         }else{
@@ -398,16 +398,29 @@ class Reportes extends BaseController {
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
                 'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
+                'fecha_final' => $this->request->getPostGet('fecha_final'),
+                'sugest' => $this->request->getPostGet('sugest'),
             ];
+            
+            //PONER ACÁ LA VALIDACION
+            $this->validation->setRuleGroup('reporteVentas');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                //echo '<pre>'.var_export($datos, true).'</pre>';exit;
+                $data['res'] = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['fecha_final'], $datos['negocio']);
+                $data['datos'] = $datos;
 
-            $data['res'] = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['negocio']);
-            $data['datos'] = $datos;
-
-            //secho '<pre>'.var_export($data['res'], true).'</pre>';exit;
-            $data['title']='Reportes';
-            $data['subtitle']='Reporte de Control Diario de Ventas';
-            $data['main_content']='reportes/reporte_diario_ventas';
-            return view('dashboard/index', $data);
+                $data['title']='Reportes';
+                $data['subtitle']='Reporte de Control Diario de Ventas';
+                $data['main_content']='reportes/reporte_diario_ventas';
+                return view('dashboard/index', $data);
+            }
+            
         }else{
             return redirect()->to('logout');
         }

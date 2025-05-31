@@ -30,18 +30,51 @@
                                             }
                                         ?>
                                     </select>
+                                    <p id="error-message"><?= session('errors.negocio');?> </p>
                                </div>
                                <div class="form-group col-md-3">
-                                <label for="fecha_inicio">Fecha *:</label>
+                                <label for="fecha_inicio">Fecha inicio *:</label>
                                     <input 
                                         type="date" 
                                         class="form-control text" 
                                         id="fecha_inicio" 
                                         name="fecha_inicio" 
-                                        value="<?= date("Y-m-d");?>" 
+                                        value="<?= date('Y-m-d'); ?>" 
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
+                               </div>
+                               <div class="form-group col-md-3">
+                                <label for="fecha_final">Fecha final *:</label>
+                                    <input 
+                                        type="date" 
+                                        class="form-control text" 
+                                        id="fecha_final" 
+                                        name="fecha_final" 
+                                        value="<?= date('Y-m-d'); ?>" 
+                                        required
+                                    >
+                                    <p id="error-message"><?= session('errors.fecha_final');?> </p>
+                               </div>
+                               <div class="form-group col-md-3">
+                                    <label for="sugest">Opciones:</label>
+                                    <select 
+                                        class="form-select form-control-border" 
+                                        id="sugest" 
+                                        name="sugest" 
+                                    >
+                                        <option value="0" selected>--Opciones--</option>
+                                        <?php
+                                            if (isset($sugest)) {
+                                                foreach ($sugest as $key => $value) {
+                                                    if ($session->idroles == 3) {
+                                                        echo '<option value="'.$key.'" >'.$value.'</option>';
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        ?>
+                                    </select>
                                </div>
                             </div>
                         </div>

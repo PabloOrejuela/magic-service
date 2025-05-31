@@ -1,4 +1,5 @@
 const lista = document.getElementById('lista')
+actualizaMensaje()
 
 Sortable.create(lista, {
     animation: 150,
@@ -118,25 +119,6 @@ const imprimirTicket = async (id, codPedido) => {
         ]
     });
 
-    
-
-    // $.ajax({
-    //     method:"POST",
-    //     dataType:"json",
-    //     url: "./actualizaValorCampoTicket",
-    //     data: {
-    //         id: id,
-    //         campo: campo,
-    //         valor: valor
-    //     },
-    //     beforeSend: function (f) {
-    //         alertaMensaje('El dato se ha actualizado', 500, "success")
-    //         //actualizaGrid()
-    //     },
-    //     success: function(data){
-            
-    //     }
-    // });
 }
 
 btnNombreArreglo.forEach(link => {

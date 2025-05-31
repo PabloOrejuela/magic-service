@@ -77,7 +77,7 @@ class PedidoModel extends Model {
                 hora_salida_pedido,ubicacion,
                 usuarios.nombre as mensajero'
         );
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
@@ -99,10 +99,10 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
-        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
-        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id','left');
         $builder->where($this->table.'.estado', 1);
 
         //Si se ha seleccionado un negocio
@@ -132,8 +132,8 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,vendedor,venta_extra');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->where($this->table.'.estado', 1);
 
         //Si se ha seleccionado un negocio
@@ -158,10 +158,10 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos');
-        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
-        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+        $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id','left');
         $builder->where($this->table.'.estado', 1);
         $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $builder->orderBy('orden', 'asc');
@@ -183,8 +183,8 @@ class PedidoModel extends Model {
 
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('negocios', $this->table.'.idnegocio = negocios.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->where($this->table.'.estado', 1);
         $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $builder->where($this->table.'.idnegocio', $negocio);
@@ -199,7 +199,7 @@ class PedidoModel extends Model {
         return $result;
     }
 
-    function _getPedidosReporteDiario($fecha, $negocio){
+    function _getPedidosReporteDiario($fechaInicio, $fechaFinal, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio');
@@ -215,7 +215,7 @@ class PedidoModel extends Model {
         }
 
         $builder->where($this->table.'.estado', 1);
-        $builder->where('fecha', $fecha);
+        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $builder->orderBy('orden', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -231,7 +231,7 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('fecha,sum(total) as suma,pedidos.estado as estado,idnegocio');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->where($this->table.'.idnegocio', $negocio);
         $builder->where($this->table.'.estado', 1);
         $builder->where('fecha', $fecha);
@@ -293,9 +293,9 @@ class PedidoModel extends Model {
                 horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,observacion_devolucion,
                 pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,mensajero_extra,valor_mensajero,valor_mensajero_extra,ref_pago,
                 valor_mensajero_edit,transporte,cargo_horario,domingo,valor_neto,descuento,total,rango_entrega_desde,rango_entrega_hasta');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
-        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id','left');
+        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id','left');
         $builder->where($this->table.'.id', $idpedido);
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -313,9 +313,9 @@ class PedidoModel extends Model {
         $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,
                 nombre as cliente,direccion,telefono,telefono_2,fecha_entrega,rango_entrega_desde,rango_entrega_hasta,
                 hora,fecha,observaciones,pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,sin_remitente');
-        $builder->join('clientes', $this->table.'.idcliente = clientes.id');
-        $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id');
-        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id','left');
+        $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id','left');
         $builder->where($this->table.'.id', $idpedido);
         $query = $builder->get();
         if ($query->getResult() != null) {
