@@ -182,14 +182,16 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5" id="div-negocio">
-                                            <input 
-                                                type="text" 
-                                                class="form-control"
-                                                id="idnegocio" 
-                                                name="idnegocio"
-                                                value="" 
-                                                readonly
-                                            >
+                                            <select class="form-select form-control-border" id="idnegocio" name="idnegocio" required>
+                                                <option value="0" selected>--Seleccionar negocio--</option>
+                                                <?php
+                                                    if (isset($negocios)) {
+                                                        foreach ($negocios as $key => $negocio) {
+                                                            echo '<option value="'.$negocio->id.'" '.set_select('vendedor', $negocio->id, false).' >'.$negocio->negocio.'</option>';
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
                                         </div>
                                     </div>
                                     
@@ -241,7 +243,7 @@
                                                 <th>Cant</th>
                                                 <th width="1%"></th>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="tablaProductosBody">
                                                 <?php
                                                     if ($detalle) {
                                                         $numFila = 0;

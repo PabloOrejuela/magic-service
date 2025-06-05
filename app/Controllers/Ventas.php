@@ -35,6 +35,7 @@ class Ventas extends BaseController {
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['cod_pedido'] = $this->session->codigo_pedido;
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
+            $data['negocios'] = $this->negocioModel->findAll();
 
             $data['detalle'] = $this->detallePedidoTempModel->where('cod_pedido', $data['cod_pedido'])
                                                             ->join('productos','productos.id = detalle_pedido_temp.idproducto')
@@ -326,7 +327,9 @@ class Ventas extends BaseController {
 
     function getProductosAutocomplete(){
         $producto = $this->request->getPostGet('producto');
-        $productos = $this->productoModel->_getProductoAutocomplete($producto);
+        $negocio = $this->request->getPostGet('negocio');
+        
+        $productos = $this->productoModel->_getProductoAutocomplete($producto, $negocio);
 
         echo json_encode($productos);
     }
@@ -376,57 +379,17 @@ class Ventas extends BaseController {
         $error = '';
 
         $producto = $this->productoModel->find($idproducto);
-
-        if ($idnegocio == '') {
-            
-            if ($producto->idcategoria == 5) {
-                $idnegocio = "KARANA";
-            } else {
-                $idnegocio = "MAGIC SERVICE";
-            }
-        }
         
         //verifico que exista el producto
         if ($producto) {
             
             //Verifico si es que el pedido ya tiene detalle
-            //$detalleExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
             $detalleExiste = $this->detallePedidoTempModel->orderBy('id', 'asc')->limit(1)->findAll();
             
             //Si el pedido ya tiene detalle
             if ($detalleExiste) {
-                
-                //Verifico si el producto del detalle tiene la misma categoría
-                $prodDetalle = $this->productoModel->where('id', $detalleExiste[0]->idproducto)->findAll();
-
-
-                if ($prodDetalle[0]->idcategoria == 5 && $producto->idcategoria != 5) {
-                    //Si tanto la categoría del proddetalle es != 5 y la categía del producto que deseamos agregar es != 5  es producto de Magic service
-                    $error = "No se puede agregar productos de Magic Service a un pedido de KARANA";
-
-                }else if($prodDetalle[0]->idcategoria == 5 && $producto->idcategoria == 5){
-                    
-                    //Si tanto la categoría del proddetalle es 5 y la categía del producto que deseamos agregar es 5  es producto de KARANA
-                    $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
-                    
-                    $cantidad = $datosExiste->cantidad + $cantidad;
-                
-                    $precio = $datosExiste->precio;
-                    if ($datosExiste->pvp != '0.00') {
-                        $subtotal = ($cantidad * $datosExiste->pvp);
-                    }else{
-                        $subtotal = ($cantidad * $datosExiste->precio);
-                    }
-                
-                    $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
-                    $error = "SI se puede agregar productos de KARANA a un pedido de KARANA";
-                    
-                }else if($producto->idcategoria != 5 && $prodDetalle[0]->idcategoria != 5){
-                    
-                    //Si tanto la categoría del proddetalle es != 5 y la categía del producto que deseamos agregar es != 5  es producto de Magic service
-                    $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
-                    
-                    if ($datosExiste) {
+                $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+                if ($datosExiste) {
                         $cantidad = $datosExiste->cantidad + $cantidad;
                         $precio = $datosExiste->precio;
 
@@ -454,13 +417,6 @@ class Ventas extends BaseController {
                         
                         $this->detallePedidoTempModel->insert($data);
                     }
-                    
-                    $error = "SI se puede agregar productos de MAGIC SERVICE a un pedido de MAGIC SERVICE";
-                }else if($producto->idcategoria == 5 && $prodDetalle[0]->idcategoria != 5){
-                    
-                    //Si la categoría del proddetalle es == 5 (KARANA) y la categoría del producto que deseamos agregar es != 5  es producto de Magic service
-                    $error = "No se puede agregar productos de KARANA a un pedido de MAGIC SERVICE";
-                }
 
             } else {
                 

@@ -56,14 +56,11 @@
 }
 
 #idnegocio{
-    background-color: transparent;
-    border: none;
-    border-radius: 0%;
-    color: rgb(175, 170, 170, 0.4);
+    border-radius: 7%;
+    color: rgb(0, 0, 0, 1);
     float: right;
-    font-size: 1.4em;
-    margin-right: 5px;
-    text-align: right;
-    box-shadow: none;
+    font-size: 1.2em;
+    margin-right: 15px;
+    text-align: left;
 }
   

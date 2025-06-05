@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/login.css">
 <div class="col-md-12 mt-5" id="wrap">
   <div class="login-box">
     <div class="login-logo">
@@ -23,13 +24,20 @@
             </div>
           </div>
           <p id="error-message"><?= session('errors.user');?> </p>
-          <div class="input-group mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Password" value="wolfabadon">
+          <div class="input-group mb-1">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="wolfabadon">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
               </div>
             </div>
+          </div>
+          <div class="row mb-4">
+            <!-- /.col -->
+            <div class="col-12">
+              <a class="link-opacity-20" href="#" id="verPassword"><span class="fas fa-eye">Ver password</span></a>
+            </div>
+            <!-- /.col -->
           </div>
           <p id="error-message"><?= session('errors.password');?> </p>
           <div class="row">
@@ -72,3 +80,4 @@
     </div>
   </div>
 </div>
+<script src="<?= site_url(); ?>public/js/login.js"></script>

@@ -3,7 +3,7 @@ window.addEventListener('load', function() {
     
     // var x = 3000;
     // var a = (new Date()).getTime() + x;
-    console.log("Se ha iniciado la app");
+    //console.log("Se ha iniciado la app");
 
     // -----------
     // Llamadas asincronas o AJAX aqui, diciendole 
@@ -16,3 +16,14 @@ window.addEventListener('load', function() {
     // ventana desechando la llamada asincrona
     // while ((new Date()).getTime() < a) {}
 }, false)
+
+let verPassword = document.getElementById("verPassword")
+let password = document.getElementById("password")
+
+verPassword.addEventListener('click', function(e) {
+    if (password.type == "password") {
+        password.type = "text"
+    } else {
+        password.type = "password"
+    }
+})
