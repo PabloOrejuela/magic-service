@@ -132,6 +132,8 @@ $routes->post('sucursal-insert', 'Administracion::sucursal_insert');
 $routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
 $routes->get('updateSucursalSector/(:num)/(:num)/(:any)', 'Administracion::updateSucursalSector/$1/$2/$3');
 $routes->get('getSucursales', 'Administracion::getSucursales');
+$routes->get('asignaSectorSucursal', 'Administracion::asignaSectorSucursal');
+$routes->get('eliminarSectorSucursal', 'Administracion::eliminarSectorSucursal');
 
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');

@@ -1536,10 +1536,73 @@ class Administracion extends BaseController {
     }
 
     public function form_sucursal_edit($id){
-        echo 'Formulario para EDITAR datos de una sucursal DESHABILITADO';
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['roles'] = $this->rolModel->findAll();
+            $data['usuario'] = $this->usuarioModel->find($id);
+
+            $data['sucursal'] = $this->sucursalModel->find($id);
+
+            $data['sectores'] = $this->sectoresEntregaModel->findAll();
+            $data['sectoresSucursal'] = $this->sectoresEntregaModel->where('idsucursal', $id)->orderBy('sector', 'ASC')->findAll();
+
+            $data['title']='Administración';
+            $data['subtitle']='Asignar sectores';
+            $data['main_content']='administracion/form-sucursal-sector';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
     }
 
     public function list_items(){
         return redirect()->to('reporte-list-items');
+    }
+
+    function asignaSectorSucursal(){
+        
+        $idsector = $this->request->getPostGet('idsector');
+        
+        $data = [
+            'idsucursal' => $this->request->getPostGet('idsucursal')
+        ];
+        $this->sectoresEntregaModel->update($idsector, $data);
+
+        //traer data de la tabla
+        $sectoresSucursal = $this->sectoresEntregaModel->where('idsucursal', $data['idsucursal'])->orderBy('sector', 'ASC')->findAll();
+
+        //header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true, 
+            'mensaje' => 'Actualizado correctamente',
+            'tabla' => $sectoresSucursal,
+        ]);
+        exit;
+    }
+
+    function eliminarSectorSucursal(){
+        
+        $idsector = $this->request->getPostGet('idsector');
+        $idsucursal = $this->request->getPostGet('idsucursal');
+        
+        $data = [
+            'idsucursal' => 4
+        ];
+        $this->sectoresEntregaModel->update($idsector, $data);
+
+        //traer data de la tabla
+        $sectoresSucursal = $this->sectoresEntregaModel->where('idsucursal', $idsucursal)->orderBy('sector', 'ASC')->findAll();
+
+        //header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true, 
+            'mensaje' => 'Actualizado correctamente',
+            'tabla' => $sectoresSucursal,
+        ]);
+        exit;
     }
 }

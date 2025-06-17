@@ -32,7 +32,6 @@ Sortable.create(lista, {
 
 function _guardaOrdenEnDb (orden){
     // orden.forEach(function(num) {
-    //     console.log(num);
     // });
     $.ajax({
         method: 'get',
@@ -73,7 +72,7 @@ let formAttrModal = document.querySelector('#link-borra-imagen')
  * @author Pablo Orejuela
  **/
 const actualiza = (campo, id, valor) => {
-    //console.log(id);
+    
     //llamo a la funcion AJAX que hace la actualización
     $.ajax({
         method:"GET",
@@ -130,7 +129,7 @@ btnNombreArreglo.forEach(link => {
         let pedido = this.dataset.pedido
         let formulario = document.querySelector('#formulario')
         formulario.innerHTML = ""
-        // console.log(iddetalle);
+        
         document.querySelector('#idarreglo').value = iddetalle;
         document.querySelector('#idcategoria').value = category;
         document.querySelector('#lblForm').value = arreglo;
@@ -882,9 +881,9 @@ botonesMensajero.forEach(btn => {
                 }
             }
         });
-        //console.log(id);
+        
         document.querySelector('#codigo_pedido').value = id;
-        //console.log('abrir modal');
+        
         $('#mensajeroModal').modal();
     });
 });
@@ -955,7 +954,7 @@ botonesHoraSalidaPedido.forEach(btn => {
         }
         
         document.querySelector('#codigo_pedido').value = id;
-        //console.log('abrir modal');
+        
         $('#horaSalidaModal').modal();
     });
 });
@@ -963,9 +962,9 @@ botonesHoraSalidaPedido.forEach(btn => {
 btnObservacionPedido.forEach(btn => {
     btn.addEventListener('click', function() {
         let id = this.dataset.id;
-        //console.log(id);
+        
         document.querySelector('#codigo_pedido').value = id;
-        //console.log('abrir modal');
+        
         $('#observacionPedidoModal').modal();
     });
 });
@@ -1035,7 +1034,7 @@ function copyData(id){
             }
 
             if (window.isSecureContext) {
-                console.log('SECURE');
+                
                     if (observacion == '') {
                         navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
@@ -1050,7 +1049,7 @@ function copyData(id){
                     alertaMensaje("La información se ha copiado!!!", 1500, 'info')
 
                 } else {
-                    console.log('InSECURE');
+                    
                     if (observacion == '') {
                         mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
@@ -1107,7 +1106,7 @@ function copyDataConfirmaPedido(id){
             }
 
             if (window.isSecureContext) {
-                console.log('SECURE CONFIRMA PEDIDO');
+                
                     if (observacion == '') {
                         navigator.clipboard.writeText("Cliente: "+ cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion  + "\nUbicacion: " + ubicacion 
@@ -1122,7 +1121,7 @@ function copyDataConfirmaPedido(id){
                     alertaMensaje("La información DE CONFIRMACION DE PEDIDO se ha copiado!!!", 1500, 'info')
 
                 } else {
-                    console.log('InSECURE CONFIRMA PEDIDO');
+                    
                     if (observacion == '') {
                         mensaje.innerHTML = "Cliente: "+cliente + "\nSector: " 
                         + sector + "\nDirección: " + direccion + "\nUbicacion: " + ubicacion 
@@ -1146,7 +1145,7 @@ function copyDataConfirmaPedido(id){
 
 function actualizarHoraSalidaPedido(){
 
-    //console.log(horaSalidaPedido);
+    
     $.ajax({
         type:"POST",
         //dataType:"html",
@@ -1160,7 +1159,7 @@ function actualizarHoraSalidaPedido(){
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
-            //console.log(data);
+            
             alertActualizaCampo()
             setTimeout(function(){
                 location.replace('pedidos');
@@ -1171,7 +1170,7 @@ function actualizarHoraSalidaPedido(){
 
 function actualizaObservacionPedido(){
 
-    //console.log(horaSalidaPedido);
+    
     $.ajax({
         type:"POST",
         //dataType:"html",
@@ -1185,7 +1184,7 @@ function actualizaObservacionPedido(){
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
-            //console.log(data);
+            
             alertActualizaCampo()
             setTimeout(function(){
                 location.replace('pedidos');
@@ -1223,7 +1222,7 @@ function actualizarMensajero(mensajero, codigo_pedido){
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
-            //console.log(data);
+            
             location.replace('pedidos');
         }
     });
@@ -1231,7 +1230,6 @@ function actualizarMensajero(mensajero, codigo_pedido){
 
 function actualizarEstadoPedido(estado_pedido, codigo_pedido){
     
-    // console.log(codigo_pedido);
     $.ajax({
         type:"GET",
         dataType:"html",
@@ -1241,7 +1239,7 @@ function actualizarEstadoPedido(estado_pedido, codigo_pedido){
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
-            //console.log(data);
+            
             location.replace('pedidos');
         }
     });
@@ -1278,7 +1276,7 @@ let btnPedidonuevo2 = document.getElementById('btn-pedido-2');
 
 btnPedidonuevo2.addEventListener('click', function(e) {
     //e.stopPropagation()
-    //console.log("CLICK");
+    
     let fecha = new Date();
     let tiempo = fecha.getFullYear().toString() 
         + (fecha.getMonth() + 1).toString() 
