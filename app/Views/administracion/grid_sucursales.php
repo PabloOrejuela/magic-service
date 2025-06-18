@@ -8,41 +8,51 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
-                        <div>
-                            <a type="button" href="<?= site_url().'sucursal-create/'; ?>" class="btn btn-success mb-2" >Registrar una nueva Sucursal</a>
+                        <div><a type="button" href="<?= site_url().'sucursal-create/'; ?>" class="btn btn-success mb-2" >Registrar una nueva Sucursal</a>
                         </div>
+                        <?php 
+
+                            if (session()->getFlashdata('mensaje')){
+                                if (session()->getFlashdata('mensaje') == 'success') {
+                                    echo '<div class="alert alert-success" role="alert">La sucursal se ha eliminado correctamente.</div>';
+                                } else {
+                                    echo '<div class="alert alert-danger" role="alert">Ha ocurrido un error al eliminar la sucursal, la sucursal tiene sectores asignados.</div>';
+                                }
+                            }
+
+                        ?>
                         <form action="#" method="post">
                             <p id="mensaje-warning">* Recuerde que borrar una sucursal borra también los sectores de entrega relacionados a esa sucursal y toda la información que está relacionada con los sectores de entrega, por ejemplo los pedidos.</p>
-                        <table id="datatablesSimple" class="table table-bordered table-striped">
-                            <thead>
-                                <th>No.</th>
-                                <th>Sucursal</th>
-                                <th>Dirección</th>
-                                <th>Borrar</th>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    if (isset($sucursales) && $sucursales != NULL) {
-                                        foreach ($sucursales as $key => $value) {
-                                            echo '<tr>
-                                                <td>'.$value->id.'</td>
-                                                <td><a href="'.site_url().'sucursal-edit/'.$value->id.'" id="link-editar">'.$value->sucursal.'</a></td>
-                                                <td>'.$value->direccion.'</td>';
-                                            echo '<td>
-                                                    <div class="contenedor">
-                                                        <a type="button" id="btn-register" href="'.site_url().'sucursal-delete/'.$value->id.'" class="edit">
-                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                                </tr>';
+                            <table id="datatablesSimple" class="table table-bordered table-striped">
+                                <thead>
+                                    <th>No.</th>
+                                    <th>Sucursal</th>
+                                    <th>Dirección</th>
+                                    <th>Borrar</th>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        if (isset($sucursales) && $sucursales != NULL) {
+                                            foreach ($sucursales as $key => $value) {
+                                                echo '<tr>
+                                                    <td>'.$value->id.'</td>
+                                                    <td><a href="'.site_url().'sucursal-edit/'.$value->id.'" id="link-editar">'.$value->sucursal.'</a></td>
+                                                    <td>'.$value->direccion.'</td>';
+                                                echo '<td>
+                                                        <div class="contenedor">
+                                                            <a type="button" id="btn-register" href="'.site_url().'sucursal-delete/'.$value->id.'" class="edit">
+                                                                <img src="'.site_url().'public/images/delete.png" width="30" >
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    </tr>';
+                                            }
                                         }
-                                    }
-                                ?>
-                            </tbody>
-                        </table>
+                                    ?>
+                                </tbody>
+                            </table>
                         </form>
-                    </div></div><!-- /.card-body -->
+                    </div><!-- /.card-body -->
                 </div><!-- /.card-->
             </section>
         </div>

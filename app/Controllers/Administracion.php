@@ -1511,9 +1511,17 @@ class Administracion extends BaseController {
             $data['roles'] = $this->rolModel->findAll();
             $data['usuario'] = $this->usuarioModel->find($id);
 
-            //Borro los sectores de entrega relacionados
-            //$this->sectoresEntregaModel->where('idsucursal', $id)->delete($id);
-            $this->sucursalModel->delete($id);
+            //verifico si tiene sectores de entrega relacionados
+            $haySectores = $this->sectoresEntregaModel->where('idsucursal', $id)->findAll();
+
+            if ($haySectores) {
+                //Si tiene sectores relacionados los borro
+                session()->setFlashdata('mensaje', 'error');
+                
+            }else{
+                $this->sucursalModel->delete($id);
+                session()->setFlashdata('mensaje', 'success');
+            }
             
             return redirect()->to('sucursales');
         }else{
