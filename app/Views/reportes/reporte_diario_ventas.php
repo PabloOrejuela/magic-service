@@ -198,7 +198,11 @@
                                 <!-- /.card-body -->                        
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                    <a class="btn btn-primary" href="'.site_url().'reporte-diario-ventas-excel?negocio='.$datos['negocio'].'&fecha_inicio='.$datos['fecha_inicio'].'">Descargar reporte en excel</a>
+                                    <a class="btn btn-primary" 
+                                        href="'.site_url().'reporte-diario-ventas-excel?negocio='.$datos['negocio']
+                                        .'&fecha_inicio='.$datos['fecha_inicio']
+                                        .'&fecha_final='.$datos['fecha_final']
+                                        .'&sugest='.$datos['sugest'].'">Descargar reporte en excel</a>
                                     <a href="'.site_url().'reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                 </div>
                                                     ';

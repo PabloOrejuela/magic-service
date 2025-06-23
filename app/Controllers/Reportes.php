@@ -493,13 +493,13 @@ class Reportes extends BaseController {
         $datos = [
             'negocio' => $this->request->getPostGet('negocio'),
             'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
+            'fecha_final' => $this->request->getPostGet('fecha_final'),
+            'sugest' => $this->request->getPostGet('sugest'),
         ];
 
         $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
 
-        $res = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['negocio']);
-
-        //echo '<pre>'.var_export($res, true).'</pre>';exit;
+        $res = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['fecha_final'], $datos['negocio']);
 
         $fila = 1;
 
@@ -509,13 +509,13 @@ class Reportes extends BaseController {
             ->getProperties()
             ->setCreator("Magic Service")
             ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
-            ->setTitle('Reporte de Control Diario de Ventas')
+            ->setTitle('Reporte de Control de Ventas')
             ->setSubject('Reportes Magic Service')
-            ->setDescription('Reporte con datos de las ventas del día')
+            ->setDescription('Reporte con datos de las ventas por rango de fechas')
             ->setKeywords('etiquetas o palabras clave separadas por espacios')
             ->setCategory('Reportes');
 
-        $nombreDelDocumento = "MagicService - Reporte de Control Diario de Ventas.xlsx";
+        $nombreDelDocumento = "MagicService - Reporte de Control de Ventas.xlsx";
 
         //Selecciono la pestaña
         $hoja = $phpExcel->getActiveSheet();
@@ -612,7 +612,7 @@ class Reportes extends BaseController {
         
 
         //TITULO
-        $hoja->setCellValue('A'.$fila, "REPORTE DE CONTROL DE VENTAS DIARIAS");
+        $hoja->setCellValue('A'.$fila, "REPORTE DE CONTROL DE VENTAS");
 
         $fila++;
 
@@ -653,13 +653,16 @@ class Reportes extends BaseController {
         $hoja->setCellValue('K'.$fila, "PAGO COMPROBADO");
 
         $fila++;
-        
+
+        $totalKarana = 0;
+        $totalMagicService = 0;
+        $ventasExtras = 0;
+
         //datos
         if ($res) {
             $num = 1;
             $suma = 0;
-            $totalKarana = 0;
-            $totalMagicService = 0;
+            
 
             foreach ($res as $key => $result) {
                 //echo '<pre>'.var_export($result, true).'</pre>';exit;
@@ -694,6 +697,7 @@ class Reportes extends BaseController {
                 $phpExcel->getActiveSheet()->getStyle('I'.$fila)->applyFromArray($styleTextoCentrado);
                 if ($result->venta_extra == 1) {
                     $hoja->setCellValue('I'.$fila, 'SI');
+                    $ventasExtras++;
                 } else {
                     $hoja->setCellValue('I'.$fila, 'NO');
                 }
@@ -719,6 +723,7 @@ class Reportes extends BaseController {
                 
                 $fila++;
                 $num++;
+                
                 $suma += $result->total;
             }
             $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleSubtituloDerecha);
@@ -727,6 +732,8 @@ class Reportes extends BaseController {
             $phpExcel->getActiveSheet()->getCell('F'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
             $phpExcel->getActiveSheet()->getStyle('F'.$fila)->applyFromArray($styleCurrencyBold);
             $hoja->setCellValue('F'.$fila, number_format($suma, 2, '.'));
+            $phpExcel->getActiveSheet()->getCell('I'.$fila)->getStyle('I'.$fila)->applyFromArray($styleTextoCentrado);
+            $hoja->setCellValue('I'.$fila, $ventasExtras);
         }else{
             $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');

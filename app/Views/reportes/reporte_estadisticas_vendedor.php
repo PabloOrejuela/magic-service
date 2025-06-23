@@ -127,6 +127,7 @@
                                         $ventasExtras = 0;
 
                                         if ($res) {
+                                            
                                             foreach ($res as $key => $resultado) {
                                                 $vendedor = $this->usuarioModel->_getNombreUsuario($resultado->vendedor);
                                                 echo '<tr>';
