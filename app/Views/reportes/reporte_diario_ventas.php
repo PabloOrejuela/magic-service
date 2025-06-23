@@ -112,6 +112,7 @@
                                         $suma = 0;
                                         $totalKarana = 0;
                                         $totalMagicService = 0;
+                                        $ventasExtras = 0;
 
                                         if ($res) {
                                             foreach ($res as $key => $result) {
@@ -142,10 +143,10 @@
 
                                                 if ($result->venta_extra == 1) {
                                                     echo '<td>SI</td>';
+                                                    $ventasExtras++;
                                                 } else {
                                                     echo '<td>NO</td>';
                                                 }
-                                                
                                                 
                                                 echo '<td>'.$result->observaciones.'</td>';
 
@@ -168,7 +169,14 @@
                                                 $num++;
 
                                             }
-                                            echo '<tr><td colspan="4"></td><td id="text-result-bold">TOTAL: </td><td id="text-result-bold">$'.number_format($suma, 2).'</td><td colspan="2"></td></tr>
+                                            echo '<tr>
+                                                    <td colspan="4"></td>
+                                                    <td id="text-result-bold">TOTAL: </td>
+                                                    <td id="text-result-bold">$'.number_format($suma, 2).'</td>
+                                                    <td colspan="2"></td>
+                                                    <td>'.$ventasExtras.'</td>
+                                                    <td colspan="2"></td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                         <table class="table table-bordered mt-3" id="table-totales">
