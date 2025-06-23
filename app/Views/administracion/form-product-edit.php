@@ -59,7 +59,7 @@
                                         type="text" 
                                         class="form-control cant" 
                                         name="image" 
-                                        value="" 
+                                        value="<?= $producto->image; ?>" 
                                         id="image"
                                     >
                                 </div>

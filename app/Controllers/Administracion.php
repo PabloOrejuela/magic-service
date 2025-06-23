@@ -913,7 +913,7 @@ class Administracion extends BaseController {
 
             $producto = [
                 'idusuario' => $data['id'],
-                'producto' => strtoupper($this->request->getPostGet('nombreArregloNuevo')),
+                'producto' => strtoupper(trim($this->request->getPostGet('nombreArregloNuevo'))),
                 'idcategoria' => $this->request->getPostGet('categoria'),
                 'new_id' => $this->request->getPostGet('new_id'),
                 'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
@@ -1037,24 +1037,16 @@ class Administracion extends BaseController {
             $producto = [
                 'idusuario' => $data['id'],
                 'idcategoria' => $this->request->getPostGet('categoria'),
-                'producto' => strtoupper($this->request->getPostGet('producto')),
+                'producto' => strtoupper(trim($this->request->getPostGet('producto'))),
                 'idproducto' => $this->request->getPostGet('idproducto'),
                 'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
                 'precio' => $this->request->getPostGet('total'),
                 'image' => $this->request->getPostGet('image'),
                 'imagenNew' => $imagen->getName()
             ];
-
+            
             //Obtengo los datos actuales del producto
             $datosProducto = $this->productoModel->find($producto['idproducto']);
-
-            //Borro la imágen anterior
-            if (file_exists($ruta.$datosProducto->image.'.jpg')) {
-                if ($datosProducto->image) {
-                    unlink($ruta.$datosProducto->image.'.jpg');
-                    unlink($ruta.$datosProducto->image);
-                }
-            }
 
             //Creo el objeto de cambios
             $cambios = [
@@ -1066,8 +1058,8 @@ class Administracion extends BaseController {
             
             //Verifico si se sube otra imagen o no
             if ($producto['imagenNew'] != '') {
-                //Se ha elegido una nueva imágen entonces procedo a cambiar la imagen
 
+                //Se ha elegido una nueva imágen entonces procedo a cambiar la imagen
                 $producto['image'] = '';
                 
                 if (!$imagen->isValid()) {
@@ -1076,6 +1068,18 @@ class Administracion extends BaseController {
     
                 }else{
                     //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
+                    //Borro la imágen anterior
+                    if (file_exists($ruta.$datosProducto->image.'.jpg')) {
+                        if ($datosProducto->image) {
+                            unlink($ruta.$datosProducto->image.'.jpg');
+                        }
+                    }
+
+                    if (file_exists($ruta.$datosProducto->image)) {
+                        if ($datosProducto->image) {
+                            unlink($ruta.$datosProducto->image);
+                        }
+                    }
 
                     $numRandom = rand(100,999);
 
@@ -1102,7 +1106,7 @@ class Administracion extends BaseController {
                 
             }
 
-            
+            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
             //Actualizo el producto
             $this->productoModel->_updateProducto($producto);
 
