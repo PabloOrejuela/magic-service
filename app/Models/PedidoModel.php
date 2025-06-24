@@ -589,6 +589,33 @@ class PedidoModel extends Model {
         $builder->update();
     }
 
+    function _getDevolucionesMesReporte($fechaInicio, $fechaFinal, $negocio){
+        
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha,nombre as cliente,negocio,vendedor,total,pedidos.estado as estado,pagado,valor_devuelto,observacion_devolucion,idnegocio');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+
+        //Si se ha seleccionado un negocio
+        if ($negocio != 0) {
+            $builder->where($this->table.'.idnegocio', $negocio);
+        }
+
+        $builder->where($this->table.'.estado', 1);
+        $builder->where($this->table.'.valor_devuelto >', 0);
+        $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     /*
     *   
     */

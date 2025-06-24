@@ -389,8 +389,20 @@ class Validation extends BaseConfig
         'fecha_inicio' => [
             'required' => 'El campo "Fecha Inicio" es obligatorio',
         ],
-        'fecha_final' => [
-            'required' => 'El campo "Fecha Final" es obligatorio',
+    ];
+
+    public $reporteDevoluciones = [
+        'negocio'  => 'required|greater_than[0]',
+        'fecha'  => 'required',
+    ];
+
+    public $reporteDevoluciones_errors = [
+        'negocio' => [
+            'required' => 'El campo "Negocio" es obligatorio',
+            'greater_than' => 'El campo "Negocio" es obligatorio',
+        ],
+        'fecha' => [
+            'required' => 'El campo "Fecha" es obligatorio',
         ],
     ];
 }

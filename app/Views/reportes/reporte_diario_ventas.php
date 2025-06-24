@@ -212,17 +212,15 @@
                                             echo '</tr>';
 
                                             echo '
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->                        
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                            <a href="'.site_url().'reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
-                        </div>
-
-                                            ';
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->                        
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
+                                                <a href="'.site_url().'reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                            </div>';
                                         }
                                     ?>
                     </form>

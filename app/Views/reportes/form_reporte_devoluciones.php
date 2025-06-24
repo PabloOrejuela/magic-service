@@ -37,12 +37,12 @@
                                     <input 
                                         type="month" 
                                         class="form-control text" 
-                                        id="mes" 
-                                        name="mes" 
+                                        id="fecha" 
+                                        name="fecha" 
                                         value="<?= date('Y-m'); ?>" 
                                         required
                                     >
-                                    <p id="error-message"><?= session('errors.mes');?> </p>
+                                    <p id="error-message"><?= session('errors.fecha');?> </p>
                                </div>
                             </div>
                         </div>
