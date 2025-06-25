@@ -189,31 +189,26 @@
 
     if ($session->reportes == 1) {
       echo '
-      <li class="nav-item" onclick="activeFunc()">
-        <a href="#" class="nav-link">
-          <i class="fa-solid fa-chart-simple menu-icon"></i>
-          <p>
-            Reportes
-            <i class="right fas fa-angle-left"></i>
-          </p>
-        </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item subItem">
-            <a href="'.base_url().'reporte_diario_ventas" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Control de ventas</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
+        <li class="nav-item" onclick="activeFunc()">
+          <a href="#" class="nav-link">
+            <i class="fa-solid fa-chart-simple menu-icon"></i>
+            <p>
+              Reportes
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">';
+          if ($session->idroles == 3) {
+            echo '<li class="nav-item subItem">
+              <a href="'.base_url().'reporte_diario_ventas" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Control de ventas</p>
+              </a>
+            </li>
+            <li class="nav-item subItem">
             <a href="'.base_url().'reporte-procedencias" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte de Procedencias</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-estadisticas-vendedor" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Reporte Estadísticas de vendedor</p>
             </a>
           </li>
           <li class="nav-item subItem">
@@ -238,6 +233,13 @@
             <a href="'.base_url().'reporte-items-sensibles" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte Items sensibles</p>
+            </a>
+          </li>';
+        }
+        echo '<li class="nav-item subItem">
+            <a href="'.base_url().'reporte-estadisticas-vendedor" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Reporte Estadísticas de vendedor</p>
             </a>
           </li>
         </ul>

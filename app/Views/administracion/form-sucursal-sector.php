@@ -59,7 +59,7 @@
                         <!-- /.card-body -->
                         <div class="card-footer">      
                             <input type="hidden" id="idsucursal" name="idsucursal" value="<?= isset($sucursal) ? $sucursal->id : ''; ?>">
-                            <a href="<?= site_url(); ?>sucursales" class="btn btn-light" id="btn-cancela">Cancelar</a>
+                            <a href="<?= site_url(); ?>sucursales" class="btn btn-light" id="btn-cancela">Atrás</a>
                         </div>
                     </form>
                 </div>

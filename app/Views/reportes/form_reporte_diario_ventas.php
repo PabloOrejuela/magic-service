@@ -34,27 +34,67 @@
                                </div>
                                <div class="form-group col-md-3">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
-                                    <input 
-                                        type="date" 
-                                        class="form-control text" 
-                                        id="fecha_inicio" 
-                                        name="fecha_inicio" 
-                                        value="<?= date('Y-m-d'); ?>" 
-                                        required
-                                    >
+                                <?php
+                                
+                                    if ($session->idroles == 3) {
+                                        echo '
+                                            <input 
+                                                type="date" 
+                                                class="form-control text" 
+                                                id="fecha_inicio" 
+                                                name="fecha_inicio" 
+                                                value="'.date('Y-m-d').'" 
+                                                required
+                                            >
+                                        ';
+                                    }else{
+                                        echo '
+                                            <input 
+                                                type="date" 
+                                                class="form-control text" 
+                                                id="fecha_inicio" 
+                                                name="fecha_inicio" 
+                                                value="'.date('Y-m-d').'" 
+                                                required
+                                                onkeydown="return false"
+                                                readonly
+                                            >
+                                        ';
+                                    }
+                                ?>
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
                                </div>
                                <div class="form-group col-md-3">
                                 <label for="fecha_final">Fecha final *:</label>
-                                    <input 
-                                        type="date" 
-                                        class="form-control text" 
-                                        id="fecha_final" 
-                                        name="fecha_final" 
-                                        value="<?= date('Y-m-d'); ?>" 
-                                        required
-                                    >
-                                    <p id="error-message"><?= session('errors.fecha_final');?> </p>
+                                <?php
+                                
+                                    if ($session->idroles == 3) {
+                                        echo '
+                                            <input 
+                                                type="date" 
+                                                class="form-control text" 
+                                                id="fecha_final" 
+                                                name="fecha_final" 
+                                                value="'.date('Y-m-d').'" 
+                                                required
+                                            >
+                                        ';
+                                    }else{
+                                        echo '
+                                            <input 
+                                                type="date" 
+                                                class="form-control text" 
+                                                id="fecha_final" 
+                                                name="fecha_final" 
+                                                value="'.date('Y-m-d').'" 
+                                                required
+                                                onkeydown="return false"
+                                                readonly
+                                            >
+                                        ';
+                                    }
+                                ?>
+                                <p id="error-message"><?= session('errors.fecha_final');?> </p>
                                </div>
                                <div class="form-group col-md-3">
                                     <label for="sugest">Opciones:</label>
@@ -67,9 +107,10 @@
                                         <?php
                                             if (isset($sugest)) {
                                                 foreach ($sugest as $key => $value) {
-                                                    if ($session->idroles == 3) {
-                                                        echo '<option value="'.$key.'" >'.$value.'</option>';
+                                                    if ($session->idroles > 3 && $key == 2){
+                                                        continue;
                                                     }
+                                                    echo '<option value="'.$key.'" >'.$value.'</option>';
                                                     
                                                 }
                                             }
