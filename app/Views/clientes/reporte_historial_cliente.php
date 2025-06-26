@@ -24,6 +24,7 @@
                             <th>Fecha</th>
                             <th>Sector</th>
                             <th>Dirección</th>
+                            <th>Ubicación de entrega</th>
                             <th>Producto</th>
                             <th>Mensajero</th>
                             <th>Observación</th>
@@ -43,7 +44,8 @@
                                         <td>'.$pedido->cod_pedido.'</td>
                                         <td>'.$pedido->fecha_entrega.'</td>
                                         <td>'.$pedido->sector.'</td>
-                                        <td>'.$pedido->dir_entrega.'</td>';
+                                        <td>'.$pedido->dir_entrega.'</td>
+                                        <td>'.$pedido->ubicacion.'</td>';
                                     echo '<td><ul>';
                                         if (isset($detalle)) {
                                             foreach ($detalle as $key => $d) {
