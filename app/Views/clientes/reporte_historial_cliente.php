@@ -24,22 +24,36 @@
                             <th>Fecha</th>
                             <th>Sector</th>
                             <th>Dirección</th>
-                            <th>Código</th>
+                            <th>Producto</th>
                             <th>Mensajero</th>
                             <th>Observación</th>
                             <th>Sucursal</th>
                         </thead>
                         <tbody>
                         <?php
+
+                            use App\Models\DetallePedidoModel;
+                            $this->detallePedidoModel = new DetallePedidoModel();
+
                             if ($pedidos) {
                                 foreach ($pedidos as $key => $pedido) {
+                                    $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->cod_pedido);
+                                    //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                     echo '<tr>
                                         <td>'.$pedido->cod_pedido.'</td>
                                         <td>'.$pedido->fecha_entrega.'</td>
                                         <td>'.$pedido->sector.'</td>
-                                        <td>'.$pedido->dir_entrega.'</td>
-                                        <td>COD Arreglo</td>
-                                        <td>'.$pedido->nombre.'</td>
+                                        <td>'.$pedido->dir_entrega.'</td>';
+                                    echo '<td><ul>';
+                                        if (isset($detalle)) {
+                                            foreach ($detalle as $key => $d) {
+                                                
+                                                echo '<li>'.$d->producto.'</li>';
+                                            }
+                                        }
+                                    echo '</ul></td>';
+                                        
+                                    echo '<td>'.$pedido->nombre.'</td>
                                         <td>'.$pedido->observaciones.'</td>
                                         <td>'.$pedido->sucursal.'</td>
                                     </tr>';
