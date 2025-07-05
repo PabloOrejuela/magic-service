@@ -39,9 +39,12 @@ selectSugest.addEventListener('change', function(e) {
 
     }else if(selectSugest.selectedIndex == 2){
 
+        let diasMes = daysInMonth(anioActual, mesActual)
+
         //Mes actual
         fechaInicio.value = cadenafecha + '-01'
-        fechaFinal.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
+        fechaFinal.value = cadenafecha + '-' +diasMes
+
     }else if(selectSugest.selectedIndex == 3){
 
         let diaActual = fecha.getDate()
@@ -92,7 +95,6 @@ selectSugest.addEventListener('change', function(e) {
                     finSemana = (fecha.getDate() + (7 - fecha.getDay()))
                 }
                 
-
                 inicioSemana = getInicioSemana(diaSemana, diaActual)
                 cadenafechaInicio = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+(parseInt(mesActual)))
                 console.log(finSemana);

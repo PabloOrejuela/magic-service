@@ -1698,6 +1698,7 @@ class Reportes extends BaseController {
         if ($gastoInsumosProveedores) {
                                                     
             foreach ($gastoInsumosProveedores as $key => $gasto) {
+                
                 $totalGastoInsumosProveedores += $gasto->valor;
             }
             
@@ -1716,7 +1717,7 @@ class Reportes extends BaseController {
         $hoja->getStyle('C'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
         $hoja->getStyle('C'.$fila)->applyFromArray($styleCabeceraTotales);
         
-        $hoja->setCellValue('C'.$fila, number_format($totalGastosFijos, 2));
+        $hoja->setCellValue('C'.$fila, $totalGastosFijos);
 
         $hoja->getStyle('D'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('D'.$fila, "");
@@ -1727,12 +1728,13 @@ class Reportes extends BaseController {
                     ->getAllBorders()
                     ->setBorderStyle(Border::BORDER_THIN)
                     ->setColor(new Color('FFFFFFF'));
+                    
         $hoja->getStyle('E'.$fila.':G'.$fila)->applyFromArray($styleCabecera);
         $hoja->setCellValue('E'.$fila, "FECHA");
         $hoja->setCellValue('F'.$fila, "GASTOS VARIABLES");
         $hoja->getStyle('G'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
         $hoja->getStyle('G'.$fila)->applyFromArray($styleCabeceraTotales);
-        $hoja->setCellValue('G'.$fila, number_format($totalGastoVariable, 2));
+        $hoja->setCellValue('G'.$fila, $totalGastoVariable);
 
         $hoja->getStyle('H'.$fila)->applyFromArray($styleSubtitulo);
         $hoja->setCellValue('H'.$fila, "");
@@ -1743,12 +1745,13 @@ class Reportes extends BaseController {
                     ->getAllBorders()
                     ->setBorderStyle(Border::BORDER_THIN)
                     ->setColor(new Color('FFFFFFF'));
+
         $hoja->getStyle('I'.$fila.':K'.$fila)->applyFromArray($styleCabecera);
         $hoja->setCellValue('I'.$fila, "FECHA");
         $hoja->setCellValue('J'.$fila, "INSUMOS PROVEEDORES");
         $hoja->getStyle('K'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
         $hoja->getStyle('K'.$fila)->applyFromArray($styleCabeceraTotales);
-        $hoja->setCellValue('K'.$fila, number_format($totalGastoInsumosProveedores, 2));
+        $hoja->setCellValue('K'.$fila, $totalGastoInsumosProveedores);
 
         $fila = 8;
         

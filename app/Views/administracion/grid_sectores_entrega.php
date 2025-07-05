@@ -1,25 +1,4 @@
-<style>
-    .inputValor{
-        text-align: right;
-    }
-
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
-    .input {
-        border-radius: 300px;
-        width: 250px;
-    }
-    .row {
-        margin-bottom: 20px;
-    }
-</style>
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/grid-sectores-entrega.css">
 <!-- Main content -->
 <section class="content">
       <div class="container-fluid">
@@ -29,6 +8,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
+                        <div><a type="button" href="<?= site_url().'sector-entrega-create/'; ?>" class="btn btn-success mb-2" >Registrar una nuevo Sector de Entrega</a></div>
                         <form action="#" method="post">
                         <table id="datatablesSimple" class="table table-bordered table-striped">
                             <thead>
@@ -64,7 +44,8 @@
                             </tbody>
                         </table>
                         </form>
-                    </div></div><!-- /.card-body -->
+                    </div>
+                    <!-- /.card-body -->
                 </div><!-- /.card-->
             </section>
         </div>

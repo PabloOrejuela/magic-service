@@ -247,6 +247,33 @@ class Administracion extends BaseController {
         }
     }
 
+    /**
+     * Formulario para registrar un nuevo sector de entrega
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function form_sestor_entrega_create() {
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sucursales'] = $this->sucursalModel->findAll();
+            // $data['items'] = $this->itemModel->findAll();
+
+            //echo '<pre>'.var_export($data, true).'</pre>';exit;
+            $data['title']='Administración';
+            $data['subtitle']='Registrar sector de entrega';
+            $data['main_content']='administracion/form_sector_entrega_new';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function sectoresEntrega() {
 
         $data = $this->acl();
@@ -1478,6 +1505,28 @@ class Administracion extends BaseController {
 
                 return redirect()->to('sucursales');
             }
+            
+        }else{
+
+            return redirect()->to('logout');
+        }
+    }
+
+    public function sector_entrega_insert(){
+
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->admin == 1) {
+
+            $data = [
+                'sector' => strtoupper($this->request->getPostGet('sector_entrega')),
+                'costo_entrega' => strtoupper($this->request->getPostGet('costo_entrega')),
+                'idsucursal' => strtoupper($this->request->getPostGet('idsucursal')),
+            ];
+            
+            $this->sectoresEntregaModel->insert($data);
+
+            return redirect()->to('sectores-entrega');
             
         }else{
 

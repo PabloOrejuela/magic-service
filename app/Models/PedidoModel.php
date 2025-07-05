@@ -142,7 +142,7 @@ class PedidoModel extends Model {
         }
 
         $builder->where($this->table.'.vendedor', $vendedor);
-        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $builder->orderBy('orden', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -202,8 +202,9 @@ class PedidoModel extends Model {
     function _getPedidosReporteDiario($fechaInicio, $fechaFinal, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio');
-        //$builder->select('cod_pedido,total');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,
+                        procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio');
+        
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos', 'left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
@@ -215,7 +216,7 @@ class PedidoModel extends Model {
         }
 
         $builder->where($this->table.'.estado', 1);
-        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $builder->orderBy('orden', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {

@@ -21,7 +21,7 @@
                                         id="negocio" 
                                         name="negocio" 
                                     >
-                                    <option value="0" selected>-- Mostrar todos --</option>
+                                    <option value="0" selected>-- Elegir Negocio --</option>
                                         <?php
                                             if (isset($negocios)) {
                                                 foreach ($negocios as $key => $negocio) {

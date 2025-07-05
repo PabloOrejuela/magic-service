@@ -118,6 +118,8 @@ $routes->get('asigna-rol-2', 'Administracion::asigna_rol_2');
 $routes->get('desactivar', 'Administracion::desactivar');
 $routes->get('sign-off', 'Administracion::sign_off');
 $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');
+$routes->post('sector-entrega-insert', 'Administracion::sector_entrega_insert');
+$routes->get('sector-entrega-create', 'Administracion::form_sestor_entrega_create');
 $routes->post('product-personalize', 'Administracion::product_personalize');
 $routes->get('updateVariableSistema', 'Administracion::updateVariableSistema');
 $routes->get('actualizaPrecioItem', 'Administracion::actualizaPrecioItem');
