@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-2">
-                                    <label for="negocio">Negocio:</label>
+                                    <label for="negocio">Negocio: </label>
                                     <select 
                                         class="form-select form-control-border" 
                                         id="negocio" 
@@ -43,7 +43,15 @@
                                         <?php
                                             if (isset($vendedores)) {
                                                 foreach ($vendedores as $key => $vendedor) {
-                                                    echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).' >'.$vendedor->nombre.'</option>';
+
+                                                    if ($session->idroles == 4) {
+                                                        if ($vendedor->id == $session->id) {
+                                                            echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).' selected>'.$vendedor->nombre.'</option>';
+                                                        }
+                                                    }else{
+                                                        echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).'>'.$vendedor->nombre.'</option>';
+                                                    }
+                                                    
                                                 }
                                             }
                                         ?>
