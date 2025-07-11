@@ -1480,6 +1480,7 @@ class Reportes extends BaseController {
         $data['res'] = NULL;
         $data['inicioMes'] = date('w', strtotime($datos['mes'].'-01'));
         $data['finMes'] = date('w', strtotime($datos['mes'].'-'.$data['numDias']));
+        $nombreMes = $this->meses[ltrim($mes, '0')];
 
         $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
 
@@ -1495,7 +1496,7 @@ class Reportes extends BaseController {
         $tipoGasto = 1;
         $gastoInsumosProveedores = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['mes'].'-01', $datos['mes'].'-'.$data['numDias']);
 
-
+        
         $fila = 1;
 
         //Creo la hoja
@@ -1510,7 +1511,7 @@ class Reportes extends BaseController {
             ->setKeywords('etiquetas o palabras clave separadas por espacios')
             ->setCategory('Reportes');
 
-        $nombreDelDocumento = "MagicService - Reporte Master de Gastos.xlsx";
+        $nombreDelDocumento = "MagicService - Reporte Master de Gastos - $nombreMes.xlsx";
 
         //Selecciono la pestaña
         $hoja = $phpExcel->getActiveSheet();
@@ -1637,7 +1638,7 @@ class Reportes extends BaseController {
         $fila += 2;
 
         //CABECERA
-        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleCabecera);
         $phpExcel->getActiveSheet()
                     ->getStyle('A'.$fila.':B'.$fila)
                     ->getBorders()
@@ -1651,7 +1652,6 @@ class Reportes extends BaseController {
         }else{
             $hoja->setCellValue('B'.$fila, 'TODOS');
         }
-        
         
         $fila++;
         $phpExcel->getActiveSheet()
@@ -1704,7 +1704,6 @@ class Reportes extends BaseController {
             
         }
         
-
         $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleCabecera);
         $phpExcel->getActiveSheet()
                     ->getStyle('A'.$fila.':C'.$fila)
@@ -1845,16 +1844,16 @@ class Reportes extends BaseController {
         $totalEgresos = $totalGastosFijos + $totalGastoVariable + $totalGastoInsumosProveedores;
 
         $phpExcel->getActiveSheet()
-                    ->getStyle('A'.$fila.':B'.$fila)
+                    ->getStyle('E3'.':F3')
                     ->getBorders()
                     ->getAllBorders()
                     ->setBorderStyle(Border::BORDER_THIN)
                     ->setColor(new Color('FFFFFFF'));
-        $hoja->getStyle('A'.$fila)->applyFromArray($styleCabecera);
-        $hoja->setCellValue("A".$fila, 'TOTAL DE EGRESOS POR GASTOS:');
-        $hoja->getStyle('B'.$fila)->applyFromArray($styleSubtituloDerecha);
-        $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
-        $hoja->setCellValue("B".$fila, $totalEgresos);
+        $hoja->getStyle('E3')->applyFromArray($styleCabecera);
+        $hoja->setCellValue("E3", 'TOTAL DE EGRESOS POR GASTOS:');
+        $hoja->getStyle('F3')->applyFromArray($styleSubtituloDerecha);
+        $hoja->getStyle('F3')->getNumberFormat()->setFormatCode($currencyMask);
+        $hoja->setCellValue("F3", $totalEgresos);
 
         //Creo el writter y guardo la hoja
         $writter = new XlsxWriter($phpExcel, 'Xlsx');

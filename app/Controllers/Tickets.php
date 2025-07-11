@@ -18,6 +18,7 @@ class Tickets extends BaseController {
         //Traigo los arreglo del pedido
         $arreglos = $this->detallePedidoModel->_getDetallePedido($datosPedido->cod_pedido);
 
+        //Verifico la categoría de el arreglo
         foreach ($arreglos as $key => $arreglo) {
 
             if ($arreglo->idcategoria == 5) {
