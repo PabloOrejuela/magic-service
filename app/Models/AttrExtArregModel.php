@@ -44,7 +44,7 @@ class AttrExtArregModel extends Model {
     protected $afterDelete    = [];
 
     public function _getAttrExtArreg($iddetalle, $idcategoria){
-        $objeto = false;
+        $objeto = null;
         $builder = $this->db->table($this->table);
         $builder->select('*');
         $builder->where('iddetalle', $iddetalle);

@@ -1,7 +1,7 @@
 <h3>Cambios</h3>
 <h5>Reportes</h5>
 <ul>
-    <li>En el reporte de estadísticas por vendedor si se tien eel rol de vendedor ya no se puede ver la información de otros vendedores</li>
+    <li>Se hizo un cambio en el ticket de bocaditos, ahora tiene su función aparte y consolida todos los atributos</li>
 </ul>
 
 <h5>Fixes</h5>
