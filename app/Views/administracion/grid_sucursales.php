@@ -28,16 +28,27 @@
                                     <th>No.</th>
                                     <th>Sucursal</th>
                                     <th>Dirección</th>
+                                    <th>Sectores asignados</th>
                                     <th>Borrar</th>
                                 </thead>
                                 <tbody>
                                     <?php
+                                        use App\Models\SectoresEntregaModel;
+                                        $this->sectoresEntregaModel = new SectoresEntregaModel();
+
                                         if (isset($sucursales) && $sucursales != NULL) {
                                             foreach ($sucursales as $key => $value) {
+                                                $sectoresEntrega = $this->sectoresEntregaModel->select('sector')->where('estado', 1)->where('idsucursal', $value->id)->findAll();
                                                 echo '<tr>
                                                     <td>'.$value->id.'</td>
                                                     <td><a href="'.site_url().'sucursal-edit/'.$value->id.'" id="link-editar">'.$value->sucursal.'</a></td>
-                                                    <td>'.$value->direccion.'</td>';
+                                                    <td>'.$value->direccion.'</td>
+                                                    <td id="sectores">';
+                                                    $sectores = array_map(function($sector) {
+                                                        return $sector->sector;
+                                                    }, $sectoresEntrega);
+                                                    echo implode(', ', $sectores);
+                                                echo '</td>';
                                                 echo '<td>
                                                         <div class="contenedor">
                                                             <a type="button" id="btn-register" href="'.site_url().'sucursal-delete/'.$value->id.'" class="edit">

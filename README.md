@@ -1,6 +1,7 @@
 <h3>Cambios</h3>
 <h5>Reportes</h5>
 <ul>
+    <li>Se agregó una columna que muestra los sectores de entrega asignados a una sucursal en el grid de sucursales</li>
     <li>Se cambió el total de gastos en el reporte de excel a la casilla E3</li>
     <li>Se hizo un cambio en el ticket de bocaditos, ahora tiene su función aparte y consolida todos los atributos</li>
 </ul>
