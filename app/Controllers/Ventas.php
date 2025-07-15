@@ -171,10 +171,17 @@ class Ventas extends BaseController {
         echo json_encode($data);
     }
 
-    function actualizarEstadoPedido($estado_pedido, $cod_pedido){
+    function actualizarEstadoPedido(){
+
+        $orden = $this->pedidoModel->selectMax('orden')->findAll();
+
+        $estado_pedido = $this->request->getPostGet('estado_pedido');
+        $codigo_pedido = $this->request->getPostGet('codigo_pedido');
+
         
         if ($estado_pedido != 0) {
-            $this->pedidoModel->_actualizarEstadoPedido($estado_pedido, $cod_pedido);
+            $this->pedidoModel->_actualizarEstadoPedido($estado_pedido, $codigo_pedido, $orden);
+            
         }
         return true;
     }

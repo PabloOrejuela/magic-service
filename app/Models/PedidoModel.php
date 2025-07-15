@@ -556,12 +556,17 @@ class PedidoModel extends Model {
         $builder->update();
     }
 
-    public function _actualizarEstadoPedido($estado_pedido, $cod_pedido) {
+    public function _actualizarEstadoPedido($estado_pedido, $cod_pedido, $orden) {
 
         $builder = $this->db->table($this->table);
 
         if ($estado_pedido != 0 && $estado_pedido != null) {
+
             $builder->set('estado', $estado_pedido);
+
+            if ($estado_pedido >= 4) {
+                $builder->set('orden', 299);
+            }
         }
 
 

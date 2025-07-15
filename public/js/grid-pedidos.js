@@ -1231,16 +1231,19 @@ function actualizarMensajero(mensajero, codigo_pedido){
 function actualizarEstadoPedido(estado_pedido, codigo_pedido){
     
     $.ajax({
-        type:"GET",
+        method:"GET",
         dataType:"html",
-        url: "ventas/actualizarEstadoPedido/"+estado_pedido+'/'+codigo_pedido,
-        //data:"codigo="+valor,
+        url: "actualizarEstadoPedido",
+        data: {
+            estado_pedido: estado_pedido,
+            codigo_pedido: codigo_pedido
+        },
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
             
-            location.replace('pedidos');
+            //location.replace('pedidos');
         }
     });
 }

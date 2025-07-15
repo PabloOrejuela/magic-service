@@ -35,7 +35,7 @@
           <div class="row mb-4">
             <!-- /.col -->
             <div class="col-12">
-              <a class="link-opacity-20" href="#" id="verPassword"><span class="fas fa-eye">Ver password</span></a>
+              <a class="link-opacity-20" href="#" id="verPassword"><span class="fas fa-eye"> Ver password</span></a>
             </div>
             <!-- /.col -->
           </div>
