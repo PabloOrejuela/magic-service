@@ -44,7 +44,7 @@
                                             if (isset($vendedores)) {
                                                 foreach ($vendedores as $key => $vendedor) {
 
-                                                    if ($session->idroles == 4) {
+                                                    if ($session->idroles >= 4) {
                                                         if ($vendedor->id == $session->id) {
                                                             echo '<option value="'.$vendedor->id.'" '.set_select('vendedor', $vendedor->id, false).' selected>'.$vendedor->nombre.'</option>';
                                                         }
