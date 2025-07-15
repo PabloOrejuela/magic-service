@@ -240,7 +240,6 @@ class Tickets extends BaseController {
         $textoCelular = '';
         $textoOpciones = '';
         
-        
 
         //Para consolidar bocaditos
         foreach ($arreglos as $key => $arreglo) {
@@ -251,11 +250,11 @@ class Tickets extends BaseController {
             $textoCelular .= $atributos ? $atributos->celular : '';
             $textoObservacion .= $arreglo ? $arreglo->observacion.',' : '';
             
-            if (count($productosBocaditos) >= 1) {
-                foreach ($productosBocaditos as $key => $bocadito) {
-                    $textoBocadito .= '-'.$bocadito.',';                    
-                }
-                
+        }
+
+        if (count($productosBocaditos) >= 1) {
+            foreach ($productosBocaditos as $key => $bocadito) {
+                $textoBocadito .= $key.'-'.$bocadito.',';                    
             }
         }
 
