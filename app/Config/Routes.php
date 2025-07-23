@@ -197,6 +197,10 @@ $routes->get('reporte-devoluciones', 'Reportes::frmReporteDevoluciones');
 $routes->post('reporte-devoluciones', 'Reportes::reporteDevoluciones');
 $routes->get('reporte-devoluciones-excel', 'Reportes::reporteDevolucionesExcel');
 
+$routes->get('reporte-pyg', 'Reportes::frmReportePG');
+$routes->post('reporte-pyg', 'Reportes::reportePG');
+$routes->get('reporte-pyg-excel', 'Reportes::reportePGExcel');
+
 
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
 $routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');

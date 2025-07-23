@@ -306,7 +306,7 @@ class Administracion extends BaseController {
 
             $data['variables'] = $this->variablesSistemaModel->orderBy('variable', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['variables'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Editar variables del Sistema';
             $data['main_content']='administracion/frm_edit_variables_sistema';

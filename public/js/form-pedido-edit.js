@@ -9,6 +9,7 @@ let telefono2 = document.getElementById("telefono_2")
 let divDevolucion = document.querySelector("#link-devolucion");
 let valorDevuelto = document.getElementById("valorDevuelto")
 let valorMensajeroEdit = document.getElementById('valor_mensajero_edit')
+let negocio = document.getElementById("idnegocio")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -42,13 +43,14 @@ divDevolucion.addEventListener("click", function () {
 
 $('#idproducto').autocomplete({
   source: function(request, response){
-    
+      
       $.ajax({
           url: '../getProductosAutocomplete',
           method: 'GET',
           dataType: 'json',
           data: {
-              producto: request.term
+              producto: request.term,
+              negocio: negocio.selectedIndex
           },
           success: function(res) {
 
@@ -66,7 +68,6 @@ $('#idproducto').autocomplete({
   select: function(event, ui){
       //document.getElementById('idp').value = 10
       document.getElementById("idp").value = ui.item.id
-      //console.log(ui.item.id);
   }
 });
 

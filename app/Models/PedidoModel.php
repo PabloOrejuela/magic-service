@@ -67,6 +67,7 @@ class PedidoModel extends Model {
                 banco,
                 fecha,
                 orden,
+                idnegocio,
                 mensajero_extra,
                 valor_devuelto,
                 observacion_devolucion,
@@ -289,7 +290,7 @@ class PedidoModel extends Model {
     function _getDatosPedido($idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado, 
+        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado,idnegocio,
                 nombre,documento,clientes.id as idcliente,direccion,telefono,telefono_2,email,fecha_entrega,sin_remitente,valor_devuelto,
                 horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,observacion_devolucion,
                 pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,mensajero_extra,valor_mensajero,valor_mensajero_extra,ref_pago,

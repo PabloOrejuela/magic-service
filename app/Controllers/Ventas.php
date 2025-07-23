@@ -1339,6 +1339,7 @@ class Ventas extends BaseController {
                 }
             }
 
+            $data['negocios'] = $this->negocioModel->findAll();
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
             $data['formas_pago'] = $this->formaPagoModel->where('estado',1)->orderBy('forma_pago', 'asc')->findAll();

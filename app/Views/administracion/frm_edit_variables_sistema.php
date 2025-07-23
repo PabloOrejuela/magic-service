@@ -23,7 +23,6 @@
                                                                 type="text" 
                                                                 class="form-control" 
                                                                 id="'.$value->id.'" 
-                                                                placeholder="0"
                                                                 name="'.$value->id.'"
                                                                 value="'.$value->valor.'"
                                                                 onchange="udpdateVariable('.$value->id.')"

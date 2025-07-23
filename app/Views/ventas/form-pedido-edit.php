@@ -237,16 +237,36 @@
                                         </select>
                                     </div>
                                     <p id="error-message"><?= session('errors.vendedor');?> </p>
-                                    <div class="form-check mb-5">
-                                        <?php 
-                                            if ($pedido->venta_extra == 1) {
-                                                echo '<input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" checked >';
-                                            }else{
-                                                echo '<input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" >';
-                                            }
-                                        ?>
-                                        
-                                        <label class="form-check-label" for="venta_extra">Venta extra</label>
+                                    <div class="form-group row">
+                                        <div class="col-md-7">
+                                            <div class="form-check mb-5">
+                                                <?php 
+                                                    if ($pedido->venta_extra == 1) {
+                                                        echo '<input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" checked >';
+                                                    }else{
+                                                        echo '<input type="checkbox" class="form-check-input" id="venta_extra" name="venta_extra" value="1" >';
+                                                    }
+                                                ?>
+                                                
+                                                <label class="form-check-label" for="venta_extra">Venta extra</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5" id="div-negocio">
+                                            <select class="form-select form-control-border" id="idnegocio" name="idnegocio" required disabled>
+                                                <option value="0" selected>--Seleccionar negocio--</option>
+                                                <?php
+                                                    if (isset($negocios)) {
+                                                        foreach ($negocios as $key => $negocio) {
+                                                            if ($negocio->id == $pedido->idnegocio) {
+                                                                echo '<option value="'.$negocio->id.'" selected>'.$negocio->negocio.'</option>';
+                                                            }else{
+                                                                echo '<option value="'.$negocio->id.'">'.$negocio->negocio.'</option>';
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="form-group row">
                                         <!-- <a href="#" class="nav-link mb-3 link-editar" id="link-edita-producto">Editar producto</a> -->
@@ -740,6 +760,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/form-pedido-edit.js"></script>
 <script>
+
 
 //
 window.addEventListener('load', function() {

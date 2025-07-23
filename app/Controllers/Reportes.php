@@ -123,7 +123,26 @@ class Reportes extends BaseController {
         }
     }
 
-    public function frmReporteDevoluciones(){echo 1;
+    public function frmReportePG(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte mensual de Pérdidas y Ganancias';
+            $data['main_content']='reportes/form_reporte_pg';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function frmReporteDevoluciones(){
         
         $data = $this->acl();
 
