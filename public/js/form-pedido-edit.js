@@ -18,6 +18,13 @@ imptEmail.addEventListener('input', function(e){
     
 })
 
+negocio.addEventListener('change', function(e){
+    let valor = negocio.selectedIndex
+    let idnegocio = document.getElementById("negocio")
+    idnegocio.value = valor
+    negocio.disabled = "true"
+})
+
 formaPago.addEventListener("change", function () {
   let valor = formaPago.value;
 

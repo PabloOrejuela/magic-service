@@ -114,33 +114,13 @@ class DetallePedidoModel extends Model {
         foreach ($detalle as $key => $value) {
             //Inserto el nuevo producto
             $builder = $this->db->table($this->table);
-            if ($value->cod_pedido != 'NULL' && $value->cod_pedido != '') {
-                $builder->set('cod_pedido', $value->cod_pedido);
-            }
-
-            if ($value->idproducto != 'NULL' && $value->idproducto != '') {
-                $builder->set('idproducto', $value->idproducto);
-            }
-
-            if ($value->cantidad != 'NULL' && $value->cantidad != '') {
-                $builder->set('cantidad', $value->cantidad);
-            }
-
-            if ($value->precio != 'NULL' && $value->precio != '') {
-                $builder->set('precio', $value->precio);
-            }
-
-            if ($value->pvp != 'NULL' && $value->pvp != '' ) {
-                $builder->set('pvp', $value->pvp);
-            }
-
-            if ($value->subtotal != 'NULL' && $value->subtotal != '') {
-                $builder->set('subtotal', $value->subtotal);
-            }
-
-            if ($value->observacion != 'NULL' && $value->observacion != '') {
-                $builder->set('observacion', $value->observacion);
-            }
+            $builder->set('cod_pedido', $value->cod_pedido);
+            $builder->set('idproducto', $value->idproducto);
+            $builder->set('cantidad', $value->cantidad);
+            $builder->set('precio', $value->precio);
+            $builder->set('pvp', $value->pvp);
+            $builder->set('subtotal', $value->subtotal);
+            $builder->set('observacion', $value->observacion);
             
             $builder->insert();
         }  
@@ -153,30 +133,12 @@ class DetallePedidoModel extends Model {
         foreach ($detalle as $key => $value) {
             //Inserto el nuevo producto
             $builder = $this->db->table($this->table);
-
-            if ($value->idproducto != 'NULL' && $value->idproducto != '') {
-                $builder->set('idproducto', $value->idproducto);
-            }
-
-            if ($value->cantidad != 'NULL' && $value->cantidad != '') {
-                $builder->set('cantidad', $value->cantidad);
-            }
-
-            if ($value->precio != 'NULL' && $value->precio != '') {
-                $builder->set('precio', $value->precio);
-            }
-
-            if ($value->pvp != 'NULL' && $value->pvp != '' ) {
-                $builder->set('pvp', $value->pvp);
-            }
-
-            if ($value->subtotal != 'NULL' && $value->subtotal != '') {
-                $builder->set('subtotal', $value->subtotal);
-            }
-
-            if ($value->observacion != 'NULL' && $value->observacion != '') {
-                $builder->set('observacion', $value->observacion);
-            }
+            $builder->set('idproducto', $value->idproducto);
+            $builder->set('cantidad', $value->cantidad);
+            $builder->set('precio', $value->precio);
+            $builder->set('pvp', $value->pvp);
+            $builder->set('subtotal', $value->subtotal);
+            $builder->set('observacion', $value->observacion);
             $builder->where('cod_pedido', $value->cod_pedido);
             $builder->update();
         }  

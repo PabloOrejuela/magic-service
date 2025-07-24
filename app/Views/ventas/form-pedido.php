@@ -182,6 +182,12 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5" id="div-negocio">
+                                            <input 
+                                                type="hidden"
+                                                class="form-control" 
+                                                id="negocio" 
+                                                name="negocio"
+                                            >
                                             <select class="form-select form-control-border" id="idnegocio" name="idnegocio" required>
                                                 <option value="0" selected>--Seleccionar negocio--</option>
                                                 <?php
@@ -499,9 +505,7 @@
 //Traigo el detalle al cargar la página
 window.addEventListener('load', function() {
     let codigoPedido = document.getElementById('cod_pedido').value
-    // let idnegocio = document.getElementById('idnegocio').value
-    
-    // idnegocio.value = ''
+
     $("#tablaProductos tbody").empty();
 
     $.ajax({

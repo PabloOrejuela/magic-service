@@ -252,6 +252,13 @@
                                             </div>
                                         </div>
                                         <div class="col-md-5" id="div-negocio">
+                                            <input 
+                                                type="hidden"
+                                                class="form-control" 
+                                                id="negocio" 
+                                                name="negocio"
+                                                value = <?= $pedido->idnegocio; ?>
+                                            >
                                             <select class="form-select form-control-border" id="idnegocio" name="idnegocio" required disabled>
                                                 <option value="0" selected>--Seleccionar negocio--</option>
                                                 <?php

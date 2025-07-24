@@ -15,7 +15,9 @@ imptEmail.addEventListener('input', function(e){
 })
 
 negocio.addEventListener('change', function(e){
-    e.stopPropagation()
+    let valor = negocio.selectedIndex
+    let idnegocio = document.getElementById("negocio")
+    idnegocio.value = valor
     negocio.disabled = "true"
 })
 
