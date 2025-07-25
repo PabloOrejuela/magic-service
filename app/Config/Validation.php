@@ -364,6 +364,18 @@ class Validation extends BaseConfig
         ],
     ];
 
+    public $reportePG = [
+        'negocio'  => 'required|greater_than[0]',
+    ];
+
+    public $reportePG_errors = [
+        'negocio' => [
+            'required' => 'El campo "Negocio" es obligatorio',
+            'greater_than' => 'El campo "Negocio" es obligatorio',
+        ],
+    ];
+
+
     public $reporteMasterIngresos = [
         'negocio'  => 'required|greater_than[0]',
     ];

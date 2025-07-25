@@ -230,7 +230,7 @@
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-pyg" class="nav-link">
+            <a href="'.base_url().'reporte-pg" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte de perdidas y ganancias</p>
             </a>

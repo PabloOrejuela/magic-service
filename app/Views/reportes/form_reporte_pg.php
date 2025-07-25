@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'reporte-devoluciones';?>" method="post">
+                    <form action="<?= site_url().'reporte-pg';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-2">
@@ -37,12 +37,12 @@
                                     <input 
                                         type="month" 
                                         class="form-control text" 
-                                        id="fecha" 
-                                        name="fecha" 
+                                        id="mes" 
+                                        name="mes" 
                                         value="<?= date('Y-m'); ?>" 
                                         required
                                     >
-                                    <p id="error-message"><?= session('errors.fecha');?> </p>
+                                    <p id="error-message"><?= session('errors.mes');?> </p>
                                </div>
                             </div>
                         </div>

@@ -195,6 +195,85 @@ class Reportes extends BaseController {
         }
     }
 
+    public function reportePG(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('mes'),
+            ];
+
+            $this->validation->setRuleGroup('reportePG');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                
+                $sumaImgreso = 0;
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+                $data['res'] = NULL;
+                $data['inicioMes'] = date('w', strtotime($datos['fecha'].'-01'));
+                $data['finMes'] = date('w', strtotime($datos['fecha'].'-'.$data['numDias']));
+                $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
+                $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
+
+                //Obtengo la suma de los ingresos del mes
+                for ($i = 1; $i <= $data['numDias']; $i++) { 
+                    $dia = $datos['fecha'].'-'.($i > 9 ? $i : '0'.$i);
+                    
+                    //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
+                    $res[$i]['res'] = $this->pedidoModel->_getSumatoriaPedidosDia($dia, $datos['negocio']);
+                    $res[$i]['dia'] = date('N', strtotime($dia));
+                    $sumaImgreso += $res[$i]['res'];
+                }
+
+                //Obtengo la suma de los gastos del mes
+
+                //Obtengo los gastos fijos del mes
+                $tipoGasto = 3;
+                $gastoFijo = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+                
+                //Obtengo los gastos variables del mes
+                $tipoGasto = 2;
+                $gastoVariable = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+
+                //Obtengo los Insumos proveedores del mes
+                $tipoGasto = 1;
+                $gastoInsumosProveedores = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+                
+                $data['res'] = $res;
+                $data['sumaImgreso'] = $sumaImgreso;
+                $data['gastoFijo'] = $gastoFijo;
+                $data['gastoVariable'] = $gastoVariable;
+                $data['gastoInsumosProveedores'] = $gastoInsumosProveedores;
+                $data['mes'] = $this->meses[(int)$mes];
+                $data['datos'] = $datos;
+
+                $data['title']='Reportes';
+                $data['subtitle']='Reporte mensual de Pérdidas y Ganancias';
+                $data['main_content']='reportes/reporte_pg';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function reporteMasterIngresos(){
         
         $data = $this->acl();
@@ -276,6 +355,7 @@ class Reportes extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
+                
                 $fecha = explode('-', $datos['fecha']);
                 $mes = $fecha[1];
                 $anio = $fecha[0];
@@ -283,9 +363,8 @@ class Reportes extends BaseController {
                 $data['res'] = NULL;
                 $data['inicioMes'] = date('w', strtotime($datos['fecha'].'-01'));
                 $data['finMes'] = date('w', strtotime($datos['fecha'].'-'.$data['numDias']));
-                // $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
-                // $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
 
+                
                 //Obtengo los gastos fijos del mes
                 $tipoGasto = 3;
                 $data['gastoFijo'] = $this->gastoModel->_getGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);

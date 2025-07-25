@@ -1,7 +1,8 @@
 <h3>Cambios</h3>
 <h5>Reportes</h5>
 <ul>
-
+    <li>Implementado el formulario del Reporte de pérdidas y ganancias del mes</li>
+    <li>Implementado el Reporte de pérdidas y ganancias del mes HTML </li>
 </ul>
 
 <h5>Fixes</h5>

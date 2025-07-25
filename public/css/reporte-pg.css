@@ -1,0 +1,20 @@
+#td-bold-left{
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+    background-color: #8d240a;
+}
+
+#td-bold-left-result{
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+    background-color: #d8a20d;
+}
+
+#td-result-right{
+    background-color: #d8a20d;
+    color: #fff;
+    font-weight: bold;
+    text-align: right;
+}

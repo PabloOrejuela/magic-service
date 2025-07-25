@@ -229,7 +229,7 @@ class PedidoModel extends Model {
         return $result;
     }
 
-    function _getSumatorialPedidosDia($fecha, $negocio){
+    function _getSumatoriaPedidosDia($fecha, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('fecha,sum(total) as suma,pedidos.estado as estado,idnegocio');
@@ -237,7 +237,7 @@ class PedidoModel extends Model {
         $builder->where($this->table.'.idnegocio', $negocio);
         $builder->where($this->table.'.estado', 1);
         $builder->where('fecha', $fecha);
-        $builder->groupBy('idnegocio');
+        //$builder->groupBy('idnegocio');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
