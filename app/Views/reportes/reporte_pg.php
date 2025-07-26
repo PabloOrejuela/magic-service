@@ -77,53 +77,103 @@
                                                         <td>Faltan datos del mes</td>
                                                     </tr>
                                                 </tbody>
-                                            </table>';
+                                            </table>
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
+                                                <a href="'.site_url().'reporte-pg" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                            </div>
+                                        </div>
+                                    </div>';
 
-                            if (isset($gastoFijo) && isset($gastoVariable) && isset($gastoInsumosProveedores) && isset($sumaImgreso)) {
+                            if (isset($gastoFijo) && isset($gastoVariable) && isset($gastoInsumosProveedores) && isset($sumaIngreso)) {
 
                                 $sumaEgresos = $gastoFijo + $gastoVariable + $gastoInsumosProveedores;
 
-                                echo '
-                                    <div class="card-body mt-2">
-                                        <div class="row col-md-6">
-                                            <table class="table table-bordered mt-3" id="table-resultados-ingresos">
-                                                <thead>
-                                                    <th class="col-sm-1" id="encabezado" colspan="7">Pérdidas y Ganancias del mes de '.$mes.'</th>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td id="td-bold-left">TOTAL DE INGRESOS</td>
-                                                        <td id="td-result-right">$ '.$sumaImgreso.'</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="td-bold-left">TOTAL DE EGRESOS</td>
-                                                        <td id="td-result-right">$ '.$sumaEgresos.'</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="td-bold-left-result">TOTAL DE UTILIDAD NETA</td>
-                                                        <td id="td-result-right">$ '.$sumaImgreso - $sumaEgresos.'</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="td-bold-left">TOTAL DE MARGEN BRUTO</td>
-                                                        <td id="td-result-right">'.number_format((($sumaImgreso - $gastoInsumosProveedores)/$sumaImgreso)*100,2).'%</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="td-bold-left">TOTAL DE MARGEN NETO</td>
-                                                        <td id="td-result-right">'.number_format((($sumaImgreso - $sumaEgresos)/$sumaImgreso)*100,2).'%</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>';
+                                if ($sumaIngreso > 0) {
+                                    echo '
+                                        <div class="card-body mt-2">
+                                            <div class="row col-md-6">
+                                                <table class="table table-bordered mt-3" id="table-resultados-ingresos">
+                                                    <thead>
+                                                        <th class="col-sm-1" id="encabezado" colspan="7">Pérdidas y Ganancias del mes de '.$mes.'</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE INGRESOS</td>
+                                                            <td id="td-result-right">$ '.$sumaIngreso.'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE EGRESOS</td>
+                                                            <td id="td-result-right">$ '.$sumaEgresos.'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left-result">TOTAL DE UTILIDAD NETA</td>
+                                                            <td id="td-result-right">$ '.$sumaIngreso - $sumaEgresos.'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE MARGEN BRUTO</td>
+                                                            <td id="td-result-right">'.number_format((($sumaIngreso - $gastoInsumosProveedores)/$sumaIngreso)*100,2).'%</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE MARGEN NETO</td>
+                                                            <td id="td-result-right">'.number_format((($sumaIngreso - $sumaEgresos)/$sumaIngreso)*100,2).'%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="card-footer">
+                                                    <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
+                                                <a 
+                                                    class="btn btn-primary" 
+                                                    href="'.site_url().'reporte-pg-excel?negocio='.$datos['negocio'].'&mes='.$datos['fecha'].'"
+                                                    id="btn-reporte-excel-res"
+                                                >Descargar reporte en excel</a>
+                                                <a href="'.site_url().'reporte-pg" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                }else{
+                                    echo '
+                                        <div class="card-body mt-2">
+                                            <div class="row col-md-6">
+                                                <table class="table table-bordered mt-3" id="table-resultados-ingresos">
+                                                    <thead>
+                                                        <th class="col-sm-1" id="encabezado" colspan="7">Pérdidas y Ganancias del mes de '.$mes.'</th>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE INGRESOS</td>
+                                                            <td id="td-result-right">$ '.$sumaIngreso.'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE EGRESOS</td>
+                                                            <td id="td-result-right">$ '.$sumaEgresos.'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left-result">TOTAL DE UTILIDAD NETA</td>
+                                                            <td id="td-result-right">$ '.$sumaIngreso - $sumaEgresos.'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE MARGEN BRUTO</td>
+                                                            <td id="td-result-right">NO SE PUEDE REALIZAR ESTE CALCULO</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DE MARGEN NETO</td>
+                                                            <td id="td-result-right">NO SE PUEDE REALIZAR ESTE CALCULO</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
+                                                <a href="'.site_url().'reporte-pg" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                            </div>
+                                        </div>
+                                    </div>';
+                                }
                             }else{
 
                                 echo $cadenaError;
 
                             }
-                        echo '<div class="card-footer">
-                                            <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                            <a href="'.site_url().'reporte-pg" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
-                                        </div>
-                                    </div>
-                                </div>';
                             
                         ?>
                     </form>

@@ -10,6 +10,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as XlsxWriter;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx as XlsxReader;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class Reportes extends BaseController {
     
@@ -220,7 +221,7 @@ class Reportes extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
                 
-                $sumaImgreso = 0;
+                $sumaIngreso = 0;
                 $fecha = explode('-', $datos['fecha']);
                 $mes = $fecha[1];
                 $anio = $fecha[0];
@@ -238,11 +239,10 @@ class Reportes extends BaseController {
                     //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
                     $res[$i]['res'] = $this->pedidoModel->_getSumatoriaPedidosDia($dia, $datos['negocio']);
                     $res[$i]['dia'] = date('N', strtotime($dia));
-                    $sumaImgreso += $res[$i]['res'];
+                    $sumaIngreso += $res[$i]['res'];
                 }
 
                 //Obtengo la suma de los gastos del mes
-
                 //Obtengo los gastos fijos del mes
                 $tipoGasto = 3;
                 $gastoFijo = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
@@ -256,7 +256,7 @@ class Reportes extends BaseController {
                 $gastoInsumosProveedores = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
                 
                 $data['res'] = $res;
-                $data['sumaImgreso'] = $sumaImgreso;
+                $data['sumaIngreso'] = $sumaIngreso;
                 $data['gastoFijo'] = $gastoFijo;
                 $data['gastoVariable'] = $gastoVariable;
                 $data['gastoInsumosProveedores'] = $gastoInsumosProveedores;
@@ -313,7 +313,7 @@ class Reportes extends BaseController {
                     $dia = $datos['fecha'].'-'.($i > 9 ? $i : '0'.$i);
                     
                     //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
-                    $res[$i]['res'] = $this->pedidoModel->_getSumatorialPedidosDia($dia, $datos['negocio']);
+                    $res[$i]['res'] = $this->pedidoModel->_getSumatoriaPedidosDia($dia, $datos['negocio']);
                     $res[$i]['dia'] = date('N', strtotime($dia));
                 }
 
@@ -1952,6 +1952,347 @@ class Reportes extends BaseController {
         $hoja->getStyle('F3')->applyFromArray($styleSubtituloDerecha);
         $hoja->getStyle('F3')->getNumberFormat()->setFormatCode($currencyMask);
         $hoja->setCellValue("F3", $totalEgresos);
+
+        //Creo el writter y guardo la hoja
+        $writter = new XlsxWriter($phpExcel, 'Xlsx');
+        
+        //Cabeceras para descarga
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $nombreDelDocumento . '"');
+        header('Cache-Control: max-age=0');
+        
+        $r = $writter->save('php://output');exit;
+        // if ($r) {
+        //     return redirect()->to('cargar_info_view');
+        // }else{
+        //     $error = 'Hubo un error u no se pudo descargar';
+        //     return redirect()->to('cargar_info_view');
+        // }        
+    }
+
+    public function reportePGExcel(){
+
+        $datos = [
+            'negocio' => $this->request->getPostGet('negocio'),
+            'fecha' => $this->request->getPostGet('mes'),
+        ];
+
+        $sumaIngreso = 0;
+        $fecha = explode('-', $datos['fecha']);
+        $mes = $fecha[1];
+        $anio = $fecha[0];
+        $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+        $data['res'] = NULL;
+        $data['inicioMes'] = date('w', strtotime($datos['fecha'].'-01'));
+        $data['finMes'] = date('w', strtotime($datos['fecha'].'-'.$data['numDias']));
+        $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
+        $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
+        $nombreMes = $this->meses[(int)$mes];
+
+        $datosNegocio = $this->negocioModel->where('id', $datos['negocio'])->findAll();
+
+        //Obtengo la suma de los ingresos del mes
+        for ($i = 1; $i <= $data['numDias']; $i++) { 
+            $dia = $datos['fecha'].'-'.($i > 9 ? $i : '0'.$i);
+            
+            //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
+            $res[$i]['res'] = $this->pedidoModel->_getSumatoriaPedidosDia($dia, $datos['negocio']);
+            $res[$i]['dia'] = date('N', strtotime($dia));
+            $sumaIngreso += $res[$i]['res'];
+        }
+
+        //Obtengo la suma de los gastos del mes
+        //Obtengo los gastos fijos del mes
+        $tipoGasto = 3;
+        $gastoFijo = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+        
+        //Obtengo los gastos variables del mes
+        $tipoGasto = 2;
+        $gastoVariable = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+
+        //Obtengo los Insumos proveedores del mes
+        $tipoGasto = 1;
+        $gastoInsumosProveedores = $this->gastoModel->_getSumGastosTipoGasto($tipoGasto, $datos['negocio'], $datos['fecha'].'-01', $datos['fecha'].'-'.$data['numDias']);
+                
+        $fila = 1;
+
+        //Creo la hoja
+        $phpExcel = new Spreadsheet();
+        $phpExcel
+            ->getProperties()
+            ->setCreator("Magic Service")
+            ->setLastModifiedBy('Pablo Orejuela') // última vez modificado por
+            ->setTitle('Reporte de Pérdidas y ganancias del mes')
+            ->setSubject('Reportes Magic Service')
+            ->setDescription('Reporte de perdidas y ganancias')
+            ->setKeywords('etiquetas o palabras clave separadas por espacios')
+            ->setCategory('Reportes');
+
+        $nombreDelDocumento = "MagicService - Reporte de Pérdidas y ganancias de $nombreMes.xlsx";
+
+        //Selecciono la pestaña
+        $hoja = $phpExcel->getActiveSheet();
+
+        $styleCabecera = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'argb' => 'FF8000',
+                ]
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ]
+        ];
+
+        $styleCabeceraTotales = [
+            'font' => [
+                'bold' => true,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'argb' => 'FF8000',
+                ]
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $styleSubtitulo = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $styleFilaResult = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_PATTERN_DARKHORIZONTAL,
+                'rotation' => 90,
+                'startColor' => [
+                    'argb' => 'd8a20d',
+                ],
+                'endColor' => [
+                    'argb' => 'd8a20d',
+                ],
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+        ];
+
+        $styleFila = [
+            'font' => [
+                'bold' => true,
+                'color' =>[
+                    'argb' => 'FFFFFF', 
+                ],
+            ],
+            'alignment' => [
+                'left' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'argb' => '8d240a',
+                ]
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+        ];
+
+        $styleFilaResult = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'left' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => [
+                    'argb' => 'd8a20d',
+                ]
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                ],
+            ],
+        ];
+
+        $currencyMask = new Currency(
+            '$',
+            2,
+            Currency::SYMBOL_WITH_SPACING,
+            Number::WITH_THOUSANDS_SEPARATOR,
+            Currency::TRAILING_SYMBOL,
+            
+        );
+        
+        $hoja->getStyle('A1:B1')->applyFromArray($styleCabecera);
+        $hoja->mergeCells('A1:B1');
+
+        //COLUMNAS
+        foreach (range('A','C') as $col) {
+            $hoja->getColumnDimension($col)->setAutoSize(true);
+        }
+        
+        //TITULO
+        $hoja->setCellValue('A'.$fila, "REPORTE DE PERDIDAS Y GANANCIAS");
+
+        $fila++;
+
+        //CABECERA
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        
+        $hoja->setCellValue('A'.$fila, "NEGOCIO:");
+
+        if ($datosNegocio) {
+            $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
+        }else{
+            $hoja->setCellValue('B'.$fila, 'TODOS');
+        }
+        
+        $fila++;
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+        $hoja->setCellValue('A'.$fila, "MES:");
+        $hoja->setCellValue('B'.$fila, $this->meses[(int)$mes]);
+
+        $fila++;
+        $hoja->getStyle('A'.$fila)->applyFromArray($styleSubtitulo);
+
+        $fila +=2;
+
+        $hoja->getStyle('A'.$fila.':B'.$fila)->applyFromArray($styleCabecera);
+        $hoja->mergeCells('A'.$fila.':B'.$fila); 
+
+        //Edito la info que va a ir en el archivo excel
+        $hoja->setCellValue('A'.$fila, "Pérdidas y Ganancias del mes ".$nombreMes);
+
+        $fila++;
+        
+        $dia = 1;
+        $sumaSemana = 0;
+        $sumaTotal = 0;
+        $cols = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G'];
+
+        //datos
+        if ($res) {
+            if ($sumaIngreso > 0) {
+                $sumaEgresos = $gastoFijo + $gastoVariable + $gastoInsumosProveedores;
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE INGRESOS');
+
+                $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('B'.$fila, $sumaIngreso);
+
+                $fila+=2;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE EGRESOS');
+
+                $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('B'.$fila, $sumaEgresos);
+
+                $fila+=2;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE UTILIDAD NETA');
+
+                $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('B'.$fila, $sumaIngreso - $sumaEgresos);
+
+                $fila+=2;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE MARGEN BRUTO');
+
+                $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_PERCENTAGE_00);
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('B'.$fila, (($sumaIngreso - $gastoInsumosProveedores)/$sumaIngreso));
+
+                $fila+=2;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE MARGEN NETO');
+
+                $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_PERCENTAGE_00);
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('B'.$fila, (($sumaIngreso - $sumaEgresos)/$sumaIngreso));
+
+                $fila++;
+            }else{
+                $sumaEgresos = $gastoFijo + $gastoVariable + $gastoInsumosProveedores;
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE INGRESOS');
+
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
+                $hoja->setCellValue('B'.$fila, $sumaIngreso);
+
+                $fila++;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE EGRESOS');
+
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
+                $hoja->setCellValue('B'.$fila, $sumaEgresos);
+
+                $fila++;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE UTILIDAD NETA');
+
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
+                $hoja->setCellValue('B'.$fila, $sumaIngreso - $sumaEgresos);
+
+                $fila++;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE MARGEN BRUTO');
+
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
+                $hoja->setCellValue('B'.$fila, "El total de ingreso es 0 y no se puede dividir para 0");
+
+                $fila++;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DE MARGEN NETO');
+
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
+                $hoja->setCellValue('B'.$fila, "El total de ingreso es 0 y no se puede dividir para 0");
+
+                $fila++;
+            }
+
+        }else{
+            $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFilaIzq);
+            $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
+        }             
 
         //Creo el writter y guardo la hoja
         $writter = new XlsxWriter($phpExcel, 'Xlsx');
