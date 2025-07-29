@@ -19,11 +19,13 @@
                             <div class="form-group col-md-7 mb-3 row">
                                 <label for="direccion">Sector:</label>
                                 <div class="col-md-4"> 
-                                    <select class="form-select" aria-label="Select sectores" name="sector" id="sector">
+                                    <select class="form-select" aria-label="Select sectores" name="sector" id="select-sector">
                                         <option value="">Seleccione un sector</option>
-                                        <?php foreach ($sectores as $sector): ?>
-                                            <option value="<?= $sector->id; ?>"><?= $sector->sector; ?></option>
-                                        <?php endforeach; ?>
+                                        <?php
+                                            foreach ($sectores as $key => $sector) {
+                                                echo '<option value="'.$sector->id.'">'.$sector->sector.'</option>';
+                                            }
+                                        ?>
                                     </select>
                                 </div>
                                 <div class="col-md-2">      
@@ -48,7 +50,17 @@
                                                 <td><?= $sector->id; ?></td>
                                                 <td><?= $sector->sector; ?></td>
                                                 <td>
-                                                    <button type="button" class="btn btn-danger" id="btn-eliminar" data-id="<?= $sector->id; ?>">Quitar</button>
+                                                    <?php
+                                                        if ($sucursal->id != 4) {
+                                                            echo '<a href="../eliminaSectorSucursal/'.$sector->id.'/'.$sucursal->id.'" id="link-editar">
+                                                                <img src="'.site_url().'public/images/delete.png" class="img-thumbnail" alt="Quitar">
+                                                            </a>';
+                                                        }else{
+                                                            echo '<a href="../eliminaSectorSucursal/'.$sector->id.'/'.$sucursal->id.'" id="link-editar">
+                                                                <img src="'.site_url().'public/images/delete.png" class="img-thumbnail" alt="Quitar">
+                                                            </a>';
+                                                        }
+                                                    ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

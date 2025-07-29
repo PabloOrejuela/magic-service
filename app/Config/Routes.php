@@ -136,6 +136,8 @@ $routes->get('updateSucursalSector/(:num)/(:num)/(:any)', 'Administracion::updat
 $routes->get('getSucursales', 'Administracion::getSucursales');
 $routes->get('asignaSectorSucursal', 'Administracion::asignaSectorSucursal');
 $routes->get('eliminarSectorSucursal', 'Administracion::eliminarSectorSucursal');
+$routes->get('eliminaSectorSucursal/(:num)/(:num)', 'Administracion::eliminaSectorSucursal/$1/$2');
+$routes->get('eliminaSector/(:num)/(:num)', 'Administracion::eliminaSector/$1/$2');
 
 //Proveedores
 $routes->get('proveedores', 'Proveedores::index');

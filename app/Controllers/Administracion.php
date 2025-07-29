@@ -1567,7 +1567,7 @@ class Administracion extends BaseController {
             //verifico si tiene sectores de entrega relacionados
             $haySectores = $this->sectoresEntregaModel->where('idsucursal', $id)->findAll();
 
-            if ($haySectores) {
+            if ($haySectores || $id == 4) {
                 //Si tiene sectores relacionados los borro
                 session()->setFlashdata('mensaje', 'error');
                 
@@ -1608,7 +1608,8 @@ class Administracion extends BaseController {
 
             $data['sucursal'] = $this->sucursalModel->find($id);
 
-            $data['sectores'] = $this->sectoresEntregaModel->findAll();
+            $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'ASC')->findAll();
+
             $data['sectoresSucursal'] = $this->sectoresEntregaModel->where('idsucursal', $id)->orderBy('sector', 'ASC')->findAll();
 
             $data['title']='Administración';
@@ -1626,12 +1627,15 @@ class Administracion extends BaseController {
 
     function asignaSectorSucursal(){
         
-        $idsector = $this->request->getPostGet('idsector');
+        $id = $this->request->getPostGet('idsector');
         
         $data = [
             'idsucursal' => $this->request->getPostGet('idsucursal')
         ];
-        $this->sectoresEntregaModel->update($idsector, $data);
+
+        $this->sectoresEntregaModel->update($id, $data);
+        // echo $this->db->getLastQuery();
+        // echo '<pre>'.var_export($id, true).'</pre>';exit;
 
         //traer data de la tabla
         $sectoresSucursal = $this->sectoresEntregaModel->where('idsucursal', $data['idsucursal'])->orderBy('sector', 'ASC')->findAll();
@@ -1649,7 +1653,7 @@ class Administracion extends BaseController {
         
         $idsector = $this->request->getPostGet('idsector');
         $idsucursal = $this->request->getPostGet('idsucursal');
-        
+
         $data = [
             'idsucursal' => 4
         ];
@@ -1665,5 +1669,29 @@ class Administracion extends BaseController {
             'tabla' => $sectoresSucursal,
         ]);
         exit;
+    }
+
+    function eliminaSectorSucursal($idsector, $idsucursal){
+
+        $data = [
+            'idsucursal' => 4
+        ];
+        $this->sectoresEntregaModel->update($idsector, $data);
+
+        //traer data de la tabla
+        // $sectoresSucursal = $this->sectoresEntregaModel->where('idsucursal', $idsucursal)->orderBy('sector', 'ASC')->findAll();
+
+        $data['session'] = $this->session;
+
+        return redirect()->to('sucursal-edit/'.$idsucursal);
+    }
+
+    function eliminaSector($idsector, $idsucursal){
+
+        $this->sectoresEntregaModel->delete($idsector);
+
+        $data['session'] = $this->session;
+
+        return redirect()->to('sucursal-edit/'.$idsucursal);
     }
 }

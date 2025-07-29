@@ -16,7 +16,7 @@
                                 if (session()->getFlashdata('mensaje') == 'success') {
                                     echo '<div class="alert alert-success" role="alert">La sucursal se ha eliminado correctamente.</div>';
                                 } else {
-                                    echo '<div class="alert alert-danger" role="alert">Ha ocurrido un error al eliminar la sucursal, la sucursal tiene sectores asignados.</div>';
+                                    echo '<div class="alert alert-danger" role="alert">Ha ocurrido un error al eliminar la sucursal, la sucursal tiene sectores asignados o es la sucursal "SIN ASIGNAR" la cual no se debe eliminar.</div>';
                                 }
                             }
 
