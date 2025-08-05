@@ -85,7 +85,7 @@ class PedidoModel extends Model {
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
         $builder->orderBy('orden', 'asc');
         //PABLO revisar que si es admin solo traiga 300 ultimos y si es otro rol máximo 1000
-        $builder->limit(300);
+        $builder->limit(600);
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

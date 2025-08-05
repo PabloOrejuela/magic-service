@@ -1,15 +1,15 @@
 let btnPedidonuevo = document.getElementById('btn-pedido');
 
 btnPedidonuevo.addEventListener('click', function(e) {
-    //e.stopPropagation()
-    //console.log("CLICK");
+    let randomInt = getRandomInt(100, 999)
     let fecha = new Date();
     let tiempo = (fecha.getYear()-100).toString() 
         + (fecha.getMonth() + 1).toString() 
         + fecha.getDate().toString() 
-        + fecha.getHours().toString() 
-        + fecha.getMinutes().toString() 
+        // + fecha.getHours().toString() 
+        // + fecha.getMinutes().toString() 
         + addZero(fecha.getSeconds()).toString()
+        + randomInt
 
     //Aquí creo el nuevo código
     let id = this.dataset.id;

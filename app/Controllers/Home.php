@@ -60,7 +60,6 @@ class Home extends BaseController {
 
             $usuario = $this->usuarioModel->_getUsuario($data);
             $ip = $_SERVER['REMOTE_ADDR'];
-            //echo '<pre>'.var_export($usuario, true).'</pre>';exit;
 
             $estado = $this->estadoSistema();
             
@@ -68,9 +67,9 @@ class Home extends BaseController {
                 return redirect()->to('mantenimiento');
             }else{
 
-                if (isset($usuario) && $usuario != NULL ) {
+                if (isset($usuario) && $usuario != NULL && password_verify($data['password'], $usuario->password)) {
                     //valido el login y pongo el id en sesion  && $usuario->id != 1 
-                    //echo '<pre>'.var_export($this->estadoSistema, true).'</pre>';
+
                     if ($usuario->logged == 1 ) {
                         //Está logueado así que lo deslogueo
                         $user = [

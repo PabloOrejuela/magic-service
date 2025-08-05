@@ -11,7 +11,7 @@
                     <div class="card-header">
                         <h3 class="card-title titulo-form-pedido">
                             <i class="fas fa-table mr-1"></i>
-                            <?= $subtitle . ' Revisiones finales de este formulario';?>
+                            <?= $subtitle . ' Revisando la generación del código de pedido';?>
                         </h3>
                     </div><!-- /.card-header -->
                     <div class="card-body">
@@ -253,7 +253,7 @@
                                                 <?php
                                                     if ($detalle) {
                                                         $numFila = 0;
-                                                        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
+                                                        
                                                         foreach ($detalle as $row) {
                                                             $numFila++;
                                                             

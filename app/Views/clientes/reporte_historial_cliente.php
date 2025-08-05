@@ -1,75 +1,70 @@
-<style>
-    #table-historial-pedidos{
-        font-size: 0.7em;
-    }
-
-</style>
-<section class="content">
-      <div class="container-fluid">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/reporte-historial-clientes.css">
+<section class="content1">
+    <div class="container-fluid">
         <div class="row">
-            <!-- left column -->
-            <div class="col-md-10">
+            <section class="connectedSortable">
                 <!-- general form elements -->
-                <div class="card card-secondary">
-                    <div class="card-header">
-                        <h3 class="card-title"><?= $subtitle.': '.$cliente->nombre; ?></h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <label for="cliente"></label>
-                    <h4></h4>
-                    <div class="container">
-                    <table class="table table-bordered table-striped px-3" id="table-historial-pedidos">
-                        <thead>
-                            <th>Pedido</th>
-                            <th>Fecha</th>
-                            <th>Sector</th>
-                            <th>Dirección</th>
-                            <th>Ubicación de entrega</th>
-                            <th>Producto</th>
-                            <th>Mensajero</th>
-                            <th>Observación</th>
-                            <th>Sucursal</th>
-                        </thead>
-                        <tbody>
-                        <?php
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-header">
+                            <h3 class="card-title"><?= $subtitle.': '.$cliente->nombre; ?></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <label for="cliente"></label>
+                        <table class="table table-bordered table-striped px-3" id="table-historial-pedidos">
+                            <thead>
+                                <th>Pedido</th>
+                                <th>Fecha</th>
+                                <th>Sector</th>
+                                <th>Dirección</th>
+                                <th>Ubicación de entrega</th>
+                                <th>Producto</th>
+                                <th>Valor total pagado</th>
+                                <th>Mensajero</th>
+                                <th>Observación</th>
+                                <th>Sucursal</th>
+                            </thead>
+                            <tbody>
+                            <?php
 
-                            use App\Models\DetallePedidoModel;
-                            $this->detallePedidoModel = new DetallePedidoModel();
+                                use App\Models\DetallePedidoModel;
+                                $this->detallePedidoModel = new DetallePedidoModel();
 
-                            if ($pedidos) {
-                                foreach ($pedidos as $key => $pedido) {
-                                    $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->cod_pedido);
-                                    //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
-                                    echo '<tr>
-                                        <td>'.$pedido->cod_pedido.'</td>
-                                        <td>'.$pedido->fecha_entrega.'</td>
-                                        <td>'.$pedido->sector.'</td>
-                                        <td>'.$pedido->dir_entrega.'</td>
-                                        <td>'.$pedido->ubicacion.'</td>';
-                                    echo '<td><ul>';
-                                        if (isset($detalle)) {
-                                            foreach ($detalle as $key => $d) {
-                                                
-                                                echo '<li>'.$d->producto.'</li>';
+                                if ($pedidos) {
+                                    foreach ($pedidos as $key => $pedido) {
+                                        $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->cod_pedido);
+                                        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
+                                        echo '<tr>
+                                            <td>'.$pedido->cod_pedido.'</td>
+                                            <td>'.$pedido->fecha_entrega.'</td>
+                                            <td>'.$pedido->sector.'</td>
+                                            <td>'.$pedido->dir_entrega.'</td>
+                                            <td>'.$pedido->ubicacion.'</td>';
+                                        echo '<td><ul>';
+                                            if (isset($detalle)) {
+                                                foreach ($detalle as $key => $d) {
+                                                    
+                                                    echo '<li>'.$d->producto.'</li>';
+                                                }
                                             }
-                                        }
-                                    echo '</ul></td>';
-                                        
-                                    echo '<td>'.$pedido->nombre.'</td>
-                                        <td>'.$pedido->observaciones.'</td>
-                                        <td>'.$pedido->sucursal.'</td>
-                                    </tr>';
+                                        echo '</ul></td>';
+                                            
+                                        echo '<td id="td-result-right">'.$pedido->total.'</td>
+                                            <td>'.$pedido->nombre.'</td>
+                                            <td>'.$pedido->observaciones.'</td>
+                                            <td>'.$pedido->sucursal.'</td>
+                                        </tr>';
+                                    }
                                 }
-                            }
-                        ?>
-                        </tbody>
-                    </table>
+                            ?>
+                            </tbody>
+                        </table>
                         <div class="card-footer">
                             <a href="<?= site_url(); ?>clientes" class="btn btn-light cancelar" id="btn-cancela">Cancelar y regresar a clientes</a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 </section> <!-- /.card -->

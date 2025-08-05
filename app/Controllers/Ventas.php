@@ -74,7 +74,7 @@ class Ventas extends BaseController {
     function generaCodigoPedido(){
 
         //En caso de que se haya quedado un código en sesión lo borro
-        $this->session->set('codigo_pedido', '');
+        //$this->session->set('codigo_pedido', '');
 
         //Recibo el código
         $codigo = $this->request->getPostGet('codigo');
@@ -83,6 +83,7 @@ class Ventas extends BaseController {
         $this->session->set('codigo_pedido', $codigo);
         
         $data['resultado'] = "Exito";
+        
         echo json_encode($data);
     }
 
@@ -635,6 +636,7 @@ class Ventas extends BaseController {
 
     function detalle_pedido_delete_producto_temp($idproducto, $cod_pedido){
         $error = '';
+        $res = null;
 
         $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
 
@@ -643,16 +645,19 @@ class Ventas extends BaseController {
                 $cantidad = $datosExiste->cantidad - 1;
                 $subtotal = $cantidad * $datosExiste->precio;
 
-                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                $res = $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                
             }else{
-                $this->detallePedidoTempModel->_eliminarProdDetalle($idproducto, $cod_pedido);
+                $res = $this->detallePedidoTempModel->_eliminarProdDetalle($idproducto, $cod_pedido);
             }
         }
-
+        
+        $res['res'] = $res;
         $res['datos'] = $this->cargaProductos_temp($cod_pedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
+
         echo json_encode($res);
     }
 
@@ -716,6 +721,7 @@ class Ventas extends BaseController {
         $error = "No se pudo borrar el item";
         $item = $this->request->getPostGet('idItem');
         $new_id = $this->request->getPostGet('idproducto');
+
 
         $id = $this->itemsProductoTempModel->_deleteItem($item, $new_id);
         if ($id) {
@@ -916,6 +922,7 @@ class Ventas extends BaseController {
                                 $this->pedidoModel->update($p->id, $datos);
                             }
                         }
+                        
                         $idPedidoInsertado = $this->pedidoModel->_insert($pedido);
 
                         //Inserto el detalle

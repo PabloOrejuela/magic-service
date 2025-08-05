@@ -206,46 +206,108 @@
               </a>
             </li>
             <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-procedencias" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Reporte de Procedencias</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-master-ingresos" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Reporte Master de Ingresos</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-master-gastos" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Reporte Master de Gastos</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-devoluciones" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Reporte de devoluciones mensual</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-pg" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Reporte de perdidas y ganancias</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'reporte-items-sensibles" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Reporte Items sensibles</p>
-            </a>
-          </li>';
-        }
+              <a href="'.base_url().'reporte-procedencias" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reporte de Procedencias</p>
+              </a>
+            </li>
+            <li class="nav-item subItem">
+              <a href="'.base_url().'reporte-master-ingresos" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reporte Master de Ingresos</p>
+              </a>
+            </li>
+            <li class="nav-item subItem">
+              <a href="'.base_url().'reporte-master-gastos" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reporte Master de Gastos</p>
+              </a>
+            </li>
+            <li class="nav-item subItem">
+              <a href="'.base_url().'reporte-devoluciones" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reporte de devoluciones mensual</p>
+              </a>
+            </li>
+            <li class="nav-item subItem">
+              <a href="'.base_url().'reporte-pg" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reporte de perdidas y ganancias</p>
+              </a>
+            </li>
+            <li class="nav-item subItem">
+              <a href="'.base_url().'reporte-mensajeria" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reporte de mensajería</p>
+              </a>
+            </li>
+            <li class="nav-item subItem">
+              <a href="'.base_url().'reporte-items-sensibles" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Reporte Items sensibles</p>
+              </a>
+            </li>';
+          }
         echo '<li class="nav-item subItem">
             <a href="'.base_url().'reporte-estadisticas-vendedor" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Reporte Estadísticas de vendedor</p>
+            </a>
+          </li>
+        </ul>
+      </li>';
+    }
+    if ($session->admin == 1) {
+      echo '
+      <li class="nav-item">
+        <a href="#" class="nav-link" >
+          <i class="fa-solid fa-toolbox menu-icon"></i>
+          <p>
+             Estadísticas
+            <i class="right fas fa-angle-left"></i>
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          <li class="nav-item subItem">
+            <a href="'.base_url().'ticket-promedio" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Ticket promedio de Venta</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'arreg-mas-vendidos" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Códigos de arreglo mas vendidos</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'arreg-menos-vendidos" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Códigos de arreglo menos vendidos</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'categoria-mas-vendida" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Categoría mas vendida</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'cliente-frecuente" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Clientes mas frecuentes</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'nuevos-clientes" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Nuevos clientes por mes</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'recompras-mes" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Cantidad de recompras mensual</p>
             </a>
           </li>
         </ul>

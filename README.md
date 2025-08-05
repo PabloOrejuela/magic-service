@@ -1,15 +1,11 @@
 <h3>Cambios</h3>
 <h5>Reportes</h5>
 <ul>
-    <li>Se modificó el funcionamiento del boton agregar sector, se aordenó alfabeticamente los sectores en el select</li>
-    <li>Implementado el formulario del Reporte de pérdidas y ganancias del mes Excel</li>
-    <li>Implementado el Reporte de pérdidas y ganancias del mes HTML</li>
+    <li>En el historial del clientes agregar una columna con el valor total pagado</li>
+    <li>Se implementó password hash en lugar de MD5 para la seguridad de la app</li>
 </ul>
 
 <h5>Fixes</h5>
 <ul>
-    <li>Se corrigió la funcionalidad de los botones de eliminar sector de entrega, ahora al eliminar un sector de una sucursal se va a SIN ASIGNAR y cuando se elimina desde SIN ASIGNAR se elimina definitivamente</li>
-    <li>Se modificó el funcionamiento del boton agregar sector</li>
-    <li>Se hizo un cambio en la forma en la que envía y recibe el idnegocio al crear un pedido</li>
-    <li>En el formulario de editar pedido faltaba agregar el negocio y corregir la funcionalidad de autocomplete de productos</li>
+    <li>Se hizo una corrección en el insert de sector de entrega, daba un error al querer guardar un sector sin haber seleccionado una sucursal</li>
 </ul>

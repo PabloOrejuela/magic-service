@@ -91,7 +91,9 @@ class DetallePedidoTempModel extends Model {
         //$builder->set('precio', $precio);
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
-        $builder->update();
+        $res = $builder->update();
+
+        return $res;
     }
 
     public function _eliminarProdDetalle($idproducto, $cod_pedido){
@@ -99,7 +101,9 @@ class DetallePedidoTempModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->where('cod_pedido', $cod_pedido);
         $builder->where('idproducto', $idproducto);
-        $builder->delete();
+        $res = $builder->delete();
+
+        return $res;
     }
 
     /**

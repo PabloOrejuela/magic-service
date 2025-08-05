@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\VariablesSistemaModel;
+use CodeIgniter\HTTP\ResponseInterface;
 
 class Administracion extends BaseController {
 
@@ -1413,10 +1414,17 @@ class Administracion extends BaseController {
 
         if ($data['logged'] == 1 && $this->session->admin == 1) {
 
+            // recogemos datos enviados desde el formulario de registro
+            $user = filter_var(strtoupper($this->request->getPostGet('user')), FILTER_SANITIZE_STRING);
+            $pass = filter_var($this->request->getPostGet('password'));
+
+            // generamos el hash a partir de la contraseña enviada desde el formulario
+            $pass_hashed = password_hash($pass, PASSWORD_BCRYPT);
+
             $user = [
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
-                'user' => $this->request->getPostGet('user'),
-                'password' => $this->request->getPostGet('password'),
+                'user' => strtoupper($user),
+                'password' => $pass_hashed,
                 'telefono' => $this->request->getPostGet('telefono'),
                 'email' => $this->request->getPostGet('email'),
                 'cedula' => $this->request->getPostGet('cedula'),
@@ -1454,7 +1462,7 @@ class Administracion extends BaseController {
                 'id' => $this->request->getPostGet('id'),
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
                 'user' => $this->request->getPostGet('user'),
-                'password' => trim($this->request->getPostGet('password')),
+                'password' => password_hash(trim($this->request->getPostGet('password')), PASSWORD_BCRYPT),
                 'password_old' => $this->request->getPostGet('password_old'),
                 'telefono' => $this->request->getPostGet('telefono'),
                 'email' => $this->request->getPostGet('email'),
@@ -1462,7 +1470,7 @@ class Administracion extends BaseController {
                 'direccion' => $this->request->getPostGet('direccion'),
                 'idroles' => $this->request->getPostGet('idroles'),
             ];
-            
+
             $this->validation->setRuleGroup('usuarioUpdate');
 
             if (!$this->validation->withRequest($this->request)->run()) {
@@ -1521,7 +1529,7 @@ class Administracion extends BaseController {
             $data = [
                 'sector' => strtoupper($this->request->getPostGet('sector_entrega')),
                 'costo_entrega' => strtoupper($this->request->getPostGet('costo_entrega')),
-                'idsucursal' => strtoupper($this->request->getPostGet('idsucursal')),
+                'idsucursal' => $this->request->getPostGet('idsucursal') != '' ? $this->request->getPostGet('idsucursal'): '4',
             ];
             
             $this->sectoresEntregaModel->insert($data);

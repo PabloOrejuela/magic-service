@@ -25,7 +25,7 @@
           </div>
           <p id="error-message"><?= session('errors.user');?> </p>
           <div class="input-group mb-1">
-            <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="wolfabadon">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="17055">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>

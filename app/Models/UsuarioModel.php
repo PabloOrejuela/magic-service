@@ -59,7 +59,7 @@ class UsuarioModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select(
             'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,clientes,proveedores,reportes,gastos,inventarios'
-        )->where('user', $usuario['user'])->where('password', md5($usuario['password']))->where('estado', 1);
+        )->where('user', $usuario['user'])->where('estado', 1);
         $builder->join('roles', 'roles.id=usuarios.idroles');
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -210,7 +210,7 @@ class UsuarioModel extends Model {
         $this->db->transStart();
         $builder->set('nombre', $data['nombre']);
         $builder->set('user', $data['user']);
-        $builder->set('password', md5($data['password']));
+        $builder->set('password', $data['password']);
         $builder->set('telefono', $data['telefono']);
         $builder->set('email', $data['email']);
         $builder->set('cedula', $data['cedula']);
@@ -234,7 +234,7 @@ class UsuarioModel extends Model {
         $builder->set('nombre', $data['nombre']);
         $builder->set('user', $data['user']);
         if ($data['password'] != null && $data['password'] != '') {
-            $builder->set('password', md5($data['password']));
+            $builder->set('password', $data['password']);
         }
         
         $builder->set('telefono', $data['telefono']);
