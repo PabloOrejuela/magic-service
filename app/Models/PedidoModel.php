@@ -76,7 +76,8 @@ class PedidoModel extends Model {
                 dir_entrega,
                 estados_pedidos.estado as estado,
                 hora_salida_pedido,ubicacion,
-                usuarios.nombre as mensajero'
+                usuarios.nombre as mensajero,
+                observacion_pago'
         );
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
@@ -290,7 +291,7 @@ class PedidoModel extends Model {
     function _getDatosPedido($idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado,idnegocio,
+        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado,idnegocio,observacion_pago,
                 nombre,documento,clientes.id as idcliente,direccion,telefono,telefono_2,email,fecha_entrega,sin_remitente,valor_devuelto,
                 horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,observacion_devolucion,
                 pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,mensajero_extra,valor_mensajero,valor_mensajero_extra,ref_pago,
@@ -536,6 +537,7 @@ class PedidoModel extends Model {
             $builder->set('valor_mensajero_extra', '0.00'); 
         }
 
+        $builder->set('observacion_pago', $data['observacion_pago']); 
         $builder->set('idnegocio', $data['idnegocio']); 
         $builder->set('updated_at', $updated_at); 
 

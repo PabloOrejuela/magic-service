@@ -1036,6 +1036,7 @@ class Ventas extends BaseController {
                 'formas_pago' => $this->request->getPostGet('formas_pago'),
                 'banco' => $this->request->getPostGet('banco'),
                 'ref_pago' => $this->request->getPostGet('ref_pago'),
+                'observacion_pago' => $this->request->getPostGet('observacion_pago'),
                
                 //TOTALES
                 'valor_neto' => $this->request->getPostGet('valor_neto'),

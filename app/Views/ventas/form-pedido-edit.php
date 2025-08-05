@@ -661,6 +661,17 @@
                                             value="<?= $pedido->ref_pago; ?>"
                                         >
                                     </div>
+                                    <div class="form-group mb-3" id="div-observacion-pago">
+                                        <label for="ref_pago" >Observación del Pago:</label>
+                                        <input 
+                                            type="text" 
+                                            class="form-control campos-nuevos" 
+                                            id="observacion_pago" 
+                                            name="observacion_pago" 
+                                            placeholder="Observación sobre el pago" 
+                                            value="<?= $pedido->observacion_pago; ?>"
+                                        >
+                                    </div>
 
                                     <hr class="divider mt-5 mb-3">
                                     
