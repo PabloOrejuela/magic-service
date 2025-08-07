@@ -48,8 +48,11 @@
                                         use App\Models\AttrExtArregModel;
                                         $this->attrExtArregModel = new AttrExtArregModel();
                                         $this->detallePedidoModel = new DetallePedidoModel();
+
+                                        //verificar si es necesario esta llamada al modelo para traer los pedidos
                                         $this->pedidoModel = new PedidoModel();
-                                        $pedidos = $this->pedidoModel->_getPedidos();
+                                        $pedidos = $this->pedidoModel->_getPedidos(session('idroles'));
+                                        
                                         $nombresDias = array(
                                             'Sunday'=>"Domingo", 
                                             'Monday'=>"Lunes", 

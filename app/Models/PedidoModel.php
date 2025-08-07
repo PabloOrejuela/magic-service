@@ -49,7 +49,7 @@ class PedidoModel extends Model {
         return $cod;
     }
 
-    function _getPedidos(){
+    function _getPedidos($idroles){
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
@@ -84,8 +84,13 @@ class PedidoModel extends Model {
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
+        
+        //Si es vendedor solo salen los pedidos en proceso, no los completados y entregados
+        if ($idroles > 3) {
+            $builder->where('pedidos.estado <=', 3);
+        }
+
         $builder->orderBy('orden', 'asc');
-        //PABLO revisar que si es admin solo traiga 300 ultimos y si es otro rol máximo 1000
         $builder->limit(600);
         $query = $builder->get();
         if ($query->getResult() != null) {

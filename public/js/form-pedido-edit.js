@@ -10,6 +10,7 @@ let divDevolucion = document.querySelector("#link-devolucion");
 let valorDevuelto = document.getElementById("valorDevuelto")
 let valorMensajeroEdit = document.getElementById('valor_mensajero_edit')
 let negocio = document.getElementById("idnegocio")
+let horarioEntrega = document.getElementById("horario_entrega")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -230,44 +231,22 @@ function sumarTotal() {
   }
 }
 
-$(document).ready(function(){
-  $("#horario_entrega").on('change',function(){
-      if($("#horario_entrega").val() !=""){
-          valor = $("#horario_entrega").val();
-          //console.log(valor);
-          $.ajax({
-              method: 'get',
-              dataType:"html",
-              url: "../get_costo_horario",
-              data: {
-                horario: valor,
-              },
-              beforeSend: function (f) {
-                  //$('#cliente').html('Cargando ...');
-              },
-              success: function(res){
-                  
-                  let data = JSON.parse(res);
+horarioEntrega.addEventListener("change", () =>{
+    let valorHorarioExtra = document.getElementById('valorHorarioExtra').value 
 
-                  if (valor != 0) {
-                      alertCambioValor()
-                      document.getElementById("horario_extra").value = parseFloat(data.costo)
-                  }else{
-                      alertCambioValor()
-                      document.getElementById("horario_extra").value = 0
-                  }
-                  
-                  sumarTotal()
-              },
-              error: function(data){
-                  console.log("No existe el valor de ese horario");
-              }
-          });
-      }else{
-          console.log("No existe el valor de ese horario");
-      }
-  });
-});
+    if(horarioEntrega.value !="" && horarioEntrega.value == 2){
+
+            valor = valorHorarioExtra
+
+            if (valor != 0) {
+                alertCambioValor()
+                document.getElementById("horario_extra").value = valor
+            }else{
+                alertCambioValor()
+                document.getElementById("horario_extra").value = 0
+            }
+        }
+})
 
 //SECTOR
 sectores.addEventListener("change", () => {

@@ -1284,7 +1284,7 @@ class Ventas extends BaseController {
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->where('estado', '1')->findAll();
             
-            $data['pedidos'] = $this->pedidoModel->_getPedidos();
+            $data['pedidos'] = $this->pedidoModel->_getPedidos($data['session']->idroles);
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();

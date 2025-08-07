@@ -6,6 +6,7 @@ let telefono = document.getElementById("telefono")
 let telefono2 = document.getElementById("telefono_2")
 let valorMensajeroEdit = document.getElementById("valor_mensajero_edit")
 let negocio = document.getElementById("idnegocio")
+let horarioEntrega = document.getElementById("horario_entrega")
 
 imptEmail.addEventListener('input', function(e){
     e.stopPropagation()
@@ -39,8 +40,6 @@ const activarSubmit = () => {
     }else{
         alertaMensaje("ATENCION:  Faltan datos IMPORTANTES por llenar, el pedido no se puede enviar", 1900, "warning")
     }
-    
-    
 }
 
 $('#idproducto').autocomplete({
@@ -228,45 +227,22 @@ function sumarTotal() {
   }
 }
 
-$(document).ready(function(){
-  $("#horario_entrega").on('change',function(){
-      if($("#horario_entrega").val() !=""){
-          valor = $("#horario_entrega").val();
-          
-          $.ajax({
-              method: 'get',
-              dataType:"html",
-              url: "get_costo_horario",
-              data: {
-                horario: valor,
-              },
-              beforeSend: function (f) {
-                  //$('#cliente').html('Cargando ...');
-              },
-              success: function(res){
-                  
-                  let data = JSON.parse(res);
+horarioEntrega.addEventListener("change", () =>{
+    let valorHorarioExtra = document.getElementById('valorHorarioExtra').value 
 
-                  if (valor != 0) {
-                      alertCambioValor()
-                      document.getElementById("horario_extra").value = parseFloat(data.costo)
-                  }else{
-                      alertCambioValor()
-                      document.getElementById("horario_extra").value = 0
-                  }
-                  
-                  sumarTotal()
-              },
-              error: function(data){
-                  
-                  alertaMensaje("No existe el valor de ese horario", 1000, "error")
-              }
-          });
-      }else{
-          alertaMensaje("No existe el valor de ese horario", 1000, "error")
-      }
-  });
-});
+    if(horarioEntrega.value !="" && horarioEntrega.value == 2){
+
+            valor = valorHorarioExtra
+
+            if (valor != 0) {
+                alertCambioValor()
+                document.getElementById("horario_extra").value = valor
+            }else{
+                alertCambioValor()
+                document.getElementById("horario_extra").value = 0
+            }
+        }
+})
 
 //SECTOR
 sectores.addEventListener("change", () => {
@@ -357,27 +333,6 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
                     total.value = (parseFloat(detalle.total) + extras).toFixed(2)
                     document.getElementById('valor_neto').value = detalle.total
 
-                    //idnegocio.value = detalle.negocio
-
-                    // if (detalle.error == "No se puede agregar productos de Magic Service a un pedido de KARANA") {
-                    //     alertaMensaje(detalle.error, 2000,"error")
-                    // }
-
-                    // if (detalle.error == "No se puede agregar productos de KARANA a un pedido de MAGIC SERVICE") {
-                    //     alertaMensaje(detalle.error, 2000,"error")
-                    //     document.getElementById("idnegocio").value = ''
-                    // }
-
-                    // if (detalle.error == "SI se puede agregar productos de KARANA a un pedido de KARANA") {
-                    //     //alertaMensaje(detalle.error, 1000,"success")
-                    //     alertAgregaProducto()
-                    // }
-
-                    // if (detalle.error == "SI se puede agregar productos de MAGIC SERVICE a un pedido de MAGIC SERVICE") {
-                    //     //alertaMensaje(detalle.error, 1000,"success")
-                    //     alertAgregaProducto()
-                    // }
-                    //alertAgregaProducto()
                     limpiaLineaProducto()
                 
             }
