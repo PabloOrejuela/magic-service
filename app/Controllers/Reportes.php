@@ -691,11 +691,11 @@ class Reportes extends BaseController {
             
         );
 
-        $phpExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleCabecera);
-        $phpExcel->getActiveSheet()->mergeCells('A1:K1');
+        $phpExcel->getActiveSheet()->getStyle('A1:L1')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->mergeCells('A1:L1');
 
         //COLUMNAS
-        foreach (range('A','K') as $col) {
+        foreach (range('A','L') as $col) {
             $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         
@@ -727,7 +727,7 @@ class Reportes extends BaseController {
 
         $fila +=2;
 
-        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':K'.$fila)->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':L'.$fila)->applyFromArray($styleCabecera);
         //Edito la info que va a ir en el archivo excel
         $hoja->setCellValue('A'.$fila, "No.");
         $hoja->setCellValue('B'.$fila, "CODIGO");
@@ -739,7 +739,8 @@ class Reportes extends BaseController {
         $hoja->setCellValue('H'.$fila, "VENDEDOR");
         $hoja->setCellValue('I'.$fila, "VENTA EXTRA");
         $hoja->setCellValue('J'.$fila, "OBSERVACION PEDIDO");
-        $hoja->setCellValue('K'.$fila, "PAGO COMPROBADO");
+        $hoja->setCellValue('K'.$fila, "OBSERVACION PAGO");
+        $hoja->setCellValue('L'.$fila, "PAGO COMPROBADO");
 
         $fila++;
 
@@ -794,14 +795,17 @@ class Reportes extends BaseController {
                 $phpExcel->getActiveSheet()->getStyle('J'.$fila)->applyFromArray($styleFila);
                 $hoja->setCellValue('J'.$fila, $result->observaciones);
 
-                $phpExcel->getActiveSheet()->getStyle('K'.$fila)->applyFromArray($styleTextoCentrado);
+                $phpExcel->getActiveSheet()->getStyle('K'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('K'.$fila, $result->observacion_pago);
+
+                $phpExcel->getActiveSheet()->getStyle('L'.$fila)->applyFromArray($styleTextoCentrado);
 
                 if ($result->pagado == 1) {
 
-                    $hoja->setCellValue('K'.$fila, 'SI');
+                    $hoja->setCellValue('L'.$fila, 'SI');
                 } else {
 
-                    $hoja->setCellValue('K'.$fila, 'NO');
+                    $hoja->setCellValue('L'.$fila, 'NO');
                 }
 
                 if ($result->idnegocio == 1) {

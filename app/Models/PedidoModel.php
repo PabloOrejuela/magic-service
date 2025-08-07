@@ -204,7 +204,7 @@ class PedidoModel extends Model {
     function _getPedidosReporteDiario($fechaInicio, $fechaFinal, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,observacion_pago,
                         procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio');
         
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');

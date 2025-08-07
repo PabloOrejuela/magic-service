@@ -140,6 +140,7 @@
                                     <th class="col-sm-2">VENDEDOR</th>
                                     <th class="col-sm-2">VENTA EXTRA</th>
                                     <th class="col-sm-2">OBSERVACION PEDIDO</th>
+                                    <th class="col-sm-2">OBSERVACION PAGO</th>
                                     <th class="col-sm-2">PAGO COMPROBADO</th>
                                 </thead>
                                 <tbody id='tablaReporte'>
@@ -191,6 +192,7 @@
                                                 }
                                                 
                                                 echo '<td>'.$result->observaciones.'</td>';
+                                                echo '<td>'.$result->observacion_pago.'</td>';
 
                                                 if ($result->pagado == 1) {
                                                     echo '<td>
