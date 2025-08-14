@@ -1,0 +1,61 @@
+label{
+    margin-bottom: 1px;
+}
+
+#mensaje{
+    font-size: 1.2em;
+    margin-left:5px;
+}
+
+#td-resultados{
+    font-size: 1.2em;
+    text-align: center !important;
+}
+
+#td-suma{
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: right !important;
+}
+
+#text-result-bold{
+    background-color: rgba(255, 128, 0, 1);
+    font-weight: bold;
+    text-align: right;
+}
+
+#resultado-total{
+    text-align: right;
+}
+
+#encabezado{
+    color: #FFF;
+    font-weight: bold;
+    background-color: #FF8000;
+    vertical-align: middle !important;
+}
+
+#div-separador{
+    width: 30px;
+}
+
+#table-resultados-ingresos{
+    font-size: 0.8em;
+    width: 90%;
+}
+
+#td-totales-bold{
+    background-color: rgba(255, 128, 0, 1);
+    font-weight: bold;
+    text-align: left;
+}
+
+#result-bold{
+    background-color: rgba(239, 192, 155, 1);
+    font-weight: bold;
+    text-align: right;
+}
+
+#btn-reporte-excel{
+    display: block;
+}

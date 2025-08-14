@@ -102,8 +102,7 @@ const actualizaGrid = () => {
 const imprimirTicket = async (id, codPedido) => {
 
     
-    const respuestaHttp = await fetch("http://localhost:8000/imprimir",
-    {
+    const respuestaHttp = await fetch("http://localhost:8000/imprimir",{
         method: "POST",
         serial: "",
         nombreImpresora: "POS-58-Series",

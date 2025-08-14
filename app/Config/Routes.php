@@ -208,8 +208,6 @@ $routes->get('reporte-list-items', 'Reportes::reporteListItems');
 $routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');
 
 
-// $routes->group('printTicket', ['filter' => 'cors:printTicket'], static function (RouteCollection $routes): void {
-//     $routes->resource('http://localhost:8000/imprimir');
-
-//     $routes->options('http://localhost:8000/imprimir', static function () {});
-// });
+//Estadisticas
+$routes->get('ticket-promedio', 'Estadisticas::ticketPromedio'); 
+$routes->get('est_ticket_promedio', 'Estadisticas::reporteTicketPromedio');
