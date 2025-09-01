@@ -206,6 +206,33 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getPedidosMesEstadisticas($negocio, $fechaInicio, $fechaFinal, $cant){
+
+        $result = NULL;
+
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+        $builder->where($this->table.'.estado', 1);
+        $builder->where( "fecha_entrega BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->where($this->table.'.idnegocio', $negocio);
+        $builder->orderBy('orden', 'asc');
+        
+        if ($cant != 0) {
+            $builder->limit($cant);
+        }
+        
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getPedidosReporteDiario($fechaInicio, $fechaFinal, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);

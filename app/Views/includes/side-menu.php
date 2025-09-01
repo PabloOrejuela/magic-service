@@ -257,7 +257,7 @@
         </ul>
       </li>';
     }
-    if ($session->admin == 1) {
+    if ($session->reportes == 1) {
       echo '
       <li class="nav-item">
         <a href="#" class="nav-link" >
@@ -290,6 +290,12 @@
             <a href="'.base_url().'categoria-mas-vendida" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Categoría mas vendida</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'categoria-menos-vendida" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Categoría menos vendida</p>
             </a>
           </li>
           <li class="nav-item subItem">

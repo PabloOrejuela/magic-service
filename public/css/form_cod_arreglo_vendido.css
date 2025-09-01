@@ -1,0 +1,63 @@
+.div-contenedor {
+    display: flex;
+    align-items: center;
+}
+
+/* En el input */
+#cant_arreglos {
+    margin-left: auto;
+    text-align: right;
+    width: 80px;
+    padding-left: 30px;
+}
+
+#lbl-cant {
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+
+#td-id{
+    text-align: center;
+    width: 60px;
+}
+
+#td-text-left{
+    width: 200px;
+    text-align: left;
+}
+
+#td-text-center{
+    width: 120px;
+    text-align: center;
+}
+
+#td-text-right{
+    width: 120px;
+    text-align: right;
+}
+
+#td-resultados{
+    font-size: 1.2em;
+    text-align: center !important;
+}
+
+#td-suma{
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: right !important;
+}
+
+#td-result{
+    font-size: 1em;
+    text-align: right !important;
+}
+
+#text-result-bold{
+    font-weight: bold;
+    text-align: right;
+}
+
+#btn-report-excel{
+    display: none;
+}

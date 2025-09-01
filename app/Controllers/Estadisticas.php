@@ -97,6 +97,472 @@ class Estadisticas extends BaseController {
         ]);
         exit;
     }
+
+    /**
+     * Genera la estadistica de código de arreglo mas vendido
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function arregMasVendidos(){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Código de arreglo mas vendido';
+            $data['main_content']='estadisticas/form_cod_arreglo_mas_vendido';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    /**
+     * Genera la estadistica de código de arreglo mas vendido
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function frmCategoriaMasVendida(){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Categoría mas vendida';
+            $data['main_content']='estadisticas/form_cat_mas_vendida';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    /**
+     * Genera la estadistica de código de arreglo mas vendido
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function frmCategoriaMenosVendida(){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Categoría menos vendida';
+            $data['main_content']='estadisticas/form_cat_menos_vendida';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function catMasVendida(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('fecha'),
+                'cant' => $this->request->getPostGet('cant_arreglos'),
+            ];
+            
+            $this->validation->setRuleGroup('estCodArregloMasVendido');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+                $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+
+                //Declaro las variables para almacenar las cantidades de las categorías
+                $frutal = 0;
+                $floral = 0;
+                $desayuno = 0;
+                $magic_box = 0;
+                $bocaditos = 0;
+                $complementos = 0;
+
+                //Traigo los arreglos con mas ventas de ese mes
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0);
+
+                //Recorro los pedidos y traigo el detalle de cada uno
+                $data['detalle'] = [];
+                
+                if ($data['pedidos']) { //uso un if a modo de try
+                    foreach ($data['pedidos'] as $pedido) {
+                    
+                        // Obtengo el detalle de cada pedido
+                        $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+
+                        if ($detalles) {
+                            foreach ($detalles as $detalle) {
+                                $idProducto = $detalle->idproducto;
+                                $pvp = $detalle->pvp; 
+                                $idcategoria = $detalle->idcategoria; 
+
+                                if ($idcategoria == 1) {
+                                    $frutal += 1;
+                                }else if($idcategoria == 2){
+                                    $floral += 1;
+                                }else if($idcategoria == 3){
+                                    $desayuno  += 1;
+                                }else if($idcategoria == 4){
+                                    $magic_box += 1;
+                                }else if($idcategoria == 5){
+                                    $bocaditos += 1;
+                                }else if($idcategoria == 6){
+                                    $complementos += 1;
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+
+                //Paso los valores de las categorías
+                $categorias = [
+                    'frutal' => $frutal, 
+                    'floral' => $floral, 
+                    'desayuno' => $desayuno, 
+                    'magic_box' => $magic_box, 
+                    'bocaditos' => $bocaditos, 
+                    'complementos' => $complementos
+                ];
+
+                // Las ordeno de mayor a menor
+                arsort($categorias);
+
+                $data['datos'] = $datos;
+                $data['res'] = $categorias;
+                $data['title']='Estadísticas';
+                $data['subtitle']='Codigos mas vendidos en el mes';
+                $data['main_content']='estadisticas/cat_mas_vendida';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function catMenosVendida(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('fecha'),
+                'cant' => $this->request->getPostGet('cant_arreglos'),
+            ];
+            
+            $this->validation->setRuleGroup('estCodArregloMasVendido');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+                $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+
+                //Declaro las variables para almacenar las cantidades de las categorías
+                $frutal = 0;
+                $floral = 0;
+                $desayuno = 0;
+                $magic_box = 0;
+                $bocaditos = 0;
+                $complementos = 0;
+
+                //Traigo los arreglos con mas ventas de ese mes
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0);
+
+                //Recorro los pedidos y traigo el detalle de cada uno
+                $data['detalle'] = [];
+                
+                if ($data['pedidos']) { //uso un if a modo de try
+                    foreach ($data['pedidos'] as $pedido) {
+                    
+                        // Obtengo el detalle de cada pedido
+                        $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+
+                        if ($detalles) {
+                            foreach ($detalles as $detalle) {
+                                $idProducto = $detalle->idproducto;
+                                $pvp = $detalle->pvp; 
+                                $idcategoria = $detalle->idcategoria; 
+
+                                if ($idcategoria == 1) {
+                                    $frutal += 1;
+                                }else if($idcategoria == 2){
+                                    $floral += 1;
+                                }else if($idcategoria == 3){
+                                    $desayuno  += 1;
+                                }else if($idcategoria == 4){
+                                    $magic_box += 1;
+                                }else if($idcategoria == 5){
+                                    $bocaditos += 1;
+                                }else if($idcategoria == 6){
+                                    $complementos += 1;
+                                }
+                                
+                            }
+                        }
+                    }
+                }
+
+                //Paso los valores de las categorías
+                $categorias = [
+                    'frutal' => $frutal, 
+                    'floral' => $floral, 
+                    'desayuno' => $desayuno, 
+                    'magic_box' => $magic_box, 
+                    'bocaditos' => $bocaditos, 
+                    'complementos' => $complementos
+                ];
+
+                // Las ordeno de menor
+                asort($categorias);
+
+                $data['datos'] = $datos;
+                $data['res'] = $categorias;
+                $data['title']='Estadísticas';
+                $data['subtitle']='Codigos menos vendidos en el mes';
+                $data['main_content']='estadisticas/cat_menos_vendida';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function estCodArregloMasVendido(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('fecha'),
+                'cant' => $this->request->getPostGet('cant_arreglos'),
+            ];
+            
+            $this->validation->setRuleGroup('estCodArregloMasVendido');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+                $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+                
+
+                //Traigo los arreglos con mas ventas de ese mes
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant']);
+
+                //Recorro los pedidos y traigo el detalle de cada uno
+                $data['detalle'] = [];
+                $contadorProductos = [];
+
+                foreach ($data['pedidos'] as $pedido) {
+                    
+                    // Obtén el detalle del pedido (ajusta el método según tu modelo)
+                    $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+
+                    if ($detalles) {
+                        foreach ($detalles as $detalle) {
+                            $idProducto = $detalle->idproducto;
+                            $pvp = $detalle->pvp; 
+
+                            if (!isset($contadorProductos[$idProducto])) {
+                                $contadorProductos[$idProducto] = [
+                                    'id' => $idProducto,
+                                    'cant' => 1,
+                                    'pvp' => $pvp
+                                ];
+                            } else {
+                                $contadorProductos[$idProducto]['cant']++;
+                            }
+                        }
+                    }
+                }
+
+                // Ordenar por 'cant' de mayor a menor
+                usort($contadorProductos, function($a, $b) {
+                    return $b['cant'] <=> $a['cant'];
+                });
+
+                //echo '<pre>'.var_export($datos, true).'</pre>';exit;
+                $data['datos'] = $datos;
+                $data['res'] = $contadorProductos;
+                $data['title']='Estadísticas';
+                $data['subtitle']='Codigos mas vendidos en el mes';
+                $data['main_content']='estadisticas/cod_arreglo_mas_vendido';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    /**
+     * Genera la estadistica de código de arreglo menos vendido
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function arregMenosVendidos(){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Código de arreglo menos vendido';
+            $data['main_content']='estadisticas/form_cod_arreglo_menos_vendido';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function estCodArregloMenosVendido(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('fecha'),
+                'cant' => $this->request->getPostGet('cant_arreglos'),
+            ];
+            
+            $this->validation->setRuleGroup('estCodArregloMasVendido');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+                $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+                
+
+                //Traigo los arreglos con mas ventas de ese mes
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant']);
+                
+                //Recorro los pedidos y traigo el detalle de cada uno
+                $data['detalle'] = [];
+                $contadorProductos = [];
+
+                foreach ($data['pedidos'] as $pedido) {
+                    
+                    // Obtén el detalle del pedido (ajusta el método según tu modelo)
+                    $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+
+                    if ($detalles) {
+                        foreach ($detalles as $detalle) {
+                            $idProducto = $detalle->idproducto;
+                            $pvp = $detalle->pvp; 
+
+                            if (!isset($contadorProductos[$idProducto])) {
+                                $contadorProductos[$idProducto] = [
+                                    'id' => $idProducto,
+                                    'cant' => 1,
+                                    'pvp' => $pvp
+                                ];
+                            } else {
+                                $contadorProductos[$idProducto]['cant']++;
+                            }
+                        }
+                    }
+                }
+
+                // Ordenar por 'cant' de mayor a menor
+                usort($contadorProductos, function($a, $b) {
+                    return $a['cant'] <=> $b['cant'];
+                });
+
+                //echo '<pre>'.var_export($datos, true).'</pre>';exit;
+                $data['datos'] = $datos;
+                $data['res'] = $contadorProductos;
+                $data['title']='Estadísticas';
+                $data['subtitle']='Codigos menos vendidos en el mes';
+                $data['main_content']='estadisticas/cod_arreglo_menos_vendido';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
 }
 
 

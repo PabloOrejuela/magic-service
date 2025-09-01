@@ -431,4 +431,15 @@ class Validation extends BaseConfig
         //     'required' => 'El campo "Costo de entrega" es obligatorio',
         // ],
     ];
+
+    public $estCodArregloMasVendido = [
+        'negocio'  => 'required|greater_than[0]',
+    ];
+
+    public $estCodArregloMasVendido_errors = [
+        'negocio' => [
+            'required' => 'El campo "Negocio" es obligatorio',
+            'greater_than' => 'El campo "Negocio" es obligatorio',
+        ],
+    ];
 }

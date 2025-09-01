@@ -211,3 +211,19 @@ $routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');
 //Estadisticas
 $routes->get('ticket-promedio', 'Estadisticas::ticketPromedio'); 
 $routes->get('est_ticket_promedio', 'Estadisticas::reporteTicketPromedio');
+
+$routes->get('arreg-mas-vendidos', 'Estadisticas::arregMasVendidos');
+$routes->get('est_cod_arreglo_mas_vendido', 'Estadisticas::estCodArregloMasVendido');
+$routes->post('arreg-mas-vendidos', 'Estadisticas::estCodArregloMasVendido');
+
+$routes->get('arreg-menos-vendidos', 'Estadisticas::arregMenosVendidos');
+$routes->get('est_cod_arreglo_menos_vendido', 'Estadisticas::estCodArregloMenosVendido');
+$routes->post('arreg-menos-vendidos', 'Estadisticas::estCodArregloMenosVendido');
+
+$routes->get('categoria-mas-vendida', 'Estadisticas::frmCategoriaMasVendida');
+$routes->post('categoria-mas-vendida', 'Estadisticas::catMasVendida');
+$routes->get('cat_mas_vendido_excel', 'Estadisticas::catMasVendidaExcel');
+
+$routes->get('categoria-menos-vendida', 'Estadisticas::frmCategoriaMenosVendida');
+$routes->post('categoria-menos-vendida', 'Estadisticas::catMenosVendida');
+$routes->get('cat_menos_vendido_excel', 'Estadisticas::catMenosVendidaExcel');

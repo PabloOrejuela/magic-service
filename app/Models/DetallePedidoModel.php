@@ -80,6 +80,22 @@ class DetallePedidoModel extends Model {
         return $result;
     }
 
+    public function _getDetallePedidoEst($cod_pedido){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('idproducto,producto,pvp,idcategoria');
+        $builder->join('productos', 'productos.id = '.$this->table.'.idproducto','left');
+        $builder->where('cod_pedido', $cod_pedido);
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();exit;
+        return $result;
+    }
+
     public function _updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal){
         $result = NULL;
         $builder = $this->db->table($this->table);
