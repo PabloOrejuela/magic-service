@@ -1306,12 +1306,8 @@ class Ventas extends BaseController {
             
             $data['session'] = $this->session;
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($idpedido);
-            // $data['detalle'] = $this->detallePedidoModel
-            //                 ->where('cod_pedido', $data['pedido']->cod_pedido)
-            //                 ->join('productos','productos.id=detalle_pedido.idproducto')
-            //                 ->findAll();
 
-            //echo '<pre>'.var_export($data['pedido'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['pedido']->vendedor, true).'</pre>';exit;
 
             //Traigo el detalle del pedido
             $data['detalle'] = $this->detallePedidoModel->_getDetallePedido($data['pedido']->cod_pedido);
@@ -1337,7 +1333,7 @@ class Ventas extends BaseController {
             }
 
             $data['negocios'] = $this->negocioModel->findAll();
-            $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            $data['vendedores'] = $this->usuarioModel->select('id,nombre,cedula,idroles')->where('idroles', 4)->findAll();
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
             $data['formas_pago'] = $this->formaPagoModel->where('estado',1)->orderBy('forma_pago', 'asc')->findAll();
             $data['categorias'] = $this->categoriaModel->findAll();
@@ -1349,7 +1345,7 @@ class Ventas extends BaseController {
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
             $data['pedidoProcedencia'] = $this->pedidoProcedenciaModel->where('idpedidos', $data['pedido']->id)->first();
 
-            //echo '<pre>'.var_export($data['pedidoProcedencia'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';

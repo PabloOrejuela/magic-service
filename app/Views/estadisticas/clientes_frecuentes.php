@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'categoria-menos-vendida';?>" method="post">
+                    <form action="<?= site_url().'clientes-frecuentes';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">
@@ -50,9 +50,11 @@
                             <div class="row col-md-6">
                                 <table class="table table-bordered mt-3" id="table-resultados">
                                 <thead>
-                                    <th id="td-id">No.</th>      
-                                    <th id="td-id">Categoría</th>
-                                    <th id="td-text-left">Cantidad</th>
+                                    <th id="td-id">No.</th>     
+                                    <th id="td-id">Id</th>
+                                    <th id="td-id">Cliente</th>
+                                    <th id="td-text-center">Cantidad de pedidos</th>
+                                    <th id="td-text-right">Total</th>
                                 </thead>
                                 <tbody>
                                     <?php
@@ -65,12 +67,14 @@
                                         if ($res) {
                                             //echo '<pre>'.var_export($res, true).'</pre>';exit;
 
-                                            foreach ($res as $key => $arreglo) {
+                                            foreach ($res as $key => $cliente) {
 
                                                 echo '<tr>';
                                                 echo '<td>'.$num.'</td>';
-                                                echo '<td>'.$key.'</td>';
-                                                echo '<td>'.$arreglo.'</td>';
+                                                echo '<td>'.$cliente['idcliente'].'</td>';
+                                                echo '<td>'.strtoupper($cliente['cliente']).'</td>';
+                                                echo '<td id="td-text-center">'.$cliente['cant'].'</td>';
+                                                echo '<td id="td-text-right">'.number_format($cliente['total'],2).'</td>';
                                                 echo '</tr>';
 
                                                 $num++;

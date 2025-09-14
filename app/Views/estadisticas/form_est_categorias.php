@@ -10,7 +10,7 @@
                         <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>
                     <!-- /.card-header -->
-                    <form action="<?= site_url().'categoria-menos-vendida';?>" method="post">
+                    <form action="<?= site_url().'est-categorias';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">

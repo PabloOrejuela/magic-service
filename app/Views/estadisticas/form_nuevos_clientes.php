@@ -10,7 +10,7 @@
                         <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>
                     <!-- /.card-header -->
-                    <form action="<?= site_url().'categoria-mas-vendida';?>" method="post">
+                    <form action="<?= site_url().'clientes-frecuentes';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">
@@ -28,11 +28,29 @@
                                                 }
                                             }
                                         ?>
+                                                    echo '<pre>'.var_export(date('Y', strtotime($data['anios'][0]->fecha)), true).'</pre>';exit;
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="mes">Mes *:</label>
+                                    <label for="anio">Año:</label>
+                                    <select 
+                                        class="form-select form-control-border" 
+                                        id="anio" 
+                                        name="anio"
+                                    >
+                                        <option value="0" selected>-- Opciones --</option>
+                                        <?php
+                                            if (isset($anios)) {
+                                                foreach ($anios as $key => $anio) {
+                                                    echo '<option value="'.$anio->anio.'" '.set_select('anio', $anio->anio, false).' >'.$anio->anio.'</option>';
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="mes">Mes:</label>
                                     <input 
                                         type="month" 
                                         class="form-control text" 

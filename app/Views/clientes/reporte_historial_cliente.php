@@ -35,11 +35,13 @@
                                         $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->cod_pedido);
                                         //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                         echo '<tr>
-                                            <td>'.$pedido->cod_pedido.'</td>
-                                            <td>'.$pedido->fecha_entrega.'</td>
-                                            <td>'.$pedido->sector.'</td>
-                                            <td>'.$pedido->dir_entrega.'</td>
-                                            <td>'.$pedido->ubicacion.'</td>';
+                                                <td>
+                                                    <a href="'.site_url().'pedido-edit/'.$pedido->id.'" id="link-editar">'.$pedido->cod_pedido.'</a>
+                                                </td>
+                                                <td>'.$pedido->fecha_entrega.'</td>
+                                                <td>'.$pedido->sector.'</td>
+                                                <td>'.$pedido->dir_entrega.'</td>
+                                                <td>'.$pedido->ubicacion.'</td>';
                                         echo '<td><ul>';
                                             if (isset($detalle)) {
                                                 foreach ($detalle as $key => $d) {

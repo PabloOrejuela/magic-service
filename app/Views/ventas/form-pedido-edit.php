@@ -221,15 +221,13 @@
                                     </div>
                                     <div class="form-group mb-3 mt-5">
                                         <label for="vendedor">Vendedor *:</label>
-                                        <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
+                                        <select class="form-select form-control-border" id="vendedor" name="vendedor" required disabled>
                                             <option value="0" selected>--Seleccionar vendedor--</option>
                                             <?php
                                                 if (isset($vendedores)) {
-                                                    foreach ($vendedores as $key => $value) {
-                                                        if ($pedido->vendedor == $value->id) {
-                                                            echo '<option value="'.$value->id.'" selected>'.$value->nombre.'</option>'; 
-                                                        }else{
-                                                            echo '<option value="'.$value->id.'">'.$value->nombre.'</option>';
+                                                    foreach ($vendedores as $key => $vendedor) {
+                                                        if ($vendedor->id == $pedido->vendedor) {
+                                                            echo '<option value="'.$vendedor->id.'" selected>'.$vendedor->nombre.'</option>'; 
                                                         }
                                                     }
                                                 }

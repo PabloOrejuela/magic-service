@@ -220,10 +220,14 @@ $routes->get('arreg-menos-vendidos', 'Estadisticas::arregMenosVendidos');
 $routes->get('est_cod_arreglo_menos_vendido', 'Estadisticas::estCodArregloMenosVendido');
 $routes->post('arreg-menos-vendidos', 'Estadisticas::estCodArregloMenosVendido');
 
-$routes->get('categoria-mas-vendida', 'Estadisticas::frmCategoriaMasVendida');
-$routes->post('categoria-mas-vendida', 'Estadisticas::catMasVendida');
+$routes->get('est-categorias', 'Estadisticas::frmEstCategorias');
+$routes->post('est-categorias', 'Estadisticas::estCategorias');
 $routes->get('cat_mas_vendido_excel', 'Estadisticas::catMasVendidaExcel');
 
-$routes->get('categoria-menos-vendida', 'Estadisticas::frmCategoriaMenosVendida');
-$routes->post('categoria-menos-vendida', 'Estadisticas::catMenosVendida');
-$routes->get('cat_menos_vendido_excel', 'Estadisticas::catMenosVendidaExcel');
+$routes->get('clientes-frecuentes', 'Estadisticas::frmClientesFrecuentes');
+$routes->post('clientes-frecuentes', 'Estadisticas::clientesFrecuentes');
+$routes->get('clientes-frecuentes_excel', 'Estadisticas::clientesFrecuentesExcel');
+
+$routes->get('nuevos-clientes', 'Estadisticas::frmNuevosClientes');
+$routes->post('nuevos-clientes', 'Estadisticas::nuevosClientes');
+$routes->get('nuevos-clientes_excel', 'Estadisticas::nuevosClientesExcel');

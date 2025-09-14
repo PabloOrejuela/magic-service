@@ -287,19 +287,13 @@
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="'.base_url().'categoria-mas-vendida" class="nav-link">
+            <a href="'.base_url().'est-categorias" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Categoría mas vendida</p>
+              <p>Estadística por categorías</p>
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="'.base_url().'categoria-menos-vendida" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Categoría menos vendida</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'cliente-frecuente" class="nav-link">
+            <a href="'.base_url().'clientes-frecuentes+" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Clientes mas frecuentes</p>
             </a>

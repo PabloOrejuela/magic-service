@@ -130,7 +130,7 @@ class Estadisticas extends BaseController {
      * @return void
      * @throws conditon
      **/
-    public function frmCategoriaMasVendida(){
+    public function frmEstCategorias(){
         $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->reportes == 1) {
@@ -140,8 +140,8 @@ class Estadisticas extends BaseController {
             $data['negocios'] = $this->negocioModel->findAll();
 
             $data['title']='Estadísticas';
-            $data['subtitle']='Categoría mas vendida';
-            $data['main_content']='estadisticas/form_cat_mas_vendida';
+            $data['subtitle']='Estadística por categorías';
+            $data['main_content']='estadisticas/form_est_categorias';
             return view('dashboard/index', $data);
         }else{
             return redirect()->to('logout');
@@ -149,7 +149,7 @@ class Estadisticas extends BaseController {
     }
 
     /**
-     * Genera la estadistica de código de arreglo mas vendido
+     * Genera la estadistica de la categoría menos vendida
      *
      * @param Type $var Description
      * @return void
@@ -173,7 +173,144 @@ class Estadisticas extends BaseController {
         }
     }
 
-    public function catMasVendida(){
+    /**
+     * Genera la estadistica de el cliente que mas ha comprado
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function frmClientesFrecuentes(){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Clientes que mas han comprado';
+            $data['main_content']='estadisticas/form_clientes_frecuentes';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    /**
+     * Genera la estadistica de los nuevos clientes que han realizado pedidos en un período de tiempo
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function frmNuevosClientes(){
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['anios'] = $this->pedidoModel
+            ->select("DISTINCT YEAR(fecha) as anio")
+            ->orderBy("anio", "ASC")
+            ->findAll();
+
+            //echo '<pre>'.var_export($data['anios'], true).'</pre>';exit;
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Cantidad de clientes nuevos que han realizado pedidos';
+            $data['main_content']='estadisticas/form_nuevos_clientes';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function clientesFrecuentes(){
+        
+        $data = $this->acl();
+
+        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('fecha'),
+                'cant' => $this->request->getPostGet('cant_arreglos'),
+            ];
+            
+            $this->validation->setRuleGroup('estCodArregloMasVendido');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+                $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+
+
+                //Traigo los arreglos con mas ventas de ese mes
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0);
+
+                $contadorCliente = [];
+                $cliente = null;
+                
+                if ($data['pedidos']) { //uso un if a modo de try
+                    foreach ($data['pedidos'] as $pedido) {
+
+                        $cliente = $pedido->cliente;
+                        $idcliente = $pedido->idcliente;
+                        $total = $pedido->total;
+
+                        if (!isset($contadorCliente[$cliente])) {
+                            $contadorCliente[$cliente] = [
+                                'idcliente' => $idcliente,
+                                'cliente' => $cliente,
+                                'total' => $total,
+                                'cant' => 1,
+                            ];
+                        } else {
+                            $contadorCliente[$cliente]['cant']++;
+                            $contadorCliente[$cliente]['total']+=$pedido->total;
+                        }
+                    }
+                }
+
+                //Les ordeno de mayor a menor
+                usort($contadorCliente, function($a, $b) {
+                    return $b['cant'] <=> $a['cant'];
+                });
+
+                //echo '<pre>'.var_export($contadorCliente, true).'</pre>';exit;
+
+                $data['datos'] = $datos;
+                $data['res'] = $contadorCliente;
+                $data['title']='Estadísticas';
+                $data['subtitle']='Clientes que mas han comprado';
+                $data['main_content']='estadisticas/clientes_frecuentes';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+
+    public function estCategorias(){
         
         $data = $this->acl();
 
@@ -266,7 +403,7 @@ class Estadisticas extends BaseController {
                 $data['res'] = $categorias;
                 $data['title']='Estadísticas';
                 $data['subtitle']='Codigos mas vendidos en el mes';
-                $data['main_content']='estadisticas/cat_mas_vendida';
+                $data['main_content']='estadisticas/est_categorias';
                 return view('dashboard/index', $data);
             }
 
