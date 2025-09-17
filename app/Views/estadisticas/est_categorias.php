@@ -14,24 +14,6 @@
                     <form action="<?= site_url().'est-categorias';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
-                                    <label for="negocio">Negocio:</label>
-                                    <select 
-                                        class="form-select form-control-border" 
-                                        id="negocio" 
-                                        name="negocio" 
-                                    >
-                                        <option value="0" selected>-- Opciones --</option>
-                                        <?php
-                                            if (isset($negocios)) {
-                                                foreach ($negocios as $key => $negocio) {
-                                                    echo '<option value="'.$negocio->id.'" '.set_select('negocio', $negocio->id, false).' >'.$negocio->negocio.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                    <p id="error-message"><?= session('errors.negocio');?> </p>
-                               </div>
                                <div class="form-group col-md-3">
                                     <label for="mes">Mes *:</label>
                                     <input 
@@ -66,10 +48,24 @@
                                             //echo '<pre>'.var_export($res, true).'</pre>';exit;
 
                                             foreach ($res as $key => $arreglo) {
+                                                //$nombreCategoría = $this->categoriaModel->select('categoria')->where('','')->first();
 
                                                 echo '<tr>';
                                                 echo '<td>'.$num.'</td>';
-                                                echo '<td>'.$key.'</td>';
+                                                if ($key == 'frutal') {
+                                                    echo '<td>Frutal</td>';
+                                                }else if($key == 'floral'){
+                                                    echo '<td>Floral</td>';
+                                                }else if($key == 'desayuno'){
+                                                    echo '<td>Desayuno</td>';
+                                                }else if($key == 'magic_box'){
+                                                    echo '<td>Magic Box</td>';
+                                                }else if($key == 'bocaditos'){
+                                                    echo '<td>Bocaditos</td>';
+                                                }else if($key == 'complementos'){
+                                                    echo '<td>Complementos</td>';
+                                                }
+                                                
                                                 echo '<td>'.$arreglo.'</td>';
                                                 echo '</tr>';
 

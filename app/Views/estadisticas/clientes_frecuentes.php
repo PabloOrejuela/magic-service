@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="card-body mt-2">
-                            <div class="row col-md-6">
+                            <div class="row col-md-8">
                                 <table class="table table-bordered mt-3" id="table-resultados">
                                 <thead>
                                     <th id="td-id">No.</th>     

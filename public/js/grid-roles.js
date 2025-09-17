@@ -38,7 +38,7 @@ function changePermisoInventarios(id){
 }
 
 function cambiaPermiso(input, id){
-    //console.log(input.dataset.campo);
+    
     $.ajax({
         type:"get",
         dataType:"html",

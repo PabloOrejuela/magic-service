@@ -432,14 +432,30 @@ class Validation extends BaseConfig
         // ],
     ];
 
-    public $estCodArregloMasVendido = [
+    public $clientesFrecuentes = [
         'negocio'  => 'required|greater_than[0]',
+        'fecha'  => 'required',
     ];
 
-    public $estCodArregloMasVendido_errors = [
+    public $clientesFrecuentes_errors = [
         'negocio' => [
             'required' => 'El campo "Negocio" es obligatorio',
             'greater_than' => 'El campo "Negocio" es obligatorio',
         ],
+        'fecha' => [
+            'required' => 'El campo "Fecha" es obligatorio',
+        ],
     ];
+
+    public $nuevosClientes = [
+        'negocio'  => 'required|greater_than[0]',
+    ];
+
+    public $nuevosClientes_errors = [
+        'negocio' => [
+            'required' => 'El campo "Negocio" es obligatorio',
+            'greater_than' => 'El campo "Negocio" es obligatorio',
+        ]
+    ];
+
 }

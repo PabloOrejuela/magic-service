@@ -6,7 +6,6 @@ btnSectores.forEach(btn => {
         let costo_entrega = this.dataset.costo_entrega;
         let sucursal = this.dataset.sucursal;
     
-        //console.log(id);
         document.querySelector('#sector').value = id;
         document.querySelector('#sucursal_actual').value = sucursal;
         document.querySelector('#costo_entrega').value = costo_entrega;
@@ -20,11 +19,11 @@ btnSectores.forEach(btn => {
 function actualizarSucursal(sector, sucursal, costo_entrega){
 
     if (sucursal != null && sucursal != 0) {
-        //console.log(costo_entrega);
+        
         $.ajax({
             url: 'updateSucursalSector/'+sector+'/'+sucursal+'/'+costo_entrega,
             success: function(resultado){
-                //console.log(resultado);
+                
                 location.replace('sectores-entrega');
             }
         });
@@ -37,7 +36,7 @@ function selectSucursales(sucursalActual){
         url: 'getSucursales/',
         success: function(resultado){
             let sucursales = JSON.parse(resultado);
-            //console.log(sucursalActual);
+            
             let selectSucursales = document.getElementById('sucursal')
             selectSucursales.innerHTML += `<option value="0">--Seleccionar sucursal--</option>`
             

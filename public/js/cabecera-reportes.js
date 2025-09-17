@@ -4,7 +4,6 @@ let fechaFinal = document.getElementById('fecha_final')
 let btnReporteProcedenciaExcel = document.getElementById('btnGeneraReporteExcel')
 let fecha = new Date();
 
-
 const meses = new Array ("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
 const diasAnio = {
     "1" : 31, 
@@ -27,91 +26,94 @@ let anioActual = fecha.getFullYear()
 let cadenafecha = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+mesActual)
 
 /*
+ *  En caso de que la cabecerea tengo el control 
  *  Detecta el index y modifica las fechas
 */
-selectSugest.addEventListener('change', function(e) { 
+if (selectSugest) {
+    selectSugest.addEventListener('change', function(e) { 
     
-    if (selectSugest.selectedIndex == 1) {
+        if (selectSugest.selectedIndex == 1) {
 
-        //día actual
-        fechaInicio.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
-        fechaFinal.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
+            //día actual
+            fechaInicio.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
+            fechaFinal.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
 
-    }else if(selectSugest.selectedIndex == 2){
+        }else if(selectSugest.selectedIndex == 2){
 
-        let diasMes = daysInMonth(anioActual, mesActual)
+            let diasMes = daysInMonth(anioActual, mesActual)
 
-        //Mes actual
-        fechaInicio.value = cadenafecha + '-01'
-        fechaFinal.value = cadenafecha + '-' +diasMes
+            //Mes actual
+            fechaInicio.value = cadenafecha + '-01'
+            fechaFinal.value = cadenafecha + '-' +diasMes
 
-    }else if(selectSugest.selectedIndex == 3){
+        }else if(selectSugest.selectedIndex == 3){
 
-        let diaActual = fecha.getDate()
-        let diaSemana = fecha.getDay()
-        let diasMes = daysInMonth(anioActual, mesActual)
-            
-        //Semana actual
-        if (fecha.getDay() == 1) {
-            inicioSemana = fecha.getDate()
-            finSemana = fecha.getDate() + 6
-
-            fechaInicio.value = cadenafecha + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
-            
-            if (finSemana >= diasMes) {
+            let diaActual = fecha.getDate()
+            let diaSemana = fecha.getDay()
+            let diasMes = daysInMonth(anioActual, mesActual)
                 
-                cadenafecha = anioActual + '-' + ((mesActual+1) > 9 ? (mesActual+1) : '0'+(mesActual+1))
-                fechaFinal.value = cadenafecha + '-0' + parseInt(finSemana-diasMes)
-            }else{
-                fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
-            }
-            
-        }else{
-            
-            if (diaActual < 7) {
-                inicioSemana = (diaActual - (diaSemana - 1))
-                cadenafechaInicio = anioActual + '-' + (mesActual-1 > 9 ? mesActual-1 : '0'+(parseInt(mesActual)-1))
+            //Semana actual
+            if (fecha.getDay() == 1) {
+                inicioSemana = fecha.getDate()
+                finSemana = fecha.getDate() + 6
 
-                for (let i = 0; i <= 6; i++) {
-                    if (inicioSemana == i) {
-                        inicioSemana = diasAnio[mesActual-1] - i
-                        finSemana = (fecha.getDate() + (7 - fecha.getDay()))
-    
-                        fechaInicio.value = cadenafechaInicio + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
-
-                        if (finSemana >= diasMes) {
+                fechaInicio.value = cadenafecha + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
                 
-                            cadenafecha = anioActual + '-' + ((mesActual+1) > 9 ? (mesActual+1) : '0'+(mesActual+1))
-                            fechaFinal.value = cadenafecha + '-0' + parseInt(finSemana-diasMes)
-                        }else{
-                            fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
-                        }
-                    }
-                }
-            }else{
-                if (diaSemana == 0) {
-                    finSemana = fecha.getDate()
-                }else{
-                    finSemana = (fecha.getDate() + (7 - fecha.getDay()))
-                }
-                
-                inicioSemana = getInicioSemana(diaSemana, diaActual)
-                cadenafechaInicio = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+(parseInt(mesActual)))
-                console.log(finSemana);
-
-                fechaInicio.value = cadenafechaInicio + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
                 if (finSemana >= diasMes) {
-                
+                    
                     cadenafecha = anioActual + '-' + ((mesActual+1) > 9 ? (mesActual+1) : '0'+(mesActual+1))
                     fechaFinal.value = cadenafecha + '-0' + parseInt(finSemana-diasMes)
                 }else{
                     fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
                 }
+                
+            }else{
+                
+                if (diaActual < 7) {
+                    inicioSemana = (diaActual - (diaSemana - 1))
+                    cadenafechaInicio = anioActual + '-' + (mesActual-1 > 9 ? mesActual-1 : '0'+(parseInt(mesActual)-1))
+
+                    for (let i = 0; i <= 6; i++) {
+                        if (inicioSemana == i) {
+                            inicioSemana = diasAnio[mesActual-1] - i
+                            finSemana = (fecha.getDate() + (7 - fecha.getDay()))
+        
+                            fechaInicio.value = cadenafechaInicio + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
+
+                            if (finSemana >= diasMes) {
+                    
+                                cadenafecha = anioActual + '-' + ((mesActual+1) > 9 ? (mesActual+1) : '0'+(mesActual+1))
+                                fechaFinal.value = cadenafecha + '-0' + parseInt(finSemana-diasMes)
+                            }else{
+                                fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
+                            }
+                        }
+                    }
+                }else{
+                    if (diaSemana == 0) {
+                        finSemana = fecha.getDate()
+                    }else{
+                        finSemana = (fecha.getDate() + (7 - fecha.getDay()))
+                    }
+                    
+                    inicioSemana = getInicioSemana(diaSemana, diaActual)
+                    cadenafechaInicio = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+(parseInt(mesActual)))
+
+                    fechaInicio.value = cadenafechaInicio + '-' + (inicioSemana > 9 ? inicioSemana : '0'+inicioSemana)
+                    if (finSemana >= diasMes) {
+                    
+                        cadenafecha = anioActual + '-' + ((mesActual+1) > 9 ? (mesActual+1) : '0'+(mesActual+1))
+                        fechaFinal.value = cadenafecha + '-0' + parseInt(finSemana-diasMes)
+                    }else{
+                        fechaFinal.value = cadenafecha + '-' + (finSemana > 9 ? finSemana : '0'+parseInt(finSemana))
+                    }
+                }
             }
         }
-    }
 
-})
+    })
+}
+
 
 const daysInMonth = (year, month) => new Date(year, month, 0).getDate();
 

@@ -2,7 +2,7 @@ let inputPrice = document.getElementById("input-precio")
 let btnSensible = document.getElementById("btn-sensible")
 
 btnSensible.addEventListener('click', function(e) {
-    console.log("actualizando");
+    
 })
 
 

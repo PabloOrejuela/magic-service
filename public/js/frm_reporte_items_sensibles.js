@@ -25,7 +25,6 @@ btnGeneraReporteItemsSensibles.addEventListener('click', function(e) {
         final = dpFechaFinal
     }
 
-    //console.log(inicio +'|'+final);
     $.ajax({
         method:"GET",
         //dataType:"html",

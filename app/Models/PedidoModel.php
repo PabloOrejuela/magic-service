@@ -52,28 +52,10 @@ class PedidoModel extends Model {
     function _getPedidos($idroles){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select(
-                $this->table.'.id as id,
-                cod_pedido,
-                '.$this->table.'.estado as estado,hora,
-                clientes.nombre as nombre, 
-                fecha_entrega,
-                horario_entrega,
-                rango_entrega_desde,
-                rango_entrega_hasta,
-                observaciones,
-                hora_salida_pedido,
-                formas_pago,
-                banco,
-                fecha,
-                orden,
-                idnegocio,
-                mensajero_extra,
-                valor_devuelto,
-                observacion_devolucion,
-                sin_remitente,
-                sectores_entrega.sector as sector,
-                dir_entrega,
+        $builder->select($this->table.'.id as id,cod_pedido,'.$this->table.'.estado as estado,hora,clientes.nombre as nombre, 
+                fecha_entrega,horario_entrega,rango_entrega_desde,rango_entrega_hasta,observaciones,hora_salida_pedido,
+                formas_pago,banco,fecha,orden,idnegocio,mensajero_extra,valor_devuelto,observacion_devolucion,
+                sin_remitente,sectores_entrega.sector as sector,dir_entrega,
                 estados_pedidos.estado as estado,
                 hora_salida_pedido,ubicacion,
                 usuarios.nombre as mensajero,
@@ -209,7 +191,7 @@ class PedidoModel extends Model {
         return $result;
     }
 
-    function _getPedidosMesEstadisticas($negocio, $fechaInicio, $fechaFinal, $cant){
+    function _getPedidosMesEstadisticas($negocio, $fechaInicio, $fechaFinal, $cant, $orden){
 
         $result = NULL;
 
@@ -219,8 +201,12 @@ class PedidoModel extends Model {
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->where($this->table.'.estado', 1);
         $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
-        $builder->where($this->table.'.idnegocio', $negocio);
-        $builder->orderBy('orden', 'asc');
+        
+        if ($negocio != null) {
+            $builder->where($this->table.'.idnegocio', $negocio);
+        }
+        
+        $builder->orderBy('orden', $orden);
         
         if ($cant != 0) {
             $builder->limit($cant);

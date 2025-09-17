@@ -32,7 +32,7 @@ $(document).ready(function(){
                     
                 },
                 error: function(resultado){
-                  console.log('No hay productos de esa categoría');
+
                 }
             });
         }
@@ -83,7 +83,7 @@ $(document).ready(function(){
     $("#productos").on('change',function(){
         if($("#productos").val() !=""){
             valor = $("#productos").val();
-            //console.log(valor);
+            
             getDatosProducto(valor)
             borraItemstemp(valor)
             
@@ -188,7 +188,7 @@ $(document).ready(function(){
 
                 },
                 error: function(resultado){
-                    console.log('El producto no tiene items');
+
                 }
             });
         }
@@ -344,7 +344,7 @@ function calculaTotal(){
     Array.from(collection).forEach(function (element) {
         total += parseFloat(element.value)
     })
-    //console.log(total);
+
     document.getElementById("input-total").value = parseFloat(total).toFixed(2)
 }
 
@@ -477,7 +477,7 @@ function cancelar(new_id){
             new_id: new_id,
         },
         success: function(resultado){
-            console.log(new_id);
+            
         }
     });
 
@@ -511,7 +511,7 @@ function agregarItem(idproducto, item){
                     
                     let detalle = JSON.parse(resultado);
                     let total = 0
-                    //console.log(detalle);
+                    
                     //Alerta que se ha agregado un item y limpio el input de items
                     alertAgregaItem()
                     inputItem.value = ""
@@ -588,7 +588,6 @@ function agregarItem(idproducto, item){
                 }
             }
         });
-        //console.log(cod_pedido);
         
     }
     

@@ -12,7 +12,7 @@ function cambiaAttrTemp(id){
         },
         success: function(res){
             //let id =  JSON.parse(res);
-            //console.log(id);
+
             let tdtempral = document.querySelector(`#temp_${id}`)
             let tdEstado = document.querySelector(`#estado_${id}`)
             

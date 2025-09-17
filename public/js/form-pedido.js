@@ -379,7 +379,7 @@ function eliminaProducto(idproducto, cod_pedido){
                 }else{
                     //Exito
                     let detalle = JSON.parse(resultado);
-                    console.log(detalle.res)
+                    
                     if (detalle.error == '') {
                         $("#tablaProductos tbody").empty();
                         $("#tablaProductos tbody").append(detalle.datos);

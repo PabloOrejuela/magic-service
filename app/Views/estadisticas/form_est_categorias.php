@@ -14,24 +14,6 @@
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">
-                                    <label for="negocio">Negocio:</label>
-                                    <select 
-                                        class="form-select form-control-border" 
-                                        id="negocio" 
-                                        name="negocio"
-                                    >
-                                        <option value="0" selected>-- Opciones --</option>
-                                        <?php
-                                            if (isset($negocios)) {
-                                                foreach ($negocios as $key => $negocio) {
-                                                    echo '<option value="'.$negocio->id.'" '.set_select('negocio', $negocio->id, false).' >'.$negocio->negocio.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                    <p id="error-message"><?= session('errors.negocio');?> </p>
-                                </div>
-                                <div class="form-group col-md-3">
                                     <label for="mes">Mes *:</label>
                                     <input 
                                         type="month" 

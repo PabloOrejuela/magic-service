@@ -123,7 +123,7 @@ telefono.addEventListener('change', function(e){
 })
 
 telefono2.addEventListener('change', function(e){
-  //console.log(telefono.value)
+  
   limpiartelefono(telefono2)
 
   if(telefono2.value !=""){
@@ -149,7 +149,7 @@ function buscaTelefono(telefono){
           //let cliente = JSON.parse(data);
           
           if (res.respuesta[0] !== undefined) {
-              //console.log(data);
+              
               limpiarClienteDocumento();
               document.getElementById('nombre').value = res.respuesta[0].nombre
               document.getElementById('telefono').value = res.respuesta[0].telefono
@@ -168,7 +168,7 @@ function buscaTelefono(telefono){
           }
       },
       error: function(data){
-          console.log("Error");
+          
       }
   });
 }
@@ -264,7 +264,7 @@ sectores.addEventListener("change", () => {
         },
         success: function(resultado){
             let dato = JSON.parse(resultado);
-            //console.log('Valor: ' + valor);
+            
             if (valor != 0) {
                 alertCambioValor()
                 document.getElementById("transporte").value = parseFloat(dato.sector.costo_entrega)
@@ -280,11 +280,11 @@ sectores.addEventListener("change", () => {
 
         },
         error: function(data){
-            console.log("No existe el costo de entrega");
+            
         }
     });
   }else{
-      console.log("No existe el costo de entrega");
+      
   }
 })
 
@@ -330,7 +330,7 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
                   alertAgregaProducto()
 
                   let detalle = JSON.parse(resultado);
-                  //console.log(parseFloat(detalle.total) + parseFloat(extras));
+                  
                   if (detalle.error == '') {
                       $("#tablaProductos tbody").empty();
                       $("#tablaProductos tbody").append(detalle.datos);
@@ -395,7 +395,7 @@ function eliminaProducto(idproducto, cod_pedido){
                       alertEliminaProducto()
                       limpiaLineaProducto()
                   }else{
-                      console.log("Error");
+                      
                   }
                   
               }
@@ -439,7 +439,7 @@ function devolucion(id){
 
 function observacion(idproducto, cod_pedido){
   let observacion = document.getElementById("observa_"+idproducto).value
-  //console.log(observacion);
+  
   if (observacion != null && observacion != '') {
 
       $.ajax({
@@ -497,7 +497,7 @@ function actualizaPrecio(idproducto, cod_pedido){
             }else{
                 //Exito
                 let detalle = JSON.parse(resultado);
-                console.log(detalle);
+                
                 if (detalle.error == '') {
                     $("#tablaProductos tbody").empty();
                     $("#tablaProductos tbody").append(detalle.datos);
@@ -534,7 +534,7 @@ function calculaValorNeto(cod_pedido) {
       },
       success: function(resultado){
           let detalle = JSON.parse(resultado);
-          //console.log("Detalle: " + detalle.cantidad);
+          
           document.getElementById('valor_neto').value = detalle.subtotal.toFixed(2);
           document.getElementById('cant_arreglos').value = detalle.cantidad;
       }

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/form_cod_arreglo_vendido.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-nuevos-clientes.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -10,7 +10,7 @@
                         <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>
                     <!-- /.card-header -->
-                    <form action="<?= site_url().'clientes-frecuentes';?>" method="post">
+                    <form action="<?= site_url().'nuevos-clientes';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">
@@ -28,7 +28,6 @@
                                                 }
                                             }
                                         ?>
-                                                    echo '<pre>'.var_export(date('Y', strtotime($data['anios'][0]->fecha)), true).'</pre>';exit;
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                 </div>
@@ -39,7 +38,7 @@
                                         id="anio" 
                                         name="anio"
                                     >
-                                        <option value="0" selected>-- Opciones --</option>
+                                        <option value="0" selected>-- Seleccionar un año --</option>
                                         <?php
                                             if (isset($anios)) {
                                                 foreach ($anios as $key => $anio) {
@@ -49,7 +48,7 @@
                                         ?>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3" id="div-fecha">
                                     <label for="mes">Mes:</label>
                                     <input 
                                         type="month" 
@@ -58,6 +57,16 @@
                                         name="fecha" 
                                         value="<?= date('Y-m'); ?>" 
                                         required
+                                    >
+                                    <p id="error-message"><?= session('errors.mes');?> </p>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="mes"></label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control text" 
+                                        id="txtMensaje"
+                                        readonly
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
@@ -76,5 +85,5 @@
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/cabecera-reportes-mensual.js"></script>
-<script src="<?= site_url(); ?>public/js/form_cod_arreglo_vendido.js"></script>
+<script src="<?= site_url(); ?>public/js/frm-nuevos-clientes.js"></script>
 

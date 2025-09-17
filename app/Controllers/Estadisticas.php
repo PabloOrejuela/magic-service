@@ -137,7 +137,6 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
 
             $data['title']='Estadísticas';
             $data['subtitle']='Estadística por categorías';
@@ -242,10 +241,9 @@ class Estadisticas extends BaseController {
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
                 'fecha' => $this->request->getPostGet('fecha'),
-                'cant' => $this->request->getPostGet('cant_arreglos'),
             ];
             
-            $this->validation->setRuleGroup('estCodArregloMasVendido');
+            $this->validation->setRuleGroup('clientesFrecuentes');
         
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
@@ -263,7 +261,7 @@ class Estadisticas extends BaseController {
 
 
                 //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0);
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 180, 'desc');
 
                 $contadorCliente = [];
                 $cliente = null;
@@ -309,8 +307,7 @@ class Estadisticas extends BaseController {
         }
     }
 
-
-    public function estCategorias(){
+    public function nuevosClientes(){
         
         $data = $this->acl();
 
@@ -322,10 +319,10 @@ class Estadisticas extends BaseController {
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
                 'fecha' => $this->request->getPostGet('fecha'),
-                'cant' => $this->request->getPostGet('cant_arreglos'),
+                'anio' => $this->request->getPostGet('anio'),
             ];
             
-            $this->validation->setRuleGroup('estCodArregloMasVendido');
+            $this->validation->setRuleGroup('nuevosClientes');
         
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
@@ -333,6 +330,10 @@ class Estadisticas extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
+
+                //Verifico si ha elegido año o no
+                echo '<pre>'.var_export($datos['anio'], true).'</pre>';exit;
+
                 $fecha = explode('-', $datos['fecha']);
                 $mes = $fecha[1];
                 $anio = $fecha[0];
@@ -341,69 +342,46 @@ class Estadisticas extends BaseController {
                 $datos['fecha_inicio'] = $datos['fecha'].'-01';
                 $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
 
-                //Declaro las variables para almacenar las cantidades de las categorías
-                $frutal = 0;
-                $floral = 0;
-                $desayuno = 0;
-                $magic_box = 0;
-                $bocaditos = 0;
-                $complementos = 0;
 
                 //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0);
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 180, 'desc');
 
-                //Recorro los pedidos y traigo el detalle de cada uno
-                $data['detalle'] = [];
+                $contadorCliente = [];
+                $cliente = null;
                 
                 if ($data['pedidos']) { //uso un if a modo de try
                     foreach ($data['pedidos'] as $pedido) {
-                    
-                        // Obtengo el detalle de cada pedido
-                        $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
 
-                        if ($detalles) {
-                            foreach ($detalles as $detalle) {
-                                $idProducto = $detalle->idproducto;
-                                $pvp = $detalle->pvp; 
-                                $idcategoria = $detalle->idcategoria; 
+                        $cliente = $pedido->cliente;
+                        $idcliente = $pedido->idcliente;
+                        $total = $pedido->total;
 
-                                if ($idcategoria == 1) {
-                                    $frutal += 1;
-                                }else if($idcategoria == 2){
-                                    $floral += 1;
-                                }else if($idcategoria == 3){
-                                    $desayuno  += 1;
-                                }else if($idcategoria == 4){
-                                    $magic_box += 1;
-                                }else if($idcategoria == 5){
-                                    $bocaditos += 1;
-                                }else if($idcategoria == 6){
-                                    $complementos += 1;
-                                }
-                                
-                            }
+                        if (!isset($contadorCliente[$cliente])) {
+                            $contadorCliente[$cliente] = [
+                                'idcliente' => $idcliente,
+                                'cliente' => $cliente,
+                                'total' => $total,
+                                'cant' => 1,
+                            ];
+                        } else {
+                            $contadorCliente[$cliente]['cant']++;
+                            $contadorCliente[$cliente]['total']+=$pedido->total;
                         }
                     }
                 }
 
-                //Paso los valores de las categorías
-                $categorias = [
-                    'frutal' => $frutal, 
-                    'floral' => $floral, 
-                    'desayuno' => $desayuno, 
-                    'magic_box' => $magic_box, 
-                    'bocaditos' => $bocaditos, 
-                    'complementos' => $complementos
-                ];
+                //Les ordeno de mayor a menor
+                usort($contadorCliente, function($a, $b) {
+                    return $b['cant'] <=> $a['cant'];
+                });
 
-                // Las ordeno de mayor a menor
-                arsort($categorias);
+                //echo '<pre>'.var_export($contadorCliente, true).'</pre>';exit;
 
                 $data['datos'] = $datos;
-                $data['res'] = $categorias;
+                $data['res'] = $contadorCliente;
                 $data['title']='Estadísticas';
-                $data['subtitle']='Codigos mas vendidos en el mes';
-                $data['main_content']='estadisticas/est_categorias';
+                $data['subtitle']='Clientes que mas han comprado';
+                $data['main_content']='estadisticas/clientes_frecuentes';
                 return view('dashboard/index', $data);
             }
 
@@ -412,102 +390,93 @@ class Estadisticas extends BaseController {
         }
     }
 
-    public function catMenosVendida(){
+    public function estCategorias(){
         
         $data = $this->acl();
 
         if ($data['logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
             
             $datos = [
-                'negocio' => $this->request->getPostGet('negocio'),
                 'fecha' => $this->request->getPostGet('fecha'),
                 'cant' => $this->request->getPostGet('cant_arreglos'),
             ];
+
+            $datos['negocio'] = null;
+
+            $fecha = explode('-', $datos['fecha']);
+            $mes = $fecha[1];
+            $anio = $fecha[0];
+            $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+            $datos['fecha_inicio'] = $datos['fecha'].'-01';
+            $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+
+            //Declaro las variables para almacenar las cantidades de las categorías
+            $frutal = 0;
+            $floral = 0;
+            $desayuno = 0;
+            $magic_box = 0;
+            $bocaditos = 0;
+            $complementos = 0;
+
+            //Traigo los arreglos con mas ventas de ese mes
+            $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0, 'asc');
+
+            //Recorro los pedidos y traigo el detalle de cada uno
+            $data['detalle'] = [];
             
-            $this->validation->setRuleGroup('estCodArregloMasVendido');
-        
-            if (!$this->validation->withRequest($this->request)->run()) {
-                //Depuración
-                //dd($validation->getErrors());
+            if ($data['pedidos']) { //uso un if a modo de try
+                foreach ($data['pedidos'] as $pedido) {
                 
-                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
-            }else{ 
-                $fecha = explode('-', $datos['fecha']);
-                $mes = $fecha[1];
-                $anio = $fecha[0];
-                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+                    // Obtengo el detalle de cada pedido
+                    $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
 
-                $datos['fecha_inicio'] = $datos['fecha'].'-01';
-                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+                    if ($detalles) {
+                        foreach ($detalles as $detalle) {
+                            $idProducto = $detalle->idproducto;
+                            $pvp = $detalle->pvp; 
+                            $idcategoria = $detalle->idcategoria; 
 
-                //Declaro las variables para almacenar las cantidades de las categorías
-                $frutal = 0;
-                $floral = 0;
-                $desayuno = 0;
-                $magic_box = 0;
-                $bocaditos = 0;
-                $complementos = 0;
-
-                //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0);
-
-                //Recorro los pedidos y traigo el detalle de cada uno
-                $data['detalle'] = [];
-                
-                if ($data['pedidos']) { //uso un if a modo de try
-                    foreach ($data['pedidos'] as $pedido) {
-                    
-                        // Obtengo el detalle de cada pedido
-                        $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
-
-                        if ($detalles) {
-                            foreach ($detalles as $detalle) {
-                                $idProducto = $detalle->idproducto;
-                                $pvp = $detalle->pvp; 
-                                $idcategoria = $detalle->idcategoria; 
-
-                                if ($idcategoria == 1) {
-                                    $frutal += 1;
-                                }else if($idcategoria == 2){
-                                    $floral += 1;
-                                }else if($idcategoria == 3){
-                                    $desayuno  += 1;
-                                }else if($idcategoria == 4){
-                                    $magic_box += 1;
-                                }else if($idcategoria == 5){
-                                    $bocaditos += 1;
-                                }else if($idcategoria == 6){
-                                    $complementos += 1;
-                                }
-                                
+                            if ($idcategoria == 1) {
+                                $frutal += 1;
+                            }else if($idcategoria == 2){
+                                $floral += 1;
+                            }else if($idcategoria == 3){
+                                $desayuno  += 1;
+                            }else if($idcategoria == 4){
+                                $magic_box += 1;
+                            }else if($idcategoria == 5){
+                                $bocaditos += 1;
+                            }else if($idcategoria == 6){
+                                $complementos += 1;
                             }
+                            
                         }
                     }
                 }
-
-                //Paso los valores de las categorías
-                $categorias = [
-                    'frutal' => $frutal, 
-                    'floral' => $floral, 
-                    'desayuno' => $desayuno, 
-                    'magic_box' => $magic_box, 
-                    'bocaditos' => $bocaditos, 
-                    'complementos' => $complementos
-                ];
-
-                // Las ordeno de menor
-                asort($categorias);
-
-                $data['datos'] = $datos;
-                $data['res'] = $categorias;
-                $data['title']='Estadísticas';
-                $data['subtitle']='Codigos menos vendidos en el mes';
-                $data['main_content']='estadisticas/cat_menos_vendida';
-                return view('dashboard/index', $data);
             }
+
+            //Paso los valores de las categorías
+            $categorias = [
+                'frutal' => $frutal, 
+                'floral' => $floral, 
+                'desayuno' => $desayuno, 
+                'magic_box' => $magic_box, 
+                'bocaditos' => $bocaditos, 
+                'complementos' => $complementos
+            ];
+
+            // Las ordeno de mayor a menor
+            arsort($categorias);
+
+            $data['datos'] = $datos;
+            $data['res'] = $categorias;
+            $data['title']='Estadísticas';
+            $data['subtitle']='Codigos mas vendidos en el mes';
+            $data['main_content']='estadisticas/est_categorias';
+            return view('dashboard/index', $data);
 
         }else{
             return redirect()->to('logout');
@@ -547,7 +516,7 @@ class Estadisticas extends BaseController {
                 
 
                 //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant']);
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant'], 'asc');
 
                 //Recorro los pedidos y traigo el detalle de cada uno
                 $data['detalle'] = [];
@@ -653,7 +622,7 @@ class Estadisticas extends BaseController {
                 
 
                 //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant']);
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant'], 'asc');
                 
                 //Recorro los pedidos y traigo el detalle de cada uno
                 $data['detalle'] = [];

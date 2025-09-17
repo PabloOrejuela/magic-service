@@ -72,7 +72,7 @@ const sessionClose = (id) => {
                 }
             },
             error: function(resultado){
-              console.log('No se pudo cerrar la sesión');
+              
             }
         });
         
@@ -81,7 +81,7 @@ const sessionClose = (id) => {
 
 const userDelete = (id, estado) => {
     //Se cambi'o esta funci'on ahora cambia el estado
-    console.log(estado);
+   
     if (id != null && id != 0) {
         
         $.ajax({
@@ -109,7 +109,7 @@ const userDelete = (id, estado) => {
                 }
             },
             error: function(resultado){
-              console.log('No se pudo desactivar el usuario');
+             
             }
         });
     }
@@ -143,7 +143,7 @@ const estadoVentas = (id, es_vendedor) => {
                 }
             },
             error: function(resultado){
-              console.log('No se pudo cambiar el valor');
+              
             }
         });
         
@@ -182,10 +182,10 @@ const asignaRol = (id, idrol, idrol_2, noAsignar) => {
                     }
                 },
                 error: function(resultado){
-                console.log('Hubo un error');
+                
                 }
             });
-        }else{ console.log(181);
+        }else{ 
             alertProcesando("El usuario ya tiene ese rol asignado", 1000, "info")
         }
     }

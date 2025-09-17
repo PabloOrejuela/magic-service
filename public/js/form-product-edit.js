@@ -90,12 +90,11 @@ function agregarItem(idNew, item){
                         }
                         document.getElementById("input-total").value = parseFloat(total).toFixed(2)
                     }else{
-                        console.log('El producto no tiene items');
+                        
                     }
                 }
             }
         });
-        //console.log(cod_pedido);
         
     }
 }
@@ -116,7 +115,7 @@ function borraItemstemp(idproducto){
             return 1;
         },
         error: function(resultado){
-          console.log('Se produjo un error');
+          
         }
     });
     calculaTotal()
@@ -218,12 +217,12 @@ function updatePvp(idItem){
 }
 
 function preventDefault(input){
-    console.log(input);
+    
     let inputPvp = document.getElementById(input)
 
         inputPvp.addEventListener('keypress', e => {
             if(e.key == 'Enter') {
-                console.log('13');
+                
                 e.preventDefault();
             }
         })
@@ -238,7 +237,7 @@ function calculaTotal(){
     Array.from(collection).forEach(function (element) {
         total += parseFloat(element.value)
     })
-    //console.log(total);
+    
     document.getElementById("input-total").value = parseFloat(total).toFixed(2)
 }
 
@@ -330,7 +329,7 @@ function deleteItem(idNew, idItem){
             }
         },
         error: function(resultado){
-            console.log(`El Item no se encontró o no se pudo eliminar`);
+           
         }
     });
 }
