@@ -39,7 +39,7 @@ class Tickets extends BaseController {
 
     function ticketPdfBocaditos($datosPedido){
         //require __DIR__ . '/vendor/autoload.php';
-        $width = 58;
+        $width = 58.1;
         $height = 400;
 
         $nombresDias = array(
@@ -87,26 +87,26 @@ class Tickets extends BaseController {
         //Campo dirección de entrega
         $numCaracterDir = strlen($datosPedido->dir_entrega);
         if ($numCaracterDir >= 80 && $numCaracterDir < 150) {
-            $fontSize = 0.8;
+            $fontSize = 0.7;
         } else if($numCaracterDir >= 150){
             $fontSize = 0.7;
         }else{
-            $fontSize = 0.9;
+            $fontSize = 0.7;
         }
 
         //Campo observación del pedido
         $numCaracterObservaPedido = strlen($datosPedido->observaciones);
         if ($numCaracterObservaPedido >= 80 && $numCaracterObservaPedido < 150) {
-            $fontSizeObservaPedido = 0.8;
+            $fontSizeObservaPedido = 0.7;
         } else if($numCaracterObservaPedido >= 150){
             $fontSizeObservaPedido = 0.7;
         }else{
-            $fontSizeObservaPedido = 0.9;
+            $fontSizeObservaPedido = 0.7;
         }
         
         $pdf->AddPage(); 
 
-        $pdf->SetFont('helvetica', 'B', 8, '', false);
+        //$pdf->SetFont('helvetica', 'B', 9, '', false);
 
         //Cabecera del ticket
         $html = '';
@@ -117,14 +117,14 @@ class Tickets extends BaseController {
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
-                        font-size: 0.8em;
+                        font-size: 0.6em;
                         height: auto"
                     >No. Pedido: </td>
                     <td 
                         style="font-weight: bold;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.7em;
                         height: auto"
                     >'.$datosPedido->cod_pedido.'</td>
                 </tr>
@@ -133,14 +133,14 @@ class Tickets extends BaseController {
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
-                        font-size: 0.8em;
+                        font-size: 0.6em;
                         height: auto"
                     >Fecha: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.7em;
                         height: auto"
                     >'.$nombreDia.' '.date('d-m-Y', strtotime($datosPedido->fecha_entrega)).'</td>
                 </tr>
@@ -149,14 +149,14 @@ class Tickets extends BaseController {
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
-                        font-size: 0.8em;
+                        font-size: 0.6em;
                         height: 25px"
                     >Cliente: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.7em;
                         height: 25px"
                         
                     >'.$cliente.'</td>
@@ -166,14 +166,14 @@ class Tickets extends BaseController {
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
-                        font-size: 0.8em;
+                        font-size: 0.6em;
                         height: 25px"
                     >Hora de entrega: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.7em;
                         height: 25px"
                     >Desde:'.$datosPedido->rango_entrega_desde.' | Hasta: '.$datosPedido->rango_entrega_hasta.'</td>
                 </tr>
@@ -182,7 +182,7 @@ class Tickets extends BaseController {
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
-                        font-size: 0.8em;
+                        font-size: 0.6em;
                         height: auto"
                     >Dirección: </td>
                     <td 
@@ -198,14 +198,15 @@ class Tickets extends BaseController {
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
-                        font-size: 0.8em;
+                        font-size: 0.6em;
+                        overflow: hidden;
                         height: auto"
                     >Sector: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.7em;
                         height: auto"
                     >'.$datosPedido->sector.'</td>
                 </tr>
@@ -214,11 +215,11 @@ class Tickets extends BaseController {
                         style="font-weight:bold;
                         border: 0.5px solid #000;
                         width:35%;
-                        font-size: 0.8em;
+                        font-size: 0.5em;
                         text-align: left;
-                        height: auto;
-                        overflow: hidden;
-                        white-space: nowrap"
+                        word-break: break-word;
+                        word-wrap: break-word;
+                        height: auto;"
                     >Observación del pedido: </td>
                     <td 
                         style="font-weight: normal;
@@ -269,14 +270,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         height: auto;
-                        font-size: 0.8em;"
+                        font-size: 0.6em;"
                     >Producto: </td>
                     <td 
                         style="font-weight: bold;
                         border: 0.5px solid #000;
                         width:65%;
                         height: auto;
-                        font-size: 0.8em;"
+                        font-size: 0.7em;"
                     >'.$bocaditos.'</td>
                 </tr>
                 <tr>
@@ -285,8 +286,8 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         height: auto;
-                        font-size: 0.8em;
-                        text-align: justify;"
+                        font-size: 0.5em;
+                        text-align: left;"
                     >Observación de Bocaditos: </td>
                     <td 
                         style="font-weight: normal;
@@ -309,14 +310,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         height: 20px;
-                        font-size: 0.8em;"
+                        font-size: 0.6em;"
                     >Recibe: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
                         height: 20px;
-                        font-size: 0.8em;"
+                        font-size: 0.7em;"
                     >'.$recibe.'</td>
                 </tr>
                 <tr>
@@ -325,14 +326,14 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         height: 20px;
-                        font-size: 0.8em;"
+                        font-size: 0.6em;"
                     >Celular: </td>
                     <td 
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
                         height: 20px;
-                        font-size: 0.8em;"
+                        font-size: 0.7em;"
                     >'.$celular.'</td>
                 </tr>
                 <tr>
@@ -341,7 +342,7 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:35%;
                         height: auto;
-                        font-size: 0.8em;"
+                        font-size: 0.6em;"
                     >Opciones: </td>
                     
                     <td 
@@ -349,7 +350,7 @@ class Tickets extends BaseController {
                         border: 0.5px solid #000;
                         width:65%;
                         height: auto;
-                        font-size: 0.8em;"
+                        font-size: 0.7em;"
                     >'.$opciones.'</td>
                 </tr>';
 
@@ -360,7 +361,7 @@ class Tickets extends BaseController {
 
     function ticketPdf($datosPedido){
         //require __DIR__ . '/vendor/autoload.php';
-        $width = 58;
+        $width = 58.1;
         $height = 400;
 
         $nombresDias = array(
@@ -408,9 +409,9 @@ class Tickets extends BaseController {
         //Campo dirección de entrega
         $numCaracterDir = strlen($datosPedido->dir_entrega);
         if ($numCaracterDir >= 80 && $numCaracterDir < 150) {
-            $fontSize = 0.8;
+            $fontSize = 0.9;
         } else if($numCaracterDir >= 150){
-            $fontSize = 0.7;
+            $fontSize = 0.8;
         }else{
             $fontSize = 0.9;
         }
@@ -418,16 +419,16 @@ class Tickets extends BaseController {
         //Campo observación del pedido
         $numCaracterObservaPedido = strlen($datosPedido->observaciones);
         if ($numCaracterObservaPedido >= 80 && $numCaracterObservaPedido < 150) {
-            $fontSizeObservaPedido = 0.8;
+            $fontSizeObservaPedido = 0.9;
         } else if($numCaracterObservaPedido >= 150){
-            $fontSizeObservaPedido = 0.7;
+            $fontSizeObservaPedido = 0.8;
         }else{
             $fontSizeObservaPedido = 0.9;
         }
         
         $pdf->AddPage(); 
 
-        $pdf->SetFont('helvetica', 'B', 8, '', false);
+        //$pdf->SetFont('helvetica', 'B', 9, '', false);
 
         //Cabecera del ticket
         $html = '';
@@ -445,7 +446,7 @@ class Tickets extends BaseController {
                         style="font-weight: bold;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.9em;
                         height: auto"
                     >'.$datosPedido->cod_pedido.'</td>
                 </tr>
@@ -461,7 +462,7 @@ class Tickets extends BaseController {
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.9em;
                         height: auto"
                     >'.$nombreDia.' '.date('d-m-Y', strtotime($datosPedido->fecha_entrega)).'</td>
                 </tr>
@@ -477,7 +478,7 @@ class Tickets extends BaseController {
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.9em;
                         height: 25px"
                         
                     >'.$cliente.'</td>
@@ -494,7 +495,7 @@ class Tickets extends BaseController {
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.9em;
                         height: 25px"
                     >Desde:'.$datosPedido->rango_entrega_desde.' | Hasta: '.$datosPedido->rango_entrega_hasta.'</td>
                 </tr>
@@ -526,7 +527,7 @@ class Tickets extends BaseController {
                         style="font-weight: normal;
                         border: 0.5px solid #000;
                         width:65%;
-                        font-size: 0.8em;
+                        font-size: 0.9em;
                         height: auto"
                     >'.$datosPedido->sector.'</td>
                 </tr>
@@ -539,7 +540,8 @@ class Tickets extends BaseController {
                         text-align: left;
                         height: auto;
                         overflow: hidden;
-                        white-space: nowrap"
+                        word-break: break-word;
+                        word-wrap: break-word;"
                     >Observación del pedido: </td>
                     <td 
                         style="font-weight: normal;
@@ -564,9 +566,9 @@ class Tickets extends BaseController {
                 //Campo Observación del arreglo
                 $numCaracterObservaArreglo = strlen($arreglo->observacion);
                 if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
-                    $fontSizeObservaArreglo = 0.8;
+                    $fontSizeObservaArreglo = 0.9;
                 } else if($numCaracterObservaArreglo >= 150){
-                    $fontSizeObservaArreglo = 0.7;
+                    $fontSizeObservaArreglo = 0.8;
                 }else{
                     $fontSizeObservaArreglo = 0.9;
                 }
@@ -613,9 +615,9 @@ class Tickets extends BaseController {
                     //Campo Mensaje fresas
                     $numCaracterMensajeFresas = strlen($atributos->mensaje_fresas);
                     if ($numCaracterMensajeFresas >= 80 && $numCaracterMensajeFresas < 150) {
-                        $fontSizeMensajeFresas = 0.8;
+                        $fontSizeMensajeFresas = 0.9;
                     } else if($numCaracterMensajeFresas >= 150){
-                        $fontSizeMensajeFresas = 0.7;
+                        $fontSizeMensajeFresas = 0.8;
                     }else{
                         $fontSizeMensajeFresas = 0.9;
                     }
@@ -632,7 +634,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;
+                                    font-size: 0.9em;
                                     height: 25px"
                                 >'.$atributos->para.'</td>
                             </tr>
@@ -648,7 +650,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;
+                                    font-size: 0.9em;
                                     height: 25px"
                                 >'.$atributos->celular.'</td>
                             </tr>
@@ -680,7 +682,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                     height: auto
                                 >'.$atributos->peluche.'</td>
                             </tr>
@@ -696,7 +698,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;
+                                    font-size: 0.9em;
                                     height: auto"
                                 >'.$atributos->globo.'</td>
                             </tr>
@@ -717,7 +719,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;
+                                    font-size: 0.9em;
                                     height: 25px"
                                 ></td>
                             </tr>
@@ -733,7 +735,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;
+                                    font-size: 0.9em;
                                     height: 25px"
                                 ></td>
                             </tr>
@@ -749,7 +751,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 1em;
+                                    font-size: 0.9em;
                                     height: auto"
                                 ></td>
                             </tr>
@@ -765,7 +767,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                     height: auto
                                 ></td>
                             </tr>
@@ -781,7 +783,7 @@ class Tickets extends BaseController {
                                     style="font-weight: normal;
                                     border: 0.5px solid #000;
                                     width:65%;
-                                    font-size: 0.8em;
+                                    font-size: 0.9em;
                                     height: auto"
                                 ></td>
                             </tr>
@@ -797,9 +799,9 @@ class Tickets extends BaseController {
                 if ($atributos) {
                     $numCaracterComplementos = strlen($atributos->complementos);
                     if ($numCaracterComplementos >= 80 && $numCaracterComplementos < 150) {
-                        $fontSizeComplementos = 0.7;
+                        $fontSizeComplementos = 0.9;
                     } else if($numCaracterComplementos >= 150){
-                        $fontSizeComplementos = 0.6;
+                        $fontSizeComplementos = 0.8;
                     }else{
                         $fontSizeComplementos = 0.9;
                     }
@@ -807,9 +809,9 @@ class Tickets extends BaseController {
                     //Campo Mensaje fresas
                     $numCaracterMensajeFresas = strlen($atributos->mensaje_fresas);
                     if ($numCaracterMensajeFresas >= 80 && $numCaracterMensajeFresas < 150) {
-                        $fontSizeMensajeFresas = 0.8;
+                        $fontSizeMensajeFresas = 0.9;
                     } else if($numCaracterMensajeFresas >= 150){
-                        $fontSizeMensajeFresas = 0.7;
+                        $fontSizeMensajeFresas = 0.8;
                     }else{
                         $fontSizeMensajeFresas = 0.9;
                     }
@@ -836,7 +838,7 @@ class Tickets extends BaseController {
                                 border: 0.5px solid #000;
                                 width:65%;
                                 height: auto;
-                                font-size: 0.8em;"
+                                font-size: 0.9em;"
                             >'.$arreglo->producto.'</td>
                         </tr>
                         <tr>
@@ -873,7 +875,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->para.'</td>
                             </tr>
                             <tr>
@@ -889,7 +891,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->celular.'</td>
                             </tr>
                             <tr>
@@ -921,7 +923,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->peluche.'</td>
                             </tr>
                             <tr>
@@ -937,7 +939,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->globo.'</td>
                             </tr>
                             <tr>
@@ -953,7 +955,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->bebida.'</td>
                             </tr>
                             <tr>
@@ -969,7 +971,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->huevo.'</td>
                             </tr>
                             <tr>
@@ -1007,7 +1009,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1023,7 +1025,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1039,7 +1041,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 1em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1055,7 +1057,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1071,7 +1073,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1087,7 +1089,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1103,7 +1105,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1120,7 +1122,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 1em;
+                                    font-size: 0.9em;
                                     text-align: left;"
                                 ></td>
                             </tr>
@@ -1134,9 +1136,9 @@ class Tickets extends BaseController {
                 //Campo Observación del arreglo
                 $numCaracterObservaArreglo = strlen($arreglo->observacion);
                 if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
-                    $fontSizeObservaArreglo = 0.8;
+                    $fontSizeObservaArreglo = 0.9;
                 } else if($numCaracterObservaArreglo >= 150){
-                    $fontSizeObservaArreglo = 0.7;
+                    $fontSizeObservaArreglo = 0.8;
                 }else{
                     $fontSizeObservaArreglo = 0.9;
                 }
@@ -1155,7 +1157,7 @@ class Tickets extends BaseController {
                                 border: 0.5px solid #000;
                                 width:65%;
                                 height: auto;
-                                font-size: 0.8em;"
+                                font-size: 0.9em;"
                             >'.$arreglo->producto.'</td>
                         </tr>
                         <tr>
@@ -1183,9 +1185,9 @@ class Tickets extends BaseController {
                     //Campo Mensaje fresas
                     $numCaracterMensajeFresas = strlen($atributos->mensaje_fresas);
                     if ($numCaracterMensajeFresas >= 80 && $numCaracterMensajeFresas < 150) {
-                        $fontSizeMensajeFresas = 0.8;
+                        $fontSizeMensajeFresas = 0.9;
                     } else if($numCaracterMensajeFresas >= 150){
-                        $fontSizeMensajeFresas = 0.7;
+                        $fontSizeMensajeFresas = 0.8;
                     }else{
                         $fontSizeMensajeFresas = 0.9;
                     }
@@ -1203,7 +1205,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->para.'</td>
                             </tr>
                             <tr>
@@ -1219,7 +1221,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->celular.'</td>
                             </tr>
                             <tr>
@@ -1251,7 +1253,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->peluche.'</td>
                             </tr>
                             <tr>
@@ -1267,7 +1269,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->globo.'</td>
                             </tr>
                             <tr>
@@ -1283,7 +1285,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->frases_paredes.'</td>
                             </tr>
                             <tr>
@@ -1299,7 +1301,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 >'.$atributos->fotos.'</td>
                             </tr>';
                     
@@ -1317,7 +1319,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1333,7 +1335,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: 25px;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1349,7 +1351,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 1em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1365,7 +1367,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1381,7 +1383,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1397,7 +1399,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>
                             <tr>
@@ -1413,7 +1415,7 @@ class Tickets extends BaseController {
                                     border: 0.5px solid #000;
                                     width:65%;
                                     height: auto;
-                                    font-size: 0.8em;"
+                                    font-size: 0.9em;"
                                 ></td>
                             </tr>';
                 }

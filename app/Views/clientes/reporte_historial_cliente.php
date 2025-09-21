@@ -28,11 +28,14 @@
                             <?php
 
                                 use App\Models\DetallePedidoModel;
+                                use App\Models\AttrExtArregModel;
+                                $this->attrExtArregModel = new AttrExtArregModel();
                                 $this->detallePedidoModel = new DetallePedidoModel();
 
                                 if ($pedidos) {
                                     foreach ($pedidos as $key => $pedido) {
                                         $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->cod_pedido);
+                                        
                                         //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                         echo '<tr>
                                                 <td>
@@ -45,8 +48,37 @@
                                         echo '<td><ul>';
                                             if (isset($detalle)) {
                                                 foreach ($detalle as $key => $d) {
-                                                    
-                                                    echo '<li>'.$d->producto.'</li>';
+                                                    $attrExtArreg = $this->attrExtArregModel->_getAttrArreg($d->iddetalle, $d->idcategoria);
+                                                        
+                                                        if ($attrExtArreg) {
+                                                            echo '<li>
+                                                                <a 
+                                                                    href="#" 
+                                                                    id="link-Arreglo-Pedido" 
+                                                                    data-id="'.$d->iddetalle.'"
+                                                                    data-arreglo="'.$d->producto.'"
+                                                                    data-pedido="'.$d->cod_pedido.'"
+                                                                    data-bs-toggle="modal"
+                                                                    data-category="'.$d->idcategoria.'" 
+                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
+                                                            </li>';
+                                                            echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
+                                                        } else {
+                                                            echo '<li>
+                                                                <a 
+                                                                    href="#" 
+                                                                    id="link-Arreglo-Pedido" 
+                                                                    data-id="'.$d->iddetalle.'"
+                                                                    data-arreglo="'.$d->producto.'"
+                                                                    data-pedido="'.$d->cod_pedido.'"
+                                                                    data-bs-toggle="modal"
+                                                                    data-category="'.$d->idcategoria.'" 
+                                                                    style="color:#c70a0a;"
+                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
+                                                            </li>';
+                                                            echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
+                                                        }
+                                                    //echo '<li>'.$d->producto.'</li>';
                                                 }
                                             }
                                         echo '</ul></td>';
@@ -70,36 +102,43 @@
         </div>
     </div>
 </section> <!-- /.card -->
-<script>
-    $(document).ready(function () {
-        $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
-        $('#table-historial-pedidos').DataTable({
-            "responsive": true, 
-            "order": [[ 0, 'dsc' ]],
-            language: {
-                processing: 'Procesando...',
-                lengthMenu: 'Mostrando _MENU_ registros por página',
-                zeroRecords: 'No hay registros',
-                info: 'Mostrando _START_ a _END_ de _MAX_',
-                infoEmpty: 'No hay registros disponibles',
-                infoFiltered: '(filtrando de _MAX_ total registros)',
-                search: 'Buscar',
-                paginate: {
-                first:      "Primero",
-                previous:   "Anterior",
-                next:       "Siguiente",
-                last:       "Último"
-                    },
-                    aria: {
-                        sortAscending:  ": activar para ordenar ascendentemente",
-                        sortDescending: ": activar para ordenar descendentemente"
-                    }
-            },
-            //"lengthChange": false, 
-            "autoWidth": false,
-            "dom": "<'row'<'col-sm-12 col-md-8'l><'col-md-12 col-md-2'f>>" +
-                    "<'row'<'col-sm-12'tr>>" +
-                    "<'row'<'col-sm-12 col-md-6'i><'col-sm-10 col-md-6'p>>"
-        });
-    });
-</script>
+
+<!-- Modal Frm Attributos extra Arreglo-->
+<div class="modal fade" id="linkArregloPedido" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titulo">Campos del arreglo para el tiket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="actualizaGrid()"></button>
+      </div>
+      <form id="form-modal-attr">
+        <div class="modal-body">
+            <input class="form-control" type="hidden" name="idarreglo" id="idarreglo">
+            <input class="form-control" type="hidden" name="idcategoria" id="idcategoria">
+            <div class="mb-0 row">
+                <label for="lblPedido" class="col-sm-2 col-form-label">Pedido:</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="lblPedido">
+                </div>
+            </div>
+            <div class="mb-1 row">
+                <label for="lblForm" class="col-sm-2 col-form-label">Arreglo:</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control-plaintext" id="lblForm">
+                </div>
+            </div>
+            
+            <!-- Desarrollo el cuerpo de cada formulario   -->
+            <div class="formulario" id="formulario">
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/rep-hist-cliente.js"></script>
