@@ -1,6 +1,7 @@
 <link rel="stylesheet" href="<?= site_url() ?>public/css/side-menu.css">
 <nav class="mt-2">
-  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+
     <!-- Add icons to the links using the .nav-icon class
           with font-awesome or any other icon font library -->
     
@@ -135,7 +136,7 @@
 
     if ($session->proveedores == 1) {
       echo '
-      <li class="nav-item" onclick="activeFunc()">
+      <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="fa-solid fa-truck-field menu-icon"></i>
           <p>
@@ -162,7 +163,7 @@
 
     if ($session->proveedores == 1) {
       echo '
-      <li class="nav-item" onclick="activeFunc()">
+      <li class="nav-item">
         <a href="#" class="nav-link">
           <i class="fa-solid fa-warehouse menu-icon"></i>
           <p>
@@ -189,7 +190,7 @@
 
     if ($session->reportes == 1) {
       echo '
-        <li class="nav-item" onclick="activeFunc()">
+        <li class="nav-item">
           <a href="#" class="nav-link">
             <i class="fa-solid fa-chart-simple menu-icon"></i>
             <p>
@@ -293,21 +294,21 @@
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="'.base_url().'clientes-frecuentes+" class="nav-link">
+            <a href="'.base_url().'clientes-frecuentes" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Clientes mas frecuentes</p>
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="'.base_url().'nuevos-clientes" class="nav-link">
+            <a href="'.base_url().'clientes-nuevos" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Nuevos clientes por mes</p>
+              <p>Nuevos clientes</p>
             </a>
           </li>
           <li class="nav-item subItem">
             <a href="'.base_url().'recompras-mes" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Cantidad de recompras mensual</p>
+              <p>Estadística de recompras mensual</p>
             </a>
           </li>
         </ul>

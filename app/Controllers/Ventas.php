@@ -6,19 +6,24 @@ use App\Controllers\BaseController;
 
 class Ventas extends BaseController {
 
-    public function acl() {
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        return $data;
+    function verificaSession($usuario, $ip){
+
+        if ($usuario->logged == 1 && $usuario->ip != $ip) {
+
+            //No coincide la session hay que desloguear al usuario
+            return false;
+        }else{
+
+            return true;
+        }
+
     }
 
     public function index() {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             date_default_timezone_set('America/Guayaquil');
@@ -37,9 +42,10 @@ class Ventas extends BaseController {
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
             $data['negocios'] = $this->negocioModel->findAll();
 
-            $data['detalle'] = $this->detallePedidoTempModel->where('cod_pedido', $data['cod_pedido'])
-                                                            ->join('productos','productos.id = detalle_pedido_temp.idproducto')
-                                                            ->findAll();
+            $data['detalle'] = $this->detallePedidoTempModel
+                ->where('cod_pedido', $data['cod_pedido'])
+                ->join('productos','productos.id = detalle_pedido_temp.idproducto')
+                ->findAll();
             //$data['detalle'] = $this->detallePedidoTempModel->_getDetallePedido($data['cod_pedido']);
 
             
@@ -92,7 +98,7 @@ class Ventas extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             date_default_timezone_set('America/Guayaquil');
@@ -825,7 +831,7 @@ class Ventas extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
             
@@ -1007,7 +1013,7 @@ class Ventas extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
             $detallePedido = $detalle = $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->find();
@@ -1278,7 +1284,7 @@ class Ventas extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
@@ -1302,7 +1308,7 @@ class Ventas extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($idpedido);
@@ -1359,7 +1365,7 @@ class Ventas extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
@@ -1380,7 +1386,7 @@ class Ventas extends BaseController {
 
         $data = $this->acl();
         //echo '<pre>'.var_export($data, true).'</pre>';exit;
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();

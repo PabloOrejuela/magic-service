@@ -1,0 +1,19 @@
+#txtMensaje {
+    margin-top: 6px;
+    display: none;
+}
+
+#table-resultados{
+    font-size: 0.8em;
+}
+
+#rango-title{
+    font-weight: bold;
+}   
+
+#div-link-limpiar{
+    font-size: 0.9em;
+    padding-top: 30px;
+    text-align: center;
+    align-items: center;
+}

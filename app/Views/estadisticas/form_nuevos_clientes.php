@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-nuevos-clientes.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-clientes-nuevos.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -10,7 +10,7 @@
                         <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>
                     <!-- /.card-header -->
-                    <form action="<?= site_url().'nuevos-clientes';?>" method="post">
+                    <form action="<?= site_url().'clientes-nuevos';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">
@@ -85,5 +85,5 @@
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/cabecera-reportes-mensual.js"></script>
-<script src="<?= site_url(); ?>public/js/frm-nuevos-clientes.js"></script>
+<script src="<?= site_url(); ?>public/js/frm-clientes-nuevos.js"></script>
 

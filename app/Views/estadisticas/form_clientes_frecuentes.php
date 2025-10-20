@@ -1,9 +1,9 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/form_cod_arreglo_vendido.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-clientes-nuevos.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-12">
+            <div class="col-md-10">
                 <!-- general form elements -->
                 <div class="card card-secondary">
                     <div class="card-header">
@@ -32,7 +32,24 @@
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label for="mes">Mes *:</label>
+                                    <label for="anio">Año:</label>
+                                    <select 
+                                        class="form-select form-control-border" 
+                                        id="anio" 
+                                        name="anio"
+                                    >
+                                        <option value="0" selected>-- Seleccionar un año --</option>
+                                        <?php
+                                            if (isset($anios)) {
+                                                foreach ($anios as $key => $anio) {
+                                                    echo '<option value="'.$anio->anio.'" '.set_select('anio', $anio->anio, false).' >'.$anio->anio.'</option>';
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-3" id="div-fecha">
+                                    <label for="mes">Mes:</label>
                                     <input 
                                         type="month" 
                                         class="form-control text" 
@@ -40,6 +57,16 @@
                                         name="fecha" 
                                         value="<?= date('Y-m'); ?>" 
                                         required
+                                    >
+                                    <p id="error-message"><?= session('errors.mes');?> </p>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="mes"></label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control text" 
+                                        id="txtMensaje"
+                                        readonly
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
@@ -58,5 +85,5 @@
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/cabecera-reportes-mensual.js"></script>
-<script src="<?= site_url(); ?>public/js/form_cod_arreglo_vendido.js"></script>
+<script src="<?= site_url(); ?>public/js/frm-clientes-nuevos.js"></script>
 

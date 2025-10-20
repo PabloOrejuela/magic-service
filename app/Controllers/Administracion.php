@@ -8,18 +8,11 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class Administracion extends BaseController {
 
-    public function acl() {
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        return $data;
-    }
-
     public function index() {
+
         $data = $this->acl();
 
-        if ($data['logged'] == 1) {
+        if ($data['is_logged'] == 1) {
             
             $data['session'] = $this->session;
 
@@ -148,7 +141,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['productos'] = $this->productoModel->_getProductos();
@@ -208,7 +201,7 @@ class Administracion extends BaseController {
     public function productosRelacionados($item){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $data['session'] = $this->session;
 
@@ -232,7 +225,7 @@ class Administracion extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -259,7 +252,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['sucursales'] = $this->sucursalModel->findAll();
@@ -279,7 +272,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -301,7 +294,7 @@ class Administracion extends BaseController {
         $data = $this->acl();
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -321,7 +314,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->findAll();
@@ -340,7 +333,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
@@ -366,7 +359,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
         
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -394,7 +387,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             $id = $this->request->getPostGet('id');
             $item = [
                 'item' => strtoupper($this->request->getPostGet('item')),
@@ -473,7 +466,7 @@ class Administracion extends BaseController {
         $data = $this->acl();
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             $id = $this->request->getPostGet('id');
 
             $variable = [
@@ -515,7 +508,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $item = [
                 'id' => $id,
@@ -541,7 +534,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -570,7 +563,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             if ($estado == 1) {
                 $dato = [
@@ -603,7 +596,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -623,7 +616,7 @@ class Administracion extends BaseController {
     public function institucion_financiera_new(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
@@ -650,7 +643,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             if ($estado == 1) {
                 $dato = [
@@ -675,7 +668,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $institucion = [
                 'banco' => $this->request->getPostGet('banco'),
@@ -712,7 +705,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['usuarios'] = $this->usuarioModel->_getAllUsers();
@@ -732,7 +725,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $data['session'] = $this->session;
             $data['estado'] = $this->estadoSistema();
@@ -762,7 +755,7 @@ class Administracion extends BaseController {
     
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -844,7 +837,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
@@ -873,7 +866,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
 
             $producto = [
                 'idusuario' => $data['id'],
@@ -937,7 +930,7 @@ class Administracion extends BaseController {
         $data = $this->acl();
         //PABLO Poner las validaciones de categoria, producto,
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
 
             $producto = [
                 'idusuario' => $data['id'],
@@ -1000,7 +993,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['producto'] = $this->productoModel->find($idproducto);
@@ -1020,7 +1013,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
@@ -1055,7 +1048,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
         
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
 
             //Creo la ruta a las imágenes
             $ruta = './public/images/productos/';
@@ -1193,7 +1186,7 @@ class Administracion extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->ventas == 1) {
+        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
 
             $idproductoOld = $this->request->getPostGet('idproducto');
             $new_id = $this->request->getPostGet('new_id');
@@ -1278,7 +1271,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             // $data['categorias'] = $this->categoriaModel->findAll();
@@ -1298,7 +1291,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -1316,7 +1309,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $item = [
                 'item' => strtoupper($this->request->getPostGet('item')),
@@ -1346,7 +1339,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $forma = [
                 'forma_pago' => $this->request->getPostGet('forma_pago'),
@@ -1374,7 +1367,7 @@ class Administracion extends BaseController {
     public function form_formas_pago_create(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
@@ -1393,7 +1386,7 @@ class Administracion extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
@@ -1412,7 +1405,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             // recogemos datos enviados desde el formulario de registro
             $user = filter_var(strtoupper($this->request->getPostGet('user')), FILTER_SANITIZE_STRING);
@@ -1455,7 +1448,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
 
             $user = [
@@ -1494,7 +1487,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $data = [
                 'sucursal' => strtoupper($this->request->getPostGet('sucursal')),
@@ -1524,7 +1517,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
 
             $data = [
                 'sector' => strtoupper($this->request->getPostGet('sector_entrega')),
@@ -1546,7 +1539,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->findAll();
@@ -1566,7 +1559,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->findAll();
@@ -1608,7 +1601,7 @@ class Administracion extends BaseController {
 
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->admin == 1) {
+        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->findAll();

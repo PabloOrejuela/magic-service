@@ -23,8 +23,6 @@ class UsuarioModel extends Model {
         'cedula',
         'idroles',
         'idrol_2',
-        'logged',
-        'ip',
         'estado',
         'inventarios',
         'es_vendedor'
@@ -58,7 +56,7 @@ class UsuarioModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-            'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,logged,rol,admin,ventas,clientes,proveedores,reportes,gastos,inventarios'
+            'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,rol,admin,ventas,clientes,proveedores,reportes,gastos,inventarios,estado'
         )->where('user', $usuario['user'])->where('estado', 1);
         $builder->join('roles', 'roles.id=usuarios.idroles');
         $query = $builder->get();
@@ -75,41 +73,9 @@ class UsuarioModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-            'usuarios.id as id,
-            nombre,
-            user,
-            telefono,
-            email,
-            password,
-            cedula,
-            idroles,
-            logged,
-            rol,
-            idrol_2,
-            admin,
-            ventas,
-            proveedores,
-            reportes,
-            direccion,
-            estado,
-            es_vendedor'
+            'usuarios.id as id,nombre,user,telefono,email,password,cedula,idroles,rol,idrol_2,admin,ventas,proveedores,reportes,direccion,es_vendedor,estado'
         );
         $builder->join('roles', 'roles.id=usuarios.idroles');
-        $builder->orderBy('nombre', 'asc');
-        $query = $builder->get();
-        if ($query->getResult() != null) {
-            foreach ($query->getResult() as $row) {
-                $result[] = $row;
-            }
-        }
-        //echo $this->db->getLastQuery();
-        return $result;
-    }
-
-    function _getLogueados(){
-        $result = NULL;
-        $builder = $this->db->table($this->table);
-        $builder->select('*')->where('logged', 1);
         $builder->orderBy('nombre', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -154,44 +120,33 @@ class UsuarioModel extends Model {
         return $result;
     }
 
+    //Pasar esta función al modelo de sesiones
     function _updateLoggin($usuario){
         //echo '<pre>'.var_export($usuario, true).'</pre>';exit;
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->set('logged', $usuario['logged']);
+        //$builder->set('logged', $usuario['logged']);
         $builder->set('ip', $usuario['ip']);
         $builder->where('id', $usuario['id']);
         $builder->update();
     }
 
-    function _getLogStatus($id){
-        $result = NULL;
-        $builder = $this->db->table('usuarios');
-        $builder->select('logged')->where('id', $id);
-        $query = $builder->get();
-        if ($query->getResult() != null) {
-            foreach ($query->getResult() as $row) {
-                $result = $row->logged;
-            }
-        }
-        //echo $this->db->getLastQuery();
-        return $result;
-    }
-
+    //Pasar esta función al modelo de sesiones
     function _closeSession($usuario){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->set('logged', 0);
+        //$builder->set('logged', 0);
         $builder->set('ip', NULL);
         $builder->where('id', $usuario['id']);
         $builder->update();
     }
 
+    //Pasar esta función al modelo de sesiones
     function _signOff ($id){
         $result = NULL;
         $builder = $this->db->table($this->table);
         $this->db->transStart();
-        $builder->set('logged', 0);
+        //$builder->set('logged', 0);
         $builder->set('ip', NULL);
         $builder->where('id', $id);
         $builder->update();
@@ -250,22 +205,5 @@ class UsuarioModel extends Model {
             echo log_message();
         }
         //return  $this->db->insertID();
-    }
-
-    public function _cierraSesiones($usuarios) {
-        $now = date('Y-m-d');
-        $fechaCierre = $now.' 00:00:01';
-        //echo '<pre>'.var_export($usuarios, true).'</pre>';exit;
-        $builder = $this->db->table($this->table);
-
-        foreach ($usuarios as $key => $value) {
-            if ($value->updated_at <= $fechaCierre) {
-                $builder->set('logged', 0);
-                $builder->set('ip', NULL);
-                $builder->where('id', $value->id);
-                $builder->where('id', $value->id);
-                $builder->update();
-            }
-        }
     }
 }

@@ -6,18 +6,10 @@ use App\Controllers\BaseController;
 
 class Inventarios extends BaseController {
 
-    public function acl() {
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        return $data;
-    }
-
     public function index(){
         $data = $this->acl();
         
-        if ($data['logged'] == 1 && $this->session->inventarios == 1) {
+        if ($data['is_logged'] == 1 && $this->session->inventarios == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
@@ -36,7 +28,7 @@ class Inventarios extends BaseController {
     public function gestion_inventario(){
         $data = $this->acl();
         
-        if ($data['logged'] == 1 && $this->session->inventarios == 1) {
+        if ($data['is_logged'] == 1 && $this->session->inventarios == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
@@ -55,7 +47,7 @@ class Inventarios extends BaseController {
     public function kardexItem($item){
         $data = $this->acl();
         
-        if ($data['logged'] == 1 && $this->session->inventarios == 1) {
+        if ($data['is_logged'] == 1 && $this->session->inventarios == 1) {
             
             $data['session'] = $this->session;
             $data['kardex'] = $this->kardexModel->_getKardex($item);

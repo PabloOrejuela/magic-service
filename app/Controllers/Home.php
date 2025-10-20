@@ -6,19 +6,11 @@ use App\Controllers\BaseController;
 
 class Home extends BaseController {
 
-    public function acl() {
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        return $data;
-    }
-
     public function index() {
 
         $data = $this->acl();
         
-        if ($data['logged'] == 1 ) {
+        if ($data['is_logged'] == 1) {
             
             $data['session'] = $this->session;
 
@@ -31,11 +23,10 @@ class Home extends BaseController {
             $this->itemsProductoTempModel->_deleteItemsTempOld();
             
             /*
-             * Verifico los usuarios que tienen sesiones abiertas y cierro todas las que estén abiertas y no se hayan creado ese día
+             * Cierro todas las que estén abiertas y no se hayan creado ese día
              * desde las 00:00:01
              */
-            $usuariosLogueados = $this->usuarioModel->_getLogueados();
-            $this->usuarioModel->_cierraSesiones($usuariosLogueados);
+            $this->sessionModel->_cierraSesiones();
 
             return redirect()->to('pedidos');
         }else{
@@ -43,7 +34,42 @@ class Home extends BaseController {
         }
     }
 
+    public function getClientIp() {
+        $ip = null;
+
+        // Lista de cabeceras comunes que podrían contener la IP real
+        $headers = [
+            'HTTP_CLIENT_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'HTTP_X_FORWARDED',
+            'HTTP_X_CLUSTER_CLIENT_IP',
+            'HTTP_FORWARDED_FOR',
+            'HTTP_FORWARDED',
+            'REMOTE_ADDR'
+        ];
+
+        foreach ($headers as $key) {
+            if (!empty($_SERVER[$key])) {
+                $ipList = explode(',', $_SERVER[$key]); // puede haber varias IPs separadas por comas
+                foreach ($ipList as $ipCandidate) {
+                    $ipCandidate = trim($ipCandidate);
+                    // Validar que sea una IP pública válida
+                    if (filter_var(
+                        $ipCandidate,
+                        FILTER_VALIDATE_IP,
+                        FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+                    )) {
+                        return $ipCandidate;
+                    }
+                }
+            }
+        }
+
+        return $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+    }
+
     public function validate_login(){
+
         $data = array(
             'user' => $this->request->getPostGet('user'),
             'password' => $this->request->getPostGet('password'),
@@ -59,7 +85,9 @@ class Home extends BaseController {
         }else{ 
 
             $usuario = $this->usuarioModel->_getUsuario($data);
-            $ip = $_SERVER['REMOTE_ADDR'];
+
+            $ip = $this->getClientIp();
+            $agent = $_SERVER['HTTP_USER_AGENT'];
 
             $estado = $this->estadoSistema();
             
@@ -69,25 +97,29 @@ class Home extends BaseController {
 
                 if (isset($usuario) && $usuario != NULL && password_verify($data['password'], $usuario->password)) {
                     //valido el login y pongo el id en sesion  && $usuario->id != 1 
-
-                    if ($usuario->logged == 1 ) {
-                        //Está logueado así que lo deslogueo
-                        $user = [
-                            'id' => $usuario->id,
-                            'logged' => 0,
-                            'ip' => 0
-                        ];
-                        $this->usuarioModel->update($usuario->id, $user);
-                    }
                     
-                    $sessiondata = [
+                    $iduser = $usuario->id;
+
+                    $this->session->version = $this->configuracionModel->findAll();
+
+                    //CREO LA SESION NUEVA EN LA TABLA DE SESIONES
+                    $session = [
+                        'is_logged' => 1,
+                        'ip' => $ip,
+                        'agent' => $agent,
+                        'status' => 1,
+                        'idusuario' => $iduser,
+                    ];
+
+                    $idsession = $this->sessionModel->insert($session);
+
+                     $sessiondata = [
                         //'is_logged' => 1,
                         'id' => $usuario->id,
                         'nombre' => $usuario->nombre,
                         'idroles' => $usuario->idroles,
                         'rol' => $usuario->rol,
                         'cedula' => $usuario->cedula,
-                        'logged' => $usuario->logged,
                         'admin' => $usuario->admin,
                         'ventas' => $usuario->ventas,
                         'clientes' => $usuario->clientes,
@@ -95,19 +127,14 @@ class Home extends BaseController {
                         'gastos' => $usuario->gastos,
                         'reportes' => $usuario->reportes,
                         'inventarios' => $usuario->inventarios,
+                        'ip' => $ip,
+                        'is_logged' => $session['is_logged'],
+                        'agent' => $agent,
+                        'status' => $session['status'],
+                        'idsession' => $idsession,
                         'codigo_pedido' => ''
                     ];
-                    
-                    $iduser = $usuario->id;
-
-                    $user = [
-                        'logged' => 1,
-                        'ip' => $ip
-                    ];
                     //echo '<pre>'.var_export($sessiondata, true).'</pre>';exit;
-                    $this->usuarioModel->update($iduser, $user);
-                    $this->session->version = $this->configuracionModel->findAll();
-                    
                     $this->session->set($sessiondata);
             
                     return redirect()->to('inicio');
@@ -128,17 +155,23 @@ class Home extends BaseController {
 
 
     public function logout(){
-        //destruyo la session  y salgo
-        $iduser = $this->session->id;
-        $user = [
-            'logged' => 0,
-            'ip' => 0
+        //destruyo la session y salgo
+        $session = [
+            'is_logged' => 0,
+            'status' => 0
         ];
         //echo '<pre>'.var_export($user, true).'</pre>';exit;
-        if ($iduser) {
-            $this->usuarioModel->update($iduser, $user);
+        if ($this->session->idsession) {
+            $this->sessionModel->update($this->session->idsession, $session);
         }
         $this->session->destroy();
-        return redirect()->to('/');
+        //return redirect()->to('/')->with('mensaje', 'Su sesión ha expirado o se ha logueado en otro equipo.');
+
+        $data['mensaje'] = 'Su sesión ha expirado o se ha cerrado o se ha logueado en otro equipo.';
+
+        // Carga la vista directamente
+        $data['title']='Magic Service';
+        $data['main_content']='home/login';
+        return view('includes/template_login', $data); 
     }
 }

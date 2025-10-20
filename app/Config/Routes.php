@@ -228,6 +228,6 @@ $routes->get('clientes-frecuentes', 'Estadisticas::frmClientesFrecuentes');
 $routes->post('clientes-frecuentes', 'Estadisticas::clientesFrecuentes');
 $routes->get('clientes-frecuentes_excel', 'Estadisticas::clientesFrecuentesExcel');
 
-$routes->get('nuevos-clientes', 'Estadisticas::frmNuevosClientes');
-$routes->post('nuevos-clientes', 'Estadisticas::nuevosClientes');
-$routes->get('nuevos-clientes_excel', 'Estadisticas::nuevosClientesExcel');
+$routes->get('clientes-nuevos', 'Estadisticas::frmClientesNuevos');
+$routes->post('clientes-nuevos', 'Estadisticas::clientesNuevos');
+$routes->get('clientes_nuevos_excel', 'Estadisticas::clientesNuevosExcel');

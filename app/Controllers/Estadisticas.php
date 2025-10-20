@@ -19,14 +19,6 @@ class Estadisticas extends BaseController {
         9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
     ];
 
-    public function acl() {
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        return $data;
-    }
-
     /**
      * Genera la estadistica de ticket promedio de ventas
      *
@@ -37,7 +29,7 @@ class Estadisticas extends BaseController {
     public function ticketPromedio(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -108,7 +100,7 @@ class Estadisticas extends BaseController {
     public function arregMasVendidos(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -133,7 +125,7 @@ class Estadisticas extends BaseController {
     public function frmEstCategorias(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -157,7 +149,7 @@ class Estadisticas extends BaseController {
     public function frmCategoriaMenosVendida(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -182,14 +174,18 @@ class Estadisticas extends BaseController {
     public function frmClientesFrecuentes(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
             $data['negocios'] = $this->negocioModel->findAll();
+            $data['anios'] = $this->pedidoModel
+            ->select("DISTINCT YEAR(fecha) as anio")
+            ->orderBy("anio", "ASC")
+            ->findAll();
 
             $data['title']='Estadísticas';
-            $data['subtitle']='Clientes que mas han comprado';
+            $data['subtitle']='Clientes que mas han comprado (Frecuentes)';
             $data['main_content']='estadisticas/form_clientes_frecuentes';
             return view('dashboard/index', $data);
         }else{
@@ -204,10 +200,10 @@ class Estadisticas extends BaseController {
      * @return void
      * @throws conditon
      **/
-    public function frmNuevosClientes(){
+    public function frmClientesNuevos(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -233,7 +229,7 @@ class Estadisticas extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -241,6 +237,7 @@ class Estadisticas extends BaseController {
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
                 'fecha' => $this->request->getPostGet('fecha'),
+                'anio' => $this->request->getPostGet('anio'),
             ];
             
             $this->validation->setRuleGroup('clientesFrecuentes');
@@ -251,17 +248,24 @@ class Estadisticas extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
-                $fecha = explode('-', $datos['fecha']);
-                $mes = $fecha[1];
-                $anio = $fecha[0];
-                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
 
-                $datos['fecha_inicio'] = $datos['fecha'].'-01';
-                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+                
+                if ($datos['anio'] == 0) {
+                
+                    $fecha = explode('-', $datos['fecha']);
+                    $mes = $fecha[1];
+                    $anio = $fecha[0];
+                    $data['numDias'] = cal_days_in_month(0, $mes, $anio);
 
+                    $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                    $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+                }else{
+                    $datos['fecha_inicio'] = $datos['anio'].'-01-01';
+                    $datos['fecha_final'] = $datos['anio'].'-12-31';
+                }
 
                 //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 180, 'desc');
+                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0, 'desc');
 
                 $contadorCliente = [];
                 $cliente = null;
@@ -292,12 +296,15 @@ class Estadisticas extends BaseController {
                     return $b['cant'] <=> $a['cant'];
                 });
 
-                //echo '<pre>'.var_export($contadorCliente, true).'</pre>';exit;
+                $data['anios'] = $this->pedidoModel
+                ->select("DISTINCT YEAR(fecha) as anio")
+                ->orderBy("anio", "ASC")
+                ->findAll();
 
                 $data['datos'] = $datos;
                 $data['res'] = $contadorCliente;
                 $data['title']='Estadísticas';
-                $data['subtitle']='Clientes que mas han comprado';
+                $data['subtitle']='Clientes que mas han comprado (Frecuentes)';
                 $data['main_content']='estadisticas/clientes_frecuentes';
                 return view('dashboard/index', $data);
             }
@@ -307,11 +314,11 @@ class Estadisticas extends BaseController {
         }
     }
 
-    public function nuevosClientes(){
+    public function clientesNuevos(){
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -332,56 +339,52 @@ class Estadisticas extends BaseController {
             }else{ 
 
                 //Verifico si ha elegido año o no
-                echo '<pre>'.var_export($datos['anio'], true).'</pre>';exit;
 
-                $fecha = explode('-', $datos['fecha']);
-                $mes = $fecha[1];
-                $anio = $fecha[0];
-                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
-
-                $datos['fecha_inicio'] = $datos['fecha'].'-01';
-                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
-
-
-                //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 180, 'desc');
-
-                $contadorCliente = [];
-                $cliente = null;
+                if ($datos['anio'] == 0) {
                 
-                if ($data['pedidos']) { //uso un if a modo de try
-                    foreach ($data['pedidos'] as $pedido) {
+                    $fecha = explode('-', $datos['fecha']);
+                    $mes = $fecha[1];
+                    $anio = $fecha[0];
+                    $data['numDias'] = cal_days_in_month(0, $mes, $anio);
 
-                        $cliente = $pedido->cliente;
-                        $idcliente = $pedido->idcliente;
-                        $total = $pedido->total;
-
-                        if (!isset($contadorCliente[$cliente])) {
-                            $contadorCliente[$cliente] = [
-                                'idcliente' => $idcliente,
-                                'cliente' => $cliente,
-                                'total' => $total,
-                                'cant' => 1,
-                            ];
-                        } else {
-                            $contadorCliente[$cliente]['cant']++;
-                            $contadorCliente[$cliente]['total']+=$pedido->total;
-                        }
-                    }
+                    $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                    $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+                }else{
+                    $datos['fecha_inicio'] = $datos['anio'].'-01-01';
+                    $datos['fecha_final'] = $datos['anio'].'-12-31';
                 }
 
-                //Les ordeno de mayor a menor
-                usort($contadorCliente, function($a, $b) {
-                    return $b['cant'] <=> $a['cant'];
-                });
 
-                //echo '<pre>'.var_export($contadorCliente, true).'</pre>';exit;
+                //Traigo los clientes que han comprado en este periodo de tiempo
+                $clientesNuevos = $this->pedidoModel
+                    ->select('idcliente, nombre, MIN(fecha) as primer_pedido')
+                    ->where('fecha >=', $datos['fecha_inicio'])
+                    ->where('fecha <=', $datos['fecha_final'])
+                    ->groupBy('idcliente')
+                    ->join('clientes','clientes.id=pedidos.idcliente')
+                    ->having('MIN(fecha) >=', $datos['fecha_inicio'])
+                    ->having('MIN(fecha) <=', $datos['fecha_final'])
+                    ->orderBy('nombre', 'asc')
+                    ->findAll();
 
-                $data['datos'] = $datos;
-                $data['res'] = $contadorCliente;
+                $data['datos'] = [
+                    'anio' => $datos['anio'],
+                    'fecha_inicio' => $datos['fecha_inicio'],
+                    'fecha_final' => $datos['fecha_final'],
+                    'negocio' => $datos['negocio']
+                ];
+
+                $data['anios'] = $this->pedidoModel
+                ->select("DISTINCT YEAR(fecha) as anio")
+                ->orderBy("anio", "ASC")
+                ->findAll();
+
+                //echo '<pre>'.var_export(count($clientesNuevos), true).'</pre>';exit;
+
+                $data['res'] = $clientesNuevos;
                 $data['title']='Estadísticas';
-                $data['subtitle']='Clientes que mas han comprado';
-                $data['main_content']='estadisticas/clientes_frecuentes';
+                $data['subtitle']='Clientes nuevos que han realizado pedidos';
+                $data['main_content']='estadisticas/clientes_nuevos';
                 return view('dashboard/index', $data);
             }
 
@@ -394,7 +397,7 @@ class Estadisticas extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             
@@ -487,7 +490,7 @@ class Estadisticas extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -498,7 +501,7 @@ class Estadisticas extends BaseController {
                 'cant' => $this->request->getPostGet('cant_arreglos'),
             ];
             
-            $this->validation->setRuleGroup('estCodArregloMasVendido');
+            $this->validation->setRuleGroup('clientesFrecuentes');
         
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
@@ -522,24 +525,26 @@ class Estadisticas extends BaseController {
                 $data['detalle'] = [];
                 $contadorProductos = [];
 
-                foreach ($data['pedidos'] as $pedido) {
+                if ($data['pedidos']) {
+                    foreach ($data['pedidos'] as $pedido) {
                     
-                    // Obtén el detalle del pedido (ajusta el método según tu modelo)
-                    $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+                        // Obtén el detalle del pedido (ajusta el método según tu modelo)
+                        $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
 
-                    if ($detalles) {
-                        foreach ($detalles as $detalle) {
-                            $idProducto = $detalle->idproducto;
-                            $pvp = $detalle->pvp; 
+                        if ($detalles) {
+                            foreach ($detalles as $detalle) {
+                                $idProducto = $detalle->idproducto;
+                                $pvp = $detalle->pvp; 
 
-                            if (!isset($contadorProductos[$idProducto])) {
-                                $contadorProductos[$idProducto] = [
-                                    'id' => $idProducto,
-                                    'cant' => 1,
-                                    'pvp' => $pvp
-                                ];
-                            } else {
-                                $contadorProductos[$idProducto]['cant']++;
+                                if (!isset($contadorProductos[$idProducto])) {
+                                    $contadorProductos[$idProducto] = [
+                                        'id' => $idProducto,
+                                        'cant' => 1,
+                                        'pvp' => $pvp
+                                    ];
+                                } else {
+                                    $contadorProductos[$idProducto]['cant']++;
+                                }
                             }
                         }
                     }
@@ -574,7 +579,7 @@ class Estadisticas extends BaseController {
     public function arregMenosVendidos(){
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -593,7 +598,7 @@ class Estadisticas extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -604,7 +609,7 @@ class Estadisticas extends BaseController {
                 'cant' => $this->request->getPostGet('cant_arreglos'),
             ];
             
-            $this->validation->setRuleGroup('estCodArregloMasVendido');
+            $this->validation->setRuleGroup('clientesFrecuentes');
         
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
@@ -621,44 +626,37 @@ class Estadisticas extends BaseController {
                 $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
                 
 
-                //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant'], 'asc');
+                //Traigo los arreglos con menos ventas, debo traer los que no tienen ni un pedido en ese período de tiempo
+                //$data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0, 'asc');
                 
-                //Recorro los pedidos y traigo el detalle de cada uno
-                $data['detalle'] = [];
-                $contadorProductos = [];
+                //Traer todos los productos del negocio
+                $productos = $this->productoModel->findAll();
+                $resultado = [];
 
-                foreach ($data['pedidos'] as $pedido) {
-                    
-                    // Obtén el detalle del pedido (ajusta el método según tu modelo)
-                    $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+                foreach ($productos as $producto) {
+                    //Contar ventas en el periodo para cada producto
+                    $cant = $this->contarVentasProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
+                    $cod_pedido = $this->primerCodPedidoProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
+                    $pvp = $this->pvpProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
 
-                    if ($detalles) {
-                        foreach ($detalles as $detalle) {
-                            $idProducto = $detalle->idproducto;
-                            $pvp = $detalle->pvp; 
-
-                            if (!isset($contadorProductos[$idProducto])) {
-                                $contadorProductos[$idProducto] = [
-                                    'id' => $idProducto,
-                                    'cant' => 1,
-                                    'pvp' => $pvp
-                                ];
-                            } else {
-                                $contadorProductos[$idProducto]['cant']++;
-                            }
-                        }
-                    }
+                    $resultado[] = (object)[
+                        'id' => $producto->id,
+                        'producto' => $producto->producto,
+                        'cant' => $cant,
+                        'cod_pedido' => $cod_pedido,
+                        'pvp' => $pvp
+                    ];
                 }
 
-                // Ordenar por 'cant' de mayor a menor
-                usort($contadorProductos, function($a, $b) {
-                    return $a['cant'] <=> $b['cant'];
+                //Ordenar por cantidad ascendente
+                usort($resultado, function($a, $b) {
+                    return $a->cant <=> $b->cant;
                 });
+                
 
                 //echo '<pre>'.var_export($datos, true).'</pre>';exit;
                 $data['datos'] = $datos;
-                $data['res'] = $contadorProductos;
+                $data['res'] = $resultado;
                 $data['title']='Estadísticas';
                 $data['subtitle']='Codigos menos vendidos en el mes';
                 $data['main_content']='estadisticas/cod_arreglo_menos_vendido';
@@ -668,6 +666,54 @@ class Estadisticas extends BaseController {
         }else{
             return redirect()->to('logout');
         }
+    }
+
+    // Métodos auxiliares en el controlador
+    private function contarVentasProducto($id_producto, $negocio, $fecha_inicio, $fecha_final)
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('detalle_pedido');
+        $builder->selectCount('detalle_pedido.id', 'cant')
+            ->join('pedidos', 'detalle_pedido.cod_pedido = pedidos.cod_pedido')
+            ->where('detalle_pedido.idproducto', $id_producto)
+            ->where('pedidos.idnegocio', $negocio)
+            ->where('pedidos.fecha >=', $fecha_inicio)
+            ->where('pedidos.fecha <=', $fecha_final);
+
+        $row = $builder->get()->getRow();
+        return $row ? $row->cant : 0;
+    }
+
+    private function primerCodPedidoProducto($id_producto, $negocio, $fecha_inicio, $fecha_final){
+        $db = \Config\Database::connect();
+        $builder = $db->table('detalle_pedido');
+        $builder->select('detalle_pedido.cod_pedido')
+            ->join('pedidos', 'detalle_pedido.cod_pedido = pedidos.cod_pedido')
+            ->where('detalle_pedido.idproducto', $id_producto)
+            ->where('pedidos.idnegocio', $negocio)
+            ->where('pedidos.fecha >=', $fecha_inicio)
+            ->where('pedidos.fecha <=', $fecha_final)
+            ->orderBy('pedidos.fecha', 'asc')
+            ->limit(1);
+
+        $row = $builder->get()->getRow();
+        return $row ? $row->cod_pedido : null;
+    }
+
+    private function pvpProducto($id_producto, $negocio, $fecha_inicio, $fecha_final){
+        $db = \Config\Database::connect();
+        $builder = $db->table('detalle_pedido');
+        $builder->select('pvp')
+            ->join('pedidos', 'detalle_pedido.cod_pedido = pedidos.cod_pedido')
+            ->where('detalle_pedido.idproducto', $id_producto)
+            ->where('pedidos.idnegocio', $negocio)
+            ->where('pedidos.fecha >=', $fecha_inicio)
+            ->where('pedidos.fecha <=', $fecha_final)
+            ->orderBy('pedidos.fecha', 'asc')
+            ->limit(1);
+
+        $row = $builder->get()->getRow();
+        return $row ? $row->pvp : null;
     }
 }
 

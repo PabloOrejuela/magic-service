@@ -27,14 +27,6 @@ class Reportes extends BaseController {
         9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
     ];
 
-    public function acl() {
-        $data['idroles'] = $this->session->idroles;
-        $data['id'] = $this->session->id;
-        $data['logged'] = $this->usuarioModel->_getLogStatus($data['id']);
-        $data['nombre'] = $this->session->nombre;
-        return $data;
-    }
-
     public function item_pagado_update() {
 
         $id = $this->request->getPostGet('id');
@@ -52,7 +44,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -71,7 +63,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -90,7 +82,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -109,7 +101,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -128,7 +120,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -147,7 +139,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -166,7 +158,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -200,7 +192,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -278,7 +270,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -335,7 +327,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -394,7 +386,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -477,7 +469,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -519,7 +511,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -539,7 +531,7 @@ class Reportes extends BaseController {
         
         $data = $this->acl();
 
-        if ($data['logged'] == 1 && $this->session->reportes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -2585,7 +2577,7 @@ class Reportes extends BaseController {
     public function reporteItemsSensibles(){
         $data = $this->acl();
         
-        if ($data['logged'] == 1 && $this->session->clientes == 1) {
+        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;

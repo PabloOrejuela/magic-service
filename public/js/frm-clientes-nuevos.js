@@ -1,6 +1,9 @@
 let dateAnio = document.getElementById('anio')
 let divFecha = document.getElementById('div-fecha')
 let txtMensaje = document.getElementById('txtMensaje')
+let linkLimpiarControles = document.getElementById('txt-limpiar')
+let cbNegocio = document.getElementById('negocio')
+
 
 dateAnio.addEventListener('change', () => {
 
@@ -17,3 +20,10 @@ dateAnio.addEventListener('change', () => {
 
     
 })
+
+linkLimpiarControles.addEventListener('click', () => {
+
+    cbNegocio.selectedIndex = 0
+    dateAnio.selectedIndex = 0
+})
+

@@ -299,4 +299,26 @@ class ProductoModel extends Model {
             }
         }
     }
+
+    public function _getArreglosMenosVendidos($negocio, $fecha_inicio, $fecha_final){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('productos.id, productos.producto, 
+        SUM(
+            CASE 
+                WHEN pedidos.idnegocio = "'.$negocio.'" 
+                     AND pedidos.fecha >= "'.$fecha_inicio.'" 
+                     AND pedidos.fecha <= "'.$fecha_final.'" 
+                THEN 1 ELSE 0 
+            END
+        ) as cant,
+        MIN(detalle_pedido.cod_pedido) as cod_pedido')
+        ->join('detalle_pedido', 'detalle_pedido.idproducto = productos.id', 'left')
+        ->join('pedidos', 'detalle_pedido.cod_pedido = pedidos.cod_pedido', 'left')
+        // NO PONGAS NINGÚN WHERE SOBRE pedidos o detalle_pedido
+        ->groupBy('productos.id')
+        ->orderBy('cant', 'asc');
+
+        return $builder->get()->getResult();
+    }
 }

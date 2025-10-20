@@ -16,7 +16,7 @@
         ?>
         <form action="<?= base_url(); ?>validate_login" method="post" class="form">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="user" placeholder="usuario" value="wolf">
+            <input type="text" class="form-control" name="user" placeholder="usuario" value="">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -25,7 +25,7 @@
           </div>
           <p id="error-message"><?= session('errors.user');?> </p>
           <div class="input-group mb-1">
-            <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="17055">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password" value="">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -55,6 +55,11 @@
                   echo'<div class="alert alert-danger mt-2" role="alert">'.session('mensaje').'</div>';
                 }
               ?>
+              <?php if (isset($mensaje)): ?>
+                  <div id="alerta" class="alert alert-warning text-center mt-3">
+                      <?= esc($mensaje) ?>
+                  </div>
+              <?php endif; ?>
               
             </div>
             <!-- /.col -->
