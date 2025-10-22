@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'clientes-frecuentes';?>" method="post">
+                    <form action="<?= site_url().'recompras-mes';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-3">
@@ -31,24 +31,7 @@
                                         ?>
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="anio">Año:</label>
-                                    <select 
-                                        class="form-select form-control-border" 
-                                        id="anio" 
-                                        name="anio"
-                                    >
-                                        <option value="0" selected>-- Seleccionar un año --</option>
-                                        <?php
-                                            if (isset($anios)) {
-                                                foreach ($anios as $key => $anio) {
-                                                    echo '<option value="'.$anio->anio.'" '.set_select('anio', $anio->anio, false).' >'.$anio->anio.'</option>';
-                                                }
-                                            }
-                                        ?>
-                                    </select>
-                                </div>
+                               </div>
                                 <div class="form-group col-md-3" id="div-fecha">
                                     <label for="mes">Mes:</label>
                                     <input 
@@ -61,10 +44,7 @@
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
-                                <div class="form-group col-md-2" id="div-link-limpiar">
-                                    <a href="#" id="txt-limpiar">Limpiar controles</a>
-                                </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-2">
                                     <label for="mes"></label>
                                     <input 
                                         type="text" 
@@ -80,41 +60,32 @@
                             <div class="row col-md-8">
                                 <div><span id="rango-title">Desde:</span> <?=  $datos['fecha_inicio']; ?></div>
                                 <div><span id="rango-title">Hasta:</span> <?=   $datos['fecha_final']; ?></div>
-                                <table class="table table-bordered mt-3" id="table-resultados">
+                                <div><span id="rango-title">Total de clientes que han vuelto a comprar en el mes:</span> <?=   count($res); ?></div>
+                                <table class="table table-bordered table-condensed mt-3" id="table-resultados">
                                 <thead>
                                     <th id="td-id">No.</th>     
                                     <th id="td-id">Id</th>
                                     <th id="td-id">Cliente</th>
-                                    <th id="td-text-center">Cantidad de pedidos</th>
-                                    <th id="td-text-right">Total</th>
+                                    <th id="td-id">Documento</th>
                                 </thead>
                                 <tbody>
                                     <?php
-                                        use App\Models\ProductoModel;
-                                        $this->productoModel = new ProductoModel;
 
                                         $sumaTotal = 0;
                                         $num = 1;
 
                                         if ($res) {
-                                            //echo '<pre>'.var_export($res, true).'</pre>';exit;
 
                                             foreach ($res as $key => $cliente) {
 
-                                                if ($num == 21) {
-                                                    break;
-                                                }
-
                                                 echo '<tr>';
                                                 echo '<td>'.$num.'</td>';
-                                                echo '<td>'.$cliente['idcliente'].'</td>';
-                                                echo '<td>'.strtoupper($cliente['cliente']).'</td>';
-                                                echo '<td id="td-text-center">'.$cliente['cant'].'</td>';
-                                                echo '<td id="td-text-right">'.number_format($cliente['total'],2).'</td>';
+                                                echo '<td>'.$cliente['id'].'</td>';
+                                                echo '<td>'.strtoupper($cliente['nombre']).'</td>';
+                                                echo '<td>'.$cliente['num_documento'].'</td>';
                                                 echo '</tr>';
 
                                                 $num++;
-                                                
                                             }
 
                                             //echo '<tr><td colspan="3" id="td-suma">Total: </td><td id="td-suma">'.number_format($sumaTotal, 2).'</td></tr>
@@ -125,7 +96,7 @@
                                             <!-- /.card-body -->                        
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                                <a class="btn btn-primary" href="'.site_url().'est-cod-arreglo-mas_vendido-excel?negocio='.$datos['negocio'].'&mes='.$datos['fecha'].'" id="btn-report-excel">Descargar reporte en excel</a>
+                                                <a class="btn btn-primary" href="'.site_url().'clientes_nuevos_excel?negocio='.$datos['negocio'].'&fechaInicio='.$datos['fecha_inicio'].'" id="btn-report-excel">Descargar reporte en excel</a>
                                                 <a href="'.site_url().'arreg-mas-vendidos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                             </div>';
                                             
@@ -141,10 +112,9 @@
                                         <!-- /.card-body -->                        
                                         <div class="card-footer">
                                             <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                            <a href="'.site_url().'arreg-mas-vendidos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                            <a href="'.site_url().'recompras-mes" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                         </div>';
                                         }
-                            
                                     ?>
                     </form>
                 </div>

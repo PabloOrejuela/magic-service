@@ -6,7 +6,7 @@
             <!-- left column -->
             <div class="col-md-9">
                 <!-- general form elements -->
-                <div class="card card-secondary mb-5">
+                <div class="card card-light mb-5">
                     <div class="card-header">
                         <h3 class="card-title"><?= $subtitle; ?></h3>
                     </div>

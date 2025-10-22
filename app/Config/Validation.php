@@ -418,19 +418,6 @@ class Validation extends BaseConfig
         ],
     ];
 
-     public $sector_entrega = [
-        // 'sector'   => 'required',
-        // 'costo_entrega'   => 'required',
-    ]; 
-
-    public $sector_entrega_errors = [
-        // 'sector' => [
-        //     'required' => 'El campo "Sector" es obligatorio',
-        // ],
-        // 'costo_entrega' => [
-        //     'required' => 'El campo "Costo de entrega" es obligatorio',
-        // ],
-    ];
 
     public $clientesFrecuentes = [
         'negocio'  => 'required|greater_than[0]',

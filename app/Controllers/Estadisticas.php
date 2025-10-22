@@ -116,6 +116,31 @@ class Estadisticas extends BaseController {
     }
 
     /**
+     * Form estadistica de recompras
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function frmRecomprasMes(){
+        $data = $this->acl();
+
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Estadística de recompras';
+            $data['main_content']='estadisticas/form_recompras';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    /**
      * Genera la estadistica de código de arreglo mas vendido
      *
      * @param Type $var Description
@@ -313,7 +338,6 @@ class Estadisticas extends BaseController {
             return redirect()->to('logout');
         }
     }
-
     public function clientesNuevos(){
         
         $data = $this->acl();
@@ -391,6 +415,124 @@ class Estadisticas extends BaseController {
         }else{
             return redirect()->to('logout');
         }
+    }
+
+    public function recomprasMes(){
+        
+        $data = $this->acl();
+
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('fecha'),
+                'anio' => $this->request->getPostGet('anio'),
+            ];
+            
+            $this->validation->setRuleGroup('nuevosClientes');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+
+                //Verifico si ha elegido año o no
+
+                if ($datos['anio'] == 0) {
+                
+                    $fecha = explode('-', $datos['fecha']);
+                    $mes = $fecha[1];
+                    $anio = $fecha[0];
+                    $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+                    $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                    $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+                }else{
+                    $datos['fecha_inicio'] = $datos['anio'].'-01-01';
+                    $datos['fecha_final'] = $datos['anio'].'-12-31';
+                }
+
+
+                //Traigo un array de todos los pedidos
+                $pedidos = $this->pedidoModel->select('pedidos.id as id,cod_pedido,idcliente,fecha,nombre,documento')
+                    ->join('clientes','clientes.id=pedidos.idcliente','left')
+                    ->findAll();
+
+                $clientes = $this->obtenerClientesRecurrentes($pedidos, $mes, $anio);
+                
+                $data['datos'] = [
+                    'anio' => $datos['anio'],
+                    'fecha_inicio' => $datos['fecha_inicio'],
+                    'fecha_final' => $datos['fecha_final'],
+                    'negocio' => $datos['negocio']
+                ];
+
+                $data['anios'] = $this->pedidoModel
+                ->select("DISTINCT YEAR(fecha) as anio")
+                ->orderBy("anio", "ASC")
+                ->findAll();
+
+                //echo '<pre>'.var_export(count($clientesNuevos), true).'</pre>';exit;
+
+                $data['res'] = $clientes;
+                $data['title']='Estadísticas';
+                $data['subtitle']='Clientes antiguos que han hecho recompras en el mes';
+                $data['main_content']='estadisticas/clientes_recompras';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    function obtenerClientesRecurrentes($ventas, $mes, $anio) {
+
+        $clientes_mes = [];
+        $clientes_anteriores = [];
+
+        foreach ($ventas as $venta) {
+            $fecha = strtotime($venta->fecha);
+            $m = (int)date('n', $fecha);
+            $y = (int)date('Y', $fecha);
+            $cliente = $venta->idcliente;
+
+            // Clientes con compras anteriores al mes consultado
+            if ($y < $anio || ($y == $anio && $m < $mes)) {
+                $clientes_anteriores[$cliente] = [
+                    'id' => $cliente,
+                    'nombre' => $venta->nombre,
+                    'num_documento' => $venta->documento,
+                ];
+            }
+
+            // Clientes con compras en el mes consultado
+            if ($y == $anio && $m == $mes) {
+                $clientes_mes[$cliente] = [
+                    'id' => $cliente,
+                    'nombre' => $venta->nombre,
+                    'num_documento' => $venta->documento,
+                ];
+            }
+        }
+
+        // Intersección: clientes que están en ambos conjuntos
+        $clientes_recurrentes = array_intersect_key($clientes_mes, $clientes_anteriores);
+
+        $recurrentes = $this->ordenarPorNombre($clientes_recurrentes);
+        return ($recurrentes);
+    }
+
+    function ordenarPorNombre($clientes) {
+        usort($clientes, function($a, $b) {
+            return strcasecmp($a['nombre'], $b['nombre']);
+        });
+        return $clientes;
     }
 
     public function estCategorias(){
@@ -669,8 +811,7 @@ class Estadisticas extends BaseController {
     }
 
     // Métodos auxiliares en el controlador
-    private function contarVentasProducto($id_producto, $negocio, $fecha_inicio, $fecha_final)
-    {
+    private function contarVentasProducto($id_producto, $negocio, $fecha_inicio, $fecha_final) {
         $db = \Config\Database::connect();
         $builder = $db->table('detalle_pedido');
         $builder->selectCount('detalle_pedido.id', 'cant')

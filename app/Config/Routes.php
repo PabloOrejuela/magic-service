@@ -231,3 +231,7 @@ $routes->get('clientes-frecuentes_excel', 'Estadisticas::clientesFrecuentesExcel
 $routes->get('clientes-nuevos', 'Estadisticas::frmClientesNuevos');
 $routes->post('clientes-nuevos', 'Estadisticas::clientesNuevos');
 $routes->get('clientes_nuevos_excel', 'Estadisticas::clientesNuevosExcel');
+
+$routes->get('recompras-mes', 'Estadisticas::frmRecomprasMes');
+$routes->post('recompras-mes', 'Estadisticas::recomprasMes');
+$routes->get('recompras-mes_excel', 'Estadisticas::recomprasMesExcel');
