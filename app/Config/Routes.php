@@ -203,6 +203,9 @@ $routes->get('reporte-pg', 'Reportes::frmReportePG');
 $routes->post('reporte-pg', 'Reportes::reportePG');
 $routes->get('reporte-pg-excel', 'Reportes::reportePGExcel');
 
+$routes->get('reporte-mensajeria', 'Reportes::frmReporteMensajeria');
+$routes->post('reporte-mensajeria', 'Reportes::reporteMensajeria');
+$routes->get('reporte-mensajeria-excel', 'Reportes::reporteMensajeriaExcel');
 
 $routes->get('reporte-list-items', 'Reportes::reporteListItems');
 $routes->get('reporte-items-sensibles', 'Reportes::reporteItemsSensibles');

@@ -78,6 +78,25 @@ class Reportes extends BaseController {
         }
     }
 
+    public function frmReporteMensajeria(){
+        
+        $data = $this->acl();
+
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Reportes';
+            $data['subtitle']='Reporte de Mensajería';
+            $data['main_content']='reportes/form_reporte_mensajeria';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function frmReporteMasterIngresos(){
         
         $data = $this->acl();
@@ -183,6 +202,59 @@ class Reportes extends BaseController {
             $data['subtitle']='Reporte de Procedencias';
             $data['main_content']='reportes/reporte_procedencias';
             return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function reporteMensajeria(){
+        
+        $data = $this->acl();
+
+        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('mes'),
+            ];
+
+            $this->validation->setRuleGroup('reporteMasterIngresos');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+                $data['res'] = NULL;
+                $data['inicioMes'] = date('w', strtotime($datos['fecha'].'-01'));
+                $data['finMes'] = date('w', strtotime($datos['fecha'].'-'.$data['numDias']));
+                $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
+                $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
+
+                //Obtengo los pedidos dentro de ese rango de fechas
+                $data['res'] = $this->pedidoModel->_getPedidosRangoFechasReportes($datos['fecha_inicio'], $datos['fecha_final'], $datos['negocio']);
+
+                $data['res'] = $res;
+                $data['datos'] = $datos;
+
+                echo '<pre>'.var_export($data['res'], true).'</pre>';exit;
+
+                $data['title']='Reportes';
+                $data['subtitle']='Reporte Master de Ingresos';
+                $data['main_content']='reportes/reporte_master_ingresos';
+                return view('dashboard/index', $data);
+            }
+
         }else{
             return redirect()->to('logout');
         }

@@ -33,13 +33,14 @@ if (selectSugest) {
     selectSugest.addEventListener('change', function(e) { 
     
         if (selectSugest.selectedIndex == 1) {
+            let cadenafecha = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+mesActual)
 
             //día actual
             fechaInicio.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
             fechaFinal.value = cadenafecha + '-' +(parseInt(fecha.getDate()) > 9 ? parseInt(fecha.getDate()) : '0'+parseInt(fecha.getDate()))
 
         }else if(selectSugest.selectedIndex == 2){
-
+            let cadenafecha = anioActual + '-' + (mesActual > 9 ? mesActual : '0'+mesActual)
             let diasMes = daysInMonth(anioActual, mesActual)
 
             //Mes actual
