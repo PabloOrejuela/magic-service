@@ -114,6 +114,31 @@ class PedidoModel extends Model {
         return $result;
     }
 
+    function _getPedidosRangoFechasNegocio($fechaInicio, $fechaFinal, $negocio){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+        $builder->where($this->table.'.estado', 1);
+
+        //Si se ha seleccionado un negocio
+        if ($negocio != 0) {
+            $builder->where($this->table.'.idnegocio', $negocio);
+        }
+        
+        $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('fecha', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
     function _getPedidosRangoFechasVendedor($objeto){
 
         $fechaInicio = $objeto['fecha_inicio'];
@@ -134,6 +159,39 @@ class PedidoModel extends Model {
         }
 
         $builder->where($this->table.'.vendedor', $vendedor);
+        $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('orden', 'asc');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result[] = $row;
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+    function _getPedidosRangoFechasMensajero($objeto){
+
+        $fechaInicio = $objeto['fecha_inicio'];
+        $fechaFinal = $objeto['fecha_final'];
+        $negocio = $objeto['negocio'];
+        $mensajero = $objeto['mensajero'];
+
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,dir_entrega,nombre as cliente,transporte,negocio,mensajero,rango_entrega_desde,rango_entrega_hasta,
+                valor_mensajero,valor_mensajero_edit,valor_mensajero_extra,mensajero_extra,venta_extra,sector');
+        $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+        $builder->where($this->table.'.estado', 1);
+
+        //Si se ha seleccionado un negocio
+        if ($negocio != 0) {
+            $builder->where($this->table.'.idnegocio', $negocio);
+        }
+
+        $builder->where($this->table.'.mensajero', $mensajero);
         $builder->where( "fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $builder->orderBy('orden', 'asc');
         $query = $builder->get();

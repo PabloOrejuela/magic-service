@@ -221,17 +221,8 @@
                                     </div>
                                     <div class="form-group mb-3 mt-5">
                                         <label for="vendedor">Vendedor *:</label>
-                                        <select class="form-select form-control-border" id="vendedor" name="vendedor" required disabled>
-                                            <option value="0" selected>--Seleccionar vendedor--</option>
-                                            <?php
-                                                if (isset($vendedores)) {
-                                                    foreach ($vendedores as $key => $vendedor) {
-                                                        if ($vendedor->id == $pedido->vendedor) {
-                                                            echo '<option value="'.$vendedor->id.'" selected>'.$vendedor->nombre.'</option>'; 
-                                                        }
-                                                    }
-                                                }
-                                            ?>
+                                        <select class="form-select form-control-border" id="vendedor" name="vendedor" required>
+                                            <?php echo '<option value="'.$datosVendedor->id.'" selected>'.$datosVendedor->nombre.'</option>';  ?>
                                         </select>
                                     </div>
                                     <p id="error-message"><?= session('errors.vendedor');?> </p>
@@ -607,8 +598,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-
 
                                     <div class="form-group mb-3 mt-5">
                                         <h4 class="mt-3">Información financiera</h4>

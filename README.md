@@ -6,5 +6,5 @@
 
 <h5>Fixes</h5>
 <ul>   
-    <li></li>
+    <li>Corregido un error que no mostraba el vendedor en el formulario de editar pedido cuando no tenía rol de vendedor</li>
 </ul>

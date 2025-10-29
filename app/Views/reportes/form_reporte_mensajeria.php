@@ -1,9 +1,9 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-diario-ventas.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-estadisticas-vendedor.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-7">
+            <div class="col-md-10">
                 <!-- general form elements -->
                 <div class="card card-light">
                     <div class="card-header">
@@ -14,18 +14,18 @@
                     <form action="<?= site_url().'reporte-mensajeria';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
-                                    <label for="negocio">Negocio:</label>
+                                <div class="form-group col-md-2">
+                                    <label for="negocio">Negocio: </label>
                                     <select 
                                         class="form-select form-control-border" 
                                         id="negocio" 
                                         name="negocio" 
                                     >
-                                    <option value="0" selected>-- Elegir Negocio --</option>
+                                        <option value="0" selected>--Opciones--</option>
                                         <?php
                                             if (isset($negocios)) {
                                                 foreach ($negocios as $key => $negocio) {
-                                                    echo '<option value="'.$negocio->id.'" >'.$negocio->negocio.'</option>';
+                                                    echo '<option value="'.$negocio->id.'" '.set_select('negocio', $negocio->id, false).' >'.$negocio->negocio.'</option>';
                                                 }
                                             }
                                         ?>
@@ -33,71 +33,55 @@
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                </div>
                                <div class="form-group col-md-3">
+                                    <label for="mensajero">Mensajero:</label>
+                                    <select 
+                                        class="form-select form-control-border" 
+                                        id="mensajero" 
+                                        name="mensajero" 
+                                    >
+                                        <option value="0" selected>--Seleccionar mensajero--</option>
+                                        <?php
+                                            if (isset($mensajeros)) {
+                                                foreach ($mensajeros as $key => $mensajero) {
+
+                                                    if ($session->idroles >= 5) {
+                                                        echo '<option value="'.$mensajero->id.'" '.set_select('mensajero', $mensajero->id, false).' selected>'.$mensajero->nombre.'</option>';
+                                                    }else{
+                                                        echo '<option value="'.$mensajero->id.'" '.set_select('mensajero', $mensajero->id, false).'>'.$mensajero->nombre.'</option>';
+                                                    }
+                                                    
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+                                    <p id="error-message"><?= session('errors.mensajero');?> </p>
+                               </div>
+                               <div class="form-group col-md-2">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
-                                <?php
-                                
-                                    if ($session->idroles == 3) {
-                                        echo '
-                                            <input 
-                                                type="date" 
-                                                class="form-control text" 
-                                                id="fecha_inicio" 
-                                                name="fecha_inicio" 
-                                                value="'.date('Y-m-d').'" 
-                                                required
-                                            >
-                                        ';
-                                    }else{
-                                        echo '
-                                            <input 
-                                                type="date" 
-                                                class="form-control text" 
-                                                id="fecha_inicio" 
-                                                name="fecha_inicio" 
-                                                value="'.date('Y-m-d').'" 
-                                                required
-                                                onkeydown="return false"
-                                                readonly
-                                            >
-                                        ';
-                                    }
-                                ?>
+                                    <input 
+                                        type="date" 
+                                        class="form-control text" 
+                                        id="fecha_inicio" 
+                                        name="fecha_inicio" 
+                                        value="<?= old('fecha_inicio'); ?>" 
+                                        required
+                                    >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
                                </div>
-                               <div class="form-group col-md-3">
+                               <div class="form-group col-md-2">
                                 <label for="fecha_final">Fecha final *:</label>
-                                <?php
-                                
-                                    if ($session->idroles == 3) {
-                                        echo '
-                                            <input 
-                                                type="date" 
-                                                class="form-control text" 
-                                                id="fecha_final" 
-                                                name="fecha_final" 
-                                                value="'.date('Y-m-d').'" 
-                                                required
-                                            >
-                                        ';
-                                    }else{
-                                        echo '
-                                            <input 
-                                                type="date" 
-                                                class="form-control text" 
-                                                id="fecha_final" 
-                                                name="fecha_final" 
-                                                value="'.date('Y-m-d').'" 
-                                                required
-                                                onkeydown="return false"
-                                                readonly
-                                            >
-                                        ';
-                                    }
-                                ?>
-                                <p id="error-message"><?= session('errors.fecha_final');?> </p>
+                                    <input 
+                                        type="date" 
+                                        class="form-control text" 
+                                        id="fecha_final" 
+                                        name="fecha_final" 
+                                        value="<?= old('fecha_final'); ?>" 
+                                        required
+                                    >
+                                    <p id="error-message"><?= session('errors.fecha_final');?> </p>
                                </div>
-                               <div class="form-group col-md-3">
-                                    <label for="sugest">Opciones:</label>
+                               <div class="form-group col-md-2">
+                                    <label for="sugest">Más fechas:</label>
                                     <select 
                                         class="form-select form-control-border" 
                                         id="sugest" 
@@ -107,11 +91,7 @@
                                         <?php
                                             if (isset($sugest)) {
                                                 foreach ($sugest as $key => $value) {
-                                                    if ($session->idroles > 3 && $key == 2){
-                                                        continue;
-                                                    }
                                                     echo '<option value="'.$key.'" >'.$value.'</option>';
-                                                    
                                                 }
                                             }
                                         ?>

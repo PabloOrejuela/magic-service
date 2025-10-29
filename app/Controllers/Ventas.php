@@ -1070,7 +1070,7 @@ class Ventas extends BaseController {
                 'direccion' => '',
                 'email' => strtolower($this->request->getPostGet('email')),
             ];
-            
+
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoUpdate');
 
@@ -1351,7 +1351,8 @@ class Ventas extends BaseController {
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
             $data['pedidoProcedencia'] = $this->pedidoProcedenciaModel->where('idpedidos', $data['pedido']->id)->first();
 
-            //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
+            $data['datosVendedor'] = $this->usuarioModel->select('id,nombre')->where('id', $data['pedido']->vendedor)->first();
+            
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';
