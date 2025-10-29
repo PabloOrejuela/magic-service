@@ -228,8 +228,8 @@ class Reportes extends BaseController {
                 'mensajero' => $this->request->getPostGet('mensajero'),
             ];
 
-            //echo '<pre>'.var_export($datos, true).'</pre>';exit;
-            $this->validation->setRuleGroup('reporteEstadisticasVendedor');
+            // echo '<pre>'.var_export($datos, true).'</pre>';exit;
+            $this->validation->setRuleGroup('reporteMensajeria');
         
             if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración

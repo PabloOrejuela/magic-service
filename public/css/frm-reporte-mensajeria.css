@@ -1,0 +1,35 @@
+label{
+    margin-bottom: 1px;
+}
+
+#mensaje{
+    font-size: 1.2em;
+    margin-left:5px;
+}
+
+#table-resultados{
+    font-size: 0.6em;
+}
+
+.form-select{
+    padding: 6px 12px;
+    font-size: 1em;
+}
+
+#text-result-bold{
+    font-weight: bold;
+    text-align: right;
+}
+
+#resultado-total{
+    text-align: right;
+}
+
+#text-result-bold-centered{
+    font-weight: bold;
+    text-align: center;
+}
+
+#rango-title{
+    font-weight: bold;
+}

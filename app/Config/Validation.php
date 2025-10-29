@@ -364,6 +364,18 @@ class Validation extends BaseConfig
         ],
     ];
 
+    public $reporteMensajeria = [
+        'mensajero'  => 'required|greater_than[0]',
+    ];
+
+    public $reporteMensajeria_errors = [
+        'mensajero' => [
+            'required' => 'El campo "Mensajero" es obligatorio',
+            'greater_than' => 'El campo "Mensajero" es obligatorio',
+        ],
+    ];
+
+
     public $reportePG = [
         'negocio'  => 'required|greater_than[0]',
     ];

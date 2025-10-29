@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-estadisticas-vendedor.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-mensajeria.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -68,7 +68,7 @@
                                         id="fecha_inicio" 
                                         name="fecha_inicio" 
                                         value="<?= $datos['fecha_inicio']; ?>" 
-                                        required
+                                        
                                     >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
                                </div>
@@ -80,7 +80,7 @@
                                         id="fecha_final" 
                                         name="fecha_final" 
                                         value="<?= $datos['fecha_final']; ?>"  
-                                        required
+                                       
                                     >
                                     <p id="error-message"><?= session('errors.fecha_final');?> </p>
                                </div>
@@ -111,7 +111,6 @@
                         <div class="row col-md-8">
                             <div><span id="rango-title">Desde:</span> <?=  $datos['fecha_inicio']; ?></div>
                             <div><span id="rango-title">Hasta:</span> <?=   $datos['fecha_final']; ?></div>
-                            <div><span id="rango-title">Total de clientes que han vuelto a comprar en el mes:</span> <?=   count($res); ?></div>
                         </div>
                         <div class="card-body mt-2">
                             <div class="row col-md-12">
