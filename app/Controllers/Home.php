@@ -113,7 +113,7 @@ class Home extends BaseController {
 
                     $idsession = $this->sessionModel->insert($session);
 
-                     $sessiondata = [
+                    $sessiondata = [
                         //'is_logged' => 1,
                         'id' => $usuario->id,
                         'nombre' => $usuario->nombre,

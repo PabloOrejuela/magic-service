@@ -177,12 +177,12 @@
                                     <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
                                     <a 
                                         class="btn btn-primary" 
-                                        href="'.site_url().'reporte-estadisticas-vendedor-excel?negocio='.$datos['negocio']
+                                        href="'.site_url().'reporte-mensajeria-excel?negocio='.$datos['negocio']
                                         .'&fecha_inicio='.$datos['fecha_inicio']
                                         .'&fecha_final='.$datos['fecha_final']
                                         .'&vendedor='.$resultado->mensajero.'">Descargar reporte en excel</a>
 
-                                    <a href="'.site_url().'reporte-estadisticas-vendedor" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                    <a href="'.site_url().'reporte-mensajeria" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                 </div>
                                                     ';
 

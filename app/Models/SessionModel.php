@@ -69,7 +69,7 @@ class SessionModel extends Model {
         $builder->where('updated_at <=', $fechaCierre);
         $builder->set('status', 0);
         $builder->update();
-        echo $this->db->getLastQuery();
+        //echo $this->db->getLastQuery();
     }
 
 }

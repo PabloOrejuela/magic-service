@@ -181,9 +181,10 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,dir_entrega,nombre as cliente,transporte,negocio,mensajero,rango_entrega_desde,rango_entrega_hasta,
-                valor_mensajero,valor_mensajero_edit,valor_mensajero_extra,mensajero_extra,venta_extra,sector');
+                valor_mensajero,valor_mensajero_edit,valor_mensajero_extra,mensajero_extra,venta_extra,sectores_entrega.sector as sector');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
+        $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id','left');
         $builder->where($this->table.'.estado', 1);
 
         //Si se ha seleccionado un negocio
