@@ -31,7 +31,9 @@
                             <tbody>
                                 <?php
                                     use App\Models\rolModel;
+                                    use App\Models\sessionModel;
                                     $this->rolModel = new rolModel();
+                                    $this->sessionModel = new sessionModel();
 
                                     if (isset($usuarios) && $usuarios != NULL) {
                                         //echo '<pre>'.var_export($usuarios, true).'</pre>';exit;
@@ -39,6 +41,8 @@
                                         foreach ($usuarios as $key => $value) {
                                             $rol_2 = $this->rolModel->select('rol')->find($value->idrol_2);
                                             $roles = $this->rolModel->findAll();
+                                            $is_logged = $this->sessionModel->where('idusuario', $value->id)->orderBy('id', 'DESC')->first();
+                                            
                                             echo '<tr>
                                                 <td><a href="'.site_url().'usuario-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
                                                 <td>'.$value->telefono.'</td>
@@ -99,7 +103,7 @@
                                                         </td>';
                                                 }
                                             
-                                                if ($value->logged == 1) {
+                                                if (isset($is_logged->is_logged) && $is_logged->is_logged == '1') {
                                                     echo '<td id="td-online" >ONLINE</td>';
                                                     echo '
                                                         <td>
@@ -115,7 +119,12 @@
                                                                 </a>
                                                             </div>
                                                         </td>';
-                                                }else if($value->logged == 0){
+                                                }else if(!isset($is_logged->is_logged) || $is_logged->is_logged == '0'){
+                                                    echo '<td id="td-offline" >OFFLINE</td>';
+                                                    echo '
+                                                        <td>
+                                                        </td>';
+                                                }else{
                                                     echo '<td id="td-offline" >OFFLINE</td>';
                                                     echo '
                                                         <td>
