@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'reporte-mensajeria';?>" method="post">
+                    <form action="<?= site_url().'reporte-mensajeria-excel';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-2">

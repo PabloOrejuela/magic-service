@@ -26,22 +26,6 @@ selectTipoGasto.addEventListener('change', function(e) {
         divGastoVariable.style.display = 'none'
         divGastoFijo.style.display = 'none'
     }
-
-    // $.ajax({
-    //     method:"GET",
-    //     dataType:"html",
-    //     url: "genera-codigo-pedido",
-    //     data: {
-    //         codigo: codigoPedido,
-    //         id: id
-    //     },
-    //     beforeSend: function (f) {
-            
-    //     },
-    //     success: function(resultado){
-    //         let res = JSON.parse(resultado)
-    //     }
-    // });
     
 });
 

@@ -124,7 +124,7 @@
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
                                                 <a class="btn btn-primary" href="'.site_url().'clientes_nuevos_excel?negocio='.$datos['negocio'].'&fechaInicio='.$datos['fecha_inicio'].'" id="btn-report-excel">Descargar reporte en excel</a>
-                                                <a href="'.site_url().'arreg-mas-vendidos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                                <a href="'.site_url().'clientes-nuevos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                             </div>';
                                             
                                         }else{
@@ -139,7 +139,7 @@
                                         <!-- /.card-body -->                        
                                         <div class="card-footer">
                                             <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                            <a href="'.site_url().'arreg-mas-vendidos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                            <a href="'.site_url().'clientes-nuevos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                         </div>';
                                         }
                                     ?>
