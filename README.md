@@ -6,5 +6,5 @@
 
 <h5>Fixes</h5>
 <ul>   
-    <li>Corregido el Grid de usuarios pues ahora usa la tabla de sessión</li>
+    <li>En estadística de Nuevos clientes decía Total de clientes frecuentes: se cambió a Total de nuevos clientes</li>
 </ul>

@@ -85,7 +85,7 @@
                             <div class="row col-md-8">
                                 <div><span id="rango-title">Desde:</span> <?=  $datos['fecha_inicio']; ?></div>
                                 <div><span id="rango-title">Hasta:</span> <?=   $datos['fecha_final']; ?></div>
-                                <div><span id="rango-title">Total de clientes frecuentes:</span> <?=   count($res); ?></div>
+                                <div><span id="rango-title">Total de nuevos clientes:</span> <?=   count($res); ?></div>
                                 <table class="table table-bordered table-condensed mt-3" id="table-resultados">
                                 <thead>
                                     <th id="td-id">No.</th>     
