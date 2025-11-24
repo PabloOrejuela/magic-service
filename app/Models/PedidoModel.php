@@ -70,9 +70,9 @@ class PedidoModel extends Model {
         //Si es vendedor solo salen los pedidos en proceso, no los completados y entregados
         if ($idroles > 3) {
             $builder->where('pedidos.estado <=', 3);
-            $builder->limit(350);
+            $builder->limit(250);
         }else{
-            $builder->limit(500);
+            $builder->limit(350);
         }
 
         $builder->orderBy('orden', 'asc');

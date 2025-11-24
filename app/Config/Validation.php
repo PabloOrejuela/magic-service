@@ -25,6 +25,7 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        \App\Validation\MyRules::class,
     ];
 
     /**
@@ -456,5 +457,4 @@ class Validation extends BaseConfig
             'greater_than' => 'El campo "Negocio" es obligatorio',
         ]
     ];
-
 }

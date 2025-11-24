@@ -64,6 +64,7 @@
                                 <thead>
                                     <th id="td-id">No.</th>
                                     <th id="td-id">Id</th>
+                                    <th id="td-text-left">Negocio</th>
                                     <th id="td-text-left">Arreglo</th>
                                     <th id="td-text-center">Cantidad</th>
                                     <th id="td-text-right">Valor</th>
@@ -85,6 +86,7 @@
                                                 echo '<tr>';
                                                 echo '<td>'.$num.'</td>';
                                                 echo '<td>'.$arreglo->id.'</td>';
+                                                echo '<td>'.$nombreNegocio->negocio.'</td>';
                                                 echo '<td>'.$nombreProducto->producto.'</td>';
                                                 echo '<td id="td-text-center">'.$arreglo->cant.'</td>';
                                                 echo '<td id="td-result">'.$arreglo->pvp.'</td>';

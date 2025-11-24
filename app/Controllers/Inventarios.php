@@ -7,9 +7,8 @@ use App\Controllers\BaseController;
 class Inventarios extends BaseController {
 
     public function index(){
-        $data = $this->acl();
         
-        if ($data['is_logged'] == 1 && $this->session->inventarios == 1) {
+        if ($this->session->inventarios == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
@@ -26,9 +25,8 @@ class Inventarios extends BaseController {
     }
 
     public function gestion_inventario(){
-        $data = $this->acl();
         
-        if ($data['is_logged'] == 1 && $this->session->inventarios == 1) {
+        if ($this->session->inventarios == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
@@ -45,9 +43,8 @@ class Inventarios extends BaseController {
     }
 
     public function kardexItem($item){
-        $data = $this->acl();
         
-        if ($data['is_logged'] == 1 && $this->session->inventarios == 1) {
+        if ($this->session->inventarios == 1) {
             
             $data['session'] = $this->session;
             $data['kardex'] = $this->kardexModel->_getKardex($item);
@@ -64,6 +61,7 @@ class Inventarios extends BaseController {
     }
 
     function get_item_cuantificable(){
+        
         $name = $this->request->getPostGet('name');
         $items = $this->itemModel->_getItemCuantificable($name);
         
@@ -71,6 +69,7 @@ class Inventarios extends BaseController {
     }
 
     function getStockActual(){
+
         $item = $this->request->getPostGet('id');
         $datos = $this->stockActualModel->_getStock($item);
         if ($datos != NULL) {

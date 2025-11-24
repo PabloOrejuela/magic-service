@@ -8,9 +8,7 @@ class Proveedores extends BaseController {
 
     public function index(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->proveedores == 1) {
+        if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
             $data['proveedores'] = $this->proveedorModel->findAll();
@@ -34,9 +32,7 @@ class Proveedores extends BaseController {
      **/
     public function create() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->proveedores == 1) {
+        if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
 
@@ -58,9 +54,7 @@ class Proveedores extends BaseController {
      **/
     public function edit($id) {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->proveedores == 1) {
+        if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
             $data['proveedor'] = $this->proveedorModel->find($id);
@@ -77,9 +71,7 @@ class Proveedores extends BaseController {
 
     public function insert(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
 
             $proveedor = [
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
@@ -111,9 +103,7 @@ class Proveedores extends BaseController {
 
     public function update(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
             $id = $this->request->getPostGet('id');
             $proveedor = [
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),

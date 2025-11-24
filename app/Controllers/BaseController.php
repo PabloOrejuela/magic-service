@@ -129,41 +129,4 @@ abstract class BaseController extends Controller {
         $this->image = \Config\Services::image();
 
     }
-
-    //Funciones
-    public function acl() {
-
-        //Verifico si existe una sessión activa en otra pc
-        $sessionAnterior = $this->sessionModel->where('idusuario',$this->session->id)->where('is_logged',1)->findAll();
-        $sessionActual = $this->sessionModel->where('id', $this->session->idsession)->first();
-
-        //Recorro cada sesión que exista que no tenga el mismo id de la sesión actual y hago is_logged = 0 y status = 0 
-        if ($sessionAnterior) {
-            foreach ($sessionAnterior as $session) {
-                if ($session->id != $this->session->idsession && $sessionActual->is_logged == 1 && $sessionActual->status == 1) {
-                    $set = [
-                        'is_logged' => 0,
-                        'status' => 0,
-                    ];
-                    //echo '<pre>'.var_export($session->id, true).'</pre>';
-                    $this->sessionModel->update($session->id, $set);
-                }
-            }          
-        }
-
-        if ($sessionActual) {
-            //Actualizo los datos de la sesión actual desde la tabla
-            $data['idroles'] = $this->session->idroles;
-            $data['id'] = $this->session->id;
-            $data['is_logged'] = $sessionActual->is_logged;
-            $data['idsession'] = $this->session->idsession;
-            $data['status'] = $sessionActual->status;
-            $data['nombre'] = $this->session->nombre;
-
-            return $data;
-        }else{echo 166;
-            return redirect()->to('/');
-        }
-    }
-
 }

@@ -10,9 +10,7 @@ class Administracion extends BaseController {
 
     public function index() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -104,7 +102,6 @@ class Administracion extends BaseController {
         $idrol_2 = $this->request->getPostGet('idrol_2');
         $noAsignar = $this->request->getPostGet('noAsignar');
 
-        //echo '<pre>'.var_export($idrol_2, true).'</pre>';exit;
         //Si está asignado no asignar le quitarmos el segundo rol
         if ($noAsignar == 'true') {
 
@@ -139,9 +136,7 @@ class Administracion extends BaseController {
 
     public function productos() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['productos'] = $this->productoModel->_getProductos();
@@ -199,9 +194,8 @@ class Administracion extends BaseController {
     }
 
     public function productosRelacionados($item){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        
+        if ($this->session->admin == 1) {
 
             $data['session'] = $this->session;
 
@@ -223,9 +217,7 @@ class Administracion extends BaseController {
 
     public function sucursales() {
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -250,9 +242,7 @@ class Administracion extends BaseController {
      **/
     public function form_sestor_entrega_create() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['sucursales'] = $this->sucursalModel->findAll();
@@ -270,9 +260,7 @@ class Administracion extends BaseController {
 
     public function sectoresEntrega() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -291,10 +279,10 @@ class Administracion extends BaseController {
 
     public function variablesSistema() {
 
-        $data = $this->acl();
+        
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
 
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -312,9 +300,7 @@ class Administracion extends BaseController {
 
     public function items() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->findAll();
@@ -331,9 +317,7 @@ class Administracion extends BaseController {
 
     public function gestion_inventario() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['items'] = $this->itemModel->_getItemsCuantificables();
@@ -357,9 +341,7 @@ class Administracion extends BaseController {
      **/
     public function form_item_edit($id) {
 
-        $data = $this->acl();
-        
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -385,9 +367,7 @@ class Administracion extends BaseController {
     */
     public function item_update() {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             $id = $this->request->getPostGet('id');
             $item = [
                 'item' => strtoupper($this->request->getPostGet('item')),
@@ -407,6 +387,7 @@ class Administracion extends BaseController {
     }
 
     public function actualizaPrecioItem() {
+
         $id = $this->request->getPostGet('id');
         $item = [
             'precio' => strtoupper($this->request->getPostGet('precio')),
@@ -418,6 +399,7 @@ class Administracion extends BaseController {
     }
 
     public function actualizaPermiso() {
+
         $id = $this->request->getPostGet('id');
         $campo = $this->request->getPostGet('campo');
 
@@ -431,19 +413,20 @@ class Administracion extends BaseController {
         }else if($permisoActualArray[''.$campo.''] == 0){
             $permiso = 1;
         }
-        //echo '<pre>'.var_export($id.' - '.$campo.'='.$permisoActualArray[''.$campo.''], true).'</pre>';exit;
+        
         $id = $this->rolModel->_updatePermiso($id, $permiso, $campo);
 
         return $id;
     }
 
     public function cambia_attr_temp_producto() {
+
         $id = $this->request->getPostGet('id');
         $producto = [
             'attr_temporal' => 0,
             'estado' => 1
         ];
-        //echo '<pre>'.var_export($item, true).'</pre>';exit;
+        
         $this->productoModel->update($id, $producto);
         $data['id'] = $id;
         return json_encode($data);
@@ -455,7 +438,7 @@ class Administracion extends BaseController {
             'attr_temporal' => 0,
             'estado' => 1
         ];
-        // echo '<pre>'.var_export($idproducto, true).'</pre>';exit;
+        
         $id = $this->productoModel->update($idproducto, $producto);
         $data['id'] = $id;
         return json_encode($data);
@@ -463,10 +446,9 @@ class Administracion extends BaseController {
 
     public function updateVariableSistema() {
     
-        $data = $this->acl();
         $this->variablesSistemaModel = new VariablesSistemaModel($this->db);
 
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             $id = $this->request->getPostGet('id');
 
             $variable = [
@@ -482,7 +464,6 @@ class Administracion extends BaseController {
 
             $this->logout();
         }
-        
     }
 
     public function item_cuantificable_update($id, $valor) {
@@ -506,9 +487,7 @@ class Administracion extends BaseController {
     */
     public function item_delete($id) {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $item = [
                 'id' => $id,
@@ -532,9 +511,7 @@ class Administracion extends BaseController {
     */
     public function formas_pago() {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -561,9 +538,7 @@ class Administracion extends BaseController {
     */
     public function forma_pago_delete($id, $estado) {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             if ($estado == 1) {
                 $dato = [
@@ -594,9 +569,7 @@ class Administracion extends BaseController {
     */
     public function instituciones_financieras() {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -614,9 +587,8 @@ class Administracion extends BaseController {
     }
 
     public function institucion_financiera_new(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
@@ -641,9 +613,7 @@ class Administracion extends BaseController {
     */
     public function institucion_financiera_delete($id, $estado) {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             if ($estado == 1) {
                 $dato = [
@@ -666,9 +636,7 @@ class Administracion extends BaseController {
 
     public function institucion_financiera_create(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $institucion = [
                 'banco' => $this->request->getPostGet('banco'),
@@ -703,9 +671,7 @@ class Administracion extends BaseController {
     */
     public function usuarios() {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['usuarios'] = $this->usuarioModel->_getAllUsers();
@@ -723,9 +689,7 @@ class Administracion extends BaseController {
 
     public function estado(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $data['session'] = $this->session;
             $data['estado'] = $this->estadoSistema();
@@ -753,9 +717,7 @@ class Administracion extends BaseController {
     */
     public function roles() {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
@@ -835,9 +797,7 @@ class Administracion extends BaseController {
      **/
     public function form_producto_create() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
@@ -864,12 +824,10 @@ class Administracion extends BaseController {
 
     public function product_insert(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
 
             $producto = [
-                'idusuario' => $data['id'],
+                'idusuario' => $this->session->id,
                 'producto' => strtoupper($this->request->getPostGet('producto')),
                 'categoria' => strtoupper($this->request->getPostGet('categoria')),
                 'precio' => strtoupper($this->request->getPostGet('precio')),
@@ -927,13 +885,12 @@ class Administracion extends BaseController {
 
     public function product_new_insert(){
 
-        $data = $this->acl();
         //PABLO Poner las validaciones de categoria, producto,
 
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
 
             $producto = [
-                'idusuario' => $data['id'],
+                'idusuario' => $this->session->id,
                 'producto' => strtoupper(trim($this->request->getPostGet('nombreArregloNuevo'))),
                 'idcategoria' => $this->request->getPostGet('categoria'),
                 'new_id' => $this->request->getPostGet('new_id'),
@@ -970,13 +927,12 @@ class Administracion extends BaseController {
                 }
             }
 
-            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
             //Inserto el nuevo producto
             $idproducto = $this->productoModel->_insertNewProduct($producto);
 
             //Obtengo los items del producto que estoy creando
             $items = $this->itemsProductoTempModel->_getItemsNewProducto($producto['new_id']);
-            //echo '<pre>'.var_export('R: '.$items, true).'</pre>';exit;
+            
             //Recibo el id insertado y hago el insert de los items del producto
             $this->itemsProductoModel->_insertItemsPersonalizado($idproducto, $items);
 
@@ -991,9 +947,7 @@ class Administracion extends BaseController {
 
     public function prod_historial_changes($idproducto){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['producto'] = $this->productoModel->find($idproducto);
@@ -1011,9 +965,7 @@ class Administracion extends BaseController {
 
     public function product_edit($idproducto){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
@@ -1046,9 +998,7 @@ class Administracion extends BaseController {
 
     public function product_update(){
 
-        $data = $this->acl();
-        
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
 
             //Creo la ruta a las imágenes
             $ruta = './public/images/productos/';
@@ -1056,7 +1006,7 @@ class Administracion extends BaseController {
             //Recibo la imagen
             $imagen = $this->request->getFile('file-img');
             $producto = [
-                'idusuario' => $data['id'],
+                'idusuario' => $this->session->id,
                 'idcategoria' => $this->request->getPostGet('categoria'),
                 'producto' => strtoupper(trim($this->request->getPostGet('producto'))),
                 'idproducto' => $this->request->getPostGet('idproducto'),
@@ -1071,7 +1021,7 @@ class Administracion extends BaseController {
 
             //Creo el objeto de cambios
             $cambios = [
-                'idusuario' => $data['id'],
+                'idusuario' => $this->session->id,
                 'idproducto' => $this->request->getPostGet('idproducto'),
                 'descripcion' => '',
                 'detalle' => ''
@@ -1127,7 +1077,6 @@ class Administracion extends BaseController {
                 
             }
 
-            //echo '<pre>'.var_export($producto, true).'</pre>';exit;
             //Actualizo el producto
             $this->productoModel->_updateProducto($producto);
 
@@ -1184,16 +1133,14 @@ class Administracion extends BaseController {
 
     public function product_personalize(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
 
             $idproductoOld = $this->request->getPostGet('idproducto');
             $new_id = $this->request->getPostGet('new_id');
             
             $imagen = $this->request->getFile('file-img');
             $producto = [
-                'idusuario' => $data['id'],
+                'idusuario' => $this->session->id,
                 'producto' => strtoupper($this->request->getPostGet('nombreArregloNuevo')),
                 'categoria' => $this->request->getPostGet('categoria'),
                 'precio' => $this->request->getPostGet('total'),
@@ -1233,11 +1180,11 @@ class Administracion extends BaseController {
                     }
                 }
             }else{
-                //echo '<pre>'.var_export($producto, true).'</pre>';exit;
+                
                 //No se ha elegido una nueva imagen
                 $producto['image'] = 'default-img';
                 //Verifico si se ha borrado la imágen
-                //echo "se borró la imagen";
+                
             }
 
             $items = $this->itemsProductoTempModel->_getItemsProducto($idproductoOld);
@@ -1269,15 +1216,10 @@ class Administracion extends BaseController {
      **/
     public function form_sucursal_create() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
-            // $data['categorias'] = $this->categoriaModel->findAll();
-            // $data['items'] = $this->itemModel->findAll();
 
-            //echo '<pre>'.var_export($data, true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Registrar sucursal';
             $data['main_content']='administracion/form-sucursal-new';
@@ -1289,13 +1231,10 @@ class Administracion extends BaseController {
 
     public function form_item_create(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
 
-            //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Nuevo Item';
             $data['main_content']='administracion/form-item-new';
@@ -1307,9 +1246,7 @@ class Administracion extends BaseController {
 
     public function itemCreate(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $item = [
                 'item' => strtoupper($this->request->getPostGet('item')),
@@ -1323,7 +1260,7 @@ class Administracion extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                //echo '<pre>'.var_export($item, true).'</pre>';exit;
+                
                 $this->itemModel->_insert($item);
 
                 return redirect()->to('items');
@@ -1337,9 +1274,7 @@ class Administracion extends BaseController {
 
     public function forma_pago_new(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $forma = [
                 'forma_pago' => $this->request->getPostGet('forma_pago'),
@@ -1352,7 +1287,7 @@ class Administracion extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                //echo '<pre>'.var_export($item, true).'</pre>';exit;
+                
                 $this->formaPagoModel->insert($forma);
 
                 return redirect()->to('formas-pago');
@@ -1365,14 +1300,12 @@ class Administracion extends BaseController {
     }
 
     public function form_formas_pago_create(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Nueva forma de pago';
             $data['main_content']='administracion/form-pago-create';
@@ -1384,14 +1317,11 @@ class Administracion extends BaseController {
 
     public function form_usuario_create(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->orderBy('rol', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data['roles'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Nuevo Usuario';
             $data['main_content']='administracion/form-user-new';
@@ -1403,9 +1333,7 @@ class Administracion extends BaseController {
 
     public function user_insert(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             // recogemos datos enviados desde el formulario de registro
             $user = filter_var(strtoupper($this->request->getPostGet('user')), FILTER_SANITIZE_STRING);
@@ -1432,7 +1360,7 @@ class Administracion extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                //echo '<pre>'.var_export($user, true).'</pre>';exit;
+
                 $this->usuarioModel->_insert($user);
 
                 return redirect()->to('usuarios');
@@ -1446,10 +1374,7 @@ class Administracion extends BaseController {
 
     public function user_update(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
-
+        if ($this->session->admin == 1) {
 
             $user = [
                 'id' => $this->request->getPostGet('id'),
@@ -1471,7 +1396,7 @@ class Administracion extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                //echo '<pre>'.var_export($user, true).'</pre>';exit;
+                
                 $this->usuarioModel->_update($user);
 
                 return redirect()->to('usuarios');
@@ -1485,9 +1410,7 @@ class Administracion extends BaseController {
 
     public function sucursal_insert(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $data = [
                 'sucursal' => strtoupper($this->request->getPostGet('sucursal')),
@@ -1501,7 +1424,7 @@ class Administracion extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-                //echo '<pre>'.var_export($user, true).'</pre>';exit;
+               
                 $this->sucursalModel->_insert($data);
 
                 return redirect()->to('sucursales');
@@ -1515,9 +1438,7 @@ class Administracion extends BaseController {
 
     public function sector_entrega_insert(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $data = [
                 'sector' => strtoupper($this->request->getPostGet('sector_entrega')),
@@ -1537,15 +1458,12 @@ class Administracion extends BaseController {
 
     public function form_usuario_edit($id){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->findAll();
             $data['usuario'] = $this->usuarioModel->find($id);
 
-            //echo '<pre>'.var_export($data['usuario'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Editar Usuario';
             $data['main_content']='administracion/form-user-edit';
@@ -1557,9 +1475,7 @@ class Administracion extends BaseController {
 
     public function sucursal_delete($id){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->findAll();
@@ -1599,18 +1515,14 @@ class Administracion extends BaseController {
 
     public function form_sucursal_edit($id){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->findAll();
             $data['usuario'] = $this->usuarioModel->find($id);
 
             $data['sucursal'] = $this->sucursalModel->find($id);
-
             $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'ASC')->findAll();
-
             $data['sectoresSucursal'] = $this->sectoresEntregaModel->where('idsucursal', $id)->orderBy('sector', 'ASC')->findAll();
 
             $data['title']='Administración';
@@ -1635,8 +1547,6 @@ class Administracion extends BaseController {
         ];
 
         $this->sectoresEntregaModel->update($id, $data);
-        // echo $this->db->getLastQuery();
-        // echo '<pre>'.var_export($id, true).'</pre>';exit;
 
         //traer data de la tabla
         $sectoresSucursal = $this->sectoresEntregaModel->where('idsucursal', $data['idsucursal'])->orderBy('sector', 'ASC')->findAll();

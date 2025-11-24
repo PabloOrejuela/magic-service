@@ -8,9 +8,7 @@ class Home extends BaseController {
 
     public function index() {
 
-        $data = $this->acl();
-        
-        if ($data['is_logged'] == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
 
@@ -152,8 +150,7 @@ class Home extends BaseController {
     public function estadoSistema(){
         return $this->configuracionModel->findAll();
     }
-
-
+    
     public function logout(){
         //destruyo la session y salgo
         $session = [

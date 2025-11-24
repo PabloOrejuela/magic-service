@@ -21,9 +21,7 @@ class Ventas extends BaseController {
 
     public function index() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             date_default_timezone_set('America/Guayaquil');
@@ -96,9 +94,7 @@ class Ventas extends BaseController {
 
     public function estadisticaVentas() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             date_default_timezone_set('America/Guayaquil');
@@ -510,6 +506,7 @@ class Ventas extends BaseController {
         }else{
             $error = 'No existe el producto';
         }
+
         $res['datos'] = $this->cargaProductos_temp($cod_pedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
@@ -519,6 +516,7 @@ class Ventas extends BaseController {
     }
 
     function detalle_pedido_insert_observacion_temp(){
+        
         $error = '';
         $idproducto = $this->request->getPostGet('idproducto');
         $cod_pedido = $this->request->getPostGet('cod_pedido');
@@ -538,6 +536,7 @@ class Ventas extends BaseController {
     }
 
     function detalle_prod_insert_temp_EDIT(){
+
         $error = 'No se pudo insertar';
         $result = 'No se pudo insertar';
         $idproducto = $this->request->getPostGet('idproducto');
@@ -571,6 +570,7 @@ class Ventas extends BaseController {
     }
 
     function detalle_prod_insert_temp(){
+
         $error = 'No se pudo insertar';
         $result = 'No se pudo insertar';
         $idproducto = $this->request->getPostGet('idproducto');
@@ -740,7 +740,6 @@ class Ventas extends BaseController {
     public function getItemsProducto($idproducto){
 
         $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
-        //echo '<pre>'.var_export($items, true).'</pre>';exit;
 
         //Inserto en la tabla temporal los items que traigo de la tabla de items producto
         $this->insertProductTemp($idproducto, $items);
@@ -829,9 +828,8 @@ class Ventas extends BaseController {
 
     public function pedido_insert(){
 
-        $data = $this->acl();
 
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
             
@@ -845,7 +843,7 @@ class Ventas extends BaseController {
             
             $pedido = [
                 'cod_pedido' => $cod_pedido,
-                'idusuario' => $data['id'],
+                'idusuario' => $this->session->id,
                 'fecha' => date('Y-m-d'),
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'sin_remitente' => $sin_remitente,
@@ -1011,9 +1009,7 @@ class Ventas extends BaseController {
 
     public function pedido_update(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
             $detallePedido = $detalle = $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->find();
@@ -1021,7 +1017,7 @@ class Ventas extends BaseController {
             $pedido = [
                 'id' => $this->request->getPostGet('idpedido'),
                 'cod_pedido' => $cod_pedido,
-                'idusuario' => $data['id'],
+                'idusuario' => $this->session->id,
                 'fecha' => date('Y-m-d'),
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'sin_remitente' => $this->request->getPostGet('sin_remitente'),
@@ -1282,18 +1278,20 @@ class Ventas extends BaseController {
 
     public function pedidos() {
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->where('estado', '1')->findAll();
             
+            log_message('info', 'MEM: inicio = ' . memory_get_usage(true));
             $data['pedidos'] = $this->pedidoModel->_getPedidos($data['session']->idroles);
+            log_message('info', 'MEM: después de query = ' . memory_get_usage(true));
+            log_message('info', 'MEM: pico despues query = ' . memory_get_peak_usage(true));
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
+            
 
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
@@ -1306,9 +1304,7 @@ class Ventas extends BaseController {
 
     public function pedido_edit($idpedido) {
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($idpedido);
@@ -1364,9 +1360,7 @@ class Ventas extends BaseController {
 
     public function pedidos_ventana() {
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
@@ -1385,9 +1379,7 @@ class Ventas extends BaseController {
 
     public function cotizador(){
 
-        $data = $this->acl();
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
-        if ($data['is_logged'] == 1 && $this->session->ventas == 1) {
+        if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();

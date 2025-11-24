@@ -42,9 +42,7 @@ class Reportes extends BaseController {
 
     public function frmReporteDiarioVentas(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -61,9 +59,7 @@ class Reportes extends BaseController {
 
     public function frmReporteProcedencias(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -80,9 +76,7 @@ class Reportes extends BaseController {
 
     public function frmReporteMensajeria(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -100,9 +94,7 @@ class Reportes extends BaseController {
 
     public function frmReporteMasterIngresos(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -119,9 +111,7 @@ class Reportes extends BaseController {
 
     public function frmReporteMasterGastos(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -138,9 +128,7 @@ class Reportes extends BaseController {
 
     public function frmReportePG(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -157,9 +145,7 @@ class Reportes extends BaseController {
 
     public function frmReporteDevoluciones(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -176,9 +162,7 @@ class Reportes extends BaseController {
 
     public function reporteProcedencias(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -210,9 +194,7 @@ class Reportes extends BaseController {
 
     public function reporteMensajeria(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -255,9 +237,7 @@ class Reportes extends BaseController {
 
     public function reportePG(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -333,9 +313,7 @@ class Reportes extends BaseController {
 
     public function reporteMasterIngresos(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -390,9 +368,7 @@ class Reportes extends BaseController {
 
     public function reporteMasterGastos(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -449,9 +425,7 @@ class Reportes extends BaseController {
 
     public function reporteDevoluciones(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -532,9 +506,7 @@ class Reportes extends BaseController {
 
     public function reporteDiarioVentas(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -574,9 +546,7 @@ class Reportes extends BaseController {
 
     public function frmReporteEstadisticasVendedor(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -594,9 +564,7 @@ class Reportes extends BaseController {
 
     public function reporteEstadisticasVendedor(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
 
@@ -809,8 +777,7 @@ class Reportes extends BaseController {
         if ($res) {
             $num = 1;
             $suma = 0;
-            
-
+        
             foreach ($res as $key => $result) {
                 //echo '<pre>'.var_export($result, true).'</pre>';exit;
                 
@@ -1323,8 +1290,7 @@ class Reportes extends BaseController {
         foreach (range('A','G') as $col) {
             $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
-        
-
+    
         //TITULO
         $hoja->setCellValue('A'.$fila, "REPORTE DE ESTADÍSTICAS DE VENDEDOR: ". $vendedor);
 
@@ -1404,6 +1370,7 @@ class Reportes extends BaseController {
                 $num++;
                 $suma += $result->total;
             }
+
             $phpExcel->getActiveSheet()->getStyle('C'.$fila)->applyFromArray($styleSubtituloDerecha);
             $hoja->setCellValue('C'.$fila, 'TOTAL:');
 
@@ -1417,8 +1384,6 @@ class Reportes extends BaseController {
             $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
         }
-
-        
 
         //Creo el writter y guardo la hoja
         $writter = new XlsxWriter($phpExcel, 'Xlsx');
@@ -1655,8 +1620,6 @@ class Reportes extends BaseController {
             $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
         }
-
-        
 
         //Creo el writter y guardo la hoja
         $writter = new XlsxWriter($phpExcel, 'Xlsx');
@@ -2849,8 +2812,6 @@ class Reportes extends BaseController {
         $hoja->getStyle('H'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
         $hoja->setCellValue("H".$fila, number_format($sumaTotal, 2));
 
-             
-
         //Creo el writter y guardo la hoja
         $writter = new XlsxWriter($phpExcel, 'Xlsx');
         
@@ -2878,9 +2839,8 @@ class Reportes extends BaseController {
      * @throws conditon
      **/
     public function reporteItemsSensibles(){
-        $data = $this->acl();
         
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -2976,11 +2936,10 @@ class Reportes extends BaseController {
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
             ]
         ];
+        
         $phpExcel->getActiveSheet()->getStyle('A1:C1')->applyFromArray($styleTitulo);
         $phpExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(20, 'pt');
         $phpExcel->getActiveSheet()->mergeCells('A1:C1');
-
-
 
         $phpExcel->getActiveSheet()->getStyle('A2:C2')->applyFromArray($styleCabecera);
         $phpExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -3025,5 +2984,4 @@ class Reportes extends BaseController {
         //     return redirect()->to('cargar_info_view');
         // }        
     }
-
 }

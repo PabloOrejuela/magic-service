@@ -27,9 +27,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function ticketPromedio(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -98,9 +97,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function arregMasVendidos(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -123,9 +121,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function frmRecomprasMes(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -148,9 +145,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function frmEstCategorias(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -172,9 +168,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function frmCategoriaMenosVendida(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -197,9 +192,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function frmClientesFrecuentes(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -226,9 +220,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function frmClientesNuevos(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -252,9 +245,7 @@ class Estadisticas extends BaseController {
 
     public function clientesFrecuentes(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -264,18 +255,34 @@ class Estadisticas extends BaseController {
                 'fecha' => $this->request->getPostGet('fecha'),
                 'anio' => $this->request->getPostGet('anio'),
             ];
-            
-            $this->validation->setRuleGroup('clientesFrecuentes');
-        
-            if (!$this->validation->withRequest($this->request)->run()) {
+
+            //$this->validation->setRuleGroup('rules');
+
+            $rules = [
+                'fecha' => [
+                    'rules'  => 'yearOrMonth[anio]',
+                    'errors' => [
+                        'yearOrMonth' => 'Debe seleccionar un año o una fecha y elegir un negocio.',
+                    ]
+                ]
+            ];
+
+            if (!$this->validate($rules)) {
                 //Depuración
                 //dd($validation->getErrors());
-                
-                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+                return redirect()->back()
+                ->withInput()
+                ->with('errors', $this->validator->getErrors());
+                //return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
 
-                
-                if ($datos['anio'] == 0) {
+                // echo '<pre>'.var_export($datos['fecha'], true).'</pre>';exit;
+                if($datos['anio'] == '0' && $datos['fecha'] == ''){
+
+                    $this->session->setFlashdata('mensaje', $data);
+                    //$this->logout();
+                    return redirect()->back()->with('mensaje', 'Es obligatorio elegir un mes o un año para poder generar el reporte');
+                }else if ($datos['anio'] == '0' && $datos['fecha'] != '') {
                 
                     $fecha = explode('-', $datos['fecha']);
                     $mes = $fecha[1];
@@ -284,7 +291,7 @@ class Estadisticas extends BaseController {
 
                     $datos['fecha_inicio'] = $datos['fecha'].'-01';
                     $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
-                }else{
+                }else if($datos['anio'] != '0' && $datos['fecha'] == ''){
                     $datos['fecha_inicio'] = $datos['anio'].'-01-01';
                     $datos['fecha_final'] = $datos['anio'].'-12-31';
                 }
@@ -338,11 +345,10 @@ class Estadisticas extends BaseController {
             return redirect()->to('logout');
         }
     }
+
     public function clientesNuevos(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -419,9 +425,7 @@ class Estadisticas extends BaseController {
 
     public function recomprasMes(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -537,9 +541,7 @@ class Estadisticas extends BaseController {
 
     public function estCategorias(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             
@@ -630,9 +632,7 @@ class Estadisticas extends BaseController {
 
     public function estCodArregloMasVendido(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -719,9 +719,8 @@ class Estadisticas extends BaseController {
      * @throws conditon
      **/
     public function arregMenosVendidos(){
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
@@ -738,9 +737,7 @@ class Estadisticas extends BaseController {
 
     public function estCodArregloMenosVendido(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->reportes == 1) {
+        if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
             $data['negocios'] = $this->negocioModel->findAll();
@@ -795,8 +792,7 @@ class Estadisticas extends BaseController {
                     return $a->cant <=> $b->cant;
                 });
                 
-
-                //echo '<pre>'.var_export($datos, true).'</pre>';exit;
+                $data['nombreNegocio'] = $this->negocioModel->where('id', $datos['negocio'])->first();
                 $data['datos'] = $datos;
                 $data['res'] = $resultado;
                 $data['title']='Estadísticas';

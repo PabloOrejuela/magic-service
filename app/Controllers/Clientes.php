@@ -8,10 +8,8 @@ use TCPDF;
 class Clientes extends BaseController {
 
     public function index(){
-
-        $data = $this->acl();
-        //echo '<pre>'.var_export($this->session->admin, true).'</pre>';exit;
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        
+        if ($this->session->clientes == 1) {
             
             $data['session'] = $this->session;
             $data['clientes'] = $this->clienteModel->_getClientes();
@@ -35,9 +33,7 @@ class Clientes extends BaseController {
     */
     public function cliente_delete($id) {
     
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->admin == 1) {
+        if ($this->session->admin == 1) {
 
             $item = [
                 'id' => $id,
@@ -60,9 +56,7 @@ class Clientes extends BaseController {
      **/
     public function cliente_create() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
             
             $data['session'] = $this->session;
 
@@ -78,9 +72,7 @@ class Clientes extends BaseController {
 
     public function cliente_insert(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
 
             $cliente = [
                 'nombre' => strtoupper($this->request->getPostGet('nombre')),
@@ -121,9 +113,7 @@ class Clientes extends BaseController {
      **/
     public function cliente_edit($idcliente) {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
             
             $data['session'] = $this->session;
             $data['cliente'] = $this->clienteModel->find($idcliente);
@@ -147,9 +137,7 @@ class Clientes extends BaseController {
      **/
     public function print_client_historial($idcliente) {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
             
             $data['session'] = $this->session;
             $data['pedidos'] = $this->pedidoModel->_getHistorialPedidos($idcliente);
@@ -195,9 +183,7 @@ class Clientes extends BaseController {
 
     public function cliente_update(){
         
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
 
             $id = $this->request->getPostGet('id');
 

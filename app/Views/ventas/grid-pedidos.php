@@ -67,6 +67,7 @@
                                             foreach ($pedidos as $key => $value) {
                                                 $nombreDia = $nombresDias[date('l', strtotime($value->fecha_entrega))];
                                                 
+                                                //Tratar de que traiga esta data desde el modelo
                                                 $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
                                                 $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
 
@@ -93,6 +94,7 @@
                                                 echo '<td id="cod_arreglo_'.$value->id.'"><ul>';
                                                 if (isset($detalle)) {
                                                     foreach ($detalle as $key => $d) {
+                                                        //Tratar de que traiga esta data desde el modelo
                                                         $attrExtArreg = $this->attrExtArregModel->_getAttrArreg($d->iddetalle, $d->idcategoria);
                                                         
                                                         if ($attrExtArreg) {

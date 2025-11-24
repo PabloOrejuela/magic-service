@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'clientes-frecuentes';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -32,14 +32,14 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label for="anio">Año:</label>
                                     <select 
                                         class="form-select form-control-border" 
                                         id="anio" 
                                         name="anio"
                                     >
-                                        <option value="0" selected>-- Seleccionar un año --</option>
+                                        <option value="0" selected>-- Seleccionar año --</option>
                                         <?php
                                             if (isset($anios)) {
                                                 foreach ($anios as $key => $anio) {
@@ -49,22 +49,22 @@
                                         ?>
                                     </select>
                                 </div>
-                                <div class="form-group col-md-3" id="div-fecha">
+                                <div class="form-group col-md-2" id="div-fecha">
                                     <label for="mes">Mes:</label>
                                     <input 
                                         type="month" 
                                         class="form-control text" 
                                         id="fecha" 
                                         name="fecha" 
-                                        value="<?= date('Y-m'); ?>" 
-                                        required
+                                        value="<?= ""; //date('Y-m'); ?>" 
+                                        
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
-                                <div class="form-group col-md-2" id="div-link-limpiar">
+                                <div class="form-group col-md-1" id="div-link-limpiar">
                                     <a href="#" id="txt-limpiar">Limpiar controles</a>
                                 </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-3">
                                     <label for="mes"></label>
                                     <input 
                                         type="text" 

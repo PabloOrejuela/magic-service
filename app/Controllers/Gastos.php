@@ -8,9 +8,7 @@ class Gastos extends BaseController {
     
     public function index(){
         
-        $data = $this->acl();
-        
-        if ($data['is_logged'] == 1 && $this->session->gastos == 1) {
+        if ($this->session->gastos == 1) {
             
             $data['session'] = $this->session;
             $data['gastos'] = $this->gastoModel->_getGastos();
@@ -27,9 +25,7 @@ class Gastos extends BaseController {
 
     public function gridGastoFiltrado(){
         
-        $data = $this->acl();
-        
-        if ($data['is_logged'] == 1 && $this->session->gastos == 1) {
+        if ($this->session->gastos == 1) {
             
             $data['session'] = $this->session;
 
@@ -63,9 +59,7 @@ class Gastos extends BaseController {
      **/
     public function create() {
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->proveedores == 1) {
+        if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
             $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
@@ -86,9 +80,7 @@ class Gastos extends BaseController {
 
     public function insert(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
 
             $gasto = [
                 'idsucursal' => strtoupper($this->request->getPostGet('sucursal')),
@@ -125,9 +117,7 @@ class Gastos extends BaseController {
 
     public function update(){
 
-        $data = $this->acl();
-
-        if ($data['is_logged'] == 1 && $this->session->clientes == 1) {
+        if ($this->session->clientes == 1) {
             $id = strtoupper($this->request->getPostGet('id'));
             $gasto = [
                 'idsucursal' => $this->request->getPostGet('sucursal'),
@@ -171,9 +161,7 @@ class Gastos extends BaseController {
      **/
     public function edit($id) {
 
-        $data = $this->acl();
-        
-        if ($data['is_logged'] == 1 && $this->session->gastos == 1) {
+        if ($this->session->gastos == 1) {
             
             $data['session'] = $this->session;
             $data['sucursales'] = $this->sucursalModel->findAll();
