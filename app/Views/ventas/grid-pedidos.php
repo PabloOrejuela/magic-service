@@ -7,7 +7,7 @@
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card">
                     <div class="card-body">
-                        <h3><?= $subtitle; ?>
+                        <h3><?= $subtitle; ?></h3>
                         <div><input type="text" value="<?= session('mensaje'); ?>" id="msj" readonly></div>
                         <div><textarea class="form-control" placeholder="" id="mensaje"></textarea></div>
 
@@ -251,7 +251,8 @@
                                 </tbody>
                             </table>
                         </form>
-                    </div></div><!-- /.card-body -->
+                        <p>Page rendered in {elapsed_time} seconds using {memory_usage} MB of memory.</p>
+                    </div><!-- /.card-body -->
                 </div><!-- /.card-->
             </section>
         </div>
