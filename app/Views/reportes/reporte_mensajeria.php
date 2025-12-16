@@ -11,7 +11,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form action="<?= site_url().'reporte-mensajeria-excel';?>" method="post">
+                    <form action="<?= site_url().'reporte-mensajeria';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
                                 <div class="form-group col-md-2">
@@ -147,10 +147,15 @@
                                                 echo '<td>'.$resultado->fecha.'</td>';
                                                 echo '<td>'.$resultado->cliente.'</td>'; 
                                                 echo '<td>'.$resultado->sector.'</td>';      
-                                                echo '<td>'.$resultado->dir_entrega.'</td>'; 
-                                                echo '<td id="resultado-total">'.$resultado->valor_mensajero.'</td>';
+                                                echo '<td>'.$resultado->dir_entrega.'</td>';
+                                                if ($resultado->valor_mensajero_edit == '0.00') {
+                                                    $valor_mensajero = $resultado->valor_mensajero;
+                                                }else{
+                                                    $valor_mensajero = $resultado->valor_mensajero_edit;
+                                                }
+                                                echo '<td id="resultado-total">'.$valor_mensajero.'</td>';
                                                 echo '<td>'.$resultado->rango_entrega_desde.' / '.$resultado->rango_entrega_hasta.'</td>';
-                                                echo '<td>'.$mensajero.'</td>';  
+                                                echo '<td>'.$mensajero.'</td>';
                                                 echo '<td>';
                                                     if (isset($detalle)) {
                                                         foreach ($detalle as $key => $d) {

@@ -470,6 +470,7 @@ class Estadisticas extends BaseController {
                 $clientes = $this->obtenerClientesRecurrentes($pedidos, $mes, $anio);
                 
                 $data['datos'] = [
+                    'fecha' => $datos['fecha'],
                     'anio' => $datos['anio'],
                     'fecha_inicio' => $datos['fecha_inicio'],
                     'fecha_final' => $datos['fecha_final'],
@@ -481,7 +482,7 @@ class Estadisticas extends BaseController {
                 ->orderBy("anio", "ASC")
                 ->findAll();
 
-                //echo '<pre>'.var_export(count($clientesNuevos), true).'</pre>';exit;
+                //echo '<pre>'.var_export($data['datos'], true).'</pre>';exit;
 
                 $data['res'] = $clientes;
                 $data['title']='Estadísticas';
@@ -763,13 +764,17 @@ class Estadisticas extends BaseController {
 
                 $datos['fecha_inicio'] = $datos['fecha'].'-01';
                 $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
-                
 
                 //Traigo los arreglos con menos ventas, debo traer los que no tienen ni un pedido en ese período de tiempo
                 //$data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0, 'asc');
                 
                 //Traer todos los productos del negocio
-                $productos = $this->productoModel->findAll();
+                if ($datos['negocio'] == '2') {
+                    $productos = $this->productoModel->where('idcategoria', 5)->findAll();
+                }else{
+                    $productos = $this->productoModel->where('idcategoria !=', 5)->findAll();
+                }
+                
                 $resultado = [];
 
                 foreach ($productos as $producto) {

@@ -1,14 +1,14 @@
 <link rel="stylesheet" href="<?= site_url(); ?>/public/css/grid-pedidos.css">
 <!-- Main content -->
 <section class="content">
-      <div class="container-fluid">
+    <div class="container-fluid">
         <div class="row">
             <section class="connectedSortable">
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="card">
                     <div class="card-body">
                         <h3><?= $subtitle; ?></h3>
-                        <div><input type="text" value="<?= session('mensaje'); ?>" id="msj" readonly></div>
+                        <div><input type="text" value="<?= session()->getFlashdata('mensaje') ?? '' ; ?>" id="msj" readonly></div>
                         <div><textarea class="form-control" placeholder="" id="mensaje"></textarea></div>
 
                         <!-- Este textarea es para poder copiar los datos de la confirmación del pedido --->
@@ -43,6 +43,7 @@
                                 </thead>
                                 <tbody id="lista">
                                     <?php
+                                        ini_set('memory_limit', '512M');
                                         use App\Models\PedidoModel;
                                         use App\Models\DetallePedidoModel;
                                         use App\Models\AttrExtArregModel;
@@ -251,7 +252,6 @@
                                 </tbody>
                             </table>
                         </form>
-                        <p>Page rendered in {elapsed_time} seconds using {memory_usage} MB of memory.</p>
                     </div><!-- /.card-body -->
                 </div><!-- /.card-->
             </section>
@@ -259,44 +259,9 @@
     </div>
 </section>
 
-<!-- Modal Frm Attributos extra Arreglo-->
-<div class="modal fade" id="linkArregloPedido" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="titulo">Campos del arreglo para el tiket</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="actualizaGrid()"></button>
-      </div>
-      <form id="form-modal-attr">
-        <div class="modal-body">
-            <input class="form-control" type="hidden" name="idarreglo" id="idarreglo">
-            <input class="form-control" type="hidden" name="idcategoria" id="idcategoria">
-            <div class="mb-0 row">
-                <label for="lblPedido" class="col-sm-2 col-form-label">Pedido:</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="lblPedido">
-                </div>
-            </div>
-            <div class="mb-1 row">
-                <label for="lblForm" class="col-sm-2 col-form-label">Arreglo:</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="lblForm">
-                </div>
-            </div>
-            
-            <!-- Desarrollo el cuerpo de cada formulario   -->
-            <div class="formulario" id="formulario">
-                
-            </div>
-        </div>
-        <div class="modal-footer">
-            
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
+<?= view('ventas/modals/arreglo_ticket') ?>
+<?= view('ventas/modals/hora_entrega') ?>
+<?= view('ventas/modals/mensajero') ?>
 
 <!-- Modal Observación -->
 <div class="modal fade" id="observacionPedidoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -374,122 +339,35 @@
   </div>
 </div>
 
-<!-- Modal Hora Entrega-->
-<div class="modal fade" id="horaEntregaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Editar Hora de entrega</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
-      <input class="form-control" type="hidden" name="id" id="id">
-
-        <div class="form-group row mb-5 mt-3" id="campo-extra">
-            <div class="col-md-5 div-celular">
-                <label for="rango-entrega">Desde:</label>
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    id="entrega-desde" 
-                    name="rango_entrega_desde" 
-                    placeholder="0:00"
-                    maxlength="100"
-                    value="<?= old('rango_entrega_desde'); ?>"
-                >
-            </div>
-            <div class="col-md-5 div-celular">
-                <label for="rango-entrega">Hasta:</label>
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    id="entrega-hasta" 
-                    name="rango_entrega_hasta" 
-                    placeholder="0:00"
-                    maxlength="100"
-                    value="<?= old('rango_entrega_hasta'); ?>"
-                >
-            </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button 
-            type="button" 
-            class="btn btn-secondary" 
-            data-bs-dismiss="modal" 
-            onClick="actualizarHorarioEntrega(
-                document.getElementById('codigo_pedido').value, 
-                document.getElementById('id').value, 
-                document.getElementById('entrega-desde').value, 
-                document.getElementById('entrega-hasta').value)"
-            >Actualizar</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Mensajero-->
-<div class="modal fade" id="mensajeroModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Cambio de mensajero para el pedido</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      <h5 class="modal-title" id="staticBackdropLabel">Mensajeros</h5>
-      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
-        <select 
-            class="form-select" 
-            id="select-mensajero" 
-            name="mensajero"
-            data-style="form-control" 
-            data-live-search="true" 
-        >
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button 
-            type="button" 
-            class="btn btn-secondary" 
-            data-bs-dismiss="modal" 
-            onClick="actualizarMensajero(document.getElementById('select-mensajero').value, document.getElementById('codigo_pedido').value)"
-        >Actualizar</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= site_url(); ?>public/js/grid-pedidos.js"></script>
 
 
 <!-- FONTAWESOME -->
 <script src="https://kit.fontawesome.com/964a730002.js" crossorigin="anonymous"></script>
+
 <script>
 
-    $(document).ready(function () {
+    document.addEventListener('DOMContentLoaded', function () {
         
         let msj = document.getElementById('msj')
-        
-        if (msj.value == 1) {
+
+        if (msj.value == '1') {
             alertaMensaje("El pedido se ha guardado correctamente", "2500", "success")
-            actualizaMensaje()
-            msj.value = '3'
+            
+            //msj.value = '3'
         }else if(msj.value == 'SIN DETALLE'){
             alertaMensaje("El pedido fue creado pero falta agregar arreglos", "2500", "warning")
-            actualizaMensaje()
+            
         }else if(msj.value == '0'){
             alertaMensaje("Hubo un problema y el pedido no se pudo guardar", "2500", "error")
-            actualizaMensaje()
+            
         }else if(msj.value == 'SIN CODIGO'){
             alertaMensaje("Hubo un problema, no se generó un código de pedido, inténtelo nuevamente", "2000", "error")
-            actualizaMensaje()
+            
             msj.value = '3'
         }
-        
+        //actualizaMensaje()
+
         $.fn.DataTable.ext.classes.sFilterInput = "form-control form-control-sm search-input";
         $('#datatablesSimple').DataTable({
             "responsive": true, 
@@ -523,18 +401,7 @@
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
         });
-    });
-
-    const confirmSaveAlert = () => {
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "El pedido ha sido guardado",
-            showConfirmButton: false,
-            toast: true,
-            timer: 500
-        });
-    }
+    })
 
     const alertActualizaCampo = () => {
         let toast = Swal.mixin({
@@ -583,5 +450,41 @@
             title: "ALERTA, EL VALOR FINAL HA CAMBIADO"
         });
     }
-    
+
+    const confirmSaveAlert = () => {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "El pedido ha sido guardado",
+            showConfirmButton: false,
+            toast: true,
+            timer: 500
+        });
+    }
+
+    const alertaMensaje = (msg, time, icon) => {
+        const toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: time,
+            //timerProgressBar: true,
+            //height: '200rem',
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            },
+            customClass: {
+                // container: '...',
+                popup: 'popup-class',
+            }
+        });
+        toast.fire({
+            position: "top-end",
+            icon: icon,
+            title: msg,
+        });
+    }
+
 </script>
+<script src="<?= site_url(); ?>public/js/grid-pedidos.js"></script>

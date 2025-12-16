@@ -56,7 +56,7 @@
                                         class="form-control text" 
                                         id="fecha" 
                                         name="fecha" 
-                                        value="<?= ""; //date('Y-m'); ?>" 
+                                        value="<?= $datos['fecha']; ?>" 
                                         
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>

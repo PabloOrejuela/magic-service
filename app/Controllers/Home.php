@@ -132,7 +132,7 @@ class Home extends BaseController {
                         'idsession' => $idsession,
                         'codigo_pedido' => ''
                     ];
-                    //echo '<pre>'.var_export($sessiondata, true).'</pre>';exit;
+                    
                     $this->session->set($sessiondata);
             
                     return redirect()->to('inicio');

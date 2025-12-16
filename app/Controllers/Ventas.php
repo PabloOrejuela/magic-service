@@ -6,6 +6,16 @@ use App\Controllers\BaseController;
 
 class Ventas extends BaseController {
 
+    private $nombresDias = array(
+        'Sunday'=>"Domingo", 
+        'Monday'=>"Lunes", 
+        'Tuesday'=>"Martes", 
+        'Wednesday'=>"Miércoles", 
+        'Thursday'=>"Jueves", 
+        'Friday'=>"Viernes", 
+        'Saturday'=>"Sábado"
+    );
+
     function verificaSession($usuario, $ip){
 
         if ($usuario->logged == 1 && $usuario->ip != $ip) {
@@ -828,7 +838,6 @@ class Ventas extends BaseController {
 
     public function pedido_insert(){
 
-
         if ($this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
@@ -879,7 +888,6 @@ class Ventas extends BaseController {
                 'email' => strtolower($this->request->getPostGet('email')),
             ];
             
-            //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
             //VALIDACIONES
             $this->validation->setRuleGroup('pedidoInicial');
 
@@ -942,7 +950,9 @@ class Ventas extends BaseController {
                         $mensaje = 0;
                     }
 
-                    $this->session->set('mensaje', $mensaje);
+                    session()->setFlashdata('mensaje', $mensaje);
+                    //$this->session->set('mensaje', $mensaje);
+
                     return redirect()->to('pedidos');
 
                 }else{
@@ -955,7 +965,6 @@ class Ventas extends BaseController {
                         'direccion' => '',
                         'email' => strtolower($this->request->getPostGet('email')),
                     ];
-
 
                     //Inserto el cliente nuevo
                     $pedido['idcliente'] = $this->clienteModel->insert($cliente);
@@ -1018,7 +1027,6 @@ class Ventas extends BaseController {
                 'id' => $this->request->getPostGet('idpedido'),
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $this->session->id,
-                'fecha' => date('Y-m-d'),
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'sin_remitente' => $this->request->getPostGet('sin_remitente'),
 
@@ -1279,24 +1287,20 @@ class Ventas extends BaseController {
     public function pedidos() {
         
         if ($this->session->ventas == 1) {
-            
+
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->where('estado', '1')->findAll();
-            
-            log_message('info', 'MEM: inicio = ' . memory_get_usage(true));
-            $data['pedidos'] = $this->pedidoModel->_getPedidos($data['session']->idroles);
-            log_message('info', 'MEM: después de query = ' . memory_get_usage(true));
-            log_message('info', 'MEM: pico despues query = ' . memory_get_peak_usage(true));
-            $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
-            $data['estadosPedido'] = $this->estadoPedidoModel->findAll();
-            $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
-            
 
+            $data['nombresDias'] = $this->nombresDias;
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
+
             $data['main_content']='ventas/grid-pedidos';
             return view('dashboard/index', $data);
+
+            
+
         }else{
             return redirect()->to('logout');
         }

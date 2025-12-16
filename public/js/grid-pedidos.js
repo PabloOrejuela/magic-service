@@ -1,5 +1,11 @@
 const lista = document.getElementById('lista')
-actualizaMensaje()
+let botonesMensajero = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
+let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEntregaModal"]');
+let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');
+let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
+let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
+let btnNombreArreglo = document.querySelectorAll('[data-bs-target="#linkArregloPedido"]');
+let formAttrModal = document.querySelector('#link-borra-imagen')
 
 Sortable.create(lista, {
     animation: 150,
@@ -52,15 +58,6 @@ function _guardaOrdenEnDb (orden){
         },
     });
 }
-
-
-let botonesMensajero = document.querySelectorAll('[data-bs-target="#mensajeroModal"]');
-let botonesHorariosEntrega = document.querySelectorAll('[data-bs-target="#horaEntregaModal"]');
-let botonesEstadoPedido = document.querySelectorAll('[data-bs-target="#estadoPedidoModal"]');
-let botonesHoraSalidaPedido = document.querySelectorAll('[data-bs-target="#horaSalidaModal"]');
-let btnObservacionPedido = document.querySelectorAll('[data-bs-target="#observacionPedidoModal"]');
-let btnNombreArreglo = document.querySelectorAll('[data-bs-target="#linkArregloPedido"]');
-let formAttrModal = document.querySelector('#link-borra-imagen')
 
 /**
  * Función que actualiza el valor de un campo del formulario
@@ -1003,6 +1000,7 @@ function copyData(id){
     let cod_arreglo = ''
     let observacion = ''
     let mensaje = document.getElementById('mensaje')
+
     $.ajax({
         type:"GET",
         dataType:"html",
@@ -1024,7 +1022,6 @@ function copyData(id){
                 observacion = pedido.datos.observaciones
             }
             
-
             //detalle
             if (pedido.detalle) {
                 for (const cod of pedido.detalle) {
@@ -1168,7 +1165,6 @@ function actualizarHoraSalidaPedido(){
 }
 
 function actualizaObservacionPedido(){
-
     
     $.ajax({
         type:"POST",
@@ -1221,8 +1217,10 @@ function actualizarMensajero(mensajero, codigo_pedido){
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
-            
-            location.replace('pedidos');
+            alertaMensaje("Se ha cambiado el mensajero", "1000", "success")
+            setTimeout(function(){
+                location.replace('pedidos');
+            }, 3000);
         }
     });
 }
@@ -1358,5 +1356,5 @@ const alertaMensaje = (msg, time, icon) => {
         title: msg,
     });
 }
-
-mensajePedidosPendientes()
+actualizaMensaje()
+//mensajePedidosPendientes()

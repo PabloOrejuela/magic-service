@@ -6,5 +6,5 @@
 
 <h5>Fixes</h5>
 <ul>   
-    <li>Se ha corregido la estructura de etiquetas del archivo grid_pedidos</li>
+    <li>Se hizo un cambio en la cabecera de la estadistica de clientes frecuentes, ahora conserva la fecha que se había seleccionado al generar el reporte</li>
 </ul>

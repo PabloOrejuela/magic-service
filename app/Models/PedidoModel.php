@@ -517,10 +517,6 @@ class PedidoModel extends Model {
             $builder->set('idcliente', $data['idcliente']);
         }
 
-        if ($data['fecha'] != 'NULL' && $data['fecha'] != '') {
-            $builder->set('fecha', $data['fecha']);
-        }
-
         if ($data['vendedor'] != 'NULL' && $data['vendedor'] != '') {
             $builder->set('vendedor', $data['vendedor']);
         }

@@ -169,8 +169,6 @@ class Reportes extends BaseController {
             $data['sugest'] = $this->sugest;
             $data['negocios'] = $this->negocioModel->findAll();
             
-            //DECLARO VARIABLES
-            
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
                 'fecha_inicio' => $this->request->getPostGet('fecha_inicio'),
@@ -219,7 +217,7 @@ class Reportes extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
-                //echo '<pre>'.var_export($datos, true).'</pre>';exit;
+
                 $data['res'] = $this->pedidoModel->_getPedidosRangoFechasMensajero($datos);
                 $data['datos'] = $datos;
 

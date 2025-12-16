@@ -1419,7 +1419,297 @@ class Tickets extends BaseController {
                                 ></td>
                             </tr>';
                 }
-            } 
+            } else if($arreglo->idcategoria == 6) {
+                //Form Attr Magic Box
+                $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
+
+                //Campo Observación del arreglo
+                $numCaracterObservaArreglo = strlen($arreglo->observacion);
+                if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
+                    $fontSizeObservaArreglo = 0.9;
+                } else if($numCaracterObservaArreglo >= 150){
+                    $fontSizeObservaArreglo = 0.8;
+                }else{
+                    $fontSizeObservaArreglo = 0.9;
+                }
+
+                $html .= '<tr><td></td><td></td></tr>';
+                $html .= '<tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;"
+                            >Producto: </td>
+                            <td 
+                                style="font-weight: bold;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: 0.9em;"
+                            >'.$arreglo->producto.'</td>
+                        </tr>
+                        <tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.8em;
+                                text-align: justify;"
+                            >Observación del producto: </td>
+                            <td 
+                                style="font-weight: normal;
+                                border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: '.$fontSizeObservaArreglo.'em;
+                                text-align: justify;"
+                            >'.$arreglo->observacion.'</td>
+                        </tr>';
+
+                if ($atributos) {
+                    //Form Attr extra Frutales y florales
+
+                    //Campo Mensaje fresas
+                    $numCaracterMensajeFresas = strlen($atributos->mensaje_fresas);
+                    if ($numCaracterMensajeFresas >= 80 && $numCaracterMensajeFresas < 150) {
+                        $fontSizeMensajeFresas = 0.9;
+                    } else if($numCaracterMensajeFresas >= 150){
+                        $fontSizeMensajeFresas = 0.8;
+                    }else{
+                        $fontSizeMensajeFresas = 0.9;
+                    }
+
+                    $html .= '<tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: 25px;
+                                    font-size: 0.8em;"
+                                >Para: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: 25px;
+                                    font-size: 0.9em;"
+                                >'.$atributos->para.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: 25px;
+                                    font-size: 0.8em;"
+                                >Celular: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: 25px;
+                                    font-size: 0.9em;"
+                                >'.$atributos->celular.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Mensaje Fresas: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: '.$fontSizeMensajeFresas.'em;"
+                                >'.$atributos->mensaje_fresas.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Peluche: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                >'.$atributos->peluche.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Globo: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                >'.$atributos->globo.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Frases paredes: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                >'.$atributos->frases_paredes.'</td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Fotos: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                >'.$atributos->fotos.'</td>
+                            </tr>';
+                    
+                }else{
+                    $html .= '<tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: 25px;
+                                    font-size: 0.8em;"
+                                >Para: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: 25px;
+                                    font-size: 0.9em;"
+                                ></td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: 25px;
+                                    font-size: 0.8em;"
+                                >Celular: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: 25px;
+                                    font-size: 0.9em;"
+                                ></td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Mensaje Fresas: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                ></td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Peluche: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                ></td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Globo: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                ></td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Frases paredes: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                ></td>
+                            </tr>
+                            <tr>
+                                <td 
+                                    style="font-weight:bold;
+                                    border: 0.5px solid #000;
+                                    width:35%;
+                                    height: auto;
+                                    font-size: 0.8em;"
+                                >Fotos: </td>
+                                <td 
+                                    style="font-weight: normal;
+                                    border: 0.5px solid #000;
+                                    width:65%;
+                                    height: auto;
+                                    font-size: 0.9em;"
+                                ></td>
+                            </tr>';
+                }
+            }
         }
         $html .= '</table>';
         $pdf->writeHTMLCell($w=47, $h=2, $x='1', $y='1', $html, $border=0, $ln=0, $fill=0, $reseth=false, $align='L', $autopadding=true);
