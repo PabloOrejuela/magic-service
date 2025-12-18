@@ -220,8 +220,7 @@ class Reportes extends BaseController {
 
                 $data['res'] = $this->pedidoModel->_getPedidosRangoFechasMensajero($datos);
                 $data['datos'] = $datos;
-
-                //echo '<pre>'.var_export($data['res'], true).'</pre>';exit;
+                $data['nombreNegocio'] = $this->negocioModel->where('id', $datos['negocio'])->first();
                 
                 $data['title']='Reportes';
                 $data['subtitle']='Reporte de mensajería';

@@ -117,6 +117,7 @@
                                 <table class="table table-striped mt-3" id="table-resultados">
                                 <thead >
                                     <th class="col-sm-1">No.</th>
+                                    <th class="col-sm-1">NEGOCIO</th>
                                     <th class="col-sm-1">FECHA</th>
                                     <th class="col-sm-2">CLIENTE</th>
                                     <th class="col-sm-1">SECTOR</th>
@@ -144,6 +145,7 @@
                                                 $detalle = $this->detallePedidoModel->_getDetallePedido($resultado->cod_pedido);
                                                 echo '<tr>';
                                                 echo '<td>'.$num.'</td>';
+                                                echo '<td>'.$nombreNegocio->negocio.'</td>';
                                                 echo '<td>'.$resultado->fecha.'</td>';
                                                 echo '<td>'.$resultado->cliente.'</td>'; 
                                                 echo '<td>'.$resultado->sector.'</td>';      
