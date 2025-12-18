@@ -241,7 +241,6 @@ class Tickets extends BaseController {
         $textoCelular = '';
         $textoOpciones = '';
         
-
         //Para consolidar bocaditos
         foreach ($arreglos as $key => $arreglo) {
             $productosBocaditos[] = $arreglo->producto;
@@ -255,7 +254,7 @@ class Tickets extends BaseController {
 
         if (count($productosBocaditos) >= 1) {
             foreach ($productosBocaditos as $key => $bocadito) {
-                $textoBocadito .= $key.'-'.$bocadito.',';                    
+                $textoBocadito .= ($key + 1).'-'.$bocadito.',';                    
             }
         }
 
