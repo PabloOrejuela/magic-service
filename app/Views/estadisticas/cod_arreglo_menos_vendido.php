@@ -95,7 +95,7 @@
                                                 $num++;
                                             }
 
-                                            echo '<tr><td colspan="4" id="td-suma">Total: </td><td id="td-suma">'.number_format($sumaTotal, 2).'</td></tr>
+                                            echo '<tr><td colspan="5" id="td-suma">Total: </td><td id="td-suma">'.number_format($sumaTotal, 2).'</td></tr>
                                                 </tbody>
                                                 </table>
                                             </div>

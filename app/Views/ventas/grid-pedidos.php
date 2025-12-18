@@ -93,6 +93,7 @@
                                                     echo '<td>Registrar dirección</td>';
                                                 }
                                                 echo '<td id="cod_arreglo_'.$value->id.'"><ul>';
+
                                                 if (isset($detalle)) {
                                                     foreach ($detalle as $key => $d) {
                                                         //Tratar de que traiga esta data desde el modelo
@@ -128,6 +129,7 @@
                                                         }
                                                     }
                                                 }
+
                                                 echo '</ul></td>';
                                                 if ($value->hora_salida_pedido) {
                                                     echo '<td class="datos-negrita">
@@ -462,28 +464,34 @@
         });
     }
 
-    const alertaMensaje = (msg, time, icon) => {
-        const toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: time,
-            //timerProgressBar: true,
-            //height: '200rem',
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            },
-            customClass: {
-                // container: '...',
-                popup: 'popup-class',
-            }
-        });
-        toast.fire({
-            position: "top-end",
-            icon: icon,
-            title: msg,
-        });
+    // const alertaMensaje = (msg, time, icon) => {
+    //     const toast = Swal.mixin({
+    //         toast: true,
+    //         position: "top-end",
+    //         showConfirmButton: false,
+    //         timer: time,
+    //         //timerProgressBar: true,
+    //         //height: '200rem',
+    //         didOpen: (toast) => {
+    //             toast.onmouseenter = Swal.stopTimer;
+    //             toast.onmouseleave = Swal.resumeTimer;
+    //         },
+    //         customClass: {
+    //             // container: '...',
+    //             popup: 'popup-class',
+    //         }
+    //     });
+    //     toast.fire({
+    //         position: "top-end",
+    //         icon: icon,
+    //         title: msg,
+    //     });
+    // }
+
+    const actualizaGrid = () => {
+        setTimeout(function(){
+            location.replace('pedidos');
+        }, 500);
     }
 
 </script>

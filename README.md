@@ -6,5 +6,5 @@
 
 <h5>Fixes</h5>
 <ul>   
-    <li>Se hizo un cambio en la cabecera de la estadistica de clientes frecuentes, ahora conserva la fecha que se había seleccionado al generar el reporte</li>
+    <li>Se realizó un cambio en el ticket, ahora ya muestra el complemento en caso de que lo tenga</li>
 </ul>

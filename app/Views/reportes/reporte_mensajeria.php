@@ -165,7 +165,7 @@
                                                 echo '</ul></td>';
                                                 echo '</td>'; 
                                                 echo '</tr>';
-                                                $suma += $resultado->valor_mensajero;
+                                                $suma += $valor_mensajero;
                                                 $num++;
                                             }
                                             echo '<tr>

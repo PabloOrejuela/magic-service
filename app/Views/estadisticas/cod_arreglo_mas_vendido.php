@@ -62,7 +62,9 @@
                             <div class="row col-md-10">
                                 <table class="table table-bordered mt-3" id="table-resultados-ingresos">
                                 <thead>
+                                    <th id="td-id">No.</th>
                                     <th id="td-id">Id</th>
+                                    <th id="td-text-left">Negocio</th>
                                     <th id="td-text-left">Arreglo</th>
                                     <th id="td-text-center">Cantidad</th>
                                     <th id="td-text-right">Valor</th>
@@ -73,23 +75,29 @@
                                         $this->productoModel = new ProductoModel;
 
                                         $sumaTotal = 0;
+                                        $num = 1;
 
                                         if ($res) {
                                             //echo '<pre>'.var_export($res, true).'</pre>';exit;
 
                                             foreach ($res as $id => $arreglo) {
-                                                $nombreProducto = $this->productoModel->select('producto')->where('id', $arreglo['id'])->first();
-
-                                                echo '<tr>';
-                                                echo '<td>'.$arreglo['id'].'</td>';
-                                                echo '<td>'.$nombreProducto->producto.'</td>';
-                                                echo '<td id="td-text-center">'.$arreglo['cant'].'</td>';
-                                                echo '<td id="td-result">'.$arreglo['pvp'].'</td>';
-                                                echo '</tr>';
-                                                $sumaTotal += $arreglo['pvp'];
+                                                $nombreProducto = $this->productoModel->select('producto')->where('id', $arreglo->id)->first();
+                                                if ($arreglo->cant != 0) {
+                                                    
+                                                    echo '<tr>';
+                                                    echo '<td>'.$num.'</td>';
+                                                    echo '<td>'.$arreglo->id.'</td>';
+                                                    echo '<td>'.$nombreNegocio->negocio.'</td>';
+                                                    echo '<td>'.$nombreProducto->producto.'</td>';
+                                                    echo '<td id="td-text-center">'.$arreglo->cant.'</td>';
+                                                    echo '<td id="td-result">'.$arreglo->pvp.'</td>';
+                                                    echo '</tr>';
+                                                    $sumaTotal += $arreglo->pvp;
+                                                    $num++;
+                                                }
                                             }
 
-                                            echo '<tr><td colspan="3" id="td-suma">Total: </td><td id="td-suma">'.number_format($sumaTotal, 2).'</td></tr>
+                                            echo '<tr><td colspan="5" id="td-suma">Total: </td><td id="td-suma">'.number_format($sumaTotal, 2).'</td></tr>
                                                 </tbody>
                                                 </table>
                                             </div>
@@ -103,7 +111,7 @@
                                             
                                         }else{
                                             echo '<tr>';
-                                            echo '<td colspan="6">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
+                                            echo '<td colspan="7">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
                                             echo '</tr>';
 
                                             echo '</tbody>

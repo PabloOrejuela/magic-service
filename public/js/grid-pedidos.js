@@ -90,12 +90,6 @@ const actualiza = (campo, id, valor) => {
     });
 }
 
-const actualizaGrid = () => {
-    setTimeout(function(){
-        location.replace('pedidos');
-    }, 500);
-}
-
 const imprimirTicket = async (id, codPedido) => {
 
     
@@ -131,7 +125,7 @@ btnNombreArreglo.forEach(link => {
         document.querySelector('#lblForm').value = arreglo;
         document.querySelector('#lblPedido').value = pedido;
     
-        $('#linkArregloPedido').modal({backdrop: 'static', keyboard: false});
+        $('#linkArregloPedido2').modal({backdrop: 'static', keyboard: false});
 
         $.ajax({
             method:"GET",

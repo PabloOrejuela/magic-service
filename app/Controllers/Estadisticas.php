@@ -662,45 +662,40 @@ class Estadisticas extends BaseController {
                 
 
                 //Traigo los arreglos con mas ventas de ese mes
-                $data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant'], 'asc');
+                //$data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], $datos['cant'], 'asc');
 
-                //Recorro los pedidos y traigo el detalle de cada uno
-                $data['detalle'] = [];
-                $contadorProductos = [];
+                //Traer todos los productos del negocio
+                if ($datos['negocio'] == '2') {
+                    $productos = $this->productoModel->where('idcategoria', 5)->findAll();
+                }else{
+                    $productos = $this->productoModel->where('idcategoria !=', 5)->findAll();
+                }
+                
+                $resultado = [];
 
-                if ($data['pedidos']) {
-                    foreach ($data['pedidos'] as $pedido) {
-                    
-                        // Obtén el detalle del pedido (ajusta el método según tu modelo)
-                        $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+                foreach ($productos as $producto) {
+                    //Contar ventas en el periodo para cada producto
+                    $cant = $this->contarVentasProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
+                    $cod_pedido = $this->primerCodPedidoProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
+                    $pvp = $this->pvpProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
 
-                        if ($detalles) {
-                            foreach ($detalles as $detalle) {
-                                $idProducto = $detalle->idproducto;
-                                $pvp = $detalle->pvp; 
-
-                                if (!isset($contadorProductos[$idProducto])) {
-                                    $contadorProductos[$idProducto] = [
-                                        'id' => $idProducto,
-                                        'cant' => 1,
-                                        'pvp' => $pvp
-                                    ];
-                                } else {
-                                    $contadorProductos[$idProducto]['cant']++;
-                                }
-                            }
-                        }
-                    }
+                    $resultado[] = (object)[
+                        'id' => $producto->id,
+                        'producto' => $producto->producto,
+                        'cant' => $cant,
+                        'cod_pedido' => $cod_pedido,
+                        'pvp' => $pvp
+                    ];
                 }
 
-                // Ordenar por 'cant' de mayor a menor
-                usort($contadorProductos, function($a, $b) {
-                    return $b['cant'] <=> $a['cant'];
+                //Ordenar por cantidad ascendente
+                usort($resultado, function($a, $b) {
+                    return $b->cant <=> $a->cant;
                 });
 
-                //echo '<pre>'.var_export($datos, true).'</pre>';exit;
+                $data['nombreNegocio'] = $this->negocioModel->where('id', $datos['negocio'])->first();
                 $data['datos'] = $datos;
-                $data['res'] = $contadorProductos;
+                $data['res'] = $resultado;
                 $data['title']='Estadísticas';
                 $data['subtitle']='Codigos mas vendidos en el mes';
                 $data['main_content']='estadisticas/cod_arreglo_mas_vendido';
