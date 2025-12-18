@@ -43,18 +43,6 @@
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
-                                <div class="form-group col-md-3 div-contenedor">
-                                    <label for="mes" id="lbl-cant">Cant. arreglos a mostrar:</label>
-                                    <input 
-                                        type="text" 
-                                        class="form-control text" 
-                                        id="cant_arreglos" 
-                                        name="cant_arreglos" 
-                                        value="10" 
-                                        required
-                                    >
-                                    <p id="error-message"><?= session('errors.mes');?> </p>
-                                </div>
                             </div>
                             <div id="result"></div>
                         </div>

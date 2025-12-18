@@ -741,7 +741,6 @@ class Estadisticas extends BaseController {
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
                 'fecha' => $this->request->getPostGet('fecha'),
-                'cant' => $this->request->getPostGet('cant_arreglos'),
             ];
             
             $this->validation->setRuleGroup('clientesFrecuentes');
