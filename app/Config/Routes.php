@@ -226,6 +226,10 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('est_cod_arreglo_menos_vendido', 'Estadisticas::estCodArregloMenosVendido');
     $routes->post('arreg-menos-vendidos', 'Estadisticas::estCodArregloMenosVendido');
 
+    $routes->get('arreg-no-vendidos', 'Estadisticas::arregNoVendidos');
+    $routes->get('est_cod_arreglo_no_vendido', 'Estadisticas::estCodArregloNoVendido');
+    $routes->post('arreg-no-vendidos', 'Estadisticas::estCodArregloNoVendido');
+
     $routes->get('est-categorias', 'Estadisticas::frmEstCategorias');
     $routes->post('est-categorias', 'Estadisticas::estCategorias');
     $routes->get('cat_mas_vendido_excel', 'Estadisticas::catMasVendidaExcel');

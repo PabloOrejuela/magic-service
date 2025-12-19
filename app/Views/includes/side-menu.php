@@ -288,6 +288,12 @@
             </a>
           </li>
           <li class="nav-item subItem">
+            <a href="'.base_url().'arreg-no-vendidos" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Códigos de arreglo no vendidos en el mes</p>
+            </a>
+          </li>
+          <li class="nav-item subItem">
             <a href="'.base_url().'est-categorias" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Estadística por categorías</p>

@@ -731,6 +731,30 @@ class Estadisticas extends BaseController {
         }
     }
 
+    /**
+     * Genera la estadistica de código de arreglo menos vendido
+     *
+     * @param Type $var Description
+     * @return void
+     * @throws conditon
+     **/
+    public function arregNoVendidos(){
+        
+        if ($this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['sugest'] = $this->sugest;
+            $data['negocios'] = $this->negocioModel->findAll();
+
+            $data['title']='Estadísticas';
+            $data['subtitle']='Código de arreglo que no se han vendido en el mes';
+            $data['main_content']='estadisticas/form_cod_arreglo_no_vendido';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function estCodArregloMenosVendido(){
         
         if ($this->session->reportes == 1) {
@@ -797,6 +821,84 @@ class Estadisticas extends BaseController {
                 $data['title']='Estadísticas';
                 $data['subtitle']='Codigos menos vendidos en el mes';
                 $data['main_content']='estadisticas/cod_arreglo_menos_vendido';
+                return view('dashboard/index', $data);
+            }
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function estCodArregloNoVendido(){
+        
+        if ($this->session->reportes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
+            
+            $datos = [
+                'negocio' => $this->request->getPostGet('negocio'),
+                'fecha' => $this->request->getPostGet('fecha'),
+            ];
+            
+            $this->validation->setRuleGroup('clientesFrecuentes');
+        
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{ 
+                $fecha = explode('-', $datos['fecha']);
+                $mes = $fecha[1];
+                $anio = $fecha[0];
+                $data['numDias'] = cal_days_in_month(0, $mes, $anio);
+
+                $datos['fecha_inicio'] = $datos['fecha'].'-01';
+                $datos['fecha_final'] = $datos['fecha'].'-'.$data['numDias'];
+
+                //Traigo los arreglos con menos ventas, debo traer los que no tienen ni un pedido en ese período de tiempo
+                //$data['pedidos'] = $this->pedidoModel->_getPedidosMesEstadisticas($datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final'], 0, 'asc');
+                
+                //Traer todos los productos del negocio
+                if ($datos['negocio'] == '2') {
+                    $productos = $this->productoModel->where('idcategoria', 5)->findAll();
+                }else{
+                    $productos = $this->productoModel->where('idcategoria !=', 5)->findAll();
+                }
+                
+                $resultado = [];
+
+                foreach ($productos as $producto) {
+                    //Contar ventas en el periodo para cada producto
+                    $cant = $this->contarVentasProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
+
+                    if ($cant == 0) {
+                        $cod_pedido = $this->primerCodPedidoProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
+                        $pvp = $this->pvpProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
+
+                        $resultado[] = (object)[
+                            'id' => $producto->id,
+                            'producto' => $producto->producto,
+                            'cant' => $cant,
+                            'cod_pedido' => $cod_pedido,
+                            'pvp' => $pvp
+                        ];
+                    }
+                    
+                }
+
+                //Ordenar por cantidad ascendente
+                usort($resultado, function($a, $b) {
+                    return $a->cant <=> $b->cant;
+                });
+                
+                $data['nombreNegocio'] = $this->negocioModel->where('id', $datos['negocio'])->first();
+                $data['datos'] = $datos;
+                $data['res'] = $resultado;
+                $data['title']='Estadísticas';
+                $data['subtitle']='Codigos que no se han vendido en el mes';
+                $data['main_content']='estadisticas/cod_arreglo_no_vendido';
                 return view('dashboard/index', $data);
             }
 
