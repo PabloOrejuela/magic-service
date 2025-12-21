@@ -191,6 +191,8 @@ function sumarTotal() {
   transporte = document.getElementById("transporte").value;
   cargoDomingo = document.getElementById("cargo_domingo").value;
   horarioExtra = document.getElementById("horario_extra").value;
+  valorMensajeroMostrado = document.getElementById("valor_mensajero_mostrado").value;
+  valorMensajeroEdit = document.getElementById("valor_mensajero_edit").value;
 
   
   if (isNaN(parseFloat(subtotal)) == true) {
@@ -219,7 +221,12 @@ function sumarTotal() {
     descuento = 0;
   }
 
-  total = parseFloat(subtotal) + parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra) - descuento;
+  //calculo el total tomando en cuenta si es que se ha editado el valor del mensajero
+  if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
+    total = parseFloat(subtotal) + parseFloat(valorMensajeroEdit) + parseFloat(cargoDomingo) + parseFloat(horarioExtra) - descuento;
+  } else {
+    total = parseFloat(subtotal) + parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra) - descuento;
+  }
 
   //Hago el cálculo del mensajero SOLO si se ha seleccionado un sector
   if (sector.selectedIndex != 0 && sector.selectedIndex != 13) {
