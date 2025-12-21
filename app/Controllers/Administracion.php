@@ -200,11 +200,11 @@ class Administracion extends BaseController {
             $data['session'] = $this->session;
 
             $data['productos'] = $this->itemsProductoModel
-                            ->select('items_productos.id as id,idproducto,producto,image')
-                            ->where('item', $item)
-                            ->join('productos', 'productos.id=items_productos.idproducto')
-                            ->orderBy('producto', 'asc')
-                            ->findAll();
+                ->select('items_productos.id as idItemProducto,idproducto,producto,image')
+                ->where('item', $item)
+                ->join('productos', 'productos.id=items_productos.idproducto')
+                ->orderBy('producto', 'asc')
+                ->findAll();
 
             $data['title']='Administración';
             $data['subtitle']='Productos relacionados';

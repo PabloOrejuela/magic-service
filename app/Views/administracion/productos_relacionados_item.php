@@ -25,7 +25,7 @@
                                     foreach ($productos as $producto) {
                                         echo '<tr>';
                                         echo '<td>'.$num.'</td>';
-                                        echo '<td>'.$producto->id.'</td>';
+                                        echo '<td>'.$producto->idproducto.'</td>';
                                         echo '<td>'.$producto->producto.'</td>';
                                         if ($producto->image != '' && $producto->image != 'default-img') {
                                             echo '<td><img src="'.site_url().'public/images/productos/'.$producto->image.'.jpg" class="img-item-thumbnail" alt="Imagen"></td>';
