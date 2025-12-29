@@ -240,7 +240,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
 
     $routes->get('clientes-nuevos', 'Estadisticas::frmClientesNuevos');
     $routes->post('clientes-nuevos', 'Estadisticas::clientesNuevos');
-    $routes->get('clientes_nuevos_excel', 'Estadisticas::clientesNuevosExcel');
+    $routes->get('clientes-nuevos-excel', 'Estadisticas::clientesNuevosExcel');
 
     $routes->get('recompras-mes', 'Estadisticas::frmRecomprasMes');
     $routes->post('recompras-mes', 'Estadisticas::recomprasMes');
