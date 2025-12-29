@@ -871,32 +871,6 @@ const alertCambioValor = () => {
     });
 }
 
-const alertCambioValorMensajero = () => {
-    const toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: true,
-        //height: '200rem',
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
-        customClass: {
-            // container: '...',
-            popup: 'popup-class',
-
-            }
-    });
-
-    toast.fire({
-        icon: "success",
-        title: "Se ha cambiado el valor del mensajero"
-    });
-}
-
-
 function limpiarValores(valor) {
     var valor = 0
     document.getElementById("idproducto").selectedIndex = 2;

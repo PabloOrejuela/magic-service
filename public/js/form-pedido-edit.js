@@ -587,18 +587,21 @@ function calcularMensajero(){
 
   // /* Este es el cálculo. */
   if (valorMensajeroEdit != 0 && valorMensajeroEdit != '') {
-      total = (parseFloat(total) + parseFloat(valorMensajeroEdit));
+      total = (parseFloat(total) + parseFloat(valorMensajeroEdit))
       document.getElementById('valor_mensajero_mostrado').value = '0.00'
   }else{
-      total = (parseFloat(total) + parseFloat(valorMensajero));
+      total = (parseFloat(total) + parseFloat(valorMensajero))
   }
 
 }
 
 valorMensajeroEdit.addEventListener('change', function(e){
   if(valorMensajeroEdit.value !="" && valorMensajeroEdit.value != '0'){
-      alertCambioValorMensajero()
-      document.getElementById('valor_mensajero_mostrado').value = "0.00"
+
+    //PONER CONTROL PARA EVITAR QUE EL VALOR EDITADO DEL MENSAJERO SEA MAYOR QUE EL TOTAL DEL PEDIDO
+
+    alertaMensaje('Se ha cambiado el valor del mensajero', 2000, 'success')
+    document.getElementById('valor_mensajero_mostrado').value = "0.00"
   }
 })
 

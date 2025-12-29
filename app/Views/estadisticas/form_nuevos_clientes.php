@@ -56,9 +56,8 @@
                                         id="fecha" 
                                         name="fecha" 
                                         value="<?= date('Y-m'); ?>" 
-                                        required
                                     >
-                                    <p id="error-message"><?= session('errors.mes');?> </p>
+                                    <p id="error-message"><?= session('errors.fecha');?> </p>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="mes"></label>

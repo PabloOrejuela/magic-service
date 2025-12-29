@@ -236,7 +236,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
 
     $routes->get('clientes-frecuentes', 'Estadisticas::frmClientesFrecuentes');
     $routes->post('clientes-frecuentes', 'Estadisticas::clientesFrecuentes');
-    $routes->get('clientes-frecuentes_excel', 'Estadisticas::clientesFrecuentesExcel');
+    $routes->get('clientes-frecuentes-excel', 'Estadisticas::clientesFrecuentesExcel');
 
     $routes->get('clientes-nuevos', 'Estadisticas::frmClientesNuevos');
     $routes->post('clientes-nuevos', 'Estadisticas::clientesNuevos');

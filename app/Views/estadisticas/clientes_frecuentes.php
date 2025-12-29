@@ -57,7 +57,6 @@
                                         id="fecha" 
                                         name="fecha" 
                                         value="<?= $datos['fecha']; ?>" 
-                                        
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
@@ -90,8 +89,6 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        use App\Models\ProductoModel;
-                                        $this->productoModel = new ProductoModel;
 
                                         $sumaTotal = 0;
                                         $num = 1;
@@ -125,7 +122,7 @@
                                             <!-- /.card-body -->                        
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                                <a class="btn btn-primary" href="'.site_url().'est-cod-arreglo-mas_vendido-excel?negocio='.$datos['negocio'].'&mes='.$datos['fecha'].'" id="btn-report-excel">Descargar reporte en excel</a>
+                                                <a class="btn btn-primary" href="'.site_url().'clientes-frecuentes-excel?negocio='.$datos['negocio'].'&mes='.$datos['fecha'].'" id="btn-report-excel">Descargar reporte en excel</a>
                                                 <a href="'.site_url().'clientes-frecuentes" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                             </div>';
                                             

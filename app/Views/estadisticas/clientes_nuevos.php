@@ -43,12 +43,7 @@
                                         <?php
                                             if (isset($anios)) {
                                                 foreach ($anios as $key => $anio) {
-                                                    if ($anio->anio == $datos['anio']) {
-                                                        echo '<option value="'.$anio->anio.'" '.set_select('anio', $anio->anio, false).' selected>'.$anio->anio.'</option>';
-                                                    }else{
-                                                        echo '<option value="'.$anio->anio.'" '.set_select('anio', $anio->anio, false).' >'.$anio->anio.'</option>';
-                                                    }
-                                                    
+                                                    echo '<option value="'.$anio->anio.'" '.set_select('anio', $anio->anio, false).' >'.$anio->anio.'</option>';
                                                 }
                                             }
                                         ?>
@@ -61,8 +56,7 @@
                                         class="form-control text" 
                                         id="fecha" 
                                         name="fecha" 
-                                        value="<?= date('Y-m'); ?>" 
-                                        required
+                                        value="<?= $datos['fecha']; ?>" 
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
