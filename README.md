@@ -1,8 +1,10 @@
 <h3>Cambios</h3>
 <h5>Estadísticas</h5>
-<ul>  
+<ul> 
+    <li>En el ticket de complementos se ha agregado una línea con la información del complemento</li>
     <li>Se ha implementado el reporte de estadística de nuevos clientes</li>
-   <li>Se implementó un reporte de arreglos que no se han vendido</li>
+    <li>Se ha implementado el reporte de estadística de clientes FRECUENTES</li>
+    <li>Se implementó un reporte de arreglos que no se han vendido</li>
 </ul>
 
 <h5>Fixes</h5>

@@ -98,6 +98,7 @@
                                                     foreach ($detalle as $key => $d) {
                                                         //Tratar de que traiga esta data desde el modelo
                                                         $attrExtArreg = $this->attrExtArregModel->_getAttrArreg($d->iddetalle, $d->idcategoria);
+                                                        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                                         
                                                         if ($attrExtArreg) {
                                                             echo '<li>

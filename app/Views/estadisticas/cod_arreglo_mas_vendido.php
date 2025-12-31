@@ -105,7 +105,7 @@
                                             <!-- /.card-body -->                        
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                                <a class="btn btn-primary" href="'.site_url().'est-cod-arreglo-mas_vendido-excel?negocio='.$datos['negocio'].'&mes='.$datos['fecha'].'">Descargar reporte en excel</a>
+                                                <a class="btn btn-primary" href="'.site_url().'cod-arreglo-mas-vendido-excel?negocio='.$datos['negocio'].'&mes='.$datos['fecha'].'">Descargar reporte en excel</a>
                                                 <a href="'.site_url().'arreg-mas-vendidos" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                             </div>';
                                             

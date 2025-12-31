@@ -219,8 +219,8 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('est_ticket_promedio', 'Estadisticas::reporteTicketPromedio');
 
     $routes->get('arreg-mas-vendidos', 'Estadisticas::arregMasVendidos');
-    $routes->get('est_cod_arreglo_mas_vendido', 'Estadisticas::estCodArregloMasVendido');
     $routes->post('arreg-mas-vendidos', 'Estadisticas::estCodArregloMasVendido');
+    $routes->get('cod-arreglo-mas-vendido-excel', 'Estadisticas::estCodArregloMasVendidoExcel');
 
     $routes->get('arreg-menos-vendidos', 'Estadisticas::arregMenosVendidos');
     $routes->get('est_cod_arreglo_menos_vendido', 'Estadisticas::estCodArregloMenosVendido');

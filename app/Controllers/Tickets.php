@@ -1419,9 +1419,10 @@ class Tickets extends BaseController {
                             </tr>';
                 }
             } else if($arreglo->idcategoria == 6) {
-                //Form Attr Magic Box
-                $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
 
+                //COMPLEMENTOS
+                $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
+                
                 //Campo Observación del arreglo
                 $numCaracterObservaArreglo = strlen($arreglo->observacion);
                 if ($numCaracterObservaArreglo >= 80 && $numCaracterObservaArreglo < 150) {
@@ -1447,6 +1448,21 @@ class Tickets extends BaseController {
                                 height: auto;
                                 font-size: 0.9em;"
                             >'.$arreglo->producto.'</td>
+                        </tr>';
+                $html .= '<tr>
+                            <td 
+                                style="font-weight:bold;
+                                border: 0.5px solid #000;
+                                width:35%;
+                                height: auto;
+                                font-size: 0.55em;"
+                            >Información: </td>
+                            <td 
+                                style="border: 0.5px solid #000;
+                                width:65%;
+                                height: auto;
+                                font-size: 0.9em;"
+                            >'.$atributos->info_cat_complementos.'</td>
                         </tr>';
             }
         }

@@ -241,6 +241,7 @@ class Ventas extends BaseController {
         //Verfica si tiene datos en la tabla
         $verifica = $this->attrExtArregModel->where('iddetalle', $id)->first();
         if ($verifica) {
+            
             $this->attrExtArregModel
                     ->where('iddetalle', $id)
                     ->set([$campo => strtoupper($this->request->getPostGet('valor'))])
