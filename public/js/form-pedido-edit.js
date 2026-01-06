@@ -590,18 +590,27 @@ function calcularMensajero(){
       total = (parseFloat(total) + parseFloat(valorMensajeroEdit))
       document.getElementById('valor_mensajero_mostrado').value = '0.00'
   }else{
+    
       total = (parseFloat(total) + parseFloat(valorMensajero))
   }
 
 }
 
 valorMensajeroEdit.addEventListener('change', function(e){
-  if(valorMensajeroEdit.value !="" && valorMensajeroEdit.value != '0'){
 
-    //PONER CONTROL PARA EVITAR QUE EL VALOR EDITADO DEL MENSAJERO SEA MAYOR QUE EL TOTAL DEL PEDIDO
+  //Guardo el valor del mensajero en sessionStorage
+  sessionStorage.setItem('valorMensajero', document.getElementById('valor_mensajero_mostrado').value)
+
+  if(valorMensajeroEdit !="" && valorMensajeroEdit != '0'){
 
     alertaMensaje('Se ha cambiado el valor del mensajero', 2000, 'success')
     document.getElementById('valor_mensajero_mostrado').value = "0.00"
+
+  }else{
+
+    //SI SE VACÍA O SE HACE 0 RECUPERO EL VALOR ANTERIOR
+    total = (parseFloat(total) + parseFloat(valorMensajeroEdit))
+    document.getElementById('valor_mensajero_mostrado').value = sessionStorage.getItem('valorMensajero')
   }
 })
 
