@@ -96,7 +96,7 @@
                                             <!-- /.card-body -->                        
                                             <div class="card-footer">
                                                 <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                                                <a class="btn btn-primary" href="'.site_url().'clientes_nuevos_excel?negocio='.$datos['negocio'].'&fechaInicio='.$datos['fecha_inicio'].'" id="btn-report-excel">Descargar reporte en excel</a>
+                                                <a class="btn btn-primary" href="'.site_url().'recompras-mes-excel?negocio='.$datos['negocio'].'&fechaInicio='.$datos['fecha_inicio'].'" id="btn-report-excel">Descargar reporte en excel</a>
                                                 <a href="'.site_url().'recompras-mes" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                             </div>';
                                             
@@ -124,5 +124,4 @@
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/cabecera-reportes-mensual.js"></script>
-<script src="<?= site_url(); ?>public/js/frm-clientes-nuevos.js"></script>
 

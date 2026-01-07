@@ -244,5 +244,5 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
 
     $routes->get('recompras-mes', 'Estadisticas::frmRecomprasMes');
     $routes->post('recompras-mes', 'Estadisticas::recomprasMes');
-    $routes->get('recompras-mes_excel', 'Estadisticas::recomprasMesExcel');
+    $routes->get('recompras-mes-excel', 'Estadisticas::recomprasMesExcel');
 });
