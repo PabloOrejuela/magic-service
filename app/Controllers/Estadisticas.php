@@ -1232,13 +1232,15 @@ class Estadisticas extends BaseController {
                     $cod_pedido = $this->primerCodPedidoProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
                     $pvp = $this->pvpProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
 
-                    $resultado[] = (object)[
-                        'id' => $producto->id,
-                        'producto' => $producto->producto,
-                        'cant' => $cant,
-                        'cod_pedido' => $cod_pedido,
-                        'pvp' => $pvp
-                    ];
+                    if (isset($cod_pedido) && $cod_pedido != NULL && $cod_pedido != '') {
+                        $resultado[] = (object)[
+                            'id' => $producto->id,
+                            'producto' => $producto->producto,
+                            'cant' => $cant,
+                            'cod_pedido' => $cod_pedido,
+                            'pvp' => $pvp
+                        ];
+                    }
                 }
 
                 //Ordenar por cantidad ascendente
@@ -1288,7 +1290,7 @@ class Estadisticas extends BaseController {
             ->setKeywords('etiquetas o palabras clave separadas por espacios')
             ->setCategory('Reportes');
 
-        $nombreDelDocumento = "MagicService - Reporte de CODIGOS MAS VENDIDOS.xlsx";
+        $nombreDelDocumento = "MagicService - Reporte de CODIGOS MAS VENDIDOS-".$datosNegocio[0]->negocio.".xlsx";
         
         //Selecciono la pestaña
         $hoja = $phpExcel->getActiveSheet();
@@ -1318,6 +1320,15 @@ class Estadisticas extends BaseController {
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
+            ]
+        ];
+
+        $styleSubtituloDerecha = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
             ]
         ];
 
@@ -1357,8 +1368,17 @@ class Estadisticas extends BaseController {
             
         );
 
-        $phpExcel->getActiveSheet()->getStyle('A1:E1')->applyFromArray($styleCabecera);
-        $phpExcel->getActiveSheet()->mergeCells('A1:E1');
+        $styleCurrencyBold = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
+        $phpExcel->getActiveSheet()->getStyle('A1:F1')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->mergeCells('A1:F1');
 
         //COLUMNAS
         foreach (range('A','G') as $col) {
@@ -1391,7 +1411,7 @@ class Estadisticas extends BaseController {
 
         $fila +=2;
 
-        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':E'.$fila)->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':F'.$fila)->applyFromArray($styleCabecera);
         //Edito la info que va a ir en el archivo excel
         $hoja->setCellValue('A'.$fila, "No.");
         $hoja->setCellValue('B'.$fila, "ID");
@@ -1404,7 +1424,7 @@ class Estadisticas extends BaseController {
         
         //datos
         if ($res) {
-            echo '<pre>'.var_export($res, true).'</pre>';exit;
+            //echo '<pre>'.var_export($res, true).'</pre>';exit;
             $sumaTotal = 0;
             $num = 1;
             foreach ($res as $key => $result) {
@@ -1413,20 +1433,36 @@ class Estadisticas extends BaseController {
                 }
 
                 $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
+                $phpExcel->getActiveSheet()->getStyle('A'.$fila)->applyFromArray($styleTextoCentrado);
                 $hoja->setCellValue('A'.$fila, $num);
-                $hoja->setCellValue('B'.$fila, $result['idcliente']);
-                $hoja->setCellValue('C'.$fila, strtoupper($result['cliente']));
-                $hoja->setCellValue('D'.$fila, $result['cant']);
 
-                $phpExcel->getActiveSheet()->getCell('E'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-                $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleCurrency);
-                $hoja->setCellValue('E'.$fila, number_format($result['total'], 2, '.'));
+                $phpExcel->getActiveSheet()->getStyle('B'.$fila)->applyFromArray($styleTextoCentrado);
+                $hoja->setCellValue('B'.$fila, $result->id);
+                $hoja->setCellValue('C'.$fila, $datosNegocio[0]->negocio);
+                $hoja->setCellValue('D'.$fila, $result->producto);
+
+                $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleTextoCentrado);
+                $hoja->setCellValue('E'.$fila, $result->cant);
+
+                $phpExcel->getActiveSheet()->getCell('F'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+                $phpExcel->getActiveSheet()->getStyle('F'.$fila)->applyFromArray($styleCurrency);
+                $hoja->setCellValue('F'.$fila, number_format($result->pvp, 2, '.'));
                 $fila++;
                 $num++;
+
+                $sumaTotal += $result->pvp;
             }
+
         }else{
 
         }
+
+        $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleSubtituloDerecha);
+        $hoja->setCellValue('E'.$fila, 'TOTAL:');
+
+        $phpExcel->getActiveSheet()->getCell('F'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+        $phpExcel->getActiveSheet()->getStyle('F'.$fila)->applyFromArray($styleCurrencyBold);
+        $hoja->setCellValue('F'.$fila, number_format($sumaTotal, 2, '.'));
 
         //Creo el writter y guardo la hoja
         

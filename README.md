@@ -1,6 +1,7 @@
 <h3>Cambios</h3>
 <h5>Estadísticas</h5>
 <ul> 
+    <li>Se ha implementado el reporte de Códigos mas vendidos</li>
     <li>Se ha implementado el reporte de recompras mensual en excel</li>
 </ul>
 
