@@ -118,6 +118,7 @@
                                 <thead >
                                     <th class="col-sm-1">No.</th>
                                     <th class="col-sm-1">NEGOCIO</th>
+                                    <th class="col-sm-1">COD PEDIDO</th>
                                     <th class="col-sm-1">FECHA</th>
                                     <th class="col-sm-2">CLIENTE</th>
                                     <th class="col-sm-1">SECTOR</th>
@@ -126,6 +127,7 @@
                                     <th class="col-sm-1">HORA ENTREGA</th>
                                     <th class="col-sm-2">MENSAJERO</th>
                                     <th class="col-sm-2">COD ARREGLO</th>
+                                    <th class="col-sm-2">TIPO</th>
                                 </thead>
                                 <tbody id='tablaReporte'>
                                     <?php
@@ -143,9 +145,11 @@
                                             foreach ($res as $key => $resultado) {
                                                 $mensajero = $this->usuarioModel->_getNombreUsuario($resultado->mensajero);
                                                 $detalle = $this->detallePedidoModel->_getDetallePedido($resultado->cod_pedido);
+
                                                 echo '<tr>';
                                                 echo '<td>'.$num.'</td>';
                                                 echo '<td>'.$nombreNegocio->negocio.'</td>';
+                                                echo '<td>'.$resultado->cod_pedido.'</td>';
                                                 echo '<td>'.$resultado->fecha.'</td>';
                                                 echo '<td>'.$resultado->cliente.'</td>'; 
                                                 echo '<td>'.$resultado->sector.'</td>';      
@@ -166,9 +170,39 @@
                                                     }
                                                 echo '</ul></td>';
                                                 echo '</td>'; 
-                                                echo '</tr>';
+                                                echo '<td></td></tr>';
                                                 $suma += $valor_mensajero;
                                                 $num++;
+                                            }
+
+                                            if ($extra) {
+                                                foreach ($extra as $key => $r) {
+                                                    
+                                                    $detalle = $this->detallePedidoModel->_getDetallePedido($r->cod_pedido);
+                                                    echo '<tr>';
+                                                    echo '<td>'.$num.'</td>';
+                                                    echo '<td>'.$nombreNegocio->negocio.'</td>';
+                                                    echo '<td>'.$r->cod_pedido.'</td>';
+                                                    echo '<td>'.$r->fecha.'</td>';
+                                                    echo '<td>'.$r->cliente.'</td>'; 
+                                                    echo '<td>'.$r->sector.'</td>';      
+                                                    echo '<td>'.$r->dir_entrega.'</td>';
+                                                    echo '<td id="resultado-total">'.$r->valor_mensajero_extra.'</td>';
+                                                    echo '<td>'.$r->rango_entrega_desde.' / '.$r->rango_entrega_hasta.'</td>';
+                                                    echo '<td>'.$mensajero.'</td>';
+                                                    echo '<td>';
+                                                        if (isset($detalle)) {
+                                                            foreach ($detalle as $key => $d) {
+                                                                echo '<li>'.$d->producto.'</li>';
+                                                            }
+                                                        }
+                                                    echo '</ul></td>';
+                                                    echo '</td>';
+                                                    echo '<td>EXTRA</td>';
+                                                    echo '</tr>';
+                                                    $suma += $r->valor_mensajero_extra;
+                                                    $num++;
+                                                }
                                             }
                                             echo '<tr>
                                                     <td colspan="4"></td><td id="text-result-bold">TOTAL: </td>
@@ -195,7 +229,7 @@
 
                                         }else{
                                             echo '<tr>';
-                                            echo '<td colspan="7">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
+                                            echo '<td colspan="11">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
                                             echo '</tr>';
 
                                             echo '
