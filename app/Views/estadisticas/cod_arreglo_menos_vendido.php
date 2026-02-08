@@ -69,18 +69,21 @@
                                             //echo '<pre>'.var_export($res, true).'</pre>';exit;
 
                                             foreach ($res as $id => $arreglo) {
-                                                $nombreProducto = $this->productoModel->select('producto')->where('id', $arreglo->id)->first();
+                                                if ($arreglo->cant > 0) {
+                                                    
+                                                    $nombreProducto = $this->productoModel->select('producto')->where('id', $arreglo->id)->first();
 
-                                                echo '<tr>';
-                                                echo '<td>'.$num.'</td>';
-                                                echo '<td>'.$arreglo->id.'</td>';
-                                                echo '<td>'.$nombreNegocio->negocio.'</td>';
-                                                echo '<td>'.$nombreProducto->producto.'</td>';
-                                                echo '<td id="td-text-center">'.$arreglo->cant.'</td>';
-                                                echo '<td id="td-result">'.$arreglo->pvp.'</td>';
-                                                echo '</tr>';
-                                                $sumaTotal += $arreglo->pvp;
-                                                $num++;
+                                                    echo '<tr>';
+                                                    echo '<td>'.$num.'</td>';
+                                                    echo '<td>'.$arreglo->id.'</td>';
+                                                    echo '<td>'.$nombreNegocio->negocio.'</td>';
+                                                    echo '<td>'.$nombreProducto->producto.'</td>';
+                                                    echo '<td id="td-text-center">'.$arreglo->cant.'</td>';
+                                                    echo '<td id="td-result">'.$arreglo->pvp.'</td>';
+                                                    echo '</tr>';
+                                                    $sumaTotal += $arreglo->pvp;
+                                                    $num++;
+                                                }
                                             }
 
                                             echo '<tr><td colspan="5" id="td-suma">Total: </td><td id="td-suma">'.number_format($sumaTotal, 2).'</td></tr>

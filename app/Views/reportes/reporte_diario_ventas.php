@@ -132,7 +132,7 @@
                                 <thead >
                                     <th class="col-sm-2">No.</th>
                                     <th class="col-sm-2">CODIGO</th>
-                                    <th class="col-sm-2">FECHA</th>
+                                    <th class="col-sm-2">FECHA DE REGISTRO</th>
                                     <th class="col-sm-4">CLIENTE</th>
                                     <th class="col-sm-4">BANCO/PLATAFORMA</th>
                                     <th class="col-sm-2">VALOR TOTAL</th>
@@ -156,13 +156,23 @@
                                         $totalKarana = 0;
                                         $totalMagicService = 0;
                                         $ventasExtras = 0;
+                                        $modo = 'REPORTE';
 
                                         if ($res) {
+                                            
                                             foreach ($res as $key => $result) {
                                                 $vendedor = $this->usuarioModel->_getNombreUsuario($result->vendedor);
-                                                echo '<tr>';
+
+
+                                                // echo '<tr class="item-list" data-id="'.$value->id.'">
+                                                //         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
+                                                //         <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
+
+
+
+                                                echo '<tr data-id="'.$result->id.'">';
                                                 echo '<td>'.$num.'</td>';
-                                                echo '<td>'.$result->cod_pedido.'</td>';
+                                                echo '<td><a href="'.site_url().'pedido-edit/'.$result->id.'/'.$modo.'" id="link-editar" target="_blank">'.$result->cod_pedido.'</a></td>';
                                                 echo '<td>'.$result->fecha.'</td>';
                                                 echo '<td>'.$result->cliente.'</td>';
 
@@ -252,7 +262,7 @@
                                                     ';
                                         }else{
                                             echo '<tr>';
-                                            echo '<td colspan="11">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
+                                            echo '<td colspan="12">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
                                             echo '</tr>';
 
                                             echo '

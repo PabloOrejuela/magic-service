@@ -20,7 +20,16 @@
                             <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
                                 <form action="<?= site_url().'pedido-insert';?>" method="post">
-                                    
+                                    <?php 
+                                        $data = [
+                                            'type'  => 'text',
+                                            'name'  => 'idpedido',
+                                            'id'    => 'idpedido',
+                                            'value' => $session->idpedido.'',
+                                            'class' => 'hidden',
+                                        ];
+                                        echo form_input($data); 
+                                    ?>
                                     <div id="div-pedido">
                                         <label for="cod_pedido">Pedido: </label>
                                         <input 
@@ -28,7 +37,6 @@
                                             class="form-control col-4" 
                                             id="cod_pedido" 
                                             name="cod_pedido"
-                                            placeholder="<?= $session->codigo_pedido ?>"
                                             maxlength="5"
                                             value="<?= $cod_pedido; ?>"
                                             readonly
@@ -233,7 +241,7 @@
                                         <div class="col-md-1">
                                             <label for="telefono"> </label> 
                                             <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
-                                            <a href="javascript:agregarProducto(idp.value, cant.value, '<?= $cod_pedido; ?>' )" class="btn btn-carrito">
+                                            <a href="javascript:agregarProducto(idp.value, cant.value, '<?= $session->idpedido; ?>' )" class="btn btn-carrito">
                                                 <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
                                             </a>
                                         </div>
@@ -267,7 +275,7 @@
                                                                             class="form-control" 
                                                                             name="observacion_'.$row->idproducto.'" 
                                                                             value="'.$row->observacion.'" 
-                                                                            onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" 
+                                                                            onchange="observacion('.$row->idproducto. ','.$session->idpedido.')" 
                                                                             id="observa_'.$row->idproducto.'"
                                                                         >
                                                                     </td>';
@@ -277,14 +285,14 @@
                                                                             class="form-control input-precio" 
                                                                             name="precio_'.$row->idproducto.'" 
                                                                             value="'.$row->pvp.'" 
-                                                                            onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" 
+                                                                            onchange="actualizaPrecio('.$row->idproducto. ','.$session->idpedido.')" 
                                                                             id="precio_'.$row->idproducto.'"
                                                                         >
                                                                     </td>';
                                                             
                                                             echo '<td id="cant_'.$row->idproducto.'" class="cant_arreglo">'.$row->cantidad.'</td>';
                                                             
-                                                            echo '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="btn btn-borrar">
+                                                            echo '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$session->idpedido.')" class="btn btn-borrar">
                                                                         <img src="'.site_url().'public/images/delete.png" width="25" >
                                                                         </a></td>';
                                                             echo '</tr>';
@@ -504,7 +512,7 @@
 
 //Traigo el detalle al cargar la página
 window.addEventListener('load', function() {
-    let codigoPedido = document.getElementById('cod_pedido').value
+    let idpedido = document.getElementById('idpedido').value
 
     $("#tablaProductos tbody").empty();
 
@@ -513,7 +521,7 @@ window.addEventListener('load', function() {
         dataType:"html",
         url: "get_detallle",
         data: {
-        codigo: codigoPedido
+            idpedido: idpedido
         },
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
@@ -644,33 +652,36 @@ function descontar(valor) {
     sumarTotal()
 }
 
-function getDetalletemporal(codigoPedido){
+// function getDetalletemporal(idpedido){
     
-    return $.ajax({
-        type:"GET",
-        dataType:"html",
-        url: "ventas/getDetallePedido_temp/"+codigoPedido,
-        beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
-        },
-        success: function(data){
-            // limpiarClienteDocumento();
-            let detalle = JSON.parse(data);
-            let datos = detalle.datos
-            let cant = 0;
+//     return $.ajax({
+//         method:"GET",
+//         dataType:"html",
+//         url: "getDetallePedido_temp/",
+//         data:{
+//             idpedido:idpedido
+//         },
+//         beforeSend: function (f) {
+//             //$('#cliente').html('Cargando ...');
+//         },
+//         success: function(data){
+//             // limpiarClienteDocumento();
+//             let detalle = JSON.parse(data);
+//             let datos = detalle.datos
+//             let cant = 0;
             
-            for (const i of datos) {
-                cant += parseInt(i.cantidad)
-            }
+//             for (const i of datos) {
+//                 cant += parseInt(i.cantidad)
+//             }
 
-            document.getElementById("cant_arreglos").value = cant
-        },
-        error: function(data){
-            console.log("No hay detalle");
-        }
-    });
+//             document.getElementById("cant_arreglos").value = cant
+//         },
+//         error: function(data){
+//             console.log("No hay detalle");
+//         }
+//     });
     
-}
+// }
 
 
 function getDayOfWeek(fechaEntrega){

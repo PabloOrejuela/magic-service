@@ -64,17 +64,19 @@
                                             'Saturday'=>"Sábado"
                                         );
 
+                                        $modo = 'EDIT';
+
                                         if (isset($pedidos) && $pedidos != NULL) {
                                             foreach ($pedidos as $key => $value) {
                                                 $nombreDia = $nombresDias[date('l', strtotime($value->fecha_entrega))];
                                                 
                                                 //Tratar de que traiga esta data desde el modelo
-                                                $detalle = $this->detallePedidoModel->_getDetallePedido($value->cod_pedido);
+                                                $detalle = $this->detallePedidoModel->_getDetallePedido($value->id);
                                                 $verificaCampos = $this->pedidoModel->_verificaCampos($value->id, $detalle);
 
                                                 echo '<tr class="item-list" data-id="'.$value->id.'">
                                                         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
-                                                        <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
+                                                        <td><a href="'.site_url().'pedido-edit/'.$value->id.'/'.$modo.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
                                                     if ($value->fecha_entrega) {
                                                         echo '<td id="fechaEntrega_'.$value->id.'" class="datos-negrita">'.$nombreDia.' '.$value->fecha_entrega.'</td>';
                                                     }else{

@@ -16,7 +16,7 @@ class Tickets extends BaseController {
         $idcategoría = null;
 
         //Traigo los arreglo del pedido
-        $arreglos = $this->detallePedidoModel->_getDetallePedido($datosPedido->cod_pedido);
+        $arreglos = $this->detallePedidoModel->_getDetallePedido($datosPedido->id);
 
         //Verifico la categoría de el arreglo
         foreach ($arreglos as $key => $arreglo) {
@@ -59,7 +59,7 @@ class Tickets extends BaseController {
         $nombreDia = $nombresDias[date('l', strtotime($datosPedido->fecha_entrega))];
 
         //Traigo los arreglo del pedido
-        $arreglos = $this->detallePedidoModel->_getDetallePedido($datosPedido->cod_pedido);
+        $arreglos = $this->detallePedidoModel->_getDetallePedido($datosPedido->id);
 
         $pageLayout = array($width, $height); //  or array($height, $width) 
         
@@ -380,7 +380,7 @@ class Tickets extends BaseController {
         $nombreDia = $nombresDias[date('l', strtotime($datosPedido->fecha_entrega))];
 
         //Traigo los arreglo del pedido
-        $arreglos = $this->detallePedidoModel->_getDetallePedido($datosPedido->cod_pedido);
+        $arreglos = $this->detallePedidoModel->_getDetallePedido($datosPedido->id);
 
         $pageLayout = array($width, $height); //  or array($height, $width) 
         

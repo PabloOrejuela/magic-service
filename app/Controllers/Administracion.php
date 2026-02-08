@@ -1038,7 +1038,6 @@ class Administracion extends BaseController {
                     $producto['image'] = 'default-img';
     
                 }else{
-                    //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
                     //Borro la imágen anterior
                     if (file_exists($ruta.$datosProducto->image.'.jpg')) {
                         if ($datosProducto->image) {
@@ -1163,7 +1162,6 @@ class Administracion extends BaseController {
                     $producto['image'] = 'default-img';
     
                 }else{
-                    //PABLO AQUI DEBERÍA CORRER LA VALIDACION de tipo, verificar si ya hay una imagen borrarla y cargar la nueva, etc
                     
                     //Muevo el archivo del temporal a la carpeta
                     $producto['image'] = $producto['producto'];

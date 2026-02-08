@@ -46,7 +46,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte de Control de Ventas';
@@ -63,7 +63,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte de Procedencias';
@@ -80,7 +80,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->orderBy('nombre', 'asc')->findAll();
 
             $data['title']='Reportes';
@@ -98,7 +98,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte Master de Ingresos';
@@ -115,7 +115,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte Master de Gastos';
@@ -132,7 +132,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte mensual de Pérdidas y Ganancias';
@@ -149,7 +149,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte mensual de devoluciones';
@@ -167,7 +167,7 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
 
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -197,7 +197,7 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
 
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->orderBy('nombre', 'asc')->findAll();
             
             $datos = [
@@ -246,7 +246,7 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
 
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -322,7 +322,7 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
 
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -377,7 +377,7 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
 
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -432,7 +432,7 @@ class Reportes extends BaseController {
         if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -515,7 +515,7 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
 
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -554,7 +554,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             $data['vendedores'] = $this->usuarioModel->where('estado', 1)->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
             
             $data['title']='Reportes';
@@ -573,7 +573,7 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
 
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             $data['vendedores'] = $this->usuarioModel->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
             
             $datos = [
@@ -760,7 +760,7 @@ class Reportes extends BaseController {
         //Edito la info que va a ir en el archivo excel
         $hoja->setCellValue('A'.$fila, "No.");
         $hoja->setCellValue('B'.$fila, "CODIGO");
-        $hoja->setCellValue('C'.$fila, "FECHA");
+        $hoja->setCellValue('C'.$fila, "FECHA DE REGISTRO");
         $hoja->setCellValue('D'.$fila, "CLIENTE");
         $hoja->setCellValue('E'.$fila, "BANCO/PLATAFORMA");
         $hoja->setCellValue('F'.$fila, "VALOR TOTAL");
@@ -2897,7 +2897,7 @@ class Reportes extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Reportes';
             $data['subtitle']='Reporte de items sensibles por rango de fechas';

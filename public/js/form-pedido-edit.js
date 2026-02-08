@@ -38,27 +38,33 @@ formaPago.addEventListener("change", function () {
   }
 });
 
-divDevolucion.addEventListener("click", function () {
-  
-  let divDevolucion = document.querySelector("#div-devolucion");
+if (divDevolucion) {
+  divDevolucion.addEventListener("click", function () {
+    
+    let divDevolucion = document.querySelector("#div-devolucion");
 
-  if (divDevolucion.style.display == "block") {
-    divDevolucion.style.display = "none"
-  } else {
-    divDevolucion.style.display = "block"
-  }
-});
+    if (divDevolucion.style.display == "block") {
+      divDevolucion.style.display = "none"
+    } else {
+      divDevolucion.style.display = "block"
+    }
+  });
+}
+
 
 $('#idproducto').autocomplete({
   source: function(request, response){
+
+    let idnegocio = document.getElementById("negocio").value
+    
       
       $.ajax({
-          url: '../getProductosAutocomplete',
+          url: '../../getProductosAutocomplete',
           method: 'GET',
           dataType: 'json',
           data: {
               producto: request.term,
-              negocio: negocio.selectedIndex
+              negocio: idnegocio
           },
           success: function(res) {
 
@@ -295,7 +301,9 @@ sectores.addEventListener("change", () => {
   }
 })
 
-function agregarProducto(idproducto, cantidad, cod_pedido){
+function agregarProducto(idproducto, cantidad, idpedido){
+
+  let codPedido = document.getElementById("cod_pedido").value
   let transporte = 0
   let cargoDomingo = 0
   let horarioExtra = 0
@@ -325,11 +333,12 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
   if (idproducto != null && idproducto != 0 && idproducto > 0) {
       
       $.ajax({
-          url: '../detalle_pedido_insert_temp',
+          url: '../../detalle_pedido_insert_temp',
           data: {
               idproducto: idproducto,
               cantidad: cantidad,
-              cod_pedido: cod_pedido,
+              idpedido: idpedido,
+              codPedido: codPedido
           },
           success: function(resultado){
               if (resultado == 0) {
@@ -337,6 +346,7 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
                   alertAgregaProducto()
 
                   let detalle = JSON.parse(resultado);
+                  
                   
                   if (detalle.error == '') {
                       $("#tablaProductos tbody").empty();
@@ -351,11 +361,11 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
       });
       
   }
-  calculaValorNeto(cod_pedido);
+  calculaValorNeto(idpedido);
   calcularMensajero();
 }
 
-function eliminaProducto(idproducto, cod_pedido){
+function eliminaProducto(idproducto, idpedido){
   let transporte = 0
   let cargoDomingo = 0
   let horarioExtra = 0
@@ -383,7 +393,13 @@ function eliminaProducto(idproducto, cod_pedido){
   if (idproducto != null && idproducto != 0 && idproducto > 0) {
 
       $.ajax({
-          url: '../ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
+          url: '../../detalle_pedido_delete_producto_temp/',
+          method: 'GET',
+          dataType: 'html',
+          data: {
+              idproducto: idproducto,
+              idpedido: idpedido
+          },
           success: function(resultado){
               if (resultado == 0) {
 
@@ -391,12 +407,11 @@ function eliminaProducto(idproducto, cod_pedido){
                   //Exito
 
                   let detalle = JSON.parse(resultado);
-
+                
                   if (detalle.error == '') {
                       $("#tablaProductos tbody").empty();
                       $("#tablaProductos tbody").append(detalle.datos);
-                      //$("#total").val(detalle.total);
-                      //$("#valor_neto").val(detalle.subtotal);
+
                       total.value = (parseFloat(detalle.total) + extras).toFixed(2)
                       document.getElementById('valor_neto').value = detalle.subtotal
                       alertEliminaProducto()
@@ -410,7 +425,7 @@ function eliminaProducto(idproducto, cod_pedido){
       });
       
   }
-  calculaValorNeto(cod_pedido);
+  calculaValorNeto(idpedido);
   calcularMensajero();
 }
 
@@ -444,27 +459,28 @@ function devolucion(id){
   }
 }
 
-function observacion(idproducto, cod_pedido){
+function observacion(idproducto, idpedido){
   let observacion = document.getElementById("observa_"+idproducto).value
   
   if (observacion != null && observacion != '') {
 
       $.ajax({
-          url: "../detalle_pedido_insert_observacion_temp",
-          type: "GET",
+          url: "../../detalle_pedido_insert_observacion_temp",
+          method: "GET",
           dataType: "html",
           data: {
               idproducto: idproducto,
-              cod_pedido: cod_pedido,
+              idpedido: idpedido,
               observacion: observacion
           },
           success: function(resultado){
+            
               if (resultado == 0) {
 
               }else{
                   //Exito
                   let detalle = JSON.parse(resultado);
-
+                
                   if (detalle.error == '') {
                       $("#tablaProductos tbody").empty();
                       $("#tablaProductos tbody").append(detalle.datos);
@@ -472,7 +488,7 @@ function observacion(idproducto, cod_pedido){
                       $("#valor_neto").val(detalle.subtotal);
 
                       limpiaLineaProducto()
-                      calculaValorNeto(cod_pedido);
+                      calculaValorNeto(idpedido);
                       //sumarTotal()
                   }
               }
@@ -482,7 +498,8 @@ function observacion(idproducto, cod_pedido){
   }
 }
 
-function actualizaPrecio(idproducto, cod_pedido){
+function actualizaPrecio(idproducto, idpedido){
+
   let precio = document.getElementById("precio_"+idproducto).value
   let cant = document.getElementById("cant_"+idproducto).innerHTML
   
@@ -494,7 +511,7 @@ function actualizaPrecio(idproducto, cod_pedido){
         dataType: "html",
         data: {
             idproducto: idproducto,
-            cod_pedido: cod_pedido,
+            idpedido: idpedido,
             precio: precio,
             cant: cant
         },
@@ -512,7 +529,7 @@ function actualizaPrecio(idproducto, cod_pedido){
                     $("#valor_neto").val(detalle.subtotal);
 
                     limpiaLineaProducto()
-                    calculaValorNeto(cod_pedido);
+                    calculaValorNeto(idpedido);
                     sumarTotal()
                 }
             }
@@ -529,13 +546,13 @@ function limpiaLineaProducto() {
   document.getElementById('cant').value = 1;
 }
 
-function calculaValorNeto(cod_pedido) {
+function calculaValorNeto(idpedido) {
 
   let total = 0;
   $.ajax({
       method:"GET",
       dataType:"html",
-      url: "../ventas/getDetallePedido_temp/"+cod_pedido,
+      url: "../../getDetallePedido_temp/"+idpedido,
       data: {
         
       },
@@ -638,6 +655,49 @@ const addMensajero = () => {
   let divNuevoMensajero = document.getElementById("nuevoMensajero")
 
   divNuevoMensajero.style.display = "block"
+}
+
+const form = document.getElementById('formUpdate');
+const modo = form.dataset.modo;
+
+if (modo === 'REPORTE') {
+
+  // 1. Bloquear inputs editables
+  form.querySelectorAll('input, textarea, select').forEach(el => {
+
+    // checkboxes y radios
+    if (el.type === 'checkbox' || el.type === 'radio') {
+      el.disabled = true;
+      return;
+    }
+
+    // selects
+    if (el.tagName === 'SELECT') {
+      el.disabled = true;
+      return;
+    }
+
+    // inputs normales
+    el.readOnly = true;
+  });
+
+  // 2. Cancelar TODOS los eventos que cambian datos
+  form.addEventListener('input', e => e.stopImmediatePropagation(), true);
+  form.addEventListener('change', e => e.stopImmediatePropagation(), true);
+  form.addEventListener('click', e => e.preventDefault(), true);
+
+  // 3. Bloquear enlaces dentro del formulario
+  form.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }, true);
+
+    // Opcional: efecto visual
+    link.style.pointerEvents = 'none';
+    link.style.cursor = 'default';
+    link.style.opacity = '0.6';
+  });
 }
 
 

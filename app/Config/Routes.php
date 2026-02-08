@@ -30,7 +30,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('get_valor_sector', 'Ventas::get_valor_sector');
     $routes->post('pedido-insert', 'Ventas::pedido_insert');
     $routes->post('pedido-update', 'Ventas::pedido_update');
-    $routes->get('pedido-edit/(:num)', 'Ventas::pedido_edit/$1');
+    $routes->get('pedido-edit/(:num)/(:any)', 'Ventas::pedido_edit/$1/$2');
     $routes->get('getDatosPedido/(:num)', 'Ventas::getDatosPedido/$1');
     $routes->get('ventas/detalle_pedido_insert/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert/$1/$2/$3');
     $routes->get('ventas/detalle_pedido_insert_observacion/(:num)/(:num)/(:any)', 'Ventas::detalle_pedido_insert_observacion/$1/$2/$3');
@@ -47,9 +47,9 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('getHorasEntrega', 'Ventas::getHorasEntrega');
     $routes->get('imprimirTicket/(:num)/(:any)', 'Tickets::imprimirTicket/$1/$2');
     //$routes->get('imprimirTicket', 'Tickets::imprimirTicket');
-    $routes->get('ventas/getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
-    $routes->get('detalle_pedido_insert_temp', 'Ventas::detalle_pedido_insert_temp');
-    $routes->get('ventas/detalle_pedido_delete_producto_temp/(:num)/(:any)', 'Ventas::detalle_pedido_delete_producto_temp/$1/$2');
+    $routes->get('getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
+    $routes->get('detalle_pedido_insert_temp', 'Ventas::detalle_pedido_insert_temp'); // POSIBLE A BORRAR
+    $routes->get('detalle_pedido_delete_producto_temp', 'Ventas::detalle_pedido_delete_producto_temp');
     $routes->get('detalle_pedido_update_precio_temp', 'Ventas::detalle_pedido_update_precio_temp');
     $routes->get('detalle_pedido_insert_observacion_temp', 'Ventas::detalle_pedido_insert_observacion_temp');
     $routes->get('estadistica-ventas', 'Ventas::estadisticaVentas');

@@ -14,7 +14,8 @@
                         <table class="table table-bordered table-striped px-3" id="table-historial-pedidos">
                             <thead>
                                 <th>Pedido</th>
-                                <th>Fecha</th>
+                                <th>Fecha Registro</th>
+                                <th>Fecha Entrega</th>
                                 <th>Sector</th>
                                 <th>Dirección</th>
                                 <th>Ubicación de entrega</th>
@@ -41,6 +42,7 @@
                                                 <td>
                                                     <a href="'.site_url().'pedido-edit/'.$pedido->id.'" id="link-editar">'.$pedido->cod_pedido.'</a>
                                                 </td>
+                                                <td>'.$pedido->fecha.'</td>
                                                 <td>'.$pedido->fecha_entrega.'</td>
                                                 <td>'.$pedido->sector.'</td>
                                                 <td>'.$pedido->dir_entrega.'</td>

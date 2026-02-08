@@ -22,4 +22,3 @@
       </li>
     </ul>
   </nav>
-  <script src="<?= site_url(); ?>public/js/navbar.js"></script>

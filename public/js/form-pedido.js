@@ -43,16 +43,15 @@ const activarSubmit = () => {
 }
 
 $('#idproducto').autocomplete({
-    
   source: function(request, response){
-    
+
     $.ajax({
         url: 'getProductosAutocomplete',
         method: 'GET',
         dataType: 'json',
         data: {
             producto: request.term,
-            negocio: negocio.selectedIndex
+            negocio: idnegocio.selectedIndex
         },
         success: function(res) {
 
@@ -298,47 +297,50 @@ sectores.addEventListener("change", () => {
   }
 })
 
-function agregarProducto(idproducto, cantidad, cod_pedido){
-  let transporte = 0
-  let cargoDomingo = 0
-  let horarioExtra = 0
+function agregarProducto(idproducto, cantidad, idpedido){
 
-  let total = document.getElementById("total")
+    let codPedido = document.getElementById("cod_pedido").value
+    let transporte = 0
+    let cargoDomingo = 0
+    let horarioExtra = 0
+    
+    let total = document.getElementById("total")
 
-  transporte = document.getElementById("transporte").value
-  cargoDomingo = document.getElementById("cargo_domingo").value
-  horarioExtra = document.getElementById("horario_extra").value
-  
+    transporte = document.getElementById("transporte").value
+    cargoDomingo = document.getElementById("cargo_domingo").value
+    horarioExtra = document.getElementById("horario_extra").value
+    
 
-  if (isNaN(parseFloat(transporte)) == true) {
-      transporte = 0;
-  }
+    if (isNaN(parseFloat(transporte)) == true) {
+        transporte = 0;
+    }
 
-  if (isNaN(parseFloat(cargoDomingo)) == true) {
-      cargoDomingo = 0;
-  }
+    if (isNaN(parseFloat(cargoDomingo)) == true) {
+        cargoDomingo = 0;
+    }
 
-  if (isNaN(parseFloat(horarioExtra)) == true) {
-      horarioExtra = 0;
-  }
+    if (isNaN(parseFloat(horarioExtra)) == true) {
+        horarioExtra = 0;
+    }
 
-  let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
+    let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
 
-  
-  if (idproducto != null && idproducto != 0 && idproducto > 0) {
-      
-    $.ajax({
-        url: 'detalle_pedido_insert_temp',
-        data: {
-            idproducto: idproducto,
-            cantidad: cantidad,
-            cod_pedido: cod_pedido,
-        },
-        success: function(resultado){
-            if (resultado == 0) {
-            }else{
+    
+    if (idproducto != null && idproducto != 0 && idproducto > 0) {
+        
+        $.ajax({
+            url: 'detalle_pedido_insert_temp',
+            data: {
+                idproducto: idproducto,
+                cantidad: cantidad,
+                idpedido: idpedido,
+                codPedido: codPedido
+            },
+            success: function(resultado){
+                if (resultado == 0) {
+                }else{
                     alertAgregaProducto()
-
+                
                     let detalle = JSON.parse(resultado);
 
                     $("#tablaProductos tbody").empty();
@@ -348,45 +350,52 @@ function agregarProducto(idproducto, cantidad, cod_pedido){
                     document.getElementById('valor_neto').value = detalle.total
 
                     limpiaLineaProducto()
-                
+                    
+                }
             }
-        }
-    });
-      
-  }
-  calculaValorNeto(cod_pedido);
-  calcularMensajero();
+        });
+        
+    }
+    calculaValorNeto(idpedido);
+    calcularMensajero();
 }
 
-function eliminaProducto(idproducto, cod_pedido){
-  let transporte = 0
-  let cargoDomingo = 0
-  let horarioExtra = 0
+function eliminaProducto(idproducto, idpedido){
 
-  let total = document.getElementById("total")
+    let transporte = 0
+    let cargoDomingo = 0
+    let horarioExtra = 0
 
-  transporte = document.getElementById("transporte").value
-  cargoDomingo = document.getElementById("cargo_domingo").value
-  horarioExtra = document.getElementById("horario_extra").value
+    let total = document.getElementById("total")
 
-  if (isNaN(parseFloat(transporte)) == true) {
-      transporte = 0;
-  }
+    transporte = document.getElementById("transporte").value
+    cargoDomingo = document.getElementById("cargo_domingo").value
+    horarioExtra = document.getElementById("horario_extra").value
 
-  if (isNaN(parseFloat(cargoDomingo)) == true) {
-      cargoDomingo = 0;
-  }
+    if (isNaN(parseFloat(transporte)) == true) {
+        transporte = 0;
+    }
 
-  if (isNaN(parseFloat(horarioExtra)) == true) {
-      horarioExtra = 0;
-  }
+    if (isNaN(parseFloat(cargoDomingo)) == true) {
+        cargoDomingo = 0;
+    }
 
-  let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
+    if (isNaN(parseFloat(horarioExtra)) == true) {
+        horarioExtra = 0;
+    }
 
-  if (idproducto != null && idproducto != 0 && idproducto > 0) {
+    let extras = parseFloat(transporte) + parseFloat(cargoDomingo) + parseFloat(horarioExtra)
+
+    if (idproducto != null && idproducto != 0 && idproducto > 0) {
 
         $.ajax({
-            url: 'ventas/detalle_pedido_delete_producto_temp/' + idproducto + '/' + cod_pedido,
+            url: 'detalle_pedido_delete_producto_temp/',
+            method: 'GET',
+            dataType: 'html',
+            data: {
+                idproducto: idproducto,
+                idpedido: idpedido
+            },
             success: function(resultado){
                 if (resultado == 0) {
 
@@ -418,23 +427,23 @@ function eliminaProducto(idproducto, cod_pedido){
         });
       
   }
-  calculaValorNeto(cod_pedido);
+  calculaValorNeto(idpedido);
   calcularMensajero();
 }
 
-function observacion(idproducto, cod_pedido){
+function observacion(idproducto, idpedido){
   let observacion = document.getElementById("observa_"+idproducto).value
   
   if (observacion != null && observacion != '') {
     
     $.ajax({
-        method: 'get',
+        method: 'GET',
         dataType:"html",
         url: 'detalle_pedido_insert_observacion_temp',
         data: {
             idproducto: idproducto,
             observacion: observacion,
-            cod_pedido: cod_pedido,
+            idpedido: idpedido,
         },
         success: function(resultado){
             if (resultado == 0) {
@@ -450,7 +459,7 @@ function observacion(idproducto, cod_pedido){
                     $("#valor_neto").val(detalle.subtotal);
 
                     limpiaLineaProducto()
-                    calculaValorNeto(cod_pedido);
+                    calculaValorNeto(idpedido);
                     calcularMensajero();
                     sumarTotal()
                 }
@@ -461,7 +470,7 @@ function observacion(idproducto, cod_pedido){
   }
 }
 
-function actualizaPrecio(idproducto, cod_pedido){
+function actualizaPrecio(idproducto, idpedido){
   let precio = document.getElementById("precio_"+idproducto).value
   let cant = document.getElementById("cant_"+idproducto).innerHTML
   
@@ -471,7 +480,7 @@ function actualizaPrecio(idproducto, cod_pedido){
           url: 'detalle_pedido_update_precio_temp',
           data: {
               idproducto: idproducto,
-              cod_pedido: cod_pedido,
+              idpedido: idpedido,
               precio: precio,
               cant: cant
           },
@@ -489,7 +498,7 @@ function actualizaPrecio(idproducto, cod_pedido){
                       $("#valor_neto").val(detalle.subtotal);
 
                       limpiaLineaProducto()
-                      calculaValorNeto(cod_pedido);
+                      calculaValorNeto(idpedido);
                       sumarTotal()
                   }
               }
@@ -506,13 +515,13 @@ function limpiaLineaProducto() {
   document.getElementById('cant').value = 1;
 }
 
-function calculaValorNeto(cod_pedido) {
+function calculaValorNeto(idpedido) {
 
   let total = 0;
   $.ajax({
-      type:"GET",
+      method:"GET",
       dataType:"html",
-      url: "ventas/getDetallePedido_temp/"+cod_pedido,
+      url: "getDetallePedido_temp/"+idpedido,
       success: function(resultado){
           let detalle = JSON.parse(resultado);
           

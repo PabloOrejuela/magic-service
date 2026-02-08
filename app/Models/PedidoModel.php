@@ -639,6 +639,10 @@ class PedidoModel extends Model {
             $builder->set('ref_pago', $data['ref_pago']); 
         }
 
+        if ($data['estado'] != 'NULL' && $data['estado'] != '') {
+            $builder->set('estado', $data['estado']); 
+        }
+
         if ($data['mensajero_extra'] != 'NULL' && $data['mensajero_extra'] != '' && $data['mensajero_extra'] != '0') {
             $builder->set('mensajero_extra', $data['mensajero_extra']); 
             $builder->set('valor_mensajero_extra', $data['valor_mensajero_extra']); 
@@ -652,7 +656,7 @@ class PedidoModel extends Model {
         $builder->set('updated_at', $updated_at); 
 
         $builder->set('sin_remitente', $data['sin_remitente']); 
-        $builder->where($this->table.'.id', $data['id']);
+        $builder->where($this->table.'.id', $data['idpedido']);
         $builder->update();
     }
 

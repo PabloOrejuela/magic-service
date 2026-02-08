@@ -278,19 +278,19 @@
           <li class="nav-item subItem">
             <a href="'.base_url().'arreg-mas-vendidos" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Códigos de arreglo mas vendidos</p>
+              <p>Códigos de productos mas vendidos</p>
             </a>
           </li>
           <li class="nav-item subItem">
             <a href="'.base_url().'arreg-menos-vendidos" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Códigos de arreglo menos vendidos</p>
+              <p>Códigos de productos menos vendidos</p>
             </a>
           </li>
           <li class="nav-item subItem">
             <a href="'.base_url().'arreg-no-vendidos" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
-              <p>Códigos de arreglo no vendidos en el mes</p>
+              <p>Códigos de productos no vendidos en el mes</p>
             </a>
           </li>
           <li class="nav-item subItem">

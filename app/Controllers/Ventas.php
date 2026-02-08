@@ -29,6 +29,17 @@ class Ventas extends BaseController {
 
     }
 
+    public function getNewCodPedido(){
+        $idusuario = $this->session->id;
+        $enteroRandom = $numero = random_int(100, 999);
+        $anio = date('y');
+        $mes = date('m');
+        $day = date('d');
+
+        $cod_pedido = $idusuario.$anio.$mes.$day.$enteroRandom;
+        return $cod_pedido;
+    }
+
     public function index() {
 
         if ($this->session->ventas == 1) {
@@ -36,10 +47,39 @@ class Ventas extends BaseController {
             $data['session'] = $this->session;
             date_default_timezone_set('America/Guayaquil');
             $date = date('ymdHis');
-            
+
             //Borramos temporal de pedidos
-            $this->detallePedidoTempModel->_deleteDetallesTempOld();
-            
+            //PABLO: LOS PEDIDO QUE SE DEBEN BORRAR SON AQUELLOS QUE TIENEN ESTADO = TEMPORAL, DEBO ELIMINAR TODA INTERACCIÓN CON LA TABLA DETALLE TEMPORAL
+            //$this->detallePedidoTempModel->_deleteDetallesTempOld();
+
+            //Genero el COD DE PEDIDO
+            $cod_pedido = $this->getNewCodPedido();
+            //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
+
+            //Actualizo la tabla eliminando los pedidos que tienen estado temporal
+            $this->pedidoModel->where('estado', 7)->where('vendedor', $this->session->id)->delete();
+
+            //Inserto el nuevo registro de pedido asignado al vendedor y con el estado = temporal, id=7
+            $pedido = [
+                'cod_pedido' => $cod_pedido,
+                'idcliente' => 3, //Le guardo como cliente a Pablo Orejuela temporalmente
+                'fecha' => date('Y-m-d'),
+                'vendedor' => $this->session->id,
+                'estado' => 7,
+                'sector' => 1,
+                'idnegocio' => 3
+            ];
+            $idPedidoInserted = $this->pedidoModel->insert($pedido);
+            $codPedidoCompleto = $cod_pedido.$idPedidoInserted;
+            $pedido = [
+                'cod_pedido' => $codPedidoCompleto,
+            ];
+            $this->pedidoModel->update($idPedidoInserted, $pedido);
+
+            //Cargo en sesión el idpedido
+            $this->session->set('idpedido', $idPedidoInserted );
+            $this->session->set('cod_pedido', $codPedidoCompleto );
+             
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->findAll();
             $data['categorias'] = $this->categoriaModel->orderBy('categoria', 'asc')->findAll();
@@ -48,33 +88,38 @@ class Ventas extends BaseController {
             $data['horariosEntrega'] = $this->horariosEntregaModel->findAll();
             $data['cod_pedido'] = $this->session->codigo_pedido;
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <=', 2)->findAll();
 
-            $data['detalle'] = $this->detallePedidoTempModel
-                ->where('cod_pedido', $data['cod_pedido'])
-                ->join('productos','productos.id = detalle_pedido_temp.idproducto')
-                ->findAll();
-            //$data['detalle'] = $this->detallePedidoTempModel->_getDetallePedido($data['cod_pedido']);
+            // $data['detalle'] = $this->detallePedidoTempModel
+            //     ->where('cod_pedido', $data['cod_pedido'])
+            //     ->join('productos','productos.id = detalle_pedido_temp.idproducto')
+            //     ->findAll();
+            $data['detalle'] = $this->detallePedidoTempModel->where('idpedido', $idPedidoInserted)->findAll();
 
             
-            if ($data['cod_pedido'] != '' && isset($data['cod_pedido'])) {
+            // if ($data['cod_pedido'] != '' && isset($data['cod_pedido'])) {
 
-                //Busco arreglos con este código en la tabla de temporales y de detalle y los elimino 
-                $this->detallePedidoTempModel->_eliminarProdsDetalle($data['cod_pedido']);
+            //     //Busco arreglos con este código en la tabla de temporales y de detalle y los elimino 
+            //     $this->detallePedidoTempModel->_eliminarProdsDetalle($data['cod_pedido']);
                 
-                $data['title']='Ordenes y pedidos';
-                $data['subtitle']='Nuevo pedido';
-                $data['main_content']='ventas/form-pedido';
-                return view('dashboard/index', $data);
-            } else {
+            //     $data['title']='Ordenes y pedidos';
+            //     $data['subtitle']='Nuevo pedido';
+            //     $data['main_content']='ventas/form-pedido';
+            //     return view('dashboard/index', $data);
+            // } else {
                 
-                $mensaje = 'SIN CODIGO';
-                $this->session->set('mensaje', $mensaje);
-                $data['title']='Pedidos';
-                $data['subtitle']='Listado de pedidos';
-                $data['main_content']='ventas/grid-pedidos';
-                return view('dashboard/index', $data);
-            }
+            //     $mensaje = 'SIN CODIGO';
+            //     $this->session->set('mensaje', $mensaje);
+            //     $data['title']='Pedidos';
+            //     $data['subtitle']='Listado de pedidos';
+            //     $data['main_content']='ventas/grid-pedidos';
+            //     return view('dashboard/index', $data);
+            // }
+            $data['cod_pedido'] = $codPedidoCompleto;
+            $data['title']='Ordenes y pedidos';
+            $data['subtitle']='Nuevo pedido';
+            $data['main_content']='ventas/form-pedido';
+            return view('dashboard/index', $data);
             
         }else{
             return redirect()->to('logout');
@@ -82,24 +127,26 @@ class Ventas extends BaseController {
     }
 
     /*
-     * Esta función recibe el código desde el archivo JS del navbar
-     * y guarda en sesión el codigo
+        PABLO: Esta función se debe borar cuando ya se genere el código desde PHP
+        con la función getNewCodPedido
+     *  Esta función recibe el código desde el archivo JS del navbar
+     *  y guarda en sesión el codigo
     */
-    function generaCodigoPedido(){
+    // function generaCodigoPedido(){
 
-        //En caso de que se haya quedado un código en sesión lo borro
-        //$this->session->set('codigo_pedido', '');
+    //     //En caso de que se haya quedado un código en sesión lo borro
+    //     //$this->session->set('codigo_pedido', '');
 
-        //Recibo el código
-        $codigo = $this->request->getPostGet('codigo');
+    //     //Recibo el código
+    //     $codigo = $this->request->getPostGet('codigo');
 
-        //pongo el código en la sesion
-        $this->session->set('codigo_pedido', $codigo);
+    //     //pongo el código en la sesion
+    //     $this->session->set('codigo_pedido', $codigo);
         
-        $data['resultado'] = "Exito";
+    //     $data['resultado'] = "Exito";
         
-        echo json_encode($data);
-    }
+    //     echo json_encode($data);
+    // }
 
 
     public function estadisticaVentas() {
@@ -394,9 +441,10 @@ class Ventas extends BaseController {
 
         $idproducto = $this->request->getPostGet('idproducto');
         $cantidad = $this->request->getPostGet('cantidad');
-        $cod_pedido = $this->request->getPostGet('cod_pedido');
         $idnegocio = $this->request->getPostGet('idnegocio');
-        
+        $idpedido = $this->request->getPostGet('idpedido');
+        $codPedido = $this->request->getPostGet('codPedido');
+
         $error = '';
 
         $producto = $this->productoModel->find($idproducto);
@@ -409,7 +457,7 @@ class Ventas extends BaseController {
             
             //Si el pedido ya tiene detalle
             if ($detalleExiste) {
-                $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+                $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $idpedido);
                 if ($datosExiste) {
                         $cantidad = $datosExiste->cantidad + $cantidad;
                         $precio = $datosExiste->precio;
@@ -419,7 +467,7 @@ class Ventas extends BaseController {
                         }else{
                             $subtotal = ($cantidad * $datosExiste->precio);
                         }
-                        $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                        $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $idpedido, $cantidad, $subtotal);
 
                     }else{
                         
@@ -428,7 +476,8 @@ class Ventas extends BaseController {
                         $subtotal = $cantidad * $producto->precio;
 
                         $data = [
-                            'cod_pedido' => $cod_pedido,
+                            'idpedido' => $idpedido,
+                            'cod_pedido' => $codPedido,
                             'idproducto' => $idproducto,
                             'cantidad' => $cantidad,
                             'precio' => $producto->precio,
@@ -444,7 +493,8 @@ class Ventas extends BaseController {
                 $subtotal = ($cantidad * $producto->precio);
                 
                 $data = [
-                    'cod_pedido' => $cod_pedido,
+                    'idpedido' => $idpedido,
+                    'cod_pedido' => $codPedido,
                     'idproducto' => $idproducto,
                     'cantidad' => $cantidad,
                     'precio' => $producto->precio,
@@ -453,76 +503,18 @@ class Ventas extends BaseController {
                 ];
                 
                 $this->detallePedidoTempModel->insert($data);
-                $res['datos'] = $this->cargaProductos_temp($cod_pedido);
+                $res['datos'] = $this->cargaProductos_temp($idpedido);
                 
             }
         }else{
             $error = 'No existe el producto';
         }
-        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
-        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
-        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['datos'] = $this->cargaProductos_temp($idpedido);
+        $res['total'] = number_format($this->totalDetallePedido($idpedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($idpedido), 2);
         $res['negocio'] = $idnegocio;
         $res['error'] = $error;
-        echo json_encode($res);
-    }
 
-    function detalle_pedido_insert_temp_old(){
-
-        $idproducto = $this->request->getPostGet('idproducto');
-        $cantidad = $this->request->getPostGet('cantidad');
-        $cod_pedido = $this->request->getPostGet('cod_pedido');
-        
-        $error = '';
-
-        $producto = $this->productoModel->find($idproducto);
-
-        if ($producto->idcategoria == 5) {
-            $negocio = 2;
-        } else {
-            $negocio = 1;
-        }
-        
-        
-        if ($producto) {
-            $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
-            
-            if ($datosExiste) {
-                $cantidad = $datosExiste->cantidad + $cantidad;
-                
-                $precio = $datosExiste->precio;
-                if ($datosExiste->pvp != '0.00') {
-                    $subtotal = ($cantidad * $datosExiste->pvp);
-                }else{
-                    $subtotal = ($cantidad * $datosExiste->precio);
-                }
-               
-                
-                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
-
-            }else{
-                $subtotal = ($cantidad * $producto->precio);
-                
-                $data = [
-                    'cod_pedido' => $cod_pedido,
-                    'idproducto' => $idproducto,
-                    'cantidad' => $cantidad,
-                    'precio' => $producto->precio,
-                    'pvp' => $producto->precio,
-                    'subtotal' => $subtotal,
-                ];
-                
-                $this->detallePedidoTempModel->insert($data);
-            }
-        }else{
-            $error = 'No existe el producto';
-        }
-
-        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
-        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
-        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
-        $res['error'] = $error;
-        $res['negocio'] = $negocio;
         echo json_encode($res);
     }
 
@@ -530,19 +522,20 @@ class Ventas extends BaseController {
         
         $error = '';
         $idproducto = $this->request->getPostGet('idproducto');
-        $cod_pedido = $this->request->getPostGet('cod_pedido');
+        $idpedido = $this->request->getPostGet('idpedido');
         $observacion = $this->request->getPostGet('observacion');
 
-        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $idpedido);
             
         if ($datosExiste) {
-            $this->detallePedidoTempModel->_updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion);
+            $this->detallePedidoTempModel->_updateProdDetalleObservacion($idproducto, $idpedido, $observacion);
         }
         
-        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
-        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
-        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['datos'] = $this->cargaProductos_temp($idpedido);
+        $res['total'] = number_format($this->totalDetallePedido($idpedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($idpedido), 2);
         $res['error'] = $error;
+        
         echo json_encode($res);
     }
 
@@ -644,45 +637,47 @@ class Ventas extends BaseController {
             $this->detallePedidoTempModel->_updateProdDetallePrecio($idproducto, $cod_pedido, $precio, $subtotal);
         }
         
-        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
+        $res['datos'] = $this->cargaProductos_temp($idpedido);
         $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
         $res['error'] = $error;
         echo json_encode($res);
     }
 
-    function detalle_pedido_delete_producto_temp($idproducto, $cod_pedido){
+    function detalle_pedido_delete_producto_temp(){
         $error = '';
         $res = null;
 
-        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+        $idproducto = $this->request->getPostGet('idproducto');
+        $idpedido = $this->request->getPostGet('idpedido');
+
+        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $idpedido);
 
         if ($datosExiste) {
             if ($datosExiste->cantidad > 1) {
                 $cantidad = $datosExiste->cantidad - 1;
                 $subtotal = $cantidad * $datosExiste->precio;
 
-                $res = $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal);
+                $this->detallePedidoTempModel->_updateProdDetalle($idproducto, $idpedido, $cantidad, $subtotal);
                 
             }else{
-                $res = $this->detallePedidoTempModel->_eliminarProdDetalle($idproducto, $cod_pedido);
+                $this->detallePedidoTempModel->_eliminarProdDetalle($idproducto, $idpedido);
             }
         }
-        
-        $res['res'] = $res;
-        $res['datos'] = $this->cargaProductos_temp($cod_pedido);
-        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
-        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+
+        $res['datos'] = $this->cargaProductos_temp($idpedido);
+        $res['total'] = number_format($this->totalDetallePedido($idpedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($idpedido), 2);
         $res['error'] = $error;
 
         echo json_encode($res);
     }
 
-    function getDetallePedido_temp($cod_pedido){
+    function getDetallePedido_temp($idpedido){
         $error = '';
         $subtotal = 0;
         $cantidad = 0;
-        $detalle = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
+        $detalle = $this->detallePedidoTempModel->where('idpedido', $idpedido)->findAll();
 
         if ($detalle) {
             $res['datos'] = $detalle;
@@ -708,7 +703,7 @@ class Ventas extends BaseController {
 
         if ($datos) {
             $res['datos'] = $datos;
-            $res['detalle'] = $this->detallePedidoModel->_getDetallePedido($datos->cod_pedido);
+            $res['detalle'] = $resultado = $this->detallePedidoTempModel->where('idpedido', $id)->findAll();
             
         }else{
             $res['datos'] = 'NO existe ese pedido';
@@ -777,8 +772,13 @@ class Ventas extends BaseController {
         return $itemsTemp;
     }
 
-    function cargaProductos_temp($cod_pedido){
-        $resultado = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
+    function cargaProductos_temp($idpedido){
+    
+        $resultado = $this->detallePedidoTempModel->select('detalle_pedido_temp.id as id,idpedido,cod_pedido,producto,idproducto,observacion,pvp,cantidad')
+                ->join('productos', 'productos.id = detalle_pedido_temp.idproducto')
+                ->where('idpedido', $idpedido)->findAll();
+        //echo '<pre>'.var_export($resultado, true).'</pre>';exit;
+
         $fila = '';
         $numFila = 0;
         if ($resultado) {
@@ -795,7 +795,7 @@ class Ventas extends BaseController {
                                 class="form-control" 
                                 name="observacion_'.$row->idproducto.'" 
                                 value="'.$row->observacion.'" 
-                                onchange="observacion('.$row->idproducto. ','.$cod_pedido.')" 
+                                onchange="observacion('.$row->idproducto. ','.$idpedido.')" 
                                 id="observa_'.$row->idproducto.'"
                             >
                         </td>';
@@ -805,14 +805,14 @@ class Ventas extends BaseController {
                                 class="form-control input-precio" 
                                 name="precio_'.$row->idproducto.'" 
                                 value="'.$row->pvp.'" 
-                                onchange="actualizaPrecio('.$row->idproducto. ','.$cod_pedido.')" 
+                                onchange="actualizaPrecio('.$row->idproducto. ','.$idpedido.')" 
                                 id="precio_'.$row->idproducto.'"
                             >
                         </td>';
                 
                 $fila .= '<td id="cant_'.$row->idproducto.'" class="cant_arreglo">'.$row->cantidad.'</td>';
                 
-                $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$cod_pedido.')" class="btn btn-borrar">
+                $fila .= '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$idpedido.')" class="btn btn-borrar">
                             <img src="'.site_url().'public/images/delete.png" width="25" >
                             </a></td>';
                 $fila .= '</tr>';
@@ -823,8 +823,8 @@ class Ventas extends BaseController {
         
     }
 
-    function totalDetallePedido($cod_pedido){
-        $resultado = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
+    function totalDetallePedido($idpedido){
+        $resultado = $this->detallePedidoTempModel->where('idpedido', $idpedido)->findAll();
         $total = 0;
 
         if ($resultado) {
@@ -841,7 +841,9 @@ class Ventas extends BaseController {
 
         if ($this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
-            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
+            $idpedido = $this->session->idpedido;
+            $detalleTemporal = $this->detallePedidoTempModel->where('idpedido', $this->session->idpedido)->findAll();
+            //echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
             
             if ($this->request->getPostGet('sin_remitente') != null) {
                 $sin_remitente = $this->request->getPostGet('sin_remitente');
@@ -852,6 +854,7 @@ class Ventas extends BaseController {
             $pedidos = $this->pedidoModel->orderBy('orden', 'asc')->findAll();
             
             $pedido = [
+                'idpedido' => $idpedido,
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $this->session->id,
                 'fecha' => date('Y-m-d'),
@@ -864,6 +867,7 @@ class Ventas extends BaseController {
                           
                 'vendedor' => $this->request->getPostGet('vendedor'),
                 'venta_extra' => $this->request->getPostGet('venta_extra'),
+                'estado' => 1,
                
                 //TOTALES
                 'valor_neto' => $this->request->getPostGet('valor_neto'),
@@ -876,7 +880,18 @@ class Ventas extends BaseController {
                 'valor_mensajero_edit' => $this->request->getPostGet('valor_mensajero_edit'),
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
-                'idnegocio' => $this->request->getPostGet('negocio')
+                'idnegocio' => $this->request->getPostGet('negocio'),
+
+                //Data de el form editar
+                'dir_entrega' => '',
+                'ubicacion' => '',
+                'observaciones' => '',
+                'mensajero' => '',
+                'formas_pago' => '',
+                'banco' => '',
+                'ref_pago' => '',
+                'mensajero_extra' => '',
+                'observacion_pago' => '',
             ];
             
             $clienteID = $this->request->getPostGet('idcliente');
@@ -918,7 +933,7 @@ class Ventas extends BaseController {
                     //Inserto el nuevo pedido
                     if ($pedido) {
                         //Verifico si el código de pedido existe
-                        $codPedidoExists = $this->pedidoModel->where('cod_pedido', $pedido['cod_pedido'])->findAll();
+                        $codPedidoExists = $this->pedidoModel->where('id', $idpedido)->findAll();
 
                         if ($codPedidoExists) {
                             $aleatorio = rand(0, 100);
@@ -936,7 +951,7 @@ class Ventas extends BaseController {
                             }
                         }
                         
-                        $idPedidoInsertado = $this->pedidoModel->_insert($pedido);
+                        $this->pedidoModel->_update($pedido);
 
                         //Inserto el detalle
                         if ($detalleTemporal) {
@@ -974,7 +989,6 @@ class Ventas extends BaseController {
                     if ($pedido) {
                         
                         //Verifico si el código de pedido existe 
-                        //PABLO PROBABLEMENTE DEBO PONER ESTO EN UNA FUNCIÓN APARTE
                         $codPedidoExists = $this->pedidoModel->where('cod_pedido', $pedido['cod_pedido'])->findAll();
 
                         if ($codPedidoExists) {
@@ -992,7 +1006,7 @@ class Ventas extends BaseController {
                                 $this->pedidoModel->update($p->id, $datos);
                             }
                         }
-                        $this->pedidoModel->_insert($pedido);
+                        $this->pedidoModel->_update($pedido);
 
                         //Inserto el detalle
                         if ($detalleTemporal) {
@@ -1021,11 +1035,13 @@ class Ventas extends BaseController {
 
         if ($this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido');
-            $detalleTemporal = $this->detallePedidoTempModel->_getDetallePedido($cod_pedido);
-            $detallePedido = $detalle = $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->find();
+            $idpedido = $this->request->getPostGet('idpedido');
+            $detalleTemporal = $this->detallePedidoTempModel->where('idpedido', $idpedido)->findAll();
+            $detallePedido = $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->find();
+            //echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
 
             $pedido = [
-                'id' => $this->request->getPostGet('idpedido'),
+                'idpedido' => $idpedido,
                 'cod_pedido' => $cod_pedido,
                 'idusuario' => $this->session->id,
                 'idcliente' => $this->request->getPostGet('idcliente'),
@@ -1064,7 +1080,8 @@ class Ventas extends BaseController {
                 'idnegocio' => $this->request->getPostGet('negocio')
             ];
             
-            $pedidoProcedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['id'])->first();
+            //PABLO: En algún momento debo cambiar el nombre del campo idpedidos por idpedido
+            $pedidoProcedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['idpedido'])->first();
             
             $clienteID = $this->request->getPostGet('idcliente');
             $cliente = [
@@ -1120,14 +1137,16 @@ class Ventas extends BaseController {
                     if ($detalleTemporal) {
 
                         //Borro los items que están en la tabla detalle y que fueron borrados de la temporal
-                        foreach ($detallePedido as $key => $value) {
-                            $existe = $this->detallePedidoTempModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->find();
+                        // foreach ($detallePedido as $key => $value) {
+                        //     $existe = $this->detallePedidoTempModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->find();
 
-                            if (!$existe) {
-                                //Borro ese item de la tala detalle pedido
-                                $this->detallePedidoModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->delete();
-                            }
-                        }
+                        //     if (!$existe) {
+                        //         //Borro ese item de la tala detalle pedido
+                        //         $this->detallePedidoModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->delete();
+                        //     }
+                        // }
+
+                        $this->detallePedidoModel->where('idpedido', $idpedido)->delete();
                         
                         //Hago update o Insert de los detalles
                         foreach ($detalleTemporal as $key => $value) {
@@ -1147,6 +1166,7 @@ class Ventas extends BaseController {
                             } else {
                                 //Si no existe INSERTA
                                 $registro = [
+                                    'idpedido' => $idpedido,
                                     'cod_pedido' => $value->cod_pedido,
                                     'idproducto' => $value->idproducto,
                                     'cantidad' => $value->cantidad,
@@ -1161,7 +1181,7 @@ class Ventas extends BaseController {
                         }
 
                         //Borro el detalle temporal de la tabla temporal
-                        $this->detallePedidoTempModel->where('cod_pedido', $cod_pedido)->delete();
+                        $this->detallePedidoTempModel->where('idpedido', $idpedido)->delete();
 
                         //Actualizo el mensaje
                         $mensaje = 1;
@@ -1203,13 +1223,13 @@ class Ventas extends BaseController {
                     if ($detalleTemporal) {
 
                         //Elimino el detalle anterior antes de insertar el detalle actualizado
-                        $this->detallePedidoModel->where('cod_pedido', $cod_pedido)->delete();
+                        $this->detallePedidoModel->where('idpedido', $idpedido)->delete();
                         
                         //Inserto el detalle editado
                         $this->detallePedidoModel->_insert($detalleTemporal);
 
                         //Borro el detalle temporal de la tabla temporal
-                        $this->detallePedidoTempModel->where('cod_pedido', $cod_pedido)->delete();
+                        $this->detallePedidoTempModel->where('idpedido', $idpedido)->delete();
 
                         //Actualizo el mensaje
                         $mensaje = 1;
@@ -1236,10 +1256,10 @@ class Ventas extends BaseController {
     function actualizoProcedenciaPedido($pedido){
 
         //Verifico si el pedido tiene una procedencia asignada
-        $procedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['id'])->first();
+        $procedencia = $this->pedidoProcedenciaModel->where('idpedidos', $pedido['idpedido'])->first();
         
         $data = [
-            'idpedidos' => $pedido['id'],
+            'idpedidos' => $pedido['idpedido'],
             'idprocedencia' => $pedido['procedencia']
         ];
 
@@ -1249,12 +1269,12 @@ class Ventas extends BaseController {
             
         } else {
             //Inserto
-            $this->pedidoProcedenciaModel->insert($data);echo $this->db->getLastQuery();
+            $this->pedidoProcedenciaModel->insert($data);
         }
     }
 
     function getEstadosPedido(){
-        $estadosPedido = $this->estadoPedidoModel->findAll();
+        $estadosPedido = $this->estadoPedidoModel->where('id <', '6')->findAll();
 
         echo json_encode($estadosPedido);
     }
@@ -1285,9 +1305,29 @@ class Ventas extends BaseController {
         //echo json_encode($estadosPedido);
     }
 
+    public function insertIdPedido(){
+        /*
+            PABLO: Esta función se debe borrar luego de haberla corrido una vez
+            solo está creada para insertar los idpedido en la tabla de detalle_pedido
+
+        */
+
+        //Obtengo los pedidos
+        $pedidos = $this->pedidoModel->select('id,cod_pedido')->findAll();
+
+        //recorro el arreglo de pedidos y actualizo la tabla detalle pedido donde coincida el cod_pedido
+
+        foreach ($pedidos as $key => $pedido) {
+            //echo '<pre>'.var_export($pedido->cod_pedido, true).'</pre>';
+            $this->detallePedidoModel->where('cod_pedido', $pedido->cod_pedido)->set('idpedido', $pedido->id)->update();
+            //echo $this->db->getLastQuery();
+        }
+    }
+
     public function pedidos() {
         
         if ($this->session->ventas == 1) {
+            $this->insertIdPedido();  // PABLO: Borrar esta línea
 
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
@@ -1307,26 +1347,27 @@ class Ventas extends BaseController {
         }
     }
 
-    public function pedido_edit($idpedido) {
+    public function pedido_edit($idpedido, $modo) {
         
         if ($this->session->ventas == 1) {
             
             $data['session'] = $this->session;
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($idpedido);
 
-            //echo '<pre>'.var_export($data['pedido']->vendedor, true).'</pre>';exit;
-
             //Traigo el detalle del pedido
-            $data['detalle'] = $this->detallePedidoModel->_getDetallePedido($data['pedido']->cod_pedido);
-
+            $data['detalle'] = $this->detallePedidoModel->select('*')
+                ->join('productos','productos.id = detalle_pedido.idproducto')
+                ->where('idpedido', $idpedido)->findAll();
+            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
             //Elimino el detalle del pedido en la tabla temporal en caso de que exista
-            $this->detallePedidoTempModel->where('cod_pedido', $data['pedido']->cod_pedido)->delete();
+            $this->detallePedidoTempModel->where('idpedido', $idpedido)->delete();
             
             //Inserto el detalle del pedido en la tabla temporal para poder editarlo
             if (isset($data['detalle'])) {
                 foreach ($data['detalle'] as $key => $detalle) {
                     $datos = [
                         'cod_pedido' => $detalle->cod_pedido,
+                        'idpedido' => $idpedido,
                         'idproducto' => $detalle->idproducto,
                         'cantidad' => $detalle->cantidad,
                         'precio' => $detalle->precio,
@@ -1339,7 +1380,7 @@ class Ventas extends BaseController {
                 }
             }
 
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <=', 2)->findAll();
             $data['vendedores'] = $this->usuarioModel->select('id,nombre,cedula,idroles')->where('idroles', 4)->findAll();
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
             $data['formas_pago'] = $this->formaPagoModel->where('estado',1)->orderBy('forma_pago', 'asc')->findAll();
@@ -1354,6 +1395,7 @@ class Ventas extends BaseController {
 
             $data['datosVendedor'] = $this->usuarioModel->select('id,nombre')->where('id', $data['pedido']->vendedor)->first();
             
+            $data['modo'] = $modo;
             $data['title']='Ventas';
             $data['subtitle']='Editar Pedido';
             $data['main_content']='ventas/form-pedido-edit';

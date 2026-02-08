@@ -41,7 +41,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
             $data['subtitle']='Ticket Promedio Ventas';
@@ -55,7 +55,7 @@ class Estadisticas extends BaseController {
     /**
      * Procedimiento ajax
      * @param Type $var Description
-     * @return voidcñ
+     * @return void
      * @throws conditon
      **/
     public function reporteTicketPromedio(){
@@ -83,9 +83,9 @@ class Estadisticas extends BaseController {
             $res[$i]['dia'] = date('N', strtotime($dia));
             $sumaIngreso += $res[$i]['res'];
         }
-        // echo $this->db->getLastQuery();
+        
         //Obtengo la cantidad de pedidos del mes
-        $cantidadPedidos = $this->pedidoModel->_getPedidosRangoFechas($fechaInicio, $fechaFinal);
+        $cantidadPedidos = $this->pedidoModel->_getPedidosRangoFechasNegocio($fechaInicio, $fechaFinal, $negocio);
 
         //header('Content-Type: application/json');
         echo json_encode([
@@ -111,7 +111,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
             $data['subtitle']='Código de arreglo mas vendido';
@@ -135,7 +135,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
             $data['subtitle']='Estadística de recompras';
@@ -182,7 +182,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
             $data['subtitle']='Categoría menos vendida';
@@ -206,7 +206,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             $data['anios'] = $this->pedidoModel
             ->select("DISTINCT YEAR(fecha) as anio")
             ->orderBy("anio", "ASC")
@@ -234,7 +234,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['anios'] = $this->pedidoModel
             ->select("DISTINCT YEAR(fecha) as anio")
@@ -257,7 +257,7 @@ class Estadisticas extends BaseController {
         if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -546,7 +546,7 @@ class Estadisticas extends BaseController {
         if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -581,9 +581,10 @@ class Estadisticas extends BaseController {
 
                 //Traigo los clientes que han comprado en este periodo de tiempo
                 $clientesNuevos = $this->pedidoModel
-                    ->select('idcliente, nombre, MIN(fecha) as primer_pedido')
+                    ->select('idcliente, nombre, MIN(fecha) as primer_pedido,idnegocio')
                     ->where('fecha >=', $datos['fecha_inicio'])
                     ->where('fecha <=', $datos['fecha_final'])
+                    ->where('idnegocio', $datos['negocio'])
                     ->groupBy('idcliente')
                     ->join('clientes','clientes.id=pedidos.idcliente')
                     ->having('MIN(fecha) >=', $datos['fecha_inicio'])
@@ -799,7 +800,7 @@ class Estadisticas extends BaseController {
         if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -1189,7 +1190,7 @@ class Estadisticas extends BaseController {
         if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -1497,7 +1498,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
             $data['subtitle']='Código de arreglo menos vendido';
@@ -1521,7 +1522,7 @@ class Estadisticas extends BaseController {
             
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
             $data['subtitle']='Código de arreglo que no se han vendido en el mes';
@@ -1537,7 +1538,7 @@ class Estadisticas extends BaseController {
         if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),
@@ -1830,7 +1831,7 @@ class Estadisticas extends BaseController {
         if ($this->session->reportes == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),

@@ -13,7 +13,7 @@ class DetallePedidoTempModel extends Model {
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['cod_pedido','idproducto','cantidad','precio','pvp','subtotal','observacion','created_at','updated_at'];
+    protected $allowedFields    = ['cod_pedido','idpedido','idproducto','cantidad','precio','pvp','subtotal','observacion','created_at','updated_at'];
 
     // Dates
     protected $useTimestamps = true;
@@ -48,11 +48,11 @@ class DetallePedidoTempModel extends Model {
         // echo $this->db->getLastQuery();
     }
 
-    public function _getProdDetallePedido($idproducto, $cod_pedido){
+    public function _getProdDetallePedido($idproducto, $idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('*');
-        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idpedido', $idpedido);
         $builder->where('idproducto', $idproducto);
         $builder->orderBy('id', 'asc');
         $builder->limit(1);
@@ -65,41 +65,41 @@ class DetallePedidoTempModel extends Model {
     *   Esta tabla se usa para traer el detalle del pedido que está en la tabla temporal, 
     *   Se puede usar el modelo y eliminar está función en el futuro
     */
-    public function _getDetallePedido($cod_pedido){
-        //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
-        $result = NULL;
-        $builder = $this->db->table($this->table);
-        $builder->select('*');
-        $builder->join('productos', 'productos.id = '.$this->table.'.idproducto');
-        $builder->where('cod_pedido', $cod_pedido);
-        $query = $builder->get();
-        if ($query->getResult() != null) {
-            foreach ($query->getResult() as $row) {
-                $result[] = $row;
-            }
-        }
-        //echo $this->db->getLastQuery();
-        return $result;
-    }
+    // public function _getDetallePedido($idpedido){
+    //     //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
+    //     $result = NULL;
+    //     $builder = $this->db->table($this->table);
+    //     $builder->select('*');
+    //     $builder->join('productos', 'productos.id = '.$this->table.'.idproducto');
+    //     $builder->where('idpedido', $idpedido);
+    //     $query = $builder->get();
+    //     if ($query->getResult() != null) {
+    //         foreach ($query->getResult() as $row) {
+    //             $result[] = $row;
+    //         }
+    //     }
+    //     //echo $this->db->getLastQuery();
+    //     return $result;
+    // }
 
-    public function _updateProdDetalle($idproducto, $cod_pedido, $cantidad, $subtotal){
+    public function _updateProdDetalle($idproducto, $idpedido, $cantidad, $subtotal){
         
         $builder = $this->db->table($this->table);
         $builder->set('cantidad', $cantidad);
         $builder->set('subtotal', $subtotal);
         $builder->set('updated_at', date('Y-m-d H:m:s'));
         //$builder->set('precio', $precio);
-        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idpedido', $idpedido);
         $builder->where('idproducto', $idproducto);
         $res = $builder->update();
 
         return $res;
     }
 
-    public function _eliminarProdDetalle($idproducto, $cod_pedido){
+    public function _eliminarProdDetalle($idproducto, $idpedido){
         
         $builder = $this->db->table($this->table);
-        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idpedido', $idpedido);
         $builder->where('idproducto', $idproducto);
         $res = $builder->delete();
 
@@ -118,36 +118,36 @@ class DetallePedidoTempModel extends Model {
     public function _delete($detalletemporal){
         $builder = $this->db->table($this->table);
         foreach ($detalletemporal as $key => $detalle) {
-            $builder->where('cod_pedido', $detalle->cod_pedido);
+            $builder->where('idpedido', $detalle->idpedido);
             $builder->delete();
         }
     }
 
 
-    public function _eliminarProdsDetalle($cod_pedido){
+    public function _eliminarProdsDetalle($idpedido){
         
         $builder = $this->db->table($this->table);
-        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idpedido', $idpedido);
         $builder->delete();
     }
 
-    public function _updateProdDetalleObservacion($idproducto, $cod_pedido, $observacion){
+    public function _updateProdDetalleObservacion($idproducto, $idpedido, $observacion){
         
         $builder = $this->db->table($this->table);
         $builder->set('observacion', $observacion);
         $builder->set('updated_at', date('Y-m-d H:m:s'));
-        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idpedido', $idpedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();
     }
 
-    public function _updateProdDetallePrecio($idproducto, $cod_pedido, $precio, $subtotal){
+    public function _updateProdDetallePrecio($idproducto, $idpedido, $precio, $subtotal){
         
         $builder = $this->db->table($this->table);
         $builder->set('pvp', $precio);
         $builder->set('subtotal', $subtotal);
         $builder->set('updated_at', date('Y-m-d H:m:s'));
-        $builder->where('cod_pedido', $cod_pedido);
+        $builder->where('idpedido', $idpedido);
         $builder->where('idproducto', $idproducto);
         $builder->update();
     }

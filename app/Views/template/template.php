@@ -26,9 +26,9 @@
         <div class="image">
           <img src="<?= base_url(); ?>public/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
-        <div class="info">
+        <div class="info" style="font-size: 0.9em">
           <a href="#" class="d-block"><?= $session->nombre;?></a>
-          <p style="color: #FFF;"><?= $session->rol?></p>
+          <p style="color: #FFF;font-size: 0.6em"><?= $session->rol?></p>
         </div>
       </div>
 

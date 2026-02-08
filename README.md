@@ -1,7 +1,8 @@
 <h3>Cambios</h3>
 <h5>Estadísticas</h5>
 <ul> 
-    <li>Se implementó el reporte de mensajería en su versión HTML y excel, se corrigieron algunos errores menors, además ya carga el valor de mensajero extra y muestra una columna que avisa cuando un registro es por valor de mensajero extra</li>
+    <li>Se ha hecho un cambio muy profundo en todo el proceso de generación del pedido, además también se ha cambiado el proceso de edición del pedido, ya no se generar el código de pedido desde js en el navbar sino que se genera con php desde el controlador, además ahora en todo el proceso se usa el id del pedido en lugar de el código del pedido</li>
+    <li>Se hizo cambios en el grid de pedidos debido a que ahora se usa el idpedido para identificar el pedido en lugar de el cod de pedido</li>
 </ul>
 
 <h5>Fixes</h5>

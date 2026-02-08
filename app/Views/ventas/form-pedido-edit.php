@@ -19,7 +19,7 @@
                             <!-- Morris chart - Sales -->
                             <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
-                                <form action="<?= site_url().'pedido-update';?>" method="post">
+                                <form action="<?= site_url().'pedido-update';?>" method="post" data-modo="<?= $modo ?>" id="formUpdate">
                                     <?= form_hidden('idpedido', $pedido->id); ?>
                                     <div id="div-pedido">
                                         <label for="cod_pedido">Pedido: </label>
@@ -248,7 +248,11 @@
                                                 name="negocio"
                                                 value = <?= $pedido->idnegocio; ?>
                                             >
-                                            <select class="form-select form-control-border" id="idnegocio" name="idnegocio" required disabled>
+                                            <?php 
+                                                $estadoSelect = '';
+                                                $pedido->idnegocio == 3 ? $estadoSelect = '' : $estadoSelect = 'disabled'; 
+                                            ?>                                            
+                                            <select class="form-select form-control-border" id="idnegocio" name="idnegocio" required <?= $estadoSelect ?>>
                                                 <option value="0" selected>--Seleccionar negocio--</option>
                                                 <?php
                                                     if (isset($negocios)) {
@@ -296,7 +300,7 @@
                                         <div class="col-md-1">
                                             <label for="telefono"> </label> 
                                             <!-- Ejecuto la función desde href para que no se regrese al inicio de la página -->
-                                            <a href="javascript:agregarProducto(idp.value, cant.value, '<?= $pedido->cod_pedido; ?>' )" class="btn btn-carrito">
+                                            <a href="javascript:agregarProducto(idp.value, cant.value, '<?= $pedido->id; ?>' )" class="btn btn-carrito">
                                                 <img src="<?= site_url(); ?>public/images/shoppingcart_add.png" alt="agregar"/>
                                             </a>
                                         </div>
@@ -330,7 +334,7 @@
                                                                             class="form-control" 
                                                                             name="observacion_'.$row->idproducto.'" 
                                                                             value="'.$row->observacion.'" 
-                                                                            onchange="observacion('.$row->idproducto. ','.$pedido->cod_pedido.')" 
+                                                                            onchange="observacion('.$row->idproducto. ','.$pedido->id.')" 
                                                                             id="observa_'.$row->idproducto.'"
                                                                         >
                                                                     </td>';
@@ -340,14 +344,14 @@
                                                                             class="form-control input-precio" 
                                                                             name="precio_'.$row->idproducto.'" 
                                                                             value="'.$row->pvp.'" 
-                                                                            onchange="actualizaPrecio('.$row->idproducto. ','.$pedido->cod_pedido.')" 
+                                                                            onchange="actualizaPrecio('.$row->idproducto. ','.$pedido->id.')" 
                                                                             id="precio_'.$row->idproducto.'"
                                                                         >
                                                                     </td>';
                                                             
                                                             echo '<td id="cant_'.$row->idproducto.'" class="cant_arreglo">'.$row->cantidad.'</td>';
                                                             
-                                                            echo '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$pedido->cod_pedido.')" class="btn btn-borrar">
+                                                            echo '<td><a onclick="eliminaProducto('.$row->idproducto. ','.$pedido->id.')" class="btn btn-borrar">
                                                                         <img src="'.site_url().'public/images/delete.png" width="25" >
                                                                         </a></td>';
                                                             echo '</tr>';
@@ -721,9 +725,16 @@
                                         >
                                     </div>
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary" >Enviar</button>
-                                        <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
-                                        <a href="javascript:#" class="btn btn-light" id="link-devolucion">Registrar devolución</a>
+                                        <?php 
+                                            if (isset($modo) && $modo == 'EDIT') {
+                                                echo '
+                                                    <button type="submit" class="btn btn-primary" >Enviar</button>
+                                                    <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
+                                                    <a href="javascript:#" class="btn btn-light" id="link-devolucion">Registrar devolución</a>
+                                                ';
+                                            }
+                                        
+                                        ?>
                                         <div class="row mt-3" id="varSistema">
                                             <div class="col-md-2">
                                                 <label for="">Porcentaje de transporte</label>
@@ -817,14 +828,6 @@ $(document).ready(function(){
     });
 });
 
-// $(document).ready(function(){
-//     $("#valor_mensajero_edit").on('change',function(){
-//         if($("#valor_mensajero_edit").val() !=""){
-//             alertCambioValorMensajero()
-//             document.getElementById('valor_mensajero_mostrado').value = "0.00"
-//         }
-//     });
-// });
 
 const alertAgregaProducto = () => {
     Swal.fire({

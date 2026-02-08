@@ -421,7 +421,6 @@ linkAregloTemporal.addEventListener('click', function(e) {
     });   
 })
 
-
 const alertProcesando = (msg, icono) => {
     const toast = Swal.mixin({
         toast: true,

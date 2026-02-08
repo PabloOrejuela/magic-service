@@ -896,9 +896,10 @@ botonesEstadoPedido.forEach(btn => {
             success: function(data){
                 let datos = JSON.parse(data)
                 selectEstadoModal.innerHTML = ''
+                
                 if (datos) {
                     for (const dato of datos) {
-                        if (dato.id != 6) {
+                        if (dato.id < 6) {
                             if (dato.estado == estado) {
                                 selectEstadoModal.innerHTML += `<option value="${dato.id}" selected>${dato.estado}</option>`
                             }else{
@@ -1234,7 +1235,10 @@ function actualizarEstadoPedido(estado_pedido, codigo_pedido){
         },
         success: function(data){
             
-            //location.replace('pedidos');
+            alertaMensaje("Se ha actualizado el estado del pedido", "1000", "success")
+            setTimeout(function(){
+                location.replace('pedidos');
+            }, 500);
         }
     });
 }
