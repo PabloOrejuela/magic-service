@@ -1,3 +1,4 @@
+<h1>Versión: 1.2.0</h1>
 <h3>Cambios</h3>
 <h5>Estadísticas</h5>
 <ul> 
@@ -7,4 +8,5 @@
 
 <h5>Fixes</h5>
 <ul>
+    <li>Se encontró un error en la lista historial del cliente, en el link del cod de pedido no estaba especificado el modo</li>
 </ul>

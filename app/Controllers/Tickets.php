@@ -1422,6 +1422,7 @@ class Tickets extends BaseController {
 
                 //COMPLEMENTOS
                 $atributos = $this->attrExtArregModel->_getAttrExtArreg($arreglo->iddetalle, $arreglo->idcategoria);
+                $infoCatComplementos = isset($atributos) ? $atributos->info_cat_complementos : '';
                 
                 //Campo Observación del arreglo
                 $numCaracterObservaArreglo = strlen($arreglo->observacion);
@@ -1462,7 +1463,7 @@ class Tickets extends BaseController {
                                 width:65%;
                                 height: auto;
                                 font-size: 0.9em;"
-                            >'.$atributos->info_cat_complementos.'</td>
+                            >'.$infoCatComplementos.'</td>
                         </tr>';
             }
         }

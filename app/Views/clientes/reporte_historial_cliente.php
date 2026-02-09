@@ -36,11 +36,12 @@
                                 if ($pedidos) {
                                     foreach ($pedidos as $key => $pedido) {
                                         $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->cod_pedido);
+                                        $modo = 'REPORTE';
                                         
                                         //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                         echo '<tr>
                                                 <td>
-                                                    <a href="'.site_url().'pedido-edit/'.$pedido->id.'" id="link-editar">'.$pedido->cod_pedido.'</a>
+                                                    <a href="'.site_url().'pedido-edit/'.$pedido->id.'/'.$modo.'" id="link-editar">'.$pedido->cod_pedido.'</a>
                                                 </td>
                                                 <td>'.$pedido->fecha.'</td>
                                                 <td>'.$pedido->fecha_entrega.'</td>
