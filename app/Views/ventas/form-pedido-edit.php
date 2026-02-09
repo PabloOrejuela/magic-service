@@ -21,6 +21,7 @@
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
                                 <form action="<?= site_url().'pedido-update';?>" method="post" data-modo="<?= $modo ?>" id="formUpdate">
                                     <?= form_hidden('idpedido', $pedido->id); ?>
+                                    <?= form_hidden('estado', $pedido->estado); ?>
                                     <div id="div-pedido">
                                         <label for="cod_pedido">Pedido: </label>
                                         <input 

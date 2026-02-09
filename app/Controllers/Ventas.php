@@ -1043,6 +1043,7 @@ class Ventas extends BaseController {
             $pedido = [
                 'idpedido' => $idpedido,
                 'cod_pedido' => $cod_pedido,
+                'estado' => $this->request->getPostGet('estado'),
                 'idusuario' => $this->session->id,
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'sin_remitente' => $this->request->getPostGet('sin_remitente'),
@@ -1077,6 +1078,7 @@ class Ventas extends BaseController {
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'valor_mensajero_extra' => $this->request->getPostGet('valor_mensajero_extra'),
                 'total' => $this->request->getPostGet('total'),
+
                 'idnegocio' => $this->request->getPostGet('negocio')
             ];
             
@@ -1353,7 +1355,7 @@ class Ventas extends BaseController {
             
             $data['session'] = $this->session;
             $data['pedido'] = $this->pedidoModel->_getDatosPedido($idpedido);
-
+            
             //Traigo el detalle del pedido
             $data['detalle'] = $this->detallePedidoModel->select('*')
                 ->join('productos','productos.id = detalle_pedido.idproducto')
