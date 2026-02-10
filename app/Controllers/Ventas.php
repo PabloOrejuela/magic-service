@@ -1138,21 +1138,17 @@ class Ventas extends BaseController {
                     //Inserto el detalle actualizado (MODIFICAR ESTA FUNCION PARA USAR EL MODELO Y TENER HISTORIAL DE CAMBIOS)
                     if ($detalleTemporal) {
 
-                        //Borro los items que están en la tabla detalle y que fueron borrados de la temporal
-                        // foreach ($detallePedido as $key => $value) {
-                        //     $existe = $this->detallePedidoTempModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->find();
+                        //Elimino los arreglos que han sido eliminados en la tabla detalle_pedido
+                        $productosTemporal = array_column($detalleTemporal, 'idproducto');
 
-                        //     if (!$existe) {
-                        //         //Borro ese item de la tala detalle pedido
-                        //         $this->detallePedidoModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->delete();
-                        //     }
-                        // }
+                        $this->detallePedidoModel
+                            ->where('idpedido', $idpedido)
+                            ->whereNotIn('idproducto', $productosTemporal)
+                            ->delete();
 
-                        $this->detallePedidoModel->where('idpedido', $idpedido)->delete();
-                        
                         //Hago update o Insert de los detalles
                         foreach ($detalleTemporal as $key => $value) {
-                            $detalle = $this->detallePedidoModel->where('cod_pedido', $value->cod_pedido)->where('idproducto', $value->idproducto)->find();
+                            $detalle = $this->detallePedidoModel->where('idpedido', $idpedido)->where('idproducto', $value->idproducto)->find();
                             
                             //VERIFICO SI EL ARREGLO EXISTE EN LA TABLA
                             if ($detalle) {
