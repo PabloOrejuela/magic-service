@@ -730,7 +730,7 @@
                                             if (isset($modo) && $modo == 'EDIT') {
                                                 echo '
                                                     <button type="submit" class="btn btn-primary" >Enviar</button>
-                                                    <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
+                                                    <a href="'.site_url().'pedidos" class="btn btn-light" id="btn-cancela">Cancelar</a>
                                                     <a href="javascript:#" class="btn btn-light" id="link-devolucion">Registrar devolución</a>
                                                 ';
                                             }
