@@ -319,9 +319,10 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,observacion_pago,
-                        procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio');
+                        procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio,forma_pago');
         
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
+        $builder->join('formas_pago', $this->table.'.formas_pago = formas_pago.id','left');
         $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos', 'left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->join('procedencias','pedidos_procedencia.idprocedencia= procedencias.id','left');
@@ -660,7 +661,7 @@ class PedidoModel extends Model {
         $builder->update();
     }
 
-    public function _actualizaMensajero($mensajero, $codigo_pedido) {
+    public function _actualizaMensajero($mensajero, $idpedido) {
         //echo $mensajero;
         $builder = $this->db->table($this->table);
 
@@ -669,11 +670,11 @@ class PedidoModel extends Model {
         }
 
 
-        $builder->where($this->table.'.cod_pedido', $codigo_pedido);
+        $builder->where($this->table.'.id', $idpedido);
         $builder->update();
     }
 
-    public function _actualizarEstadoPedido($estado_pedido, $cod_pedido, $orden) {
+    public function _actualizarEstadoPedido($estado_pedido, $idpedido, $orden) {
 
         $builder = $this->db->table($this->table);
 
@@ -687,7 +688,7 @@ class PedidoModel extends Model {
         }
 
 
-        $builder->where($this->table.'.cod_pedido', $cod_pedido);
+        $builder->where($this->table.'.id', $idpedido);
         $builder->update();
     }
 
@@ -703,12 +704,12 @@ class PedidoModel extends Model {
         $builder->update();
     }
 
-    public function _actualizaObservacionPedido($observacionPedido, $cod_pedido) {
+    public function _actualizaObservacionPedido($observacionPedido, $idpedido) {
 
         $builder = $this->db->table($this->table);
 
         $builder->set('observaciones', $observacionPedido);
-        $builder->where($this->table.'.cod_pedido', $cod_pedido);
+        $builder->where($this->table.'.id', $idpedido);
         $builder->update();
     }
 

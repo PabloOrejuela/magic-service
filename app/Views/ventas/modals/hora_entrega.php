@@ -7,8 +7,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
-      <input class="form-control" type="hidden" name="id" id="id">
+      <input class="form-control" type="hidden" name="idpedido" id="idpedido">
 
         <div class="form-group row mb-5 mt-3" id="campo-extra">
             <div class="col-md-5 div-celular">
@@ -43,8 +42,7 @@
             class="btn btn-secondary" 
             data-bs-dismiss="modal" 
             onClick="actualizarHorarioEntrega(
-                document.getElementById('codigo_pedido').value, 
-                document.getElementById('id').value, 
+                document.getElementById('idpedido').value, 
                 document.getElementById('entrega-desde').value, 
                 document.getElementById('entrega-hasta').value)"
             >Actualizar</button>

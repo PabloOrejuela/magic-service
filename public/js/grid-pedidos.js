@@ -872,7 +872,7 @@ botonesMensajero.forEach(btn => {
             }
         });
         
-        document.querySelector('#codigo_pedido').value = id;
+        document.querySelector('#idpedido').value = id;
         
         $('#mensajeroModal').modal();
     });
@@ -910,7 +910,7 @@ botonesEstadoPedido.forEach(btn => {
                 }
             }
         });
-        document.querySelector('#codigo_pedido').value = id;
+        document.querySelector('#idpedido').value = id;
         $('#estadoPedidoModal').modal();
     });
 });
@@ -921,11 +921,9 @@ botonesHorariosEntrega.forEach(btn => {
         let id = this.dataset.id
         let desde = this.dataset.desde
         let hasta = this.dataset.hasta
-        let codigoPedido = this.dataset.codigoPedido
         //let hora = this.dataset.value
 
-        document.querySelector('#codigo_pedido').value = codigoPedido;
-        document.querySelector('#id').value = id;
+        document.querySelector('#idpedido').value = id;
         document.querySelector('#entrega-desde').value = desde;
         document.querySelector('#entrega-hasta').value = hasta;
 
@@ -997,7 +995,7 @@ function copyData(id){
     let mensaje = document.getElementById('mensaje')
 
     $.ajax({
-        type:"GET",
+        method:"GET",
         dataType:"html",
         url: "getDatosPedido/"+id,
         //data:"codigo="+valor,
@@ -1006,6 +1004,7 @@ function copyData(id){
         },
         success: function(resultado){
             let pedido = JSON.parse(resultado);
+            
             cliente = pedido.datos.nombre
             sector = pedido.datos.sector
             desde = pedido.datos.rango_entrega_desde
@@ -1020,7 +1019,7 @@ function copyData(id){
             //detalle
             if (pedido.detalle) {
                 for (const cod of pedido.detalle) {
-                    cod_arreglo += cod.producto + ' / '
+                    cod_arreglo += cod.cod_pedido + ' / '
                 }
             }
 
@@ -1063,12 +1062,13 @@ function copyData(id){
 }
 
 //ESTA FUNCIÓN ES LA QUE MANEJA LA COPIA DE DATOS DE CONFIRMACIÓN DE PEDIDO
-function copyDataConfirmaPedido(id){
+function copyDataConfirmaPedido(id){ 
     let cod_arreglo = ''
     let observacion = ''
     let mensaje = document.getElementById('taDataConfirmapedido')
+
     $.ajax({
-        type:"GET",
+        method:"GET",
         dataType:"html",
         url: "getDatosPedido/"+id,
         //data:"codigo="+valor,
@@ -1076,7 +1076,9 @@ function copyDataConfirmaPedido(id){
             //$('#cliente').html('Cargando ...');
         },
         success: function(resultado){
+
             let pedido = JSON.parse(resultado);
+
             cliente = pedido.datos.nombre
             sector = pedido.datos.sector
             desde = pedido.datos.rango_entrega_desde
@@ -1084,6 +1086,7 @@ function copyDataConfirmaPedido(id){
             direccion = pedido.datos.dir_entrega
             ubicacion = pedido.datos.ubicacion
             horaEntrega = pedido.datos.hora
+
             if (typeof pedido.datos.observaciones != 'undefined') {
                 observacion = pedido.datos.observaciones
             }
@@ -1092,7 +1095,7 @@ function copyDataConfirmaPedido(id){
             //detalle
             if (pedido.detalle) {
                 for (const cod of pedido.detalle) {
-                    cod_arreglo += cod.producto + ' / '
+                    cod_arreglo += cod.cod_pedido + ' / '
                 }
             }
 
@@ -1159,17 +1162,15 @@ function actualizarHoraSalidaPedido(){
     });
 }
 
-function actualizaObservacionPedido(){
+function actualizaObservacionPedido(idpedido, observacionPedido){
     
     $.ajax({
-        type:"POST",
-        //dataType:"html",
+        method:"GET",
         data: { 
-            observacionPedido: document.getElementById('observaciones').value, 
-            codigoPedido: document.getElementById('codigo_pedido').value
+            observacionPedido: observacionPedido,
+            idpedido: idpedido
         },
         url: "actualizaObservacionPedido",
-        //data:"codigo="+valor,
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
         },
@@ -1220,7 +1221,7 @@ function actualizarMensajero(mensajero, codigo_pedido){
     });
 }
 
-function actualizarEstadoPedido(estado_pedido, codigo_pedido){
+function actualizarEstadoPedido(estado_pedido, idpedido){
     
     $.ajax({
         method:"GET",
@@ -1228,7 +1229,7 @@ function actualizarEstadoPedido(estado_pedido, codigo_pedido){
         url: "actualizarEstadoPedido",
         data: {
             estado_pedido: estado_pedido,
-            codigo_pedido: codigo_pedido
+            idpedido: idpedido
         },
         beforeSend: function (f) {
             //$('#cliente').html('Cargando ...');
@@ -1243,15 +1244,14 @@ function actualizarEstadoPedido(estado_pedido, codigo_pedido){
     });
 }
 
-function actualizarHorarioEntrega(codigo_pedido, idpedido, entrega_desde, entrega_hasta){
+function actualizarHorarioEntrega(idpedido, entrega_desde, entrega_hasta){
     
     $.ajax({
         method:"GET",
         //dataType:"html",
         url: "actualizarHorarioEntrega",
         data: {
-            codigoPedido: codigo_pedido,
-            id: idpedido,
+            idpedido: idpedido,
             entregaDesde: entrega_desde,
             entregaHasta: entrega_hasta
         },
@@ -1264,7 +1264,7 @@ function actualizarHorarioEntrega(codigo_pedido, idpedido, entrega_desde, entreg
             alertaMensaje("Se ha actualizado el horario de entrega", "500", "success")
             setTimeout(function(){
                 location.replace('pedidos');
-            }, 3000);
+            }, 2000);
         }
             
     });

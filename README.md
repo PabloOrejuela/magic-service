@@ -7,6 +7,6 @@
 
 <h5>Fixes</h5>
 <ul>
-    <li>Se corrigió un nuevo error que salió de corregir el anterior, ahora actualiza la tabla detalle insertando y eliminando productos</li>
-    <li>Se encontró un error en el pedido update, al guardar la actualización se borraba la tabla temporal y se insertaba el nuevo detalle, al hacer eso se borraban los atributos que habían sido ingresados para algún producto pues estos cambiaban de id en la tabla detalle</li>
+    <li>Se ha agregado una columna con la plataforma de pago en el reporte de control de ventas diario</li>
+    <li>Corregido un error en el reporte de PyG</li>
 </ul>

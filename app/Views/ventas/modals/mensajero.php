@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body">
       <h5 class="modal-title" id="staticBackdropLabel">Mensajeros</h5>
-      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+      <input class="form-control" type="hidden" name="idpedido" id="idpedido">
         <select 
             class="form-select" 
             id="select-mensajero" 
@@ -23,7 +23,7 @@
             type="button" 
             class="btn btn-secondary" 
             data-bs-dismiss="modal" 
-            onClick="actualizarMensajero(document.getElementById('select-mensajero').value, document.getElementById('codigo_pedido').value)"
+            onClick="actualizarMensajero(document.getElementById('select-mensajero').value, document.getElementById('idpedido').value)"
         >Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>

@@ -506,7 +506,7 @@ function actualizaPrecio(idproducto, idpedido){
   if (precio != null && precio != '') {
 
       $.ajax({
-        url: "../detalle_pedido_update_precio_temp",
+        url: "../../detalle_pedido_update_precio_temp",
         type: "GET",
         dataType: "html",
         data: {

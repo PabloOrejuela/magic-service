@@ -1,5 +1,5 @@
 <?php
-
+/** @phpstan-ignore-file */ 
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -40,7 +40,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('actualizarHorarioEntrega', 'Ventas::actualizarHorarioEntrega');
     $routes->get('actualizarEstadoPedido', 'Ventas::actualizarEstadoPedido');
     $routes->post('actualizarHoraSalidaPedido', 'Ventas::actualizarHoraSalidaPedido');
-    $routes->post('actualizaObservacionPedido', 'Ventas::actualizaObservacionPedido');
+    $routes->get('actualizaObservacionPedido', 'Ventas::actualizaObservacionPedido');
     $routes->get('insertAttrArreglo', 'Ventas::insertAttrArreglo');
     $routes->get('ventas/getEstadosPedido', 'Ventas::getEstadosPedido');
     $routes->get('ventas/getMensajeros', 'Ventas::getMensajeros');
@@ -77,6 +77,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
 
     //Administración
     $routes->get('administracion', 'Administracion::index');
+    $routes->get('asigna-rol-2', 'Administracion::asigna_rol_2');
     $routes->get('estado', 'Administracion::estado');
     $routes->get('variables-sistema', 'Administracion::variablesSistema');
     $routes->get('getProductosCategoria/(:num)', 'Administracion::getProductosCategoria/$1');
@@ -88,6 +89,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->post('product-new-insert', 'Administracion::product_new_insert');
     $routes->post('product-update', 'Administracion::product_update');
     $routes->get('product-edit/(:num)', 'Administracion::product_edit/$1');
+    $routes->get('product-delete/(:num)', 'Administracion::productDelete/$1');
     $routes->get('items', 'Administracion::items');
     $routes->get('item-edit/(:num)', 'Administracion::form_item_edit/$1');
     $routes->post('item-create', 'Administracion::itemCreate');
@@ -117,7 +119,6 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('roles', 'Administracion::roles');
     $routes->get('getRoles', 'Administracion::getRoles');
     $routes->get('rol-edit/(:num)', 'Administracion::form_rol_edit/$1');
-    $routes->get('asigna-rol-2', 'Administracion::asigna_rol_2');
     $routes->get('desactivar', 'Administracion::desactivar');
     $routes->get('sign-off', 'Administracion::sign_off');
     $routes->get('sectores-entrega', 'Administracion::sectoresEntrega');

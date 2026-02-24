@@ -193,16 +193,16 @@
                                             
                                                 if ($value->mensajero) {
                                                     echo '<td id="mensajero'.$value->id.'">
-                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->id.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">'.$value->mensajero.'</a>
                                                     </td>';
                                                 }else{
                                                     echo '<td id="mensajero'.$value->id.'">
-                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->id.'" data-value="'.$value->mensajero.'" data-bs-toggle="modal" data-bs-target="#mensajeroModal">Registrar</a>
                                                     </td>';
                                                 }
                                             
                                                 echo '<td >
-                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-value="'.$value->estado.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->id.'" data-value="'.$value->estado.'" data-bs-toggle="modal" data-bs-target="#estadoPedidoModal">'.$value->estado.'</a>
                                                     </td>';
                                                 if ($verificaCampos == 0) {
                                                     echo '<td id="informacion"><span id="span-completo">Completo</span></td>';
@@ -212,11 +212,11 @@
                                                 // echo '<td id="observacion_'.$value->id.'">'.$value->observaciones.'</td>';
                                                 if ($value->observaciones != '') {
                                                     echo '<td id="observaciones'.$value->id.'">
-                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">'.$value->observaciones.'</a>
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->id.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">'.$value->observaciones.'</a>
                                                     </td>';
                                                 }else{
                                                     echo '<td id="observaciones'.$value->id.'">
-                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->cod_pedido.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">Registrar</a>
+                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->id.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">Registrar</a>
                                                     </td>';
                                                 }
                                                             
@@ -249,6 +249,7 @@
                                                             echo '<a type="button" class="btnAction" href="javascript:copyDataConfirmaPedido('.$value->id.')" id="btn-copy-pedido">
                                                                     <img src="'.site_url().'public/images/copy-data.png" width="25"  />
                                                                 </a>';
+
                                                             
                                                 echo    '</div></td></tr>';
                                             }
@@ -277,12 +278,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+      <input class="form-control" type="hidden" name="idpedido" id="idpedido">
       <input class="form-control" type="text" name="observaciones" id="observaciones">
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizaObservacionPedido()">Actualizar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="actualizaObservacionPedido(document.getElementById('idpedido').value, document.getElementById('observaciones').value)">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
     </div>
@@ -298,7 +299,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+      <input class="form-control" type="hidden" name="idpedido" id="idpedido">
       <input class="form-control" type="text" name="hora_salida_pedido" id="hora_salida_pedido">
         
       </div>
@@ -320,7 +321,7 @@
       </div>
       <div class="modal-body">
       <h5 class="modal-title" id="staticBackdropLabel">Estados</h5>
-      <input class="form-control" type="hidden" name="codigo_pedido" id="codigo_pedido">
+      <input class="form-control" type="hidden" name="idpedido" id="idpedido">
         <select 
                 class="form-select" 
                 id="select-estado_pedido" 
@@ -336,7 +337,7 @@
             type="button" 
             class="btn btn-secondary" 
             data-bs-dismiss="modal" 
-            onClick="actualizarEstadoPedido(document.getElementById('select-estado_pedido').value, document.getElementById('codigo_pedido').value)"
+            onClick="actualizarEstadoPedido(document.getElementById('select-estado_pedido').value, document.getElementById('idpedido').value)"
         >Actualizar</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
       </div>
@@ -466,30 +467,6 @@
             timer: 500
         });
     }
-
-    // const alertaMensaje = (msg, time, icon) => {
-    //     const toast = Swal.mixin({
-    //         toast: true,
-    //         position: "top-end",
-    //         showConfirmButton: false,
-    //         timer: time,
-    //         //timerProgressBar: true,
-    //         //height: '200rem',
-    //         didOpen: (toast) => {
-    //             toast.onmouseenter = Swal.stopTimer;
-    //             toast.onmouseleave = Swal.resumeTimer;
-    //         },
-    //         customClass: {
-    //             // container: '...',
-    //             popup: 'popup-class',
-    //         }
-    //     });
-    //     toast.fire({
-    //         position: "top-end",
-    //         icon: icon,
-    //         title: msg,
-    //     });
-    // }
 
     const actualizaGrid = () => {
         setTimeout(function(){

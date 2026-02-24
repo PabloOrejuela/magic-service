@@ -88,7 +88,7 @@ $(document).ready(function(){
             borraItemstemp(valor)
             
             $.ajax({
-                type:"GET",
+                method:"GET",
                 dataType:"html",
                 url: "ventas-getItemsProducto"+'/'+valor,
                 beforeSend: function (f) {

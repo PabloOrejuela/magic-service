@@ -153,7 +153,7 @@ class ItemsProductoModel extends Model {
     function _getItemsProducto($idproducto){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        //$builder->select('*')->where($this->table.'.idproducto', $idproducto);
+        
         $builder->select(
             'items.id as id, 
             items.item as item, 
@@ -168,8 +168,8 @@ class ItemsProductoModel extends Model {
             items.estado as estado, 
             cantidad,
             '.$this->table.'.idproducto as idproducto');
-        $builder->join('items', $this->table.'.item = items.id');
-        $builder->join('productos', $this->table.'.idproducto = productos.id');
+        $builder->join('items', $this->table.'.item = items.id','left');
+        $builder->join('productos', $this->table.'.idproducto = productos.id','left');
         $builder->where($this->table.'.idproducto', $idproducto);
         $builder->orderBy('item', 'asc');
         //$builder->join('items', 'items_productos.item = items.id');

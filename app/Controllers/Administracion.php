@@ -883,6 +883,50 @@ class Administracion extends BaseController {
         }
     }
 
+    public function productDelete($idproducto){
+
+        $ruta = './public/images/productos/';
+
+        $producto = $this->productoModel->find($idproducto);
+
+        if (!$producto) {
+            return redirect()->to('productos')
+                ->with('error', 'Producto no encontrado');
+        }
+                
+        $borrable = $this->detallePedidoModel->where('idproducto', $idproducto)->countAllResults();
+
+        if ($borrable == 0) {
+            //En aso de que no se lo haya usado en pedidos se lo borra, primero debería eliminarse la imagen asociada
+
+            //Eliminar la imágen asociada
+            if ($producto->image !== 'default-img') {
+                $archivo1 = $ruta . $producto->image . '.jpg';
+                $archivo2 = $ruta . $producto->image;
+
+                if (is_file($archivo1)) {
+                    unlink($archivo1);
+                }
+
+                if (is_file($archivo2)) {
+                    unlink($archivo2);
+                }
+            }
+
+            $this->productoModel->delete($idproducto);
+        }else{
+            //En caso de que si se haya usado en pedidos solo se lo desactiva
+            $data = [
+                'estado' => 0
+            ];
+
+            $this->productoModel->update($idproducto, $data);
+        }
+        
+        return redirect()->to('productos');
+
+    }
+
     public function product_new_insert(){
 
         //PABLO Poner las validaciones de categoria, producto,
@@ -1090,10 +1134,11 @@ class Administracion extends BaseController {
             $cambios['descripcion'] = $producto['idcategoria'].';'.$producto['producto'].';'.$producto['observaciones'].';'.$producto['precio'].';'.$producto['image'].';'.$producto['imagenNew'];
 
             //Creo el string con el detalle del producto
-            foreach ($items as $key => $item) {
-                $cambios['detalle'] .= $item->id.','.$item->porcentaje.','.$item->precio_unitario.','.$item->precio_actual.','.$item->pvp.';';
+            if ($items) {
+                foreach ($items as $key => $item) {
+                    $cambios['detalle'] .= $item->id.','.$item->porcentaje.','.$item->precio_unitario.','.$item->precio_actual.','.$item->pvp.';';
+                }
             }
-            
             $this->productoCambiosModel->insert($cambios);
 
             /**

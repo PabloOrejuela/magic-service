@@ -90,31 +90,8 @@ class Ventas extends BaseController {
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
             $data['negocios'] = $this->negocioModel->where('id <=', 2)->findAll();
 
-            // $data['detalle'] = $this->detallePedidoTempModel
-            //     ->where('cod_pedido', $data['cod_pedido'])
-            //     ->join('productos','productos.id = detalle_pedido_temp.idproducto')
-            //     ->findAll();
             $data['detalle'] = $this->detallePedidoTempModel->where('idpedido', $idPedidoInserted)->findAll();
 
-            
-            // if ($data['cod_pedido'] != '' && isset($data['cod_pedido'])) {
-
-            //     //Busco arreglos con este código en la tabla de temporales y de detalle y los elimino 
-            //     $this->detallePedidoTempModel->_eliminarProdsDetalle($data['cod_pedido']);
-                
-            //     $data['title']='Ordenes y pedidos';
-            //     $data['subtitle']='Nuevo pedido';
-            //     $data['main_content']='ventas/form-pedido';
-            //     return view('dashboard/index', $data);
-            // } else {
-                
-            //     $mensaje = 'SIN CODIGO';
-            //     $this->session->set('mensaje', $mensaje);
-            //     $data['title']='Pedidos';
-            //     $data['subtitle']='Listado de pedidos';
-            //     $data['main_content']='ventas/grid-pedidos';
-            //     return view('dashboard/index', $data);
-            // }
             $data['cod_pedido'] = $codPedidoCompleto;
             $data['title']='Ordenes y pedidos';
             $data['subtitle']='Nuevo pedido';
@@ -125,29 +102,6 @@ class Ventas extends BaseController {
             return redirect()->to('logout');
         }
     }
-
-    /*
-        PABLO: Esta función se debe borar cuando ya se genere el código desde PHP
-        con la función getNewCodPedido
-     *  Esta función recibe el código desde el archivo JS del navbar
-     *  y guarda en sesión el codigo
-    */
-    // function generaCodigoPedido(){
-
-    //     //En caso de que se haya quedado un código en sesión lo borro
-    //     //$this->session->set('codigo_pedido', '');
-
-    //     //Recibo el código
-    //     $codigo = $this->request->getPostGet('codigo');
-
-    //     //pongo el código en la sesion
-    //     $this->session->set('codigo_pedido', $codigo);
-        
-    //     $data['resultado'] = "Exito";
-        
-    //     echo json_encode($data);
-    // }
-
 
     public function estadisticaVentas() {
 
@@ -208,10 +162,10 @@ class Ventas extends BaseController {
         //echo view('precio_sector', $data);
     }
 
-    function actualizaMensajero($mensajero, $cod_pedido){
+    function actualizaMensajero($mensajero, $idpedido){
 
         if ($mensajero != 0 && $mensajero != NULL) {
-            $this->pedidoModel->_actualizaMensajero($mensajero, $cod_pedido);
+            $this->pedidoModel->_actualizaMensajero($mensajero, $idpedido);
         }
         
         return true;
@@ -219,12 +173,12 @@ class Ventas extends BaseController {
 
     function actualizarHorarioEntrega(){
 
-        $id = $this->request->getPostGet('id');
+        $idpedido = $this->request->getPostGet('idpedido');
 
         $datos['rango_entrega_desde'] = $this->request->getPostGet('entregaDesde');
         $datos['rango_entrega_hasta'] = $this->request->getPostGet('entregaHasta');
         
-        $this->pedidoModel->update($id, $datos);
+        $this->pedidoModel->update($idpedido, $datos);
 
         $data['entrega_desde'] = $datos['rango_entrega_desde'];
         $data['entrega_hasta'] = $datos['rango_entrega_hasta'];
@@ -236,11 +190,11 @@ class Ventas extends BaseController {
         $orden = $this->pedidoModel->selectMax('orden')->findAll();
 
         $estado_pedido = $this->request->getPostGet('estado_pedido');
-        $codigo_pedido = $this->request->getPostGet('codigo_pedido');
+        $idpedido = $this->request->getPostGet('idpedido');
 
         
         if ($estado_pedido != 0) {
-            $this->pedidoModel->_actualizarEstadoPedido($estado_pedido, $codigo_pedido, $orden);
+            $this->pedidoModel->_actualizarEstadoPedido($estado_pedido, $idpedido, $orden);
             
         }
         return true;
@@ -339,10 +293,10 @@ class Ventas extends BaseController {
     function actualizaObservacionPedido(){
 
         $observacionPedido =  strtoupper($this->request->getPostGet('observacionPedido'));
-        $cod_pedido =  strtoupper($this->request->getPostGet('codigoPedido'));
+        $idpedido =  $this->request->getPostGet('idpedido');
 
         if ($observacionPedido != '' ) {
-            $this->pedidoModel->_actualizaObservacionPedido($observacionPedido, $cod_pedido);
+            $this->pedidoModel->_actualizaObservacionPedido($observacionPedido, $idpedido);
         }
         return true;
     }
@@ -458,6 +412,7 @@ class Ventas extends BaseController {
             //Si el pedido ya tiene detalle
             if ($detalleExiste) {
                 $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $idpedido);
+                
                 if ($datosExiste) {
                         $cantidad = $datosExiste->cantidad + $cantidad;
                         $precio = $datosExiste->precio;
@@ -471,7 +426,6 @@ class Ventas extends BaseController {
 
                     }else{
                         
-                        $cantidad = 1;
                         $precio = $producto->precio;
                         $subtotal = $cantidad * $producto->precio;
 
@@ -624,22 +578,22 @@ class Ventas extends BaseController {
     function detalle_pedido_update_precio_temp(){
 
         $idproducto = $this->request->getPostGet('idproducto');
-        $cod_pedido = $this->request->getPostGet('cod_pedido');
+        $idpedido = $this->request->getPostGet('idpedido');
         $precio = $this->request->getPostGet('precio');
         $cant = $this->request->getPostGet('cant');
 
         $error = '';
         $subtotal = number_format($precio * $cant,2);
 
-        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $cod_pedido);
+        $datosExiste = $this->detallePedidoTempModel->_getProdDetallePedido($idproducto, $idpedido);
             
         if ($datosExiste) {
-            $this->detallePedidoTempModel->_updateProdDetallePrecio($idproducto, $cod_pedido, $precio, $subtotal);
+            $this->detallePedidoTempModel->_updateProdDetallePrecio($idproducto, $idpedido, $precio, $subtotal);
         }
         
         $res['datos'] = $this->cargaProductos_temp($idpedido);
-        $res['total'] = number_format($this->totalDetallePedido($cod_pedido), 2);
-        $res['subtotal'] = number_format($this->totalDetallePedido($cod_pedido), 2);
+        $res['total'] = number_format($this->totalDetallePedido($idpedido), 2);
+        $res['subtotal'] = number_format($this->totalDetallePedido($idpedido), 2);
         $res['error'] = $error;
         echo json_encode($res);
     }
@@ -703,12 +657,15 @@ class Ventas extends BaseController {
 
         if ($datos) {
             $res['datos'] = $datos;
-            $res['detalle'] = $resultado = $this->detallePedidoTempModel->where('idpedido', $id)->findAll();
+            $res['detalle'] = $this->detallePedidoModel->where('idpedido', $id)->findAll();
+            $error = 'EXITO';
             
         }else{
             $res['datos'] = 'NO existe ese pedido';
+            $error = 'ERROR';
         }
         $res['error'] = $error;
+        
         echo json_encode($res);
     }
 
@@ -744,12 +701,14 @@ class Ventas extends BaseController {
     }
 
     public function getItemsProducto($idproducto){
-
+        
         $items = $this->itemsProductoModel->_getItemsProducto($idproducto);
 
         //Inserto en la tabla temporal los items que traigo de la tabla de items producto
-        $this->insertProductTemp($idproducto, $items);
-
+        if ($items) {
+            $this->insertProductTemp($idproducto, $items);
+        }
+        
         //Por seguridad traigo los items que están en la tabla temporal
         $info['itemsTemp'] = $this->itemsProductoTempModel->_getItemsProducto($idproducto);
         $precio = $this->productoModel->_getPrecioProducto($idproducto);

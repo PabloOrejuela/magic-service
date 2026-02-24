@@ -134,7 +134,8 @@
                                     <th class="col-sm-2">CODIGO</th>
                                     <th class="col-sm-2">FECHA DE REGISTRO</th>
                                     <th class="col-sm-4">CLIENTE</th>
-                                    <th class="col-sm-4">BANCO/PLATAFORMA</th>
+                                    <th class="col-sm-4">PLATAFORMA</th>
+                                    <th class="col-sm-4">BANCO</th>
                                     <th class="col-sm-2">VALOR TOTAL</th>
                                     <th class="col-sm-2">NEGOCIO</th>
                                     <th class="col-sm-2">VENDEDOR</th>
@@ -164,17 +165,12 @@
                                                 $vendedor = $this->usuarioModel->_getNombreUsuario($result->vendedor);
 
 
-                                                // echo '<tr class="item-list" data-id="'.$value->id.'">
-                                                //         <td><i class="handle fa-solid fa-grip-lines"></i><span id="id-hidden">'.$value->id.'</span></td>
-                                                //         <td><a href="'.site_url().'pedido-edit/'.$value->id.'" id="link-editar">'.$value->cod_pedido.'</a></td>';
-
-
-
                                                 echo '<tr data-id="'.$result->id.'">';
                                                 echo '<td>'.$num.'</td>';
                                                 echo '<td><a href="'.site_url().'pedido-edit/'.$result->id.'/'.$modo.'" id="link-editar" target="_blank">'.$result->cod_pedido.'</a></td>';
                                                 echo '<td>'.$result->fecha.'</td>';
                                                 echo '<td>'.$result->cliente.'</td>';
+                                                echo '<td>'.$result->forma_pago.'</td>';
 
                                                 if ($result->banco != 0) {
                                                     $banco = $this->bancoModel->_getBanco($result->banco);
@@ -224,12 +220,12 @@
 
                                             }
                                             echo '<tr>
-                                                    <td colspan="4"></td>
+                                                    <td colspan="5"></td>
                                                     <td id="text-result-bold">TOTAL: </td>
                                                     <td id="text-result-bold">$'.number_format($suma, 2).'</td>
                                                     <td colspan="2"></td>
                                                     <td>'.$ventasExtras.'</td>
-                                                    <td colspan="2"></td>
+                                                    <td colspan="3"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -262,7 +258,7 @@
                                                     ';
                                         }else{
                                             echo '<tr>';
-                                            echo '<td colspan="12">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
+                                            echo '<td colspan="13">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
                                             echo '</tr>';
 
                                             echo '

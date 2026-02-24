@@ -81,7 +81,7 @@
                                             
                                                     <td>
                                                     <div class="contenedor centrado">
-                                                        <a type="button" id="btn-register" href="'.site_url().'prod-delete/'.$value->id.'" class="edit">
+                                                        <a type="button" id="btn-register" href="'.site_url().'product-delete/'.$value->id.'" class="edit">
                                                             <img src="'.site_url().'public/images/delete.png" width="30" >
                                                         </a>
                                                     </div>

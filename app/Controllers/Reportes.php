@@ -536,7 +536,7 @@ class Reportes extends BaseController {
                 //echo '<pre>'.var_export($datos, true).'</pre>';exit;
                 $data['res'] = $this->pedidoModel->_getPedidosReporteDiario($datos['fecha_inicio'], $datos['fecha_final'], $datos['negocio']);
                 $data['datos'] = $datos;
-
+                
                 $data['title']='Reportes';
                 $data['subtitle']='Reporte de Control de Ventas';
                 $data['main_content']='reportes/reporte_diario_ventas';
@@ -2436,6 +2436,15 @@ class Reportes extends BaseController {
             ],
         ];
 
+        $styleCurrencyBold = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
+            ]
+        ];
+
         $styleFilaResult = [
             'font' => [
                 'bold' => true,
@@ -2605,7 +2614,7 @@ class Reportes extends BaseController {
             }
 
         }else{
-            $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFilaIzq);
+            $hoja->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
         }             
 
