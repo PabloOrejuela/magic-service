@@ -119,7 +119,8 @@
                                     <th class="col-sm-1">No.</th>
                                     <th class="col-sm-1">NEGOCIO</th>
                                     <th class="col-sm-1">COD PEDIDO</th>
-                                    <th class="col-sm-1">FECHA</th>
+                                    <th class="col-sm-1">FECHA REGISTRO</th>
+                                    <th class="col-sm-1">FECHA ENTREGA</th>
                                     <th class="col-sm-2">CLIENTE</th>
                                     <th class="col-sm-1">SECTOR</th>
                                     <th class="col-sm-2">DIRECCION</th>
@@ -151,6 +152,7 @@
                                                 echo '<td>'.$nombreNegocio->negocio.'</td>';
                                                 echo '<td>'.$resultado->cod_pedido.'</td>';
                                                 echo '<td>'.$resultado->fecha.'</td>';
+                                                echo '<td>'.$resultado->fecha_entrega.'</td>';
                                                 echo '<td>'.$resultado->cliente.'</td>'; 
                                                 echo '<td>'.$resultado->sector.'</td>';      
                                                 echo '<td>'.$resultado->dir_entrega.'</td>';

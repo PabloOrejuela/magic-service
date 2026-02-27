@@ -2,7 +2,7 @@
 <h3>Cambios</h3>
 <h5>Estadísticas</h5>
 <ul> 
-
+    <li>En el reporte de mensajería se agregó una columna y se separaron las fechas en fecha de registro y fecha de entrega</li>
 </ul>
 
 <h5>Fixes</h5>
