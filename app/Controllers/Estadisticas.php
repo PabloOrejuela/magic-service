@@ -582,13 +582,11 @@ class Estadisticas extends BaseController {
                 //Traigo los clientes que han comprado en este periodo de tiempo
                 $clientesNuevos = $this->pedidoModel
                     ->select('idcliente, nombre, MIN(fecha) as primer_pedido,idnegocio')
-                    ->where('fecha >=', $datos['fecha_inicio'])
-                    ->where('fecha <=', $datos['fecha_final'])
+                    ->join('clientes','clientes.id=pedidos.idcliente')
                     ->where('idnegocio', $datos['negocio'])
                     ->groupBy('idcliente')
-                    ->join('clientes','clientes.id=pedidos.idcliente')
-                    ->having('MIN(fecha) >=', $datos['fecha_inicio'])
-                    ->having('MIN(fecha) <=', $datos['fecha_final'])
+                    ->having('primer_pedido >=', $datos['fecha_inicio'])
+                    ->having('primer_pedido <=', $datos['fecha_final'])
                     ->orderBy('nombre', 'asc')
                     ->findAll();
 
