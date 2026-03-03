@@ -66,8 +66,8 @@
                                                 if ($value->attr_temporal == 0) {
                                                     echo '<td class="centrado" id="temp_'.$value->id.'"></td>';
                                                 }else if($value->attr_temporal == 1){
-                                                    $updatedAt = date($value->updated_at);
-                                                    $timeHasta = strtotime($updatedAt."+ 30 days");
+                                                    $CreatedAt = date($value->created_at);
+                                                    $timeHasta = strtotime($CreatedAt."+ 30 days");
                                                     $fechaHasta = date('Y-m-d',$timeHasta);
                                                     echo '<td class="centrado">'.$fechaHasta.'</td>';
                                                 }

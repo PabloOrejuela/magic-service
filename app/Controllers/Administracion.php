@@ -144,13 +144,42 @@ class Administracion extends BaseController {
             //delete de los items de la tabla temporal de hace un día
             $this->itemsProductoTempModel->_deleteItemsTempOld();
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
+            //Aquí debo llamar la funcionalidad de desactivar los productos temporales cuyo "habilitado a" sea mayor a 30 dias 
+            $productosTemporales = $this->productoModel->select('id,producto,attr_temporal,created_at,updated_at')->where('attr_temporal', 1)->findAll();
+            
+            foreach ($productosTemporales as $key => $producto) {
+                $this->verificaProductoTemporal($producto);
+            }
+
             $data['title']='Administración';
             $data['subtitle']='Productos';
             $data['main_content']='administracion/grid_productos';
             return view('dashboard/index', $data);
         }else{
             return redirect()->to('logout');
+        }
+    }
+
+    public function verificaProductoTemporal($producto){
+
+        // Calculamos si han pasado 30 días desde esa fecha hasta hoy.
+        $createdAt = strtotime($producto->created_at);
+
+        // Si no se pudo parsear la fecha, devolvemos 0 por defecto
+        if ($createdAt === false) {
+            return 0;
+        }
+
+        $hoy = time();
+        $diasPasados = floor(($hoy - $createdAt) / (60 * 60 * 24));
+
+        if ($diasPasados >= 30) {
+
+            //Cambio el estado del producto
+            $this->productoModel->update($producto->id, ['estado'=> 0]);
+            return 1;
+        } else {
+            return 0;
         }
     }
 

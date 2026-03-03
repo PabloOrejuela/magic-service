@@ -87,7 +87,7 @@ class ProductoModel extends Model {
     function _getProductos(){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria,'.$this->table.'.updated_at, attr_temporal, precio,image');
+        $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria,'.$this->table.'.updated_at,'.$this->table.'.created_at,attr_temporal, precio,image');
         $builder->join('categorias', $this->table.'.idcategoria = categorias.id');
         $query = $builder->get();
         if ($query->getResult() != null) {
@@ -134,6 +134,7 @@ class ProductoModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,producto,precio,estado');
         $builder->join('categorias', $this->table.'.idcategoria = categorias.id', 'left');
+        $builder->where('estado', 1);
         $builder->where('idnegocio', $negocio);
         $builder->like('producto', $producto);
         $query = $builder->get();
@@ -148,7 +149,6 @@ class ProductoModel extends Model {
 
     public function _insert($data) {
 
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
 
         //Inserto el nuevo producto
         $builder = $this->db->table($this->table);
@@ -163,6 +163,7 @@ class ProductoModel extends Model {
         if ($data['idusuario'] != 'NULL' && $data['idusuario'] != '') {
             $builder->set('idusuario', $data['idusuario']);
         }
+        $builder->set('created_at', date('Y-m-d H:i:s'));
         $builder->insert();
         return  $this->db->insertID();
     }
@@ -200,14 +201,12 @@ class ProductoModel extends Model {
         if ($data['observaciones'] != 'NULL' && $data['observaciones'] != '') {
             $builder->set('observaciones', $data['observaciones']);
         }
-
+        $builder->set('created_at', date('Y-m-d H:i:s'));
         $builder->insert();
         return  $this->db->insertID();
     }
 
     public function _insertNewProduct($data) {
-
-        //echo '<pre>'.var_export($data, true).'</pre>';exit;
 
         //Inserto el nuevo producto
         $builder = $this->db->table($this->table);
@@ -235,6 +234,7 @@ class ProductoModel extends Model {
             $builder->set('observaciones', $data['observaciones']);
         }
 
+        $builder->set('created_at', date('Y-m-d H:i:s'));
         $builder->insert();
         return  $this->db->insertID();
     }

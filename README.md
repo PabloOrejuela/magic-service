@@ -2,12 +2,10 @@
 <h3>Cambios</h3>
 <h5>Estadísticas</h5>
 <ul> 
-    <li>En el reporte de mensajería se agregó una columna y se separaron las fechas en fecha de registro y fecha de entrega</li>
+    <li></li>
 </ul>
 
 <h5>Fixes</h5>
 <ul>
-    <li>Se encontró y corrigió un error en pedido edit, el botón de cancelar no tenía bien escrita la url y daba error</li>
-    <li>Se ha agregado una columna con la plataforma de pago en el reporte de control de ventas diario</li>
-    <li>Corregido un error en el reporte de PyG</li>
+    <li>Se corrigió un error, no estaba activa la funcionalidad de la temporalidad de los productos temporales, es decir solo deben durar 30 días y luego su estado debe cambiar a inactivo</li>
 </ul>
