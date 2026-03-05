@@ -207,7 +207,7 @@
                                                 }
                                             }
                                             echo '<tr>
-                                                    <td colspan="4"></td><td id="text-result-bold">TOTAL: </td>
+                                                    <td colspan="7"></td><td id="text-result-bold">TOTAL: </td>
                                                     <td id="text-result-bold">'.number_format($suma, 2).'</td>
                                                     <td colspan="3"></td><td></td>
                                                 </tr>

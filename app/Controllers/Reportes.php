@@ -1336,7 +1336,7 @@ class Reportes extends BaseController {
 
         $fila++;
         $phpExcel->getActiveSheet()->getColumnDimension('G')->setWidth(40);
-
+        
         //datos
         if ($res) {
             
@@ -1345,7 +1345,7 @@ class Reportes extends BaseController {
             
             foreach ($res as $key => $result) {
                 $mensajero = $this->usuarioModel->select('nombre')->where('id', $result->mensajero)->first();
-                $detalle = $this->detallePedidoModel->_getDetallePedido($result->cod_pedido);
+                $detalle = $this->detallePedidoModel->_getDetallePedido($result->id);
 
                 if ($result->valor_mensajero_edit == '0.00') {
                     $valor_mensajero = $result->valor_mensajero;
@@ -1373,13 +1373,16 @@ class Reportes extends BaseController {
                 $hoja->setCellValue('H'.$fila, number_format($valor_mensajero, 2, '.'));
                 $hoja->setCellValue('I'.$fila, $result->rango_entrega_desde.' / '.$result->rango_entrega_hasta);
                 $hoja->setCellValue('J'.$fila, $mensajero->nombre);
+
+                $lista = '';
                 if (isset($detalle)) {
-                    $lista = '';
+                    
                     foreach ($detalle as $key => $d) {
                         $lista .= $d->producto . "\n";
                     }
                     $lista = rtrim($lista, "\n");
                 }
+
                 $phpExcel->getActiveSheet()->getStyle('K'.$fila)->getAlignment()->setWrapText(true);
                 $hoja->setCellValue('K'.$fila, $lista);
                 $hoja->setCellValue('L'.$fila, '');
