@@ -35,7 +35,7 @@
 
                                 if ($pedidos) {
                                     foreach ($pedidos as $key => $pedido) {
-                                        $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->cod_pedido);
+                                        $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->id);
                                         $modo = 'REPORTE';
                                         
                                         //echo '<pre>'.var_export($detalle, true).'</pre>';exit;

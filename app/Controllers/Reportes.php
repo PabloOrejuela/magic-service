@@ -1281,11 +1281,11 @@ class Reportes extends BaseController {
             
         );
 
-        $phpExcel->getActiveSheet()->getStyle('A1:L1')->applyFromArray($styleCabecera);
-        $phpExcel->getActiveSheet()->mergeCells('A1:L1');
+        $phpExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->mergeCells('A1:M1');
 
         //COLUMNAS
-        foreach (range('A','L') as $col) {
+        foreach (range('A','M') as $col) {
             if ($col != 'G') {
                 $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
             }
@@ -1319,7 +1319,7 @@ class Reportes extends BaseController {
 
         $fila +=2;
 
-        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':L'.$fila)->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':M'.$fila)->applyFromArray($styleCabecera);
         //Edito la info que va a ir en el archivo excel
         $hoja->setCellValue('A'.$fila, "No.");
         $hoja->setCellValue('B'.$fila, "NEGOCIO");
@@ -1364,15 +1364,16 @@ class Reportes extends BaseController {
                 $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
                 $hoja->setCellValue('C'.$fila, $result->cod_pedido);
                 $hoja->setCellValue('D'.$fila, $result->fecha);
-                $hoja->setCellValue('E'.$fila, $result->cliente);
-                $hoja->setCellValue('F'.$fila, $result->sector);
+                $hoja->setCellValue('E'.$fila, $result->fecha_entrega);
+                $hoja->setCellValue('F'.$fila, $result->cliente);
+                $hoja->setCellValue('G'.$fila, $result->sector);
                 //$phpExcel->getActiveSheet()->getStyle('G'.$fila)->getAlignment()->setWrapText(true);
-                $hoja->setCellValue('G'.$fila, $result->dir_entrega);
-                $phpExcel->getActiveSheet()->getCell('H'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-                $phpExcel->getActiveSheet()->getStyle('H'.$fila)->applyFromArray($styleCurrency);
-                $hoja->setCellValue('H'.$fila, number_format($valor_mensajero, 2, '.'));
-                $hoja->setCellValue('I'.$fila, $result->rango_entrega_desde.' / '.$result->rango_entrega_hasta);
-                $hoja->setCellValue('J'.$fila, $mensajero->nombre);
+                $hoja->setCellValue('H'.$fila, $result->dir_entrega);
+                $phpExcel->getActiveSheet()->getCell('I'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+                $phpExcel->getActiveSheet()->getStyle('I'.$fila)->applyFromArray($styleCurrency);
+                $hoja->setCellValue('I'.$fila, number_format($valor_mensajero, 2, '.'));
+                $hoja->setCellValue('J'.$fila, $result->rango_entrega_desde.' / '.$result->rango_entrega_hasta);
+                $hoja->setCellValue('K'.$fila, $mensajero->nombre);
 
                 $lista = '';
                 if (isset($detalle)) {
@@ -1383,9 +1384,9 @@ class Reportes extends BaseController {
                     $lista = rtrim($lista, "\n");
                 }
 
-                $phpExcel->getActiveSheet()->getStyle('K'.$fila)->getAlignment()->setWrapText(true);
-                $hoja->setCellValue('K'.$fila, $lista);
-                $hoja->setCellValue('L'.$fila, '');
+                $phpExcel->getActiveSheet()->getStyle('L'.$fila)->getAlignment()->setWrapText(true);
+                $hoja->setCellValue('L'.$fila, $lista);
+                $hoja->setCellValue('M'.$fila, 'NORMAL');
 
                 $fila++;
                 $num++;
@@ -1394,7 +1395,7 @@ class Reportes extends BaseController {
 
              if ($extra) {
                 foreach ($extra as $key => $r) {
-                    $detalle = $this->detallePedidoModel->_getDetallePedido($r->cod_pedido);
+                    $detalle = $this->detallePedidoModel->_getDetallePedido($r->id);
                     $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
                     $phpExcel->getActiveSheet()
                         ->getStyle('A'.$fila.':G'.$fila)
@@ -1404,16 +1405,18 @@ class Reportes extends BaseController {
                         ->setColor(new Color('FFFFFFF'));
                     $hoja->setCellValue('A'.$fila, $num);
                     $hoja->setCellValue('B'.$fila, $datosNegocio[0]->negocio);
-                    $hoja->setCellValue('C'.$fila, $r->cod_pedido);
-                    $hoja->setCellValue('D'.$fila, $r->fecha);
-                    $hoja->setCellValue('E'.$fila, $r->cliente);
-                    $hoja->setCellValue('F'.$fila, $r->sector);
-                    $hoja->setCellValue('G'.$fila, $r->dir_entrega);
-                    $phpExcel->getActiveSheet()->getCell('H'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-                    $phpExcel->getActiveSheet()->getStyle('H'.$fila)->applyFromArray($styleCurrency);
-                    $hoja->setCellValue('H'.$fila, number_format($r->valor_mensajero_extra, 2, '.'));
-                    $hoja->setCellValue('I'.$fila, $r->rango_entrega_desde.' / '.$result->rango_entrega_hasta);
-                    $hoja->setCellValue('J'.$fila, $mensajero->nombre);
+                    $hoja->setCellValue('C'.$fila, $result->cod_pedido);
+                    $hoja->setCellValue('D'.$fila, $result->fecha);
+                    $hoja->setCellValue('E'.$fila, $result->fecha_entrega);
+                    $hoja->setCellValue('F'.$fila, $result->cliente);
+                    $hoja->setCellValue('G'.$fila, $result->sector);
+                    //$phpExcel->getActiveSheet()->getStyle('G'.$fila)->getAlignment()->setWrapText(true);
+                    $hoja->setCellValue('H'.$fila, $result->dir_entrega);
+                    $phpExcel->getActiveSheet()->getCell('I'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+                    $phpExcel->getActiveSheet()->getStyle('I'.$fila)->applyFromArray($styleCurrency);
+                    $hoja->setCellValue('I'.$fila, number_format($valor_mensajero, 2, '.'));
+                    $hoja->setCellValue('J'.$fila, $result->rango_entrega_desde.' / '.$result->rango_entrega_hasta);
+                    $hoja->setCellValue('K'.$fila, $mensajero->nombre);
                     if (isset($detalle)) {
                         $lista = '';
                         foreach ($detalle as $key => $d) {
@@ -1421,21 +1424,21 @@ class Reportes extends BaseController {
                         }
                         $lista = rtrim($lista, "\n");
                     }
-                    $phpExcel->getActiveSheet()->getStyle('K'.$fila)->getAlignment()->setWrapText(true);
-                    $hoja->setCellValue('K'.$fila, $lista);
-                    $hoja->setCellValue('L'.$fila, 'EXTRA');
+                    $phpExcel->getActiveSheet()->getStyle('L'.$fila)->getAlignment()->setWrapText(true);
+                    $hoja->setCellValue('L'.$fila, $lista);
+                    $hoja->setCellValue('M'.$fila, 'EXTRA');
                     $fila++;
                     $suma += $r->valor_mensajero_extra;
                     $num++;
                 }
             }
 
-            $phpExcel->getActiveSheet()->getStyle('G'.$fila)->applyFromArray($styleSubtituloDerecha);
-            $hoja->setCellValue('G'.$fila, 'TOTAL:');
+            $phpExcel->getActiveSheet()->getStyle('H'.$fila)->applyFromArray($styleSubtituloDerecha);
+            $hoja->setCellValue('H'.$fila, 'TOTAL:');
 
-            $phpExcel->getActiveSheet()->getCell('H'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-            $phpExcel->getActiveSheet()->getStyle('H'.$fila)->applyFromArray($styleCurrencyBold);
-            $hoja->setCellValue('H'.$fila, number_format($suma, 2, '.'));
+            $phpExcel->getActiveSheet()->getCell('I'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+            $phpExcel->getActiveSheet()->getStyle('I'.$fila)->applyFromArray($styleCurrencyBold);
+            $hoja->setCellValue('I'.$fila, number_format($suma, 2, '.'));
         }else{
             $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');

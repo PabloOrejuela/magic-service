@@ -48,6 +48,7 @@ class Ventas extends BaseController {
             date_default_timezone_set('America/Guayaquil');
             $date = date('ymdHis');
 
+            //echo '<pre>'.var_export($data['session'], true).'</pre>';exit;
             //Borramos temporal de pedidos
             //PABLO: LOS PEDIDO QUE SE DEBEN BORRAR SON AQUELLOS QUE TIENEN ESTADO = TEMPORAL, DEBO ELIMINAR TODA INTERACCIÓN CON LA TABLA DETALLE TEMPORAL
             //$this->detallePedidoTempModel->_deleteDetallesTempOld();
@@ -1284,7 +1285,10 @@ class Ventas extends BaseController {
     public function pedidos() {
         
         if ($this->session->ventas == 1) {
-            $this->insertIdPedido();  // PABLO: Borrar esta línea
+            //$this->insertIdPedido();  // PABLO: Borrar esta línea
+
+            //Eliminar los pedidos temporales de el usuario 
+            $this->pedidoModel->where('vendedor', $this->session->id)->where('estado', 7)->delete();
 
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);

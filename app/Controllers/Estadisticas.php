@@ -1131,7 +1131,7 @@ class Estadisticas extends BaseController {
                 foreach ($data['pedidos'] as $pedido) {
                 
                     // Obtengo el detalle de cada pedido
-                    $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->cod_pedido);
+                    $detalles = $this->detallePedidoModel->_getDetallePedidoEst($pedido->id);
 
                     if ($detalles) {
                         foreach ($detalles as $detalle) {

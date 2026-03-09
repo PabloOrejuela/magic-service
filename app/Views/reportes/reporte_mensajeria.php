@@ -145,7 +145,7 @@
                                             
                                             foreach ($res as $key => $resultado) {
                                                 $mensajero = $this->usuarioModel->_getNombreUsuario($resultado->mensajero);
-                                                $detalle = $this->detallePedidoModel->_getDetallePedido($resultado->cod_pedido);
+                                                $detalle = $this->detallePedidoModel->_getDetallePedido($resultado->id);
 
                                                 echo '<tr>';
                                                 echo '<td>'.$num.'</td>';
@@ -172,7 +172,7 @@
                                                     }
                                                 echo '</ul></td>';
                                                 echo '</td>'; 
-                                                echo '<td></td></tr>';
+                                                echo '<td>NORMAL</td></tr>';
                                                 $suma += $valor_mensajero;
                                                 $num++;
                                             }
@@ -180,12 +180,13 @@
                                             if ($extra) {
                                                 foreach ($extra as $key => $r) {
                                                     
-                                                    $detalle = $this->detallePedidoModel->_getDetallePedido($r->cod_pedido);
+                                                    $detalle = $this->detallePedidoModel->_getDetallePedido($r->id);
                                                     echo '<tr>';
                                                     echo '<td>'.$num.'</td>';
                                                     echo '<td>'.$nombreNegocio->negocio.'</td>';
                                                     echo '<td>'.$r->cod_pedido.'</td>';
-                                                    echo '<td>'.$r->fecha.'</td>';
+                                                    echo '<td>'.$resultado->fecha.'</td>';
+                                                    echo '<td>'.$resultado->fecha_entrega.'</td>';
                                                     echo '<td>'.$r->cliente.'</td>'; 
                                                     echo '<td>'.$r->sector.'</td>';      
                                                     echo '<td>'.$r->dir_entrega.'</td>';

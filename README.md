@@ -2,7 +2,7 @@
 <h3>Cambios</h3>
 <h5>Estadísticas</h5>
 <ul> 
-    <li></li>
+    <li>Se implementó la funcionalidad de borrado de los pedidos temporales de el usuario cuando se accede al grid de pedidos</li>
 </ul>
 
 <h5>Fixes</h5>
