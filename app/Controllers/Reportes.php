@@ -720,11 +720,11 @@ class Reportes extends BaseController {
             
         );
 
-        $phpExcel->getActiveSheet()->getStyle('A1:L1')->applyFromArray($styleCabecera);
-        $phpExcel->getActiveSheet()->mergeCells('A1:L1');
+        $phpExcel->getActiveSheet()->getStyle('A1:M1')->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->mergeCells('A1:M1');
 
         //COLUMNAS
-        foreach (range('A','L') as $col) {
+        foreach (range('A','M') as $col) {
             $phpExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         
@@ -756,20 +756,21 @@ class Reportes extends BaseController {
 
         $fila +=2;
 
-        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':L'.$fila)->applyFromArray($styleCabecera);
+        $phpExcel->getActiveSheet()->getStyle('A'.$fila.':M'.$fila)->applyFromArray($styleCabecera);
         //Edito la info que va a ir en el archivo excel
         $hoja->setCellValue('A'.$fila, "No.");
         $hoja->setCellValue('B'.$fila, "CODIGO");
         $hoja->setCellValue('C'.$fila, "FECHA DE REGISTRO");
         $hoja->setCellValue('D'.$fila, "CLIENTE");
-        $hoja->setCellValue('E'.$fila, "BANCO/PLATAFORMA");
-        $hoja->setCellValue('F'.$fila, "VALOR TOTAL");
-        $hoja->setCellValue('G'.$fila, "NEGOCIO");
-        $hoja->setCellValue('H'.$fila, "VENDEDOR");
-        $hoja->setCellValue('I'.$fila, "VENTA EXTRA");
-        $hoja->setCellValue('J'.$fila, "OBSERVACION PEDIDO");
-        $hoja->setCellValue('K'.$fila, "OBSERVACION PAGO");
-        $hoja->setCellValue('L'.$fila, "PAGO COMPROBADO");
+        $hoja->setCellValue('E'.$fila, "PLATAFORMA");
+        $hoja->setCellValue('F'.$fila, "BANCO");
+        $hoja->setCellValue('G'.$fila, "VALOR TOTAL");
+        $hoja->setCellValue('H'.$fila, "NEGOCIO");
+        $hoja->setCellValue('I'.$fila, "VENDEDOR");
+        $hoja->setCellValue('J'.$fila, "VENTA EXTRA");
+        $hoja->setCellValue('K'.$fila, "OBSERVACION PEDIDO");
+        $hoja->setCellValue('L'.$fila, "OBSERVACION PAGO");
+        $hoja->setCellValue('M'.$fila, "PAGO COMPROBADO");
 
         $fila++;
 
@@ -788,7 +789,7 @@ class Reportes extends BaseController {
                 $vendedor = $this->usuarioModel->_getNombreUsuario($result->vendedor);
                 $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
                 $phpExcel->getActiveSheet()
-                    ->getStyle('A'.$fila.':K'.$fila)
+                    ->getStyle('A'.$fila.':M'.$fila)
                     ->getBorders()
                     ->getOutline()
                     ->setBorderStyle(Border::BORDER_THIN)
@@ -797,43 +798,44 @@ class Reportes extends BaseController {
                 $hoja->setCellValue('B'.$fila, $result->cod_pedido);
                 $hoja->setCellValue('C'.$fila, $result->fecha);
                 $hoja->setCellValue('D'.$fila, $result->cliente);
+                $hoja->setCellValue('E'.$fila, $result->forma_pago);
 
                 if ($result->banco != 0) {
                     $banco = $this->bancoModel->_getBanco($result->banco);
-                    $hoja->setCellValue('E'.$fila, $banco->banco);
+                    $hoja->setCellValue('F'.$fila, $banco->banco);
                 }else{
-                    $hoja->setCellValue('E'.$fila, 'No definido');
+                    $hoja->setCellValue('F'.$fila, 'No definido');
                 }
                 
-                $phpExcel->getActiveSheet()->getCell('E'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-                $phpExcel->getActiveSheet()->getStyle('E'.$fila)->applyFromArray($styleCurrency);
-                $hoja->setCellValue('F'.$fila, number_format($result->total, 2, '.'));
+                $phpExcel->getActiveSheet()->getCell('G'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+                $phpExcel->getActiveSheet()->getStyle('G'.$fila)->applyFromArray($styleCurrency);
+                $hoja->setCellValue('G'.$fila, number_format($result->total, 2, '.'));
 
-                $hoja->setCellValue('G'.$fila, $result->negocio);
-                $hoja->setCellValue('H'.$fila, $vendedor);
+                $hoja->setCellValue('H'.$fila, $result->negocio);
+                $hoja->setCellValue('I'.$fila, $vendedor);
 
-                $phpExcel->getActiveSheet()->getStyle('I'.$fila)->applyFromArray($styleTextoCentrado);
+                $phpExcel->getActiveSheet()->getStyle('J'.$fila)->applyFromArray($styleTextoCentrado);
                 if ($result->venta_extra == 1) {
-                    $hoja->setCellValue('I'.$fila, 'SI');
+                    $hoja->setCellValue('J'.$fila, 'SI');
                     $ventasExtras++;
                 } else {
-                    $hoja->setCellValue('I'.$fila, 'NO');
+                    $hoja->setCellValue('J'.$fila, 'NO');
                 }
 
-                $phpExcel->getActiveSheet()->getStyle('J'.$fila)->applyFromArray($styleFila);
-                $hoja->setCellValue('J'.$fila, $result->observaciones);
-
                 $phpExcel->getActiveSheet()->getStyle('K'.$fila)->applyFromArray($styleFila);
-                $hoja->setCellValue('K'.$fila, $result->observacion_pago);
+                $hoja->setCellValue('K'.$fila, $result->observaciones);
 
-                $phpExcel->getActiveSheet()->getStyle('L'.$fila)->applyFromArray($styleTextoCentrado);
+                $phpExcel->getActiveSheet()->getStyle('L'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('L'.$fila, $result->observacion_pago);
+
+                $phpExcel->getActiveSheet()->getStyle('M'.$fila)->applyFromArray($styleTextoCentrado);
 
                 if ($result->pagado == 1) {
 
-                    $hoja->setCellValue('L'.$fila, 'SI');
+                    $hoja->setCellValue('M'.$fila, 'SI');
                 } else {
 
-                    $hoja->setCellValue('L'.$fila, 'NO');
+                    $hoja->setCellValue('M'.$fila, 'NO');
                 }
 
                 if ($result->idnegocio == 1) {
@@ -847,16 +849,16 @@ class Reportes extends BaseController {
                 
                 $suma += $result->total;
             }
-            $phpExcel->getActiveSheet()->getStyle('D'.$fila)->applyFromArray($styleSubtituloDerecha);
-            $hoja->setCellValue('E'.$fila, 'TOTAL:');
+            $phpExcel->getActiveSheet()->getStyle('F'.$fila)->applyFromArray($styleSubtituloDerecha);
+            $hoja->setCellValue('F'.$fila, 'TOTAL:');
 
-            $phpExcel->getActiveSheet()->getCell('F'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
-            $phpExcel->getActiveSheet()->getStyle('F'.$fila)->applyFromArray($styleCurrencyBold);
-            $hoja->setCellValue('F'.$fila, number_format($suma, 2, '.'));
-            $phpExcel->getActiveSheet()->getCell('I'.$fila)->getStyle('I'.$fila)->applyFromArray($styleTextoCentrado);
-            $hoja->setCellValue('I'.$fila, $ventasExtras);
+            $phpExcel->getActiveSheet()->getCell('G'.$fila)->getStyle()->getNumberFormat()->setFormatCode($currencyMask);
+            $phpExcel->getActiveSheet()->getStyle('G'.$fila)->applyFromArray($styleCurrencyBold);
+            $hoja->setCellValue('G'.$fila, number_format($suma, 2, '.'));
+            $phpExcel->getActiveSheet()->getCell('J'.$fila)->getStyle('J'.$fila)->applyFromArray($styleTextoCentrado);
+            $hoja->setCellValue('J'.$fila, $ventasExtras);
         }else{
-            $phpExcel->getActiveSheet()->getStyle('A'.$fila.':C'.$fila)->applyFromArray($styleFila);
+            $phpExcel->getActiveSheet()->getStyle('A'.$fila.':D'.$fila)->applyFromArray($styleFila);
             $hoja->setCellValue('A'.$fila, 'NO HAY DATOS QUE MOSTRAR');
         }
 
