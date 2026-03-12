@@ -212,11 +212,24 @@
                                                 // echo '<td id="observacion_'.$value->id.'">'.$value->observaciones.'</td>';
                                                 if ($value->observaciones != '') {
                                                     echo '<td id="observaciones'.$value->id.'">
-                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->id.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">'.$value->observaciones.'</a>
+                                                        <a 
+                                                            type="button" 
+                                                            id="'.$value->id.'" 
+                                                            href="#" 
+                                                            data-id="'.$value->id.'"
+                                                            data-observacion = "'.$value->observaciones.'"
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#observacionPedidoModal">'.$value->observaciones.'</a>
                                                     </td>';
                                                 }else{
                                                     echo '<td id="observaciones'.$value->id.'">
-                                                        <a type="button" id="'.$value->id.'" href="#" data-id="'.$value->id.'" data-bs-toggle="modal" data-bs-target="#observacionPedidoModal">Registrar</a>
+                                                        <a 
+                                                            type="button" 
+                                                            id="'.$value->id.'" 
+                                                            href="#" 
+                                                            data-id="'.$value->id.'" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#observacionPedidoModal">Registrar</a>
                                                     </td>';
                                                 }
                                                             
