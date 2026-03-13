@@ -265,10 +265,7 @@ class ProductoModel extends Model {
             $builder->set('image', $producto['image']);
         }
 
-        if ($producto['observaciones'] != 'NULL' && $producto['observaciones'] != '') {
-            $builder->set('observaciones', $producto['observaciones']);
-        }
-
+        $builder->set('observaciones', $producto['observaciones']);
         $builder->where('id', $producto['idproducto']);
         $builder->update();
         return  $this->db->insertID();
