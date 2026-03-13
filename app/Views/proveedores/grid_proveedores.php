@@ -16,6 +16,7 @@
                             
                             <thead>
                                 <th>Nombre</th>
+                                <th>Negocio</th>
                                 <th>Documento</th>
                                 <th>Contacto</th>
                                 <th>Telf. contacto</th>
@@ -25,8 +26,14 @@
                                     if (isset($proveedores) && $proveedores != NULL) {
                                         foreach ($proveedores as $key => $value) {
                                             echo '<tr>
-                                                <td><a href="'.site_url().'proveedor-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>
-                                                <td>'.$value->documento.'</td>
+                                                <td><a href="'.site_url().'proveedor-edit/'.$value->id.'" id="link-editar">'.$value->nombre.'</a></td>';
+                                                if ($value->idnegocio == 1) {
+                                                    echo '<td>Magic Service</td>';
+                                                } else {
+                                                    echo '<td>Karana</td>';
+                                                }
+                                                
+                                            echo '<td>'.$value->documento.'</td>
                                                 <td>'.$value->contacto.'</td>
                                                 <td>'.$value->celular_contacto.'</td>';
                                         }
