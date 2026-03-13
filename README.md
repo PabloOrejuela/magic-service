@@ -7,6 +7,7 @@
 
 <h5>Fixes</h5>
 <ul>
+    <li>Se corrigió un error en los slect de negocio en los form de nuevo negocio y edit negocio</li>
     <li>Se corrigió un error en el reporte master de gastos, no filtraba por negocio, además se detectó que las funciones del modelo de gastos no filtraban por negocio</li>
     <li>En el grid de Proveedores se ha agregado la columna NEGOCIO</li>
     <li>Se ha modificado la base de datos y se agregó una columna de idnegocio en la tabla proveedores</li>

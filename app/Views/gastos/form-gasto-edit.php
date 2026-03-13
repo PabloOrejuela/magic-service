@@ -52,15 +52,17 @@
                                     <option value="0" selected>--Seleccionar negocio--</option>
                                     <?php
                                         if (isset($negocios)) {
-                                            foreach ($negocios as $key => $value) {
-                                                if ($gasto) {
-                                                    if ($value->id == $gasto->idnegocio) {
-                                                        echo '<option value="'.$value->id.'"  selected>'.$value->negocio.'</option>';
-                                                    }else{
-                                                        echo '<option value="'.$value->id.'"  >'.$value->negocio.'</option>';
+                                            foreach ($negocios as $key => $negocio) {
+                                                if ($negocio->id < 3) {
+                                                    if ($gasto) {
+                                                        if ($negocio->id == $gasto->idnegocio) {
+                                                            echo '<option value="'.$negocio->id.'"  selected>'.$negocio->negocio.'</option>';
+                                                        }else{
+                                                            echo '<option value="'.$negocio->id.'"  >'.$negocio->negocio.'</option>';
+                                                        }
                                                     }
                                                 }
-                                            }
+                                                }
                                         }else{
                                             echo '<option value="0" selected>SIN DATOS</option>';
                                         }

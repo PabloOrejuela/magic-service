@@ -44,8 +44,11 @@
                                     <option value="0" selected>--Seleccionar negocio--</option>
                                     <?php
                                         if (isset($negocios)) {
-                                            foreach ($negocios as $key => $value) {
-                                                echo '<option value="'.$value->id.'" '.set_select('negocio', $value->id, false).' >'.$value->negocio.'</option>';
+                                            foreach ($negocios as $key => $negocio) {
+                                                if ($negocio->id < 3) {
+                                                    echo '<option value="'.$negocio->id.'" '.set_select('negocio', $negocio->id, false).' >'.$negocio->negocio.'</option>';
+                                                }
+                                                
                                             }
                                         }
                                     ?>
