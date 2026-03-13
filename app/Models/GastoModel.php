@@ -88,6 +88,7 @@ class GastoModel extends Model {
         $builder->join('proveedores', 'proveedores.id='.$this->table.'.idproveedor','left');
         $builder->join('gastos_fijos', 'gastos_fijos.id='.$this->table.'.gastofijo','left');
         $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto');
+        $builder->where($this->table.'.idnegocio', $idnegocio);
         $builder->where('idtipogasto', $tipoGasto);
         $builder->where("fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $query = $builder->get();
@@ -106,6 +107,7 @@ class GastoModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select('valor');
         $builder->where('idtipogasto', $tipoGasto);
+        $builder->where($this->table.'.idnegocio', $idnegocio);
         $builder->where("fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
         $query = $builder->get();
         if ($query->getResult() != null) {
