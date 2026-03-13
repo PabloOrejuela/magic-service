@@ -48,6 +48,7 @@ class GastoModel extends Model {
         $builder->join('proveedores', 'proveedores.id='.$this->table.'.idproveedor', 'left');
         $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto', 'left');
         $builder->join('gastos_fijos', 'gastos_fijos.id='.$this->table.'.gastofijo','left');
+        $builder->orderBy('fecha', 'desc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

@@ -13,7 +13,7 @@ class ProveedorModel extends Model {
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['nombre', 'documento', 'contacto', 'celular_contacto'];
+    protected $allowedFields    = ['nombre', 'documento', 'contacto', 'celular_contacto','idnegocio'];
 
     // Dates
     protected $useTimestamps = true;

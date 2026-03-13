@@ -38,6 +38,32 @@
                                     value="<?= $proveedor->documento; ?>" 
                                 >
                             </div>
+                            <div class="form-group col-md-6">
+                                <label for="negocio">Negocio *:</label>
+                                <select 
+                                    class="form-select form-control-border" 
+                                    id="negocio" 
+                                    name="negocio" 
+                                    required
+                                >
+                                    <option value="0" selected>--Seleccionar negocio--</option>
+                                    <?php
+                                        if (isset($negocios)) {
+                                            foreach ($negocios as $key => $negocio) {
+                                                if ($negocio->id < 3) {
+                                                    if ($proveedor->idnegocio == $negocio->id) {
+                                                        echo '<option value="'.$negocio->id.'" selected >'.$negocio->negocio.'</option>';
+                                                    } else {
+                                                        echo '<option value="'.$negocio->id.'" >'.$negocio->negocio.'</option>';
+                                                    }
+                                                }
+                                                
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                                <p id="error-message"><?= session('errors.negocio');?> </p>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="form-group col-md-12">

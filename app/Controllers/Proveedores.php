@@ -35,6 +35,7 @@ class Proveedores extends BaseController {
         if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
+            $data['negocios'] = $this->negocioModel->findAll();
 
             $data['title']='Proveedores';
             $data['subtitle']='Registrar Proveedor';
@@ -58,6 +59,7 @@ class Proveedores extends BaseController {
             
             $data['session'] = $this->session;
             $data['proveedor'] = $this->proveedorModel->find($id);
+            $data['negocios'] = $this->negocioModel->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Proveedores';
@@ -78,6 +80,7 @@ class Proveedores extends BaseController {
                 'celular_contacto' => strtoupper($this->request->getPostGet('celular_contacto')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'contacto' => strtoupper($this->request->getPostGet('contacto')),
+                'idnegocio' => strtoupper($this->request->getPostGet('negocio')),
             ];
 
             $this->validation->setRuleGroup('proveedor');
@@ -91,7 +94,7 @@ class Proveedores extends BaseController {
             }else{ 
                 //echo '<pre>'.var_export($proveedor, true).'</pre>';exit;
 
-                //Inserto el nuevo cliente
+                //Inserto el nuevo proveedor
                 $this->proveedorModel->insert($proveedor);
                 return redirect()->to('proveedores');
             }
@@ -110,6 +113,7 @@ class Proveedores extends BaseController {
                 'celular_contacto' => strtoupper($this->request->getPostGet('celular_contacto')),
                 'documento' => strtoupper($this->request->getPostGet('documento')),
                 'contacto' => strtoupper($this->request->getPostGet('contacto')),
+                'idnegocio' => strtoupper($this->request->getPostGet('negocio')),
             ];
 
             $this->validation->setRuleGroup('proveedor');
@@ -123,7 +127,7 @@ class Proveedores extends BaseController {
             }else{ 
                 //echo '<pre>'.var_export($proveedor, true).'</pre>';exit;
 
-                //Inserto el nuevo cliente
+                //Actualizo el proveedor
                 $this->proveedorModel->update($id, $proveedor);
                 return redirect()->to('proveedores');
             }

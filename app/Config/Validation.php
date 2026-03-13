@@ -250,6 +250,7 @@ class Validation extends BaseConfig
     public $proveedor = [
         'nombre'   => 'required',
         'contacto'   => 'required',
+        'negocio'   => 'required|greater_than[0]',
     ]; 
 
     public $proveedor_errors = [
@@ -259,6 +260,9 @@ class Validation extends BaseConfig
         'contacto' => [
             'required' => 'El campo "Nombre Contacto" es obligatorio',
         ],
+        'negocio' => [
+            'greater_than' => 'El campo "Negocio" es obligatorio',
+        ]
     ];
 
     public $gasto = [
