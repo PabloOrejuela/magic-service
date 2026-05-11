@@ -13,7 +13,7 @@
                     <form action="<?= site_url().'arreg-menos-vendidos';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -31,7 +31,7 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="mes">Mes *:</label>
                                     <input 
                                         type="month" 

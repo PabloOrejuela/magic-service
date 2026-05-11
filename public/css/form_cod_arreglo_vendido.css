@@ -3,6 +3,13 @@
     align-items: center;
 }
 
+#div-link-limpiar{
+    font-size: 0.9em;
+    padding-top: 30px;
+    text-align: center;
+    align-items: center;
+}
+
 /* En el input */
 #cant_arreglos {
     margin-left: auto;
@@ -61,3 +68,33 @@
 #btn-report-excel{
     display: none;
 }
+
+.label{
+    margin-bottom: 1px;
+}
+
+input[type="date"] {
+    padding: 3px 12px;
+    font-size: 1em;
+    height: 38px;
+    margin-top: 1px;
+    box-sizing: border-box;
+}
+
+.form-select{
+    padding: 6px 12px;
+    font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
+}
+
+.control-reporte{
+    font-size: 0.8em;
+}
+
+#btn-reinicia{
+    color: #fff;
+    background-color: rgb(255, 128, 0, 1);
+    margin-top: 20px;
+}
+

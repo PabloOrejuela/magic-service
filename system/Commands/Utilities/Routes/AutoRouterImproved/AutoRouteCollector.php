@@ -21,7 +21,7 @@ use CodeIgniter\Commands\Utilities\Routes\FilterCollector;
  *
  * @see \CodeIgniter\Commands\Utilities\Routes\AutoRouterImproved\AutoRouteCollectorTest
  */
-final class AutoRouteCollector
+final readonly class AutoRouteCollector
 {
     /**
      * @param string             $namespace            namespace to search
@@ -31,12 +31,12 @@ final class AutoRouteCollector
      * @param string             $prefix               URI prefix for Module Routing
      */
     public function __construct(
-        private readonly string $namespace,
-        private readonly string $defaultController,
-        private readonly string $defaultMethod,
-        private readonly array $httpMethods,
-        private readonly array $protectedControllers,
-        private string $prefix = ''
+        private string $namespace,
+        private string $defaultController,
+        private string $defaultMethod,
+        private array $httpMethods,
+        private array $protectedControllers,
+        private string $prefix = '',
     ) {
     }
 
@@ -59,7 +59,7 @@ final class AutoRouteCollector
             $routes = $reader->read(
                 $class,
                 $this->defaultController,
-                $this->defaultMethod
+                $this->defaultMethod,
             );
 
             if ($routes === []) {
@@ -99,7 +99,7 @@ final class AutoRouteCollector
      *
      * @return list<array<string, array|string>>
      */
-    private function addFilters($routes)
+    private function addFilters(array $routes): array
     {
         $filterCollector = new FilterCollector(true);
 
@@ -122,8 +122,10 @@ final class AutoRouteCollector
             $filtersShortest = $filterCollector->get($route['method'], $routePath . $sampleUri);
 
             // Get common array elements
-            $filters['before'] = array_intersect($filtersLongest['before'], $filtersShortest['before']);
-            $filters['after']  = array_intersect($filtersLongest['after'], $filtersShortest['after']);
+            $filters = [
+                'before' => array_intersect($filtersLongest['before'], $filtersShortest['before']),
+                'after'  => array_intersect($filtersLongest['after'], $filtersShortest['after']),
+            ];
 
             $route['before'] = implode(' ', array_map(class_basename(...), $filters['before']));
             $route['after']  = implode(' ', array_map(class_basename(...), $filters['after']));

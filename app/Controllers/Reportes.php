@@ -460,7 +460,7 @@ class Reportes extends BaseController {
                 $data['datos'] = $datos;
 
                 $data['title']='Reportes';
-                $data['subtitle']='Reporte Devoluciones';
+                $data['subtitle']='Reporte mensual de devoluciones';
                 $data['main_content']='reportes/reporte_devoluciones';
                 return view('dashboard/index', $data);
             }

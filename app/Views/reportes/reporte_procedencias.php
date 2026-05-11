@@ -3,7 +3,7 @@
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-7">
+            <div class="col-md-10">
                 <!-- general form elements -->
                 <div class="card card-light">
                     <div class="card-header">
@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'reporte-procedencias';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -35,32 +35,32 @@
                                             }
                                         ?>
                                     </select>
-                               </div>
-                               <div class="form-group col-md-3">
-                                <label for="fecha_inicio">Fecha inicio *:</label>
-                                    <input 
-                                        type="date" 
-                                        class="form-control text" 
-                                        id="fecha_inicio" 
-                                        name="fecha_inicio" 
-                                        value="<?= $datos['fecha_inicio']; ?>" 
-                                        required
-                                    >
-                                    <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
-                               </div>
-                               <div class="form-group col-md-3">
-                                <label for="fecha_final">Fecha final *:</label>
-                                    <input 
-                                        type="date" 
-                                        class="form-control text" 
-                                        id="fecha_final" 
-                                        name="fecha_final" 
-                                        value="<?= $datos['fecha_final']; ?>" 
-                                        required
-                                    >
-                                    <p id="error-message"><?= session('errors.fecha_final');?> </p>
-                               </div>
-                               <div class="form-group col-md-3">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
+                                    <label for="fecha_inicio">Fecha inicio *:</label>
+                                        <input 
+                                            type="date" 
+                                            class="form-control text" 
+                                            id="fecha_inicio" 
+                                            name="fecha_inicio" 
+                                            value="<?= $datos['fecha_inicio']; ?>" 
+                                            required
+                                        >
+                                        <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
+                                    <label for="fecha_final">Fecha final *:</label>
+                                        <input 
+                                            type="date" 
+                                            class="form-control text" 
+                                            id="fecha_final" 
+                                            name="fecha_final" 
+                                            value="<?= $datos['fecha_final']; ?>" 
+                                            required
+                                        >
+                                        <p id="error-message"><?= session('errors.fecha_final');?> </p>
+                                </div>
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="sugest">Opciones:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -81,7 +81,11 @@
                                             }
                                         ?>
                                     </select>
-                               </div>
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
+                                    <label for="sugest">   </label>
+                                    <a href="<?= site_url();  ?>reporte-procedencias" class="btn btn-light btn-reinicia" id="btn-reinicia" target="_self">Reiniciar reporte</a>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body mt-2">

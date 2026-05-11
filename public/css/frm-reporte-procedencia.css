@@ -19,3 +19,27 @@ label{
 #resultado-total{
     text-align: right;
 }
+
+.control-reporte{
+    font-size: 0.8em;
+}
+
+#btn-reinicia{
+    color: #fff;
+    background-color: rgb(255, 128, 0, 1);
+    margin-top: 18px;
+}
+
+input[type="date"] {
+    padding: 6px 12px;
+    font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
+}
+
+.form-select{
+    padding: 6px 12px;
+    font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
+}

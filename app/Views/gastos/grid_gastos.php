@@ -91,8 +91,8 @@
         "responsive": true, 
         "order": [[1, 'desc']],
         lengthMenu: [
-                [25, 50, -1],
-                [25, 50, 'Todos']
+                [15, 25, 50, -1],
+                [15, 25, 50, 'Todos']
         ],
         language: {
             processing: 'Procesando...',

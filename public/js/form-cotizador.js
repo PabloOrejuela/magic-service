@@ -120,8 +120,6 @@ $(document).ready(function(){
                                         onchange="calculaPorcentaje(${item.id})"
                                         oninput="validarInput2(${item.id})"
                                         min="0"
-                                        
-                                      
                                     >
                                 </td>
                                 <td>
@@ -368,7 +366,13 @@ function getDatosProducto(idproducto){
             impFileImg.removeAttribute("disabled")
             divImg.setAttribute("style", "display:block")
             document.getElementById("lbl-image").innerHTML = res.producto.image
-            image.setAttribute("src", "public/images/productos/"+res.producto.image+'.jpg');
+
+            if (res.producto.image == "default-img") {
+                image.setAttribute("src", "public/images/"+res.producto.image+'.png');
+            }else{
+                image.setAttribute("src", "public/images/productos/"+res.producto.image+'.jpg');
+            }
+            
         }
     })
 }
@@ -376,6 +380,7 @@ function getDatosProducto(idproducto){
 function deleteItem(idItem){
     
     let idNew = document.getElementById("new_id").value
+
     $.ajax({
         type:"GET",
         dataType:"html",
@@ -388,79 +393,85 @@ function deleteItem(idItem){
             alertProcesando("Procesando, eliminando item", "info")
         },
         success: function(resultado){
-          
-            let items = JSON.parse(resultado);
-            let total = 0
-            
-            let tablaItemsBody = document.getElementById('tablaItemsBody')
-            tablaItemsBody.innerHTML = ''
+            try {
+                let items = JSON.parse(resultado);
+                let total = 0
+                
+                let tablaItemsBody = document.getElementById('tablaItemsBody')
+                tablaItemsBody.innerHTML = ''
 
-            document.getElementById("idproducto").value = valor
-            
-            if (items.datos) {
-                for(let item of items.datos){
-                    document.getElementById("new_id").value = item.new_id
-                    tablaItemsBody.innerHTML += `<tr>
-                        <td>${item.id}</td><td>${item.item}</td>
-                        <td>
-                            <input 
-                                type="numeric" 
-                                class="form-control cant number porcentaje" 
-                                name="porcentaje_${item.id}"
-                                value = ${item.porcentaje}
-                                placeholder="0"
-                                id="porcentaje_${item.id}" 
-                                onchange="calculaPorcentaje(${item.id})"
-                                oninput="validarInput2(${item.id})"
-                                min="0"
-                            >
-                        </td>
-                        <td>
-                            <input 
-                                type="text" 
-                                class="form-control cant number precio" 
-                                name="precio_${item.id}" 
-                                value="${item.precio_unitario}" 
-                                id="precio_${item.id}"
-                                onchange="calculaPorcentaje(${item.id})"
-                                disabled
-                            >
-                            <a href="javascript:activaEditar(${item.id})">editar</a>
-                        </td>
-                        <td>
-                            <input 
-                                type="text" 
-                                class="form-control cant number precio_final" 
-                                name="precio_final_${item.id}" 
-                                value="${item.precio_actual}" 
-                                id="precio_final_${item.id}"
-                                onchange="updatePrecio(${item.id})"
-                                disabled
-                            >
-                        </td>
-                        <td>
-                            <input 
-                                type="numeric" 
-                                class="form-control cant number pvp" 
-                                name="pvp_${item.id}" 
-                                value="${item.pvp}" 
-                                id="pvp_${item.id}"
-                                onchange="updatePvp(${item.id})"
-                                oninput="validarInputPvp(${item.id})"
-                                min="0"
-                            >
-                        </td>
-                        <td>
-                            <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
-                                <img src="./public/images/delete.png" width="25" >
-                            </a>
-                        </td>
-                        </tr>`
-                    total += parseFloat(item.pvp)
+                if (items && Array.isArray(items.datos) && items.datos.length > 0) {
+                    for(let item of items.datos){
+                        document.getElementById("new_id").value = item.new_id
+                        tablaItemsBody.innerHTML += `<tr>
+                            <td>${item.id}</td><td>${item.item}</td>
+                            <td>
+                                <input 
+                                    type="numeric" 
+                                    class="form-control cant number porcentaje" 
+                                    name="porcentaje_${item.id}"
+                                    value = ${item.porcentaje}
+                                    placeholder="0"
+                                    id="porcentaje_${item.id}" 
+                                    onchange="calculaPorcentaje(${item.id})"
+                                    oninput="validarInput2(${item.id})"
+                                    min="0"
+                                >
+                            </td>
+                            <td>
+                                <input 
+                                    type="text" 
+                                    class="form-control cant number precio" 
+                                    name="precio_${item.id}" 
+                                    value="${item.precio_unitario}" 
+                                    id="precio_${item.id}"
+                                    onchange="calculaPorcentaje(${item.id})"
+                                    disabled
+                                >
+                                <a href="javascript:activaEditar(${item.id})">editar</a>
+                            </td>
+                            <td>
+                                <input 
+                                    type="text" 
+                                    class="form-control cant number precio_final" 
+                                    name="precio_final_${item.id}" 
+                                    value="${item.precio_actual}" 
+                                    id="precio_final_${item.id}"
+                                    onchange="updatePrecio(${item.id})"
+                                    disabled
+                                >
+                            </td>
+                            <td>
+                                <input 
+                                    type="numeric" 
+                                    class="form-control cant number pvp" 
+                                    name="pvp_${item.id}" 
+                                    value="${item.pvp}" 
+                                    id="pvp_${item.id}"
+                                    onchange="updatePvp(${item.id})"
+                                    oninput="validarInputPvp(${item.id})"
+                                    min="0"
+                                >
+                            </td>
+                            <td>
+                                <a onclick="deleteItem(${item.id})" class="btn btn-borrar">
+                                    <img src="./public/images/delete.png" width="25" >
+                                </a>
+                            </td>
+                            </tr>`
+                        total += parseFloat(item.pvp)
+                    }
+                } else {
+                    tablaItemsBody.innerHTML = '<tr><td colspan="7" class="text-center">No hay items en el producto</td></tr>';
+                    total = 0;
                 }
-            }
             
-            document.getElementById("input-total").value = parseFloat(total).toFixed(2)
+                document.getElementById("input-total").value = parseFloat(total).toFixed(2)
+            
+            } catch(error) {
+                console.error("Error procesando respuesta en deleteItem:", error);
+                alertProcesando("ERROR: No se pudo procesar la eliminación del item", "error")
+            }
         },
         error: function(resultado){
             alertProcesando("ERROR:  El Item no se encontró o no se pudo eliminar", "error")

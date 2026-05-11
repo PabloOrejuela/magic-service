@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'reporte-master-ingresos';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -31,8 +31,8 @@
                                         ?>
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
-                               </div>
-                               <div class="form-group col-md-2">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                 <label for="mes">Mes *:</label>
                                     <input 
                                         type="month" 
@@ -43,7 +43,11 @@
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
-                               </div>
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
+                                    <label for="sugest">   </label>
+                                    <a href="<?= site_url();  ?>reporte-master-ingresos" class="btn btn-light btn-reinicia" id="btn-reinicia" target="_self">Reiniciar reporte</a>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body mt-2">

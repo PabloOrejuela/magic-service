@@ -59,3 +59,17 @@ label{
 #btn-reporte-excel{
     display: block;
 }
+
+input[type="date"] {
+    padding: 6px 12px;
+    font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
+}
+
+.form-select{
+    padding: 6px 12px;
+    font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
+}

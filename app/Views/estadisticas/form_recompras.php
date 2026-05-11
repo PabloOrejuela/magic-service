@@ -13,7 +13,7 @@
                     <form action="<?= site_url().'recompras-mes';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -31,7 +31,7 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="mes">Mes *:</label>
                                     <input 
                                         type="month" 
@@ -42,6 +42,9 @@
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
+                                </div>
+                                <div class="form-group col-sm-2 control-reporte" id="div-link-limpiar">
+                                    <a href="#" id="txt-limpiar">Limpiar controles</a>
                                 </div>
                             </div>
                             <div id="result"></div>
@@ -58,4 +61,17 @@
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/cabecera-reportes-mensual.js"></script>
+<script type="text/javascript">
+
+    const linkLimpiarControles = document.getElementById('txt-limpiar')
+
+    linkLimpiarControles.addEventListener('click', () => {
+
+        let negocio = document.getElementById('negocio')
+        let fecha = document.getElementById('fecha')
+
+        fecha.value = ''
+        negocio.selectedIndex = 0
+    })
+</script>
 

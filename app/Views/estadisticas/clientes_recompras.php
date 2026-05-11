@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'recompras-mes';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -32,7 +32,7 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                </div>
-                                <div class="form-group col-md-3" id="div-fecha">
+                                <div class="form-group col-md-3 control-reporte" id="div-fecha">
                                     <label for="mes">Mes:</label>
                                     <input 
                                         type="month" 
@@ -44,7 +44,7 @@
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <!-- <div class="form-group col-md-2 control-reporte">
                                     <label for="mes"></label>
                                     <input 
                                         type="text" 
@@ -53,6 +53,10 @@
                                         readonly
                                     >
                                     <p id="error-message"><?= session('errors.mes');?> </p>
+                                </div> -->
+                                <div class="form-group col-md-2 mt-2 control-reporte">
+                                    <label for="sugest">   </label>
+                                    <a href="<?= site_url();  ?>recompras-mes" class="btn btn-light btn-reinicia" id="btn-reinicia" target="_self">Reiniciar reporte</a>
                                 </div>
                             </div>
                         </div>

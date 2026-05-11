@@ -28,7 +28,9 @@
                                     <th>No.</th>
                                     <th>Sucursal</th>
                                     <th>Dirección</th>
+                                    <th>Negocio</th>
                                     <th>Sectores asignados</th>
+                                    <th>Editar sectores</th>
                                     <th>Borrar</th>
                                 </thead>
                                 <tbody>
@@ -43,6 +45,7 @@
                                                     <td>'.$value->id.'</td>
                                                     <td><a href="'.site_url().'sucursal-edit/'.$value->id.'" id="link-editar">'.$value->sucursal.'</a></td>
                                                     <td>'.$value->direccion.'</td>
+                                                    <td>'.$value->negocio.'</td>
                                                     <td id="sectores">';
                                                     $sectores = array_map(function($sector) {
                                                         return $sector->sector;
@@ -50,6 +53,13 @@
                                                     echo implode(', ', $sectores);
                                                 echo '</td>';
                                                 echo '<td>
+                                                        <div class="contenedor">
+                                                            <a type="button" id="btn-register" href="'.site_url().'sucursal-add-sectores/'.$value->id.'" class="edit">
+                                                                <img src="'.site_url().'public/images/edit.png" width="30" >
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
                                                         <div class="contenedor">
                                                             <a type="button" id="btn-register" href="'.site_url().'sucursal-delete/'.$value->id.'" class="edit">
                                                                 <img src="'.site_url().'public/images/delete.png" width="30" >

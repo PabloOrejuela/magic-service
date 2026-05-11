@@ -7,8 +7,8 @@ let cbNegocio = document.getElementById('negocio')
 
 
 dateAnio.addEventListener('change', () => {
-
-    if (dateAnio.selectedIndex != 0) {
+    console.log(dateAnio.selectedIndex);
+    if (dateAnio.selectedIndex != 0) { 
         txtMensaje.style.display = 'block'
         txtMensaje.value = 'Se ha elegido todo el año '+ dateAnio.value
         

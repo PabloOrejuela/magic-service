@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-estadisticas-vendedor.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-mensajeria.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'reporte-mensajeria';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="negocio">Negocio: </label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -31,8 +31,8 @@
                                         ?>
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
-                               </div>
-                               <div class="form-group col-md-3">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="mensajero">Mensajero:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -55,8 +55,8 @@
                                         ?>
                                     </select>
                                     <p id="error-message"><?= session('errors.mensajero');?> </p>
-                               </div>
-                               <div class="form-group col-md-2">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
                                     <input 
                                         type="date" 
@@ -67,8 +67,8 @@
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
-                               </div>
-                               <div class="form-group col-md-2">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                 <label for="fecha_final">Fecha final *:</label>
                                     <input 
                                         type="date" 
@@ -79,8 +79,8 @@
                                         required
                                     >
                                     <p id="error-message"><?= session('errors.fecha_final');?> </p>
-                               </div>
-                               <div class="form-group col-md-2">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="sugest">Más fechas:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -96,7 +96,7 @@
                                             }
                                         ?>
                                     </select>
-                               </div>
+                                </div>
                             </div>
                         </div>
                         

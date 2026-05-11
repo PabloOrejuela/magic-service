@@ -24,3 +24,8 @@ label{
 #div-gastofijo{
     display: none;
 }
+
+#btn-agregar{
+    color: #fff;
+    /* background-color: #fff; */
+}

@@ -293,12 +293,11 @@ class Ventas extends BaseController {
 
     function actualizaObservacionPedido(){
 
-        $observacionPedido =  strtoupper($this->request->getPostGet('observacionPedido'));
+        $observacionPedido =  $this->request->getPostGet('observacionPedido');
         $idpedido =  $this->request->getPostGet('idpedido');
 
-        if ($observacionPedido != '' ) {
-            $this->pedidoModel->_actualizaObservacionPedido($observacionPedido, $idpedido);
-        }
+        $this->pedidoModel->_actualizaObservacionPedido($observacionPedido, $idpedido);
+
         return true;
     }
 
@@ -903,11 +902,11 @@ class Ventas extends BaseController {
                         foreach ($pedidos as $p) {
                             // $pedido['orden'] = $pedido['orden']+1;
                             if ($p->orden != 0) {
-                                $datos = [
+                                $orden = [
                                     'orden' => $p->orden + 1
                                 ];
     
-                                $this->pedidoModel->update($p->id, $datos);
+                                $this->pedidoModel->update($p->id, $orden);
                             }
                         }
                         
@@ -959,11 +958,11 @@ class Ventas extends BaseController {
                         foreach ($pedidos as $p) {
                             // $pedido['orden'] = $pedido['orden']+1;
                             if ($p->orden != 0) {
-                                $datos = [
+                                $orden = [
                                     'orden' => $p->orden + 1
                                 ];
     
-                                $this->pedidoModel->update($p->id, $datos);
+                                $this->pedidoModel->update($p->id, $orden);
                             }
                         }
                         $this->pedidoModel->_update($pedido);

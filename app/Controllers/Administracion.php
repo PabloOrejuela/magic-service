@@ -202,6 +202,14 @@ class Administracion extends BaseController {
         echo json_encode($sucursales);
     }
 
+    public function getSucursalesByNegocio(){
+        
+        // $idnegocio = $this->request->getPostGet('idNegocio');
+        $sucursales = $this->sucursalModel->where('idnegocio', $this->request->getPostGet('idNegocio'))->findAll();
+        echo json_encode($sucursales);
+    }
+
+
     public function itemSensibleUpdate($item, $sensible){
         
         if ($sensible == 1) {
@@ -250,9 +258,12 @@ class Administracion extends BaseController {
             
             $data['session'] = $this->session;
 
-            $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
+            $data['sucursales'] = $this->sucursalModel
+                ->select('sucursales.id as id,sucursal,direccion,idnegocio,negocio')
+                ->join('negocios', 'sucursales.idnegocio=negocios.id')
+                ->orderBy('sucursal', 'asc')
+                ->findAll();
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Sucursales';
             $data['main_content']='administracion/grid_sucursales';
@@ -1292,6 +1303,8 @@ class Administracion extends BaseController {
             
             $data['session'] = $this->session;
 
+            $data['negocios'] = $this->negocioModel->where('id !=', 3)->findAll();
+
             $data['title']='Administración';
             $data['subtitle']='Registrar sucursal';
             $data['main_content']='administracion/form-sucursal-new';
@@ -1484,7 +1497,8 @@ class Administracion extends BaseController {
 
         if ($this->session->admin == 1) {
 
-            $data = [
+            $sucursal = [
+                'idnegocio' => $this->request->getPostGet('negocio'),
                 'sucursal' => strtoupper($this->request->getPostGet('sucursal')),
                 'direccion' => strtoupper($this->request->getPostGet('direccion')),
             ];
@@ -1496,8 +1510,39 @@ class Administracion extends BaseController {
                 //dd($validation->getErrors());
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
-               
-                $this->sucursalModel->_insert($data);
+
+                $this->sucursalModel->insert($sucursal);
+
+                return redirect()->to('sucursales');
+            }
+            
+        }else{
+
+            return redirect()->to('logout');
+        }
+    }
+
+    public function sucursal_update(){
+
+        if ($this->session->admin == 1) {
+
+            $id = $this->request->getPostGet('id');
+
+            $sucursal = [
+                'idnegocio' => $this->request->getPostGet('negocio'),
+                'sucursal' => strtoupper($this->request->getPostGet('sucursal')),
+                'direccion' => strtoupper($this->request->getPostGet('direccion')),
+            ];
+            
+            $this->validation->setRuleGroup('sucursal');
+
+            if (!$this->validation->withRequest($this->request)->run()) {
+                //Depuración
+                //dd($validation->getErrors());
+                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
+            }else{
+
+                $this->sucursalModel->update($id, $sucursal);
 
                 return redirect()->to('sucursales');
             }
@@ -1588,12 +1633,34 @@ class Administracion extends BaseController {
     public function form_sucursal_edit($id){
 
         if ($this->session->admin == 1) {
+
+            $data['session'] = $this->session;
+
+            $data['negocios'] = $this->negocioModel->where('id !=', 3)->findAll();
+            $data['sucursal'] = $this->sucursalModel->where('id', $id)->first();
+
+            $data['title']='Administración';
+            $data['subtitle']='Editar sucursal';
+            $data['main_content']='administracion/form-sucursal-edit';
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    public function form_sucursal_add_sector($id){
+
+        if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
             $data['roles'] = $this->rolModel->findAll();
             $data['usuario'] = $this->usuarioModel->find($id);
 
-            $data['sucursal'] = $this->sucursalModel->find($id);
+            $data['sucursal'] = $this->sucursalModel
+                ->select('sucursales.id as id,sucursal,direccion,idnegocio,negocio')
+                ->join('negocios', 'sucursales.idnegocio=negocios.id')
+                ->where('sucursales.id', $id)
+                ->first();
             $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'ASC')->findAll();
             $data['sectoresSucursal'] = $this->sectoresEntregaModel->where('idsucursal', $id)->orderBy('sector', 'ASC')->findAll();
 

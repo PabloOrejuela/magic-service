@@ -1,43 +1,4 @@
-<style>
-    #precio{
-        text-align: right;
-    }
-    #item-grid{
-        margin-left: 20px;
-        /*float: left;*/
-    }
-    #items{
-        text-align: left;
-    }
-    a:hover{
-        text-decoration: none;
-    }
-    #input-item{
-        width: 65%;
-        margin-right: 5px;
-    }
-    .cant{
-        /* width: 20%; */
-        text-align: right;
-        margin-left: 1px;
-    }
-
-    #ion-delete{
-        
-        margin-left: 7px;
-        padding: 2px;
-        padding-top: 3px;
-        font-size: 1.5em;
-        color: red;
-    }
-</style>
-<script>
-    $(document).ready( 
-        
-    );
-</script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-sucursal-new.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -51,8 +12,26 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form action="<?= site_url().'sucursal-insert';?>" method="post">
-                        <div class="card-body">
-                            <div class="form-group col-md-7">
+                        <div class="row card-body col-12">
+                            <div class="form-group col-md-3">
+                                <label for="sucursal">Negocio:</label>
+                                <select 
+                                    class="form-select form-control-border" 
+                                    id="negocio" 
+                                    name="negocio" 
+                                >
+                                    <option value="0" selected>-- Opciones --</option>
+                                    <?php
+                                        if (isset($negocios)) {
+                                            foreach ($negocios as $key => $negocio) {
+                                                echo '<option value="'.$negocio->id.'" '.set_select('negocio', $negocio->id, false).' >'.$negocio->negocio.'</option>';
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                                <p id="error-message"><?= session('errors.negocio');?> </p>
+                            </div>
+                            <div class="form-group col-md-3">
                                 <label for="sucursal">Sucursal:</label>
                                 <input 
                                     type="text" 
@@ -60,8 +39,10 @@
                                     id="sucursal" 
                                     name="sucursal" 
                                     placeholder="Sucursal" 
+                                    value="<?= esc(old('sucursal')) ?>"
                                     required
                                 >
+                                <p id="error-message"><?= session('errors.sucursal');?> </p>
                             </div>
                             <div class="form-group col-md-4 mb-3">
                                 <label for="direccion">Dirección:</label>
@@ -71,8 +52,10 @@
                                     id="direccion" 
                                     name="direccion" 
                                     placeholder="Direccion" 
+                                    value="<?= esc(old('direccion')) ?>"
                                     required
                                 >
+                                <p id="error-message"><?= session('errors.direccion');?> </p>
                             </div>
                         </div>
                         <!-- /.card-body -->

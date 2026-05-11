@@ -3,7 +3,7 @@
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-10">
+            <div class="col-md-11">
                 <!-- general form elements -->
                 <div class="card card-light">
                     <div class="card-header">
@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'reporte-estadisticas-vendedor';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="negocio">Negocio: </label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -32,7 +32,7 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                </div>
-                               <div class="form-group col-md-3">
+                               <div class="form-group col-md-2 control-reporte">
                                     <label for="negocio">Vendedor:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -58,7 +58,7 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.vendedor');?> </p>
                                </div>
-                               <div class="form-group col-md-2">
+                               <div class="form-group col-md-2 control-reporte">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
                                     <input 
                                         type="date" 
@@ -70,7 +70,7 @@
                                     >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
                                </div>
-                               <div class="form-group col-md-2">
+                               <div class="form-group col-md-2 control-reporte">
                                 <label for="fecha_final">Fecha final *:</label>
                                     <input 
                                         type="date" 
@@ -82,7 +82,7 @@
                                     >
                                     <p id="error-message"><?= session('errors.fecha_final');?> </p>
                                </div>
-                               <div class="form-group col-md-2">
+                               <div class="form-group col-md-2 control-reporte">
                                     <label for="sugest">Más fechas:</label>
                                     <select 
                                         class="form-select form-control-border" 

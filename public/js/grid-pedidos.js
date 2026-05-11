@@ -951,8 +951,10 @@ botonesHoraSalidaPedido.forEach(btn => {
 btnObservacionPedido.forEach(btn => {
     btn.addEventListener('click', function() {
         let id = this.dataset.id;
-        let observacion = this.dataset.observacion;
-        
+        let observacion = this.dataset.observacion || '';
+
+        console.log(observacion);
+
         document.querySelector('#idpedido').value = id;
         document.querySelector('#observaciones').value = observacion;
         

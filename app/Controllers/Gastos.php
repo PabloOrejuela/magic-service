@@ -64,7 +64,7 @@ class Gastos extends BaseController {
             $data['session'] = $this->session;
             $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
             $data['negocios'] = $this->negocioModel->orderBy('negocio', 'asc')->findAll();
-            $data['proveedores'] = $this->proveedorModel->orderBy('nombre', 'asc')->findAll();
+            //$data['proveedores'] = $this->proveedorModel->orderBy('nombre', 'asc')->findAll();
             $data['tipos_gasto'] = $this->tipoGastoModel->orderBy('tipo_gasto', 'asc')->findAll();
             $data['gastos_fijos'] = $this->gastoFijoModel->orderBy('id', 'asc')->findAll();
 
@@ -78,59 +78,78 @@ class Gastos extends BaseController {
         }
     }
 
-    public function insert(){
+    public function getSucursalesByNegocio() {
+        if ($this->request->isAJAX()) {
+            $idNegocio = $this->request->getPost('idNegocio');
+            $sucursales = $this->sucursalModel->_getSucursalesByNegocio($idNegocio);
+            return $this->response->setJSON($sucursales);
+        }
+        return $this->response->setStatusCode(403);
+    }
 
-        if ($this->session->clientes == 1) {
+    public function insert() {
+        if ($this->session->clientes != 1) {
+            return redirect()->to('logout');
+        }
 
-            $gasto = [
-                'idsucursal' => strtoupper($this->request->getPostGet('sucursal')),
-                'idnegocio' => strtoupper($this->request->getPostGet('negocio')),
-                'idproveedor' => strtoupper($this->request->getPostGet('proveedor')),
-                'idtipogasto' => strtoupper($this->request->getPostGet('tipo')),
-                'documento' => strtoupper($this->request->getPostGet('documento')),
-                'detalleGastoVariable' => strtoupper($this->request->getPostGet('detalleGastoVariable')),
-                'gastofijo' => strtoupper($this->request->getPostGet('gastofijo')),
-                'descripcion' => strtoupper($this->request->getPostGet('descripcion')),
-                'valor' => strtoupper($this->request->getPostGet('valor')),
-                'fecha' => strtoupper($this->request->getPostGet('fecha')),
-            ];
-            
-            $this->validation->setRuleGroup('gasto');
-        
-            if (!$this->validation->withRequest($this->request)->run()) {
+        // Campos de detalle enviados como arrays
+        $fechas = $this->request->getPostGet('fecha');
+        $documentos = $this->request->getPostGet('documento');
+        $valores = $this->request->getPostGet('valor');
+        $observaciones = $this->request->getPostGet('observaciones');
+
+        // Variables generales (cabecera)
+        $gasto = [
+            'idsucursal' => strtoupper($this->request->getPostGet('sucursal')),
+            'idnegocio' => strtoupper($this->request->getPostGet('negocio')),
+            'idproveedor' => strtoupper($this->request->getPostGet('proveedor')),
+            'idtipogasto' => strtoupper($this->request->getPostGet('tipo')),
+            'detalleGastoVariable' => strtoupper($this->request->getPostGet('detalleGastoVariable')),
+            'gastofijo' => strtoupper($this->request->getPostGet('gastofijo')),
+        ];
+
+        $this->validation->setRuleGroup('gasto');
+
+        if (!$this->validation->withRequest($this->request)->run()) {
                 //Depuración
                 //dd($validation->getErrors());
                 
-                return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
-            }else{ 
-                // echo '<pre>'.var_export($gasto, true).'</pre>';exit;
-
-                //Inserto el nuevo gasto
-                $this->gastoModel->insert($gasto);
-                return redirect()->to('gastos');
-            }
+            return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
         }else{
 
-            return redirect()->to('logout');
+            // Recorremos cada detalle para insertarlo por separado
+            for ($i = 0; $i < count($fechas); $i++) {
+
+                $gasto['documento'] = strtoupper($documentos[$i] ?? '');
+                $gasto['observaciones'] = strtoupper($observaciones[$i] ?? '');
+                $gasto['valor'] = strtoupper($valores[$i] ?? '');
+                $gasto['fecha'] = strtoupper($fechas[$i] ?? '');
+                //echo '<pre>'.var_export($gasto, true).'</pre>';
+                $this->gastoModel->insert($gasto);
+            }
+            
         }
+
+        return redirect()->to('gastos');
     }
 
     public function update(){
 
         if ($this->session->clientes == 1) {
             $id = strtoupper($this->request->getPostGet('id'));
+
             $gasto = [
-                'idsucursal' => $this->request->getPostGet('sucursal'),
-                'idnegocio' => $this->request->getPostGet('negocio'),
-                'idproveedor' => $this->request->getPostGet('proveedor'),
-                'idtipogasto' => $this->request->getPostGet('tipo'),
-                'documento' => strtoupper($this->request->getPostGet('documento')),
-                'valor' => strtoupper($this->request->getPostGet('valor')),
-                'fecha' => $this->request->getPostGet('fecha'),
+
                 'detalleGastoVariable' => strtoupper($this->request->getPostGet('detalleGastoVariable')),
                 'gastofijo' => strtoupper($this->request->getPostGet('gastofijo')),
+                'fecha' => $this->request->getPostGet('fecha'),
+                'documento' => strtoupper($this->request->getPostGet('documento')),
+                'valor' => strtoupper($this->request->getPostGet('valor')),
+                'observaciones' => strtoupper($this->request->getPostGet('observaciones')),
                 'descripcion' => strtoupper($this->request->getPostGet('descripcion')),
             ];
+
+            //echo '<pre>'.var_export($gasto, true).'</pre>';exit;
 
             $this->validation->setRuleGroup('gastoUpdate');
         
@@ -141,8 +160,7 @@ class Gastos extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
-                
-                //Inserto el nuevo cliente
+                //Actualizo el gasto
                 $this->gastoModel->update($id, $gasto);
                 return redirect()->to('gastos');
             }
@@ -180,4 +198,12 @@ class Gastos extends BaseController {
             return redirect()->to('logout');
         }
     }
+
+    public function getProveedoresByNegocioGastos(){
+
+        $idnegocio = $this->request->getPostGet('idNegocio');
+        $proveedores = $this->proveedorModel->where('idnegocio', $idnegocio)->findAll();
+        return $this->response->setJSON($proveedores);
+    }
+
 }

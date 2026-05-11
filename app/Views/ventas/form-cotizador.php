@@ -141,7 +141,7 @@
                                     <table id="tablaCostos" class="table table-stripped  table-responsive tablaItems" >
                                         <tbody id='tablaCostosBody'>
                                             <tr>
-                                                <td class="col-sm-9">TOTAL:</td>
+                                                <td class="col-sm-9 px-2">TOTAL:</td>
                                                 <td class="col-sm-2" colspan="5">
                                                     <input 
                                                         type="text" 
@@ -208,7 +208,6 @@
 </div>
 </section> <!-- /.card -->
 
-<script src="<?= site_url(); ?>public/plugins/jquery/jquery.js"></script>
 <script src="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.js"></script>
 <script src="<?= site_url(); ?>public/js/form-cotizador.js"></script>
 <script src="<?= site_url(); ?>public/js/validar-input.js"></script>

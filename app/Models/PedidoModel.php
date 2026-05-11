@@ -708,9 +708,15 @@ class PedidoModel extends Model {
 
         $builder = $this->db->table($this->table);
 
-        $builder->set('observaciones', $observacionPedido);
-        $builder->where($this->table.'.id', $idpedido);
-        $builder->update();
+        $observacionPedido = trim((string)$observacionPedido);
+
+        $builder->set(
+            'observaciones',
+            $observacionPedido === '' ? '' : strtoupper($observacionPedido)
+        );
+        
+        $builder->where($this->table . '.id', $idpedido);
+        return $builder->update();
     }
 
     function _getDevolucionesMesReporte($fechaInicio, $fechaFinal, $negocio){

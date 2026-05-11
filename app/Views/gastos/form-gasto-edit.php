@@ -3,7 +3,7 @@
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-7 mb-3 mt-0">
+            <div class="col-md-9 mb-3 mt-0">
                 <!-- general form elements -->
                 <div class="card card-light">
                     <div class="card-header">
@@ -14,40 +14,15 @@
                     <form action="<?= site_url().'gasto-update';?>" method="post">
                         <div class="card-body">
                             <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
-                            <div class="form-group col-md-6">
-                                <label for="sucursal">Sucursal *:</label>
-                                <select 
-                                    class="form-select form-control-border" 
-                                    id="sucursal" 
-                                    name="sucursal" 
-                                    required
-                                >
-                                    <option value="0" selected>--Seleccionar sucursal--</option>
-                                    <?php
-                                        if (isset($sucursales)) {
-                                            foreach ($sucursales as $key => $value) {
-                                                if ($gasto) {
-                                                    if ($value->id == $gasto->idsucursal) {
-                                                        echo '<option value="'.$value->id.'"  selected>'.$value->sucursal.'</option>';
-                                                    }else{
-                                                        echo '<option value="'.$value->id.'"  >'.$value->sucursal.'</option>';
-                                                    }
-                                                }
-                                            }
-                                        }else{
-                                            echo '<option value="0" selected>SIN DATOS</option>';
-                                        }
-                                    ?>
-                                </select>
-                                <p id="error-message"><?= session('errors.sucursal');?> </p>
-                            </div>
-                            <div class="form-group col-md-12">
+
+                            <div class="form-group col-md-9">
                                 <label for="negocio">Negocio *:</label>
                                 <select 
                                     class="form-select form-control-border" 
                                     id="negocio" 
-                                    name="negocio" 
-                                    required
+                                    name="negocio"
+                                    disabled
+                                    
                                 >
                                     <option value="0" selected>--Seleccionar negocio--</option>
                                     <?php
@@ -70,7 +45,37 @@
                                 </select>
                                 <p id="error-message"><?= session('errors.negocio');?> </p>
                             </div>
-                            <div class="form-group col-md-6">
+
+                            <div class="form-group col-md-9">
+                                <label for="sucursal">Sucursal *:</label>
+                                <select 
+                                    class="form-select form-control-border" 
+                                    id="sucursal" 
+                                    name="sucursal" 
+                                    disabled
+                                    
+                                >
+                                    <option value="0" selected>--Seleccionar sucursal--</option>
+                                    <?php
+                                        if (isset($sucursales)) {
+                                            foreach ($sucursales as $key => $value) {
+                                                if ($gasto) {
+                                                    if ($value->id == $gasto->idsucursal) {
+                                                        echo '<option value="'.$value->id.'"  selected>'.$value->sucursal.'</option>';
+                                                    }else{
+                                                        echo '<option value="'.$value->id.'"  >'.$value->sucursal.'</option>';
+                                                    }
+                                                }
+                                            }
+                                        }else{
+                                            echo '<option value="0" selected>SIN DATOS</option>';
+                                        }
+                                    ?>
+                                </select>
+                                <p id="error-message"><?= session('errors.sucursal');?> </p>
+                            </div>
+                            
+                            <div class="form-group col-md-9">
                                 <label for="tipo">Tipo de gasto *:</label>
                                 <select 
                                     class="form-select form-control-border" 
@@ -101,7 +106,7 @@
                                 
                                 if ($gasto->idtipogasto == 1) {
                                     echo '
-                                        <div class="form-group col-md-6" id="div-proveedores" style="display:block">
+                                        <div class="form-group col-md-9" id="div-proveedores" style="display:block">
                                             <label for="proveedor" class="mb-0">Proveedor *:</label>
                                             <select 
                                                 class="form-select form-control-border" 
@@ -128,7 +133,7 @@
 
                                 if ($gasto->idtipogasto == 2) {
                                     echo '
-                                        <div class="form-group col-md-6" id="div-gastovariable" style="display:block">
+                                        <div class="form-group col-md-9" id="div-gastovariable" style="display:block">
                                             <label for="detalleGastoVariable">Gasto variable:</label>
                                             <input 
                                                 type="text" 
@@ -145,7 +150,7 @@
 
                                 if ($gasto->idtipogasto == 3) {
                                     echo '
-                                        <div class="form-group col-md-6" id="div-gastofijo" style="display:block">
+                                        <div class="form-group col-md-9" id="div-gastofijo" style="display:block">
                                             <label for="gastofijo">Gasto fijo *:</label>
                                             <select 
                                                 class="form-select form-control-border" 
@@ -170,7 +175,7 @@
                                             </div>';
                                 }
                             ?>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label for="fecha">Fecha *:</label>
                                 <input 
                                     type="date" 
@@ -207,9 +212,16 @@
                                 >
                                 <p id="error-message"><?= session('errors.valor');?> </p>
                             </div>
+                            <div class="form-group col-md-12">
+                                <label for="observaciones">Observaciones:</label>
+                                <textarea class="form-control" placeholder="Escriba las observaciones aquí" id="observaciones" 
+                                            name="observaciones" cols="7" rows="5"><?= $gasto->observaciones ?></textarea>
+                                <p id="error-message">
+                                    <?= session('errors.observaciones');?> 
+                                </p>
+                            </div>
                         </div>
                         <?= form_hidden('id', $gasto->id); ?>
-                        <?= form_hidden('tipo', $gasto->idtipogasto); ?>
                         <!-- /.card-body -->                        
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Actualizar</button>
@@ -222,7 +234,7 @@
     </div>
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="<?= site_url(); ?>public/js/form-gasto-new.js"></script>
+<script src="<?= site_url(); ?>public/js/form-gasto-edit.js"></script>
 <script>
     $(document).ready(function(){
         $("#celular_contacto").on( "change", function() {

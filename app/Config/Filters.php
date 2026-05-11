@@ -13,8 +13,8 @@ use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
 
-class Filters extends BaseFilters {
-
+class Filters extends BaseFilters
+{
     /**
      * Configures aliases for Filter classes to
      * make reading things nicer and simpler.
@@ -68,7 +68,10 @@ class Filters extends BaseFilters {
      * List of filter aliases that are always
      * applied before and after every request.
      *
-     * @var array<string, array<string, array<string, string>>>|array<string, list<string>>
+     * @var array{
+     *     before: array<string, array{except: list<string>|string}>|list<string>,
+     *     after: array<string, array{except: list<string>|string}>|list<string>
+     * }
      */
     public array $globals = [
         'before' => [

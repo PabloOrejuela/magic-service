@@ -14,7 +14,8 @@
                     <form action="<?= site_url().'sucursal-insert';?>" method="post">
                         <div class="card-body">
                             <div class="form-group col-md-7">
-                                <h3>Sucursal: <?= isset($sucursal) ? $sucursal->sucursal : ''; ?></h3>
+                                <h3>Sucursal: <?= isset($sucursal) ? $sucursal->sucursal  : ''; ?></h3>
+                                <h3>Negocio: <?= isset($sucursal) ? $sucursal->negocio : ''; ?></h3>
                             </div>
                             <div class="form-group col-md-7 mb-3 row">
                                 <label for="direccion">Sector:</label>

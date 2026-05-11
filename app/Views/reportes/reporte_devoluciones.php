@@ -13,8 +13,8 @@
                     <!-- form start -->
                     <form action="<?= site_url().'reporte-devoluciones';?>" method="post">
                         <div class="card-body">
-                            <div class="row col-md-10">
-                                <div class="form-group col-md-3">
+                            <div class="row col-md-12">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -37,7 +37,7 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                </div>
-                               <div class="form-group col-md-3">
+                               <div class="form-group col-md-3 control-reporte">
                                 <label for="fecha_inicio">Fecha *:</label>
                                     <input 
                                         type="month" 
@@ -49,6 +49,10 @@
                                     >
                                     <p id="error-message"><?= session('errors.fecha');?> </p>
                                </div>
+                               <div class="form-group col-md-2 control-reporte">
+                                    <label for="sugest">   </label>
+                                    <a href="<?= site_url();  ?>reporte-devoluciones" class="btn btn-light btn-reinicia" id="btn-reinicia" target="_self">Reiniciar reporte</a>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body mt-2">
@@ -134,7 +138,7 @@
                                         href="'.site_url().'reporte-devoluciones-excel?negocio='.$datos['negocio']
                                         .'&fecha_inicio='.$datos['fecha_inicio']
                                         .'&fecha_final='.$datos['fecha_final'].'">Descargar reporte en excel</a>
-                                    <a href="'.site_url().'reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                                    <a href="'.site_url().'reporte-devoluciones" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                                 </div>
                                             ';
                                         }else{
@@ -150,7 +154,7 @@
                         <!-- /.card-body -->                        
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary" id="btnGuardar">Generar reporte</button>
-                            <a href="'.site_url().'reporte_diario_ventas" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
+                            <a href="'.site_url().'reporte-devoluciones" class="btn btn-light cancelar" id="btn-cancela" target="_self">Cancelar</a>
                         </div>';
                             }
                                 ?>

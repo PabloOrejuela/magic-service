@@ -136,4 +136,9 @@ class Proveedores extends BaseController {
             return redirect()->to('logout');
         }
     }
+    
+    public function getProveedoresByNegocio($idnegocio){
+        $proveedores = $this->proveedorModel->where('idnegocio', $idnegocio)->findAll();
+        return $this->response->setJSON($proveedores);
+    }
 }

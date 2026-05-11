@@ -136,8 +136,11 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('sucursal-delete/(:num)', 'Administracion::sucursal_delete/$1');
     $routes->post('sucursal-insert', 'Administracion::sucursal_insert');
     $routes->get('sucursal-edit/(:num)', 'Administracion::form_sucursal_edit/$1');
+    $routes->post('sucursal-update', 'Administracion::sucursal_update');
+    $routes->get('sucursal-add-sectores/(:num)', 'Administracion::form_sucursal_add_sector/$1');
     $routes->get('updateSucursalSector/(:num)/(:num)/(:any)', 'Administracion::updateSucursalSector/$1/$2/$3');
     $routes->get('getSucursales', 'Administracion::getSucursales');
+    $routes->post('getSucursalesByNegocio', 'Administracion::getSucursalesByNegocio');
     $routes->get('asignaSectorSucursal', 'Administracion::asignaSectorSucursal');
     $routes->get('eliminarSectorSucursal', 'Administracion::eliminarSectorSucursal');
     $routes->get('eliminaSectorSucursal/(:num)/(:num)', 'Administracion::eliminaSectorSucursal/$1/$2');
@@ -149,6 +152,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->post('proveedor-insert', 'Proveedores::insert');
     $routes->get('proveedor-edit/(:num)', 'Proveedores::edit/$1');
     $routes->post('proveedor-update', 'Proveedores::update');
+    
 
     //Gastos
     $routes->get('gastos', 'Gastos::index');
@@ -157,6 +161,8 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->post('gasto-insert', 'Gastos::insert');
     $routes->get('gasto-edit/(:num)', 'Gastos::edit/$1');
     $routes->post('gasto-update', 'Gastos::update');
+    $routes->post('gastos/getSucursalesByNegocio', 'Gastos::getSucursalesByNegocio');
+    $routes->get('getProveedoresByNegocioGastos', 'Gastos::getProveedoresByNegocioGastos');
 
     //Clientes
     $routes->get('clientes', 'Clientes::index');

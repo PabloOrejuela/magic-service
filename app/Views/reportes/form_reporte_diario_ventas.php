@@ -3,7 +3,7 @@
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-7">
+            <div class="col-md-10">
                 <!-- general form elements -->
                 <div class="card card-light">
                     <div class="card-header">
@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'reporte_diario_ventas';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -31,8 +31,8 @@
                                         ?>
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
-                               </div>
-                               <div class="form-group col-md-3">
+                                </div>
+                                <div class="form-group col-md-3 control-reporte">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
                                 <?php
                                 
@@ -63,8 +63,8 @@
                                     }
                                 ?>
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
-                               </div>
-                               <div class="form-group col-md-3">
+                                </div>
+                                <div class="form-group col-md-3 control-reporte">
                                 <label for="fecha_final">Fecha final *:</label>
                                 <?php
                                 
@@ -95,8 +95,8 @@
                                     }
                                 ?>
                                 <p id="error-message"><?= session('errors.fecha_final');?> </p>
-                               </div>
-                               <div class="form-group col-md-3">
+                                </div>
+                                <div class="form-group col-md-3 control-reporte">
                                     <label for="sugest">Opciones:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -116,7 +116,7 @@
                                             }
                                         ?>
                                     </select>
-                               </div>
+                                </div>
                             </div>
                         </div>
                         

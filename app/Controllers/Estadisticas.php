@@ -114,7 +114,7 @@ class Estadisticas extends BaseController {
             $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
-            $data['subtitle']='Código de arreglo mas vendido';
+            $data['subtitle']='Codigos mas vendidos en el mes';
             $data['main_content']='estadisticas/form_cod_arreglo_mas_vendido';
             return view('dashboard/index', $data);
         }else{
@@ -244,7 +244,7 @@ class Estadisticas extends BaseController {
             //echo '<pre>'.var_export($data['anios'], true).'</pre>';exit;
 
             $data['title']='Estadísticas';
-            $data['subtitle']='Cantidad de clientes nuevos que han realizado pedidos';
+            $data['subtitle']='Clientes nuevos que han realizado pedidos';
             $data['main_content']='estadisticas/form_nuevos_clientes';
             return view('dashboard/index', $data);
         }else{
@@ -1499,7 +1499,7 @@ class Estadisticas extends BaseController {
             $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
 
             $data['title']='Estadísticas';
-            $data['subtitle']='Código de arreglo menos vendido';
+            $data['subtitle']='Codigos menos vendidos en el mes';
             $data['main_content']='estadisticas/form_cod_arreglo_menos_vendido';
             return view('dashboard/index', $data);
         }else{
@@ -1892,7 +1892,7 @@ class Estadisticas extends BaseController {
                 $data['datos'] = $datos;
                 $data['res'] = $resultado;
                 $data['title']='Estadísticas';
-                $data['subtitle']='Codigos que no se han vendido en el mes';
+                $data['subtitle']='Código de arreglo que no se han vendido en el mes';
                 $data['main_content']='estadisticas/cod_arreglo_no_vendido';
                 return view('dashboard/index', $data);
             }

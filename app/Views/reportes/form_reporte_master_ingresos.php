@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm_reporte_master_ingresos.css">
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/frm-reporte-master-ingresos.css">
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'reporte-master-ingresos';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -32,7 +32,7 @@
                                     </select>
                                     <p id="error-message"><?= session('errors.negocio');?> </p>
                                </div>
-                               <div class="form-group col-md-2">
+                               <div class="form-group col-md-2 control-reporte">
                                 <label for="mes">Mes *:</label>
                                     <input 
                                         type="month" 

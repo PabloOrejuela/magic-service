@@ -14,7 +14,7 @@
                     <form action="<?= site_url().'reporte-mensajeria';?>" method="post">
                         <div class="card-body">
                             <div class="row col-md-12">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="negocio">Negocio:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -35,8 +35,8 @@
                                             }
                                         ?>
                                     </select>
-                               </div>
-                               <div class="form-group col-md-3">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="mensajero">Mensajero:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -59,8 +59,8 @@
                                         ?>
                                     </select>
                                     <p id="error-message"><?= session('errors.mensajero');?> </p>
-                               </div>
-                               <div class="form-group col-md-2">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                 <label for="fecha_inicio">Fecha inicio *:</label>
                                     <input 
                                         type="date" 
@@ -71,8 +71,8 @@
                                         
                                     >
                                     <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
-                               </div>
-                               <div class="form-group col-md-2">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                 <label for="fecha_final">Fecha final *:</label>
                                     <input 
                                         type="date" 
@@ -83,8 +83,8 @@
                                        
                                     >
                                     <p id="error-message"><?= session('errors.fecha_final');?> </p>
-                               </div>
-                               <div class="form-group col-md-2">
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
                                     <label for="sugest">Más fechas:</label>
                                     <select 
                                         class="form-select form-control-border" 
@@ -105,7 +105,11 @@
                                             }
                                         ?>
                                     </select>
-                               </div>
+                                </div>
+                                <div class="form-group col-md-2 control-reporte">
+                                    <label for="sugest">   </label>
+                                    <a href="<?= site_url();  ?>reporte-mensajeria" class="btn btn-light btn-reinicia" id="btn-reinicia" target="_self">Reiniciar reporte</a>
+                                </div>
                             </div>
                         </div>
                         <div class="row col-md-8">
@@ -232,7 +236,7 @@
 
                                         }else{
                                             echo '<tr>';
-                                            echo '<td colspan="11">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
+                                            echo '<td colspan="13">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
                                             echo '</tr>';
 
                                             echo '

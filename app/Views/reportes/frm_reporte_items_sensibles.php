@@ -3,7 +3,7 @@
       <div class="container-fluid">
         <div class="row">
             <!-- left column -->
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <!-- general form elements -->
                 <div class="card card-light">
                     <div class="card-header">
@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <div class="row col-md-12">
                             <h6 style="font-style: italic;font-size: 0.8em;">NOTA: En caso de no haber seleccionado fecha de incio, fecha final o las dos se toma por defecto la fecha actual como fecha final y el primer día del mes como fecha de inicio</h6>
-                            <div class="form-group col-md-5 mt-3">
+                            <div class="form-group col-md-3 mt-3 control-reporte">
                             <label for="fecha_inicio">Fecha inicio *:</label>
                                 <input 
                                     type="date" 
@@ -25,8 +25,8 @@
                                 >
                                 <p id="error-message"><?= session('errors.fecha_inicio');?> </p>
                             </div>
-                            <div class="form-group col-md-5 mt-3">
-                            <label for="fecha_final">Fecha final *:</label>
+                            <div class="form-group col-md-3 mt-3 control-reporte">
+                                <label for="fecha_final">Fecha final *:</label>
                                 <input 
                                     type="date" 
                                     class="form-control text" 
@@ -35,6 +35,10 @@
                                     required
                                 >
                                 <p id="error-message"><?= session('errors.fecha_final');?> </p>
+                            </div>
+                            <div class="form-group col-md-2 mt-3 control-reporte">
+                                <label for="sugest"></label>
+                                <a href="<?= site_url();  ?>reporte-items-sensibles" class="btn btn-light btn-reinicia" id="btn-reinicia" target="_self">Reiniciar reporte</a>
                             </div>
                         </div>
                     </div>

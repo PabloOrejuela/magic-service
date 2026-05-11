@@ -210,7 +210,7 @@
                                                     echo '<td id="informacion"><span id="span-incompleto">Incompleto: '.$verificaCampos.'</span></td>';
                                                 }
                                                 // echo '<td id="observacion_'.$value->id.'">'.$value->observaciones.'</td>';
-                                                if ($value->observaciones != '') {
+                                                if ($value->observaciones != '' && $value->observaciones != NULL) {
                                                     echo '<td id="observaciones'.$value->id.'">
                                                         <a 
                                                             type="button" 

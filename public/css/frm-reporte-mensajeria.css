@@ -14,6 +14,8 @@ label{
 .form-select{
     padding: 6px 12px;
     font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
 }
 
 #text-result-bold{
@@ -32,4 +34,21 @@ label{
 
 #rango-title{
     font-weight: bold;
+}
+
+.control-reporte{
+    font-size: 0.8em;
+}
+
+#btn-reinicia{
+    color: #fff;
+    background-color: rgb(255, 128, 0, 1);
+    margin-top: 18px;
+}
+
+input[type="date"] {
+    padding: 6px 12px;
+    font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
 }

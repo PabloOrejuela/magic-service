@@ -11,9 +11,18 @@ label{
     font-size: 0.6em;
 }
 
+input[type="date"] {
+    padding: 6px 12px;
+    font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
+}
+
 .form-select{
     padding: 6px 12px;
     font-size: 1em;
+    height: 38px;
+    box-sizing: border-box;
 }
 
 #text-result-bold{
@@ -28,4 +37,14 @@ label{
 #text-result-bold-centered{
     font-weight: bold;
     text-align: center;
+}
+
+.control-reporte{
+    font-size: 0.8em;
+}
+
+#btn-reinicia{
+    color: #fff;
+    background-color: rgb(255, 128, 0, 1);
+    margin-top: 18px;
 }

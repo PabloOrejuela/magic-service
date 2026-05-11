@@ -16,7 +16,7 @@ class SucursalModel extends Model {
     protected $allowedFields    = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
@@ -39,34 +39,7 @@ class SucursalModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function _insert($data) {
-
-        //Inserto el nuevo cliente
-        $builder = $this->db->table($this->table);
-        if ($data['sucursal'] != 'NULL' && $data['sucursal'] != '') {
-            $builder->set('sucursal', $data['sucursal']);
-        }
-
-        if ($data['direccion'] != 'NULL' && $data['direccion'] != '') {
-            $builder->set('direccion', $data['direccion']);
-        }
-
-        $builder->insert();
-        return  $this->db->insertID();
-    }
-
-    public function _update($data) {
-
-        //Inserto el nuevo cliente
-        $builder = $this->db->table($this->table);
-        if ($data['sucursal'] != 'NULL' && $data['sucursal'] != '') {
-            $builder->set('sucursal', $data['sucursal']);
-        }
-
-        if ($data['direccion'] != 'NULL' && $data['direccion'] != '') {
-            $builder->set('direccion', $data['direccion']);
-        }
-        $builder->where('id', $data['id']);
-        $builder->update();
+    public function _getSucursalesByNegocio($idNegocio) {
+        return $this->where('idnegocio', $idNegocio)->orderBy('sucursal', 'asc')->findAll();
     }
 }
