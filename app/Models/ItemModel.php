@@ -45,6 +45,7 @@ class ItemModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select('*')->where('cuantificable', 1);
+        $builder->orderBy('item', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -61,6 +62,7 @@ class ItemModel extends Model {
         $builder->select('*');
         $builder->like('item', $nombre);
         $builder->where('cuantificable', 1);
+        $builder->orderBy('item', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

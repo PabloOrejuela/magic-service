@@ -72,40 +72,6 @@ selectTipoGasto.addEventListener('change', function(e) {
     
 });
 
-// // AJAX para cargar sucursales por negocio
-// $(document).ready(function(){
-//     $("#negocio").on("change", function() {
-//         var idNegocio = $(this).val();
-//         var sucursalSelect = $("#sucursal");
-
-//         if (idNegocio != "0") {
-//             $.ajax({
-//                 url: 'getProveedoresByNegocio',
-//                 method: "POST",
-//                 data: { idNegocio: idNegocio },
-//                 dataType: "json",
-//                 success: function(data) {
-//                     sucursalSelect.empty();
-//                     sucursalSelect.append('<option value="0">--Seleccionar sucursal--</option>');
-//                     $.each(data, function(key, value) {
-//                         sucursalSelect.append('<option value="' + value.id + '">' + value.sucursal + '</option>');
-//                     });
-//                     sucursalSelect.prop('disabled', false);
-//                     alertaMensaje('Sucursales cargadas correctamente', 3000, 'success');
-//                 },
-//                 error: function() {
-//                     alertaMensaje('Error al cargar sucursales', 3000, 'error');
-//                 }
-//             });
-//         } else {
-//             sucursalSelect.empty();
-//             sucursalSelect.append('<option value="0">--Seleccionar sucursal--</option>');
-//             sucursalSelect.prop('disabled', true);
-//         }
-//     });
-// });
-
-// AJAX para cargar PROVEEDORES por negocio
 // AJAX para cargar SUCURSALES por negocio
 $(document).ready(function(){
     $("#negocio").on("change", function() {

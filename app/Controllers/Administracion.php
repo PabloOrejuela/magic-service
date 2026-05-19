@@ -26,8 +26,8 @@ class Administracion extends BaseController {
 
     public function desactivar() {
 
-        $this->logout();
         $this->configuracionModel->_desactivar();
+        return redirect()->to('logout');
         $data['mensaje'] = "El sistema se encuentra en desarrollo, por favor vuelva mas tarde";
         $data['title']='Magic Service';
         $data['main_content']='home/mantenimiento_view';
@@ -198,14 +198,13 @@ class Administracion extends BaseController {
 
     public function getSucursales(){
         
-        $sucursales = $this->sucursalModel->findAll();
+        $sucursales = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
         echo json_encode($sucursales);
     }
 
     public function getSucursalesByNegocio(){
         
-        // $idnegocio = $this->request->getPostGet('idNegocio');
-        $sucursales = $this->sucursalModel->where('idnegocio', $this->request->getPostGet('idNegocio'))->findAll();
+        $sucursales = $this->sucursalModel->where('idnegocio', $this->request->getPostGet('idNegocio'))->where('id !=', 4)->orderBy('sucursal', 'asc')->findAll();
         echo json_encode($sucursales);
     }
 
@@ -285,10 +284,8 @@ class Administracion extends BaseController {
         if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
-            $data['sucursales'] = $this->sucursalModel->findAll();
-            // $data['items'] = $this->itemModel->findAll();
+            $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data, true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Registrar sector de entrega';
             $data['main_content']='administracion/form_sector_entrega_new';
@@ -307,7 +304,6 @@ class Administracion extends BaseController {
             $data['sectores'] = $this->sectoresEntregaModel->_getSectores();
             $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data['productos'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Sectores de entrega';
             $data['main_content']='administracion/grid_sectores_entrega';
@@ -325,10 +321,8 @@ class Administracion extends BaseController {
         if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
-
             $data['variables'] = $this->variablesSistemaModel->orderBy('variable', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data['variables'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Editar variables del Sistema';
             $data['main_content']='administracion/frm_edit_variables_sistema';
@@ -343,9 +337,8 @@ class Administracion extends BaseController {
         if ($this->session->admin == 1) {
             
             $data['session'] = $this->session;
-            $data['items'] = $this->itemModel->findAll();
+            $data['items'] = $this->itemModel->orderBy('item', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Items';
             $data['main_content']='administracion/grid_items';
@@ -421,7 +414,7 @@ class Administracion extends BaseController {
             return redirect()->to('items');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
         
     }
@@ -502,7 +495,7 @@ class Administracion extends BaseController {
             return redirect()->to('variables-sistema');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 
@@ -537,7 +530,7 @@ class Administracion extends BaseController {
             return redirect()->to('items');
         }else{
 
-            $this->logout();
+            return redirect()->to('logout');
         }
     }
 

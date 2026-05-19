@@ -137,6 +137,7 @@
                                     <th class="col-sm-2">CODIGO</th>
                                     <th class="col-sm-2">FECHA DE REGISTRO</th>
                                     <th class="col-sm-4">CLIENTE</th>
+                                    <th class="col-sm-4">TELEFONO</th>
                                     <th class="col-sm-4">PLATAFORMA</th>
                                     <th class="col-sm-4">BANCO</th>
                                     <th class="col-sm-2">VALOR TOTAL</th>
@@ -167,12 +168,12 @@
                                             foreach ($res as $key => $result) {
                                                 $vendedor = $this->usuarioModel->_getNombreUsuario($result->vendedor);
 
-
                                                 echo '<tr data-id="'.$result->id.'">';
                                                 echo '<td>'.$num.'</td>';
                                                 echo '<td><a href="'.site_url().'pedido-edit/'.$result->id.'/'.$modo.'" id="link-editar" target="_blank">'.$result->cod_pedido.'</a></td>';
                                                 echo '<td>'.$result->fecha.'</td>';
                                                 echo '<td>'.$result->cliente.'</td>';
+                                                echo '<td>'.(!empty($result->telefono) ? $result->telefono : $result->telefono_2).'</td>';
                                                 echo '<td>'.$result->forma_pago.'</td>';
 
                                                 if ($result->banco != 0) {

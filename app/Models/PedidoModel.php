@@ -319,7 +319,7 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,observacion_pago,
-                        procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio,forma_pago');
+                        procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio,forma_pago,clientes.telefono as telefono,clientes.telefono_2 as telefono_2');
         
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('formas_pago', $this->table.'.formas_pago = formas_pago.id','left');

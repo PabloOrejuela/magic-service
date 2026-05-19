@@ -89,6 +89,7 @@ class ProductoModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,producto,idcategoria,estado,categoria,'.$this->table.'.updated_at,'.$this->table.'.created_at,attr_temporal, precio,image');
         $builder->join('categorias', $this->table.'.idcategoria = categorias.id');
+        $builder->orderBy('producto', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

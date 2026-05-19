@@ -69,6 +69,7 @@ class GastoModel extends Model {
         $builder->join('tipos_gasto', 'tipos_gasto.id='.$this->table.'.idtipogasto', 'left');
         $builder->join('gastos_fijos', 'gastos_fijos.id='.$this->table.'.gastofijo','left');
         $builder->where("fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('fecha', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -92,6 +93,7 @@ class GastoModel extends Model {
         $builder->where($this->table.'.idnegocio', $idnegocio);
         $builder->where('idtipogasto', $tipoGasto);
         $builder->where("fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('fecha', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {
@@ -110,6 +112,7 @@ class GastoModel extends Model {
         $builder->where('idtipogasto', $tipoGasto);
         $builder->where($this->table.'.idnegocio', $idnegocio);
         $builder->where("fecha BETWEEN '$fechaInicio' AND '$fechaFinal'", NULL, FALSE );
+        $builder->orderBy('fecha', 'asc');
         $query = $builder->get();
         if ($query->getResult() != null) {
             foreach ($query->getResult() as $row) {

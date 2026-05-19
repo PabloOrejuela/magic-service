@@ -6,5 +6,5 @@
 
 <h5>Fixes</h5>
 <ul>
-    <li>Se ha corregido un error que impedía que se pueda editar bien y borrar la onservación del pedido desde el grid de pedidos</li>
+    <li>Se ha corregido el error que impedía que se desactive el estado del sistema</li>
 </ul>

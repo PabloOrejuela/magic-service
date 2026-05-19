@@ -66,7 +66,7 @@ class Gastos extends BaseController {
             $data['negocios'] = $this->negocioModel->orderBy('negocio', 'asc')->findAll();
             //$data['proveedores'] = $this->proveedorModel->orderBy('nombre', 'asc')->findAll();
             $data['tipos_gasto'] = $this->tipoGastoModel->orderBy('tipo_gasto', 'asc')->findAll();
-            $data['gastos_fijos'] = $this->gastoFijoModel->orderBy('id', 'asc')->findAll();
+            $data['gastos_fijos'] = $this->gastoFijoModel->orderBy('gasto_fijo', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Gastos';
@@ -182,12 +182,12 @@ class Gastos extends BaseController {
         if ($this->session->gastos == 1) {
             
             $data['session'] = $this->session;
-            $data['sucursales'] = $this->sucursalModel->findAll();
-            $data['negocios'] = $this->negocioModel->findAll();
-            $data['proveedores'] = $this->proveedorModel->findAll();
+            $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
+            $data['negocios'] = $this->negocioModel->orderBy('negocio', 'asc')->findAll();
+            $data['proveedores'] = $this->proveedorModel->orderBy('nombre', 'asc')->findAll();
             $data['tipos_gasto'] = $this->tipoGastoModel->orderBy('tipo_gasto', 'asc')->findAll();
             $data['gasto'] = $this->gastoModel->find($id);
-            $data['gastos_fijos'] = $this->gastoFijoModel->orderBy('id', 'asc')->findAll();
+            $data['gastos_fijos'] = $this->gastoFijoModel->orderBy('gasto_fijo', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['gasto'], true).'</pre>';exit;
             $data['title']='Gastos';
@@ -202,7 +202,7 @@ class Gastos extends BaseController {
     public function getProveedoresByNegocioGastos(){
 
         $idnegocio = $this->request->getPostGet('idNegocio');
-        $proveedores = $this->proveedorModel->where('idnegocio', $idnegocio)->findAll();
+        $proveedores = $this->proveedorModel->where('idnegocio', $idnegocio)->orderBy('nombre', 'asc')->findAll();
         return $this->response->setJSON($proveedores);
     }
 

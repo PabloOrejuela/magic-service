@@ -11,7 +11,7 @@ class Proveedores extends BaseController {
         if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
-            $data['proveedores'] = $this->proveedorModel->findAll();
+            $data['proveedores'] = $this->proveedorModel->orderBy('nombre', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['vendedores'], true).'</pre>';exit;
             $data['title']='Proveedores';
@@ -35,7 +35,7 @@ class Proveedores extends BaseController {
         if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['negocios'] = $this->negocioModel->orderBy('negocio', 'asc')->findAll();
 
             $data['title']='Proveedores';
             $data['subtitle']='Registrar Proveedor';
@@ -58,8 +58,8 @@ class Proveedores extends BaseController {
         if ($this->session->proveedores == 1) {
             
             $data['session'] = $this->session;
-            $data['proveedor'] = $this->proveedorModel->find($id);
-            $data['negocios'] = $this->negocioModel->findAll();
+            $data['proveedor'] = $this->proveedorModel->orderBy('nombre', 'asc')->find($id);
+            $data['negocios'] = $this->negocioModel->orderBy('negocio', 'asc')->findAll();
 
             //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Proveedores';
