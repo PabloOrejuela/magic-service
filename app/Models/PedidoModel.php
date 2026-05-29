@@ -382,9 +382,12 @@ class PedidoModel extends Model {
     }
 
     function _getHistorialPedidos($idcliente){
+        
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select('*');
+        $builder->select('pedidos.id as id,pedidos.cod_pedido as cod_pedido,idcliente,sin_remitente,pedidos.fecha as fecha,vendedor,pedidos.estado as estado,
+           sectores_entrega.sector as sector,pedidos.observaciones as observaciones,venta_extra,pedidos.idnegocio as idnegocio,pedidos.fecha_entrega as fecha_entrega,
+           pedidos.dir_entrega as dir_entrega,ubicacion,total,usuarios.nombre as nombre,sucursal');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');

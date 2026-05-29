@@ -143,7 +143,7 @@ class Clientes extends BaseController {
             $data['pedidos'] = $this->pedidoModel->_getHistorialPedidos($idcliente);
             $data['cliente'] = $this->clienteModel->find($idcliente);
 
-            //echo '<pre>'.var_export($data['cliente'], true).'</pre>';exit;
+            //echo '<pre>'.var_export($data['pedidos'], true).'</pre>';exit;
             $data['title']='Clientes';
             $data['subtitle']='Historial del Cliente';
             $data['main_content']='clientes/reporte_historial_cliente';

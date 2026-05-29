@@ -51,6 +51,7 @@ class DetallePedidoModel extends Model {
     }
 
     public function _getDetallePedido($idpedido){
+        //echo '<pre>'.var_export($idpedido, true).'</pre>';exit;
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ProductoCambiosModel extends Model
-{
+class ProductoCambiosModel extends Model {
+
     protected $table            = 'producto_cambios';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
@@ -43,7 +43,10 @@ class ProductoCambiosModel extends Model
     function _getCambiosProducto($idproducto){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,idproducto,nombre,descripcion,detalle,'.$this->table.'.created_at,'.$this->table.'.updated_at');
+        $builder->select(
+            $this->table.'.id as id,idproducto,nombre,descripcion,detalle,'
+            .$this->table.'.created_at,'.$this->table.'.updated_at,idusuario'
+        );
         $builder->join('usuarios', $this->table.'.idusuario = usuarios.id');
         $builder->where($this->table.'.idproducto', $idproducto);
         $query = $builder->get();
@@ -56,5 +59,20 @@ class ProductoCambiosModel extends Model
         return $result;
     }
 
-    
+    function _getCambioAnterior($idcambio){
+        $detalle = $this->find($idcambio);
+        if (!$detalle) {
+            return null;
+        }
+
+        return $this->select(
+            $this->table.'.id as id,idproducto,nombre,descripcion,detalle,'
+            .$this->table.'.created_at,'.$this->table.'.updated_at,idusuario'
+        )   
+            ->join('usuarios', $this->table.'.idusuario = usuarios.id')
+            ->where('idproducto', $detalle->idproducto)
+            ->where($this->table.'.id <', $idcambio)
+            ->orderBy($this->table.'.id', 'DESC')
+            ->first();
+    }
 }

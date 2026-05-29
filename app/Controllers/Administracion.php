@@ -27,7 +27,18 @@ class Administracion extends BaseController {
     public function desactivar() {
 
         $this->configuracionModel->_desactivar();
-        return redirect()->to('logout');
+
+        $session = [
+            'is_logged' => 0,
+            'status' => 0
+        ];
+
+        if ($this->session->idsession) {
+            $this->sessionModel->update($this->session->idsession, $session);
+
+        }
+        $this->session->destroy();
+
         $data['mensaje'] = "El sistema se encuentra en desarrollo, por favor vuelva mas tarde";
         $data['title']='Magic Service';
         $data['main_content']='home/mantenimiento_view';
@@ -1030,6 +1041,7 @@ class Administracion extends BaseController {
             $data['producto'] = $this->productoModel->find($idproducto);
             $data['historial'] = $this->productoCambiosModel->_getCambiosProducto($idproducto);
         
+            //echo '<pre>'.var_export($data['historial'], true).'</pre>';exit;
             $data['title']='Administración';
             $data['subtitle']='Historial de cambios del producto: '. $data['producto']->producto;
             $data['main_content']='administracion/report_cambios_product';
@@ -1038,6 +1050,38 @@ class Administracion extends BaseController {
         }else{
             return redirect()->to('logout');
         }
+    }
+
+    /**
+     * Función que muestra el detalle del cambio que se ha realizado en un producto
+     *
+     * @param Type $var Description
+     * @return type
+     * @throws conditon
+     **/
+    public function detalleCambioProd($idcambio) {
+
+        if ($this->session->ventas == 1) {
+            
+            $data['session'] = $this->session;
+            $data['detalleCambio'] = $this->productoCambiosModel
+                ->select('producto_cambios.id as id,nombre,idproducto,descripcion,detalle,producto_cambios.updated_at as updated_at')
+                ->join('usuarios','usuarios.id=producto_cambios.idusuario', 'left')->where('producto_cambios.id', $idcambio)
+                ->first();
+            $data['detalleCambioAnterior'] = $this->productoCambiosModel->_getCambioAnterior($idcambio);
+            $data['producto'] = $this->productoModel->find((int)$data['detalleCambio']->idproducto);
+
+            //echo '<pre>'.var_export($data['detalleCambio'], true).'</pre>';exit;
+            
+            $data['title']='Administración';
+            $data['subtitle']='Detalle del cambio en el producto: '. $data['producto']->producto;
+            $data['main_content']='administracion/detalle_cambio_product';
+            
+            return view('dashboard/index', $data);
+        }else{
+            return redirect()->to('logout');
+        }
+        
     }
 
     public function product_edit($idproducto){

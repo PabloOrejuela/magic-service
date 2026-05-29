@@ -12,7 +12,7 @@
                             <table id="datatablesSimple" class="table table-bordered table-striped">
                                 
                                 <thead>
-                                    <th>No.</th>
+                                    <th>No. de cambio</th>
                                     <th>Detalle</th>
                                     <th>Usuario</th>
                                     <th class="centrado">Fecha</th>

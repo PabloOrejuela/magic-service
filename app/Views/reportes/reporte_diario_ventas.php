@@ -262,7 +262,7 @@
                                                     ';
                                         }else{
                                             echo '<tr>';
-                                            echo '<td colspan="13">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
+                                            echo '<td colspan="14">NO HAY RESULTADOS QUE MOSTRAR CON ESE CRITERIO DE BUSQUEDA</td>';
                                             echo '</tr>';
 
                                             echo '

@@ -17,7 +17,8 @@
     <div class="card">
       <div class="card-body login-card-body">
         <h3 class="login-box-msg">Ingreso al sistema</h3>
-          <?= '<p>'.$mensaje.'</p>'; ?>
+        <?= '<p>'.$mensaje.'</p>'; ?>
+        <div><a href="<?= base_url(); ?>">Ir al login</a></div>
       </div>
       <!-- /.login-card-body -->
     </div>

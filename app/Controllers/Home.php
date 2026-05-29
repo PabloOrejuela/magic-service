@@ -150,6 +150,15 @@ class Home extends BaseController {
     public function estadoSistema(){
         return $this->configuracionModel->findAll();
     }
+
+    public function mantenimiento(){
+        $data['mensaje'] = 'La aplicación se encuentra en estado de mantenimiento, por favor consulte con el administrador.';
+
+        // Carga la vista directamente
+        $data['title']='Magic Service';
+        $data['main_content']='home/login';
+        return view('includes/template_login', $data); 
+    }
     
     public function logout(){
         //destruyo la session y salgo
