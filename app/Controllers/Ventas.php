@@ -29,6 +29,32 @@ class Ventas extends BaseController {
 
     }
 
+    /**
+     * Genera lista/historial de cambios de un pedido
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function verHistorialPedido($idpedido) {
+
+        if ($this->session->clientes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['cambios'] = $this->pedidoModel->_getHistorialCambiosPedido($idpedido);
+            $data['pedido'] = $this->pedidoModel->first($idpedido);
+
+            //echo '<pre>'.var_export($data['cambios'], true).'</pre>';exit;
+            $data['title']='Clientes';
+            $data['subtitle']='Historial del Cliente';
+            $data['main_content']='ventas/grid_historial_pedido';
+            return view('dashboard/index', $data);
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
     public function getNewCodPedido(){
         $idusuario = $this->session->id;
         $enteroRandom = $numero = random_int(100, 999);

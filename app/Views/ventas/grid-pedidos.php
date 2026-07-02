@@ -250,7 +250,7 @@
                                                 echo    '</div>';
                                                 echo    '<div>';
                                                         if (true) {
-                                                            echo '<a type="button" href="'.site_url().'verHistorialPedido/'.$value->id.'/'.$value->cod_pedido.'" class="btnAction" target="_blank">
+                                                            echo '<a type="button" href="'.site_url().'ver-historial-pedido/'.$value->id.'" class="btnAction" target="_blank">
                                                                     <img src="'.site_url().'public/images/note-task.png" width="25"  />
                                                                 </a>';
                                                         }else{
