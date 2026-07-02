@@ -28,6 +28,7 @@ use App\Models\KardexModel;
 use App\Models\MovimientoInventarioModel;
 use App\Models\NegocioModel;
 use App\Models\PedidoModel;
+use App\Models\PedidoCambiosModel;
 use App\Models\PedidoProcedenciaModel;
 use App\Models\ProcedenciaModel;
 use App\Models\ProductoModel;
@@ -110,6 +111,7 @@ abstract class BaseController extends Controller {
         $this->proveedorModel = new ProveedorModel($this->db);
         $this->productoModel = new ProductoModel($this->db);
         $this->pedidoModel = new PedidoModel($this->db);
+        $this->pedidoCambiosModel = new PedidoCambiosModel($this->db);
         $this->procedenciaModel = new ProcedenciaModel($this->db);
         $this->pedidoProcedenciaModel = new PedidoProcedenciaModel($this->db);
         $this->productoCambiosModel = new ProductoCambiosModel($this->db);

@@ -41,7 +41,7 @@ class Ventas extends BaseController {
         if ($this->session->clientes == 1) {
             
             $data['session'] = $this->session;
-            $data['cambios'] = $this->pedidoModel->_getHistorialCambiosPedido($idpedido);
+            $data['cambios'] = $this->pedidoCambiosModel->_getCambiosPedido($idpedido);
             $data['pedido'] = $this->pedidoModel->first($idpedido);
 
             //echo '<pre>'.var_export($data['cambios'], true).'</pre>';exit;
@@ -1089,6 +1089,8 @@ class Ventas extends BaseController {
                 $this->session->set('mensaje', 0);
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
+                //Llamo a mi servicio para cuando inserte el historial
+                $service = new \App\Services\PedidoSnapshotService();
                 
                 //Verifico que exista el cliente, si no existe lo creo y si existe solo inserto el id
                 $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($clienteID);
@@ -1165,6 +1167,16 @@ class Ventas extends BaseController {
 
                         //Borro el detalle temporal de la tabla temporal
                         $this->detallePedidoTempModel->where('idpedido', $idpedido)->delete();
+                        
+                        //Genero mi json para el historial
+                        $datosJson = $service->generar($idpedido, $pedido, $detalle);
+
+                        $this->pedidoCambiosModel->insert([
+                            'idpedido' => $idpedido,
+                            'idusuario' => $this->session->id,
+                            'fecha' => date('Y-m-d H:i:s'),
+                            'detalle' => $datosJson
+                        ]);
 
                         //Actualizo el mensaje
                         $mensaje = 1;
@@ -1213,6 +1225,16 @@ class Ventas extends BaseController {
 
                         //Borro el detalle temporal de la tabla temporal
                         $this->detallePedidoTempModel->where('idpedido', $idpedido)->delete();
+
+                        //Genero mi json para el historial
+                        $datosJson = $service->generar($idpedido, $pedido, $detalle);
+
+                        $this->pedidoCambiosModel->insert([
+                            'idpedido' => $idpedido,
+                            'idusuario' => $this->session->id,
+                            'fecha' => date('Y-m-d H:i:s'),
+                            'detalle' => $datosJson
+                        ]);
 
                         //Actualizo el mensaje
                         $mensaje = 1;

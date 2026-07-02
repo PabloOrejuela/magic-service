@@ -127,6 +127,9 @@ class DetallePedidoModel extends Model {
 
     public function _insert($detalle) {
 
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
         // echo '<pre>'.var_export($detalle, true).'</pre>';exit;
 
         foreach ($detalle as $key => $value) {
@@ -140,12 +143,16 @@ class DetallePedidoModel extends Model {
             $builder->set('pvp', $value->pvp);
             $builder->set('subtotal', $value->subtotal);
             $builder->set('observacion', $value->observacion);
+            $builder->set('created_at', $data['created_at']);
+            $builder->set('updated_at', $data['updated_at']);
             
             $builder->insert();
         }  
     }
 
     public function _update($detalle) {
+
+        $data['updated_at'] = date('Y-m-d H:i:s');
 
         //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
 
@@ -160,6 +167,7 @@ class DetallePedidoModel extends Model {
             $builder->set('subtotal', $value->subtotal);
             $builder->set('observacion', $value->observacion);
             $builder->where('idpedido', $value->idpedido);
+            $builder->where('updated_at', $data['updated_at']);
             $builder->update();
         }  
     }
