@@ -170,6 +170,19 @@ class Gastos extends BaseController {
         }
     }
 
+    public function deleteGasto($idgasto){
+
+        if ($this->session->clientes == 1 && $this->session->proveedores == 1) {
+        
+            $this->gastoModel->delete($idgasto);
+            return redirect()->to('gastos');
+
+        }else{
+
+            return redirect()->to('logout');
+        }
+    }
+
     /**
      * Formulario para editar un nuevo Gasto
      *

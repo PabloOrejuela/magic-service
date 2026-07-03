@@ -160,6 +160,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('gastos', 'Gastos::index');
     $routes->post('gastos', 'Gastos::gridGastoFiltrado');
     $routes->get('gasto-create', 'Gastos::create');
+    $routes->get('delete-gasto/(:num)', 'Gastos::deleteGasto/$1');
     $routes->post('gasto-insert', 'Gastos::insert');
     $routes->get('gasto-edit/(:num)', 'Gastos::edit/$1');
     $routes->post('gasto-update', 'Gastos::update');
