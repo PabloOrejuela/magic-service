@@ -45,6 +45,7 @@
                                 <th>Tipo gasto</th>
                                 <th>Documento</th>
                                 <th>Valor</th>
+                                <th></th>
                             </thead>
                             <tbody>
                                 <?php
@@ -75,8 +76,22 @@
                                                 <td>'.$value->gasto_fijo.'</td>
                                                 <td>'.$value->tipo_gasto.'</td>
                                                 <td>'.$value->documento.'</td>
-                                                <td>'.$value->valor.'</td>
-                                            ';
+                                                <td>'.$value->valor.'</td>';
+                                            echo '
+                                                <td>
+                                                    <div class="contenedor">
+                                                        <a 
+                                                             
+                                                            id="btn-register" 
+                                                            href="'.site_url().'delete-gasto/'.$value->id.'" 
+                                                            class="edit btn-delete"
+                                                        >
+                                                            <img src="'.site_url().'public/images/delete.png" width="30" >
+                                                        </a>
+                                                    </div>
+                                                </td>';
+
+                                            echo '</tr>';
                                         }
                                     }
                                 ?>
@@ -122,5 +137,35 @@
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-6'i><'col-sm-12 col-md-6'p>>"
     });
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    document.querySelectorAll('.btn-delete').forEach(function(btn) {
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const url = this.href;
+
+            Swal.fire({
+                title: '¿Eliminar registro?',
+                text: 'Esta acción no se puede deshacer.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#d33'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = url;
+                }
+            });
+        });
+
+    });
+
 });
 </script>
