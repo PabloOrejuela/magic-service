@@ -164,7 +164,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->post('gasto-insert', 'Gastos::insert');
     $routes->get('gasto-edit/(:num)', 'Gastos::edit/$1');
     $routes->post('gasto-update', 'Gastos::update');
-    $routes->post('gastos/getSucursalesByNegocio', 'Gastos::getSucursalesByNegocio');
+    $routes->post('getSucursalesByNegocio', 'Gastos::getSucursalesByNegocio');
     $routes->get('getProveedoresByNegocioGastos', 'Gastos::getProveedoresByNegocioGastos');
 
     //Clientes
