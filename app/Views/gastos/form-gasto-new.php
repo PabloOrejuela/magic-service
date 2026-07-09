@@ -56,13 +56,6 @@
                 <label for="proveedor">Proveedor *:</label>
                 <select class="form-select form-control-border" id="proveedor" name="proveedor">
                   <option value="0" selected>--Seleccionar proveedor--</option>
-                  <?php 
-                    // if (isset($proveedores)) {
-                    //   foreach ($proveedores as $key => $value) {
-                    //     echo '<option value="'.$value->id.'" '.set_select('proveedor', $value->id, false).' >'.$value->nombre.'</option>';
-                    //   }
-                    // } 
-                  ?>
                 </select>
                 <p id="error-message"><?= session('errors.proveedor');?> </p>
               </div>
@@ -100,9 +93,16 @@
                 <?php for ($i = 0; $i < count($fechas_old); $i++): ?>
                 <div class="bloque-datos">
                     <div class="form-group col-md-4">
-                      <label for="fecha">Fecha *:</label>
-                      <input type="date" class="form-control text" id="fecha" name="fecha[]" 
-                              value="<?= $fechas_old[$i] ?>" required>
+                      <div class="d-flex align-items-end gap-2">
+                        <div class="flex-grow-1">
+                          <label for="fecha">Fecha *:</label>
+                          <input type="date" class="form-control text" id="fecha" name="fecha[]" 
+                                  value="<?= $fechas_old[$i] ?>" required>
+                        </div>
+                        <?php if ($i > 0): ?>
+                        <button type="button" class="btn btn-danger btn-eliminar mt-2">Eliminar</button>
+                        <?php endif; ?>
+                      </div>
                       <p id="error-message">
                           <?= $errores_detalle[$i]['fecha'] ?? '' ?>
                       </p>
@@ -137,10 +137,6 @@
                       </p>
                     </div>
 
-                    <?php if ($i > 0): ?>
-                    <!-- Solo mostramos el botón eliminar si hay más de un bloque -->
-                    <button type="button" class="btn btn-danger btn-eliminar mt-2">Eliminar</button>
-                    <?php endif; ?>
                 </div>
                 <?php endfor; ?>
             </div>
@@ -169,10 +165,23 @@
       let bloques = contenedor.getElementsByClassName('bloque-datos');
       let clon = bloques[bloques.length - 1].cloneNode(true);
 
-      // Limpiar valores del clon
+      // Limpiar valores del div
       clon.querySelectorAll('input, textarea').forEach(el => el.value = '');
+
       // Limpiar mensajes de error
       clon.querySelectorAll('p#error-message').forEach(el => el.innerHTML = '');
+
+      // Agregar botón de eliminar al bloque nuevo si no lo trae
+      if (!clon.querySelector('.btn-eliminar')) {
+        let contenedorFecha = clon.querySelector('.d-flex.align-items-end.gap-2');
+        if (contenedorFecha) {
+          let btnEliminar = document.createElement('button');
+          btnEliminar.type = 'button';
+          btnEliminar.className = 'btn btn-danger btn-eliminar mt-2';
+          btnEliminar.textContent = 'Eliminar';
+          contenedorFecha.appendChild(btnEliminar);
+        }
+      }
 
       contenedor.appendChild(clon);
     });
