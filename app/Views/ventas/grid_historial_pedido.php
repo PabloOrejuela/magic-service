@@ -14,16 +14,9 @@
                         <table class="table table-bordered table-striped px-3" id="table-historial-pedidos">
                             <thead>
                                 <th>Pedido</th>
-                                <th>Fecha Registro</th>
-                                <th>Fecha Entrega</th>
-                                <th>Sector</th>
-                                <th>Dirección</th>
-                                <th>Ubicación de entrega</th>
-                                <th>Producto</th>
-                                <th>Valor total pagado</th>
-                                <th>Mensajero</th>
-                                <th>Observación</th>
-                                <th>Sucursal</th>
+                                <th>Usuario</th>
+                                <th>Fecha del cambio</th>
+                                <th>Detalle</th>
                             </thead>
                             <tbody>
                             <?php
@@ -34,9 +27,8 @@
                                 $this->detallePedidoModel = new DetallePedidoModel();
 
                                 if ($cambios) {
+                                    echo '<pre>'.var_export($cambios, true).'</pre>';exit;
                                     foreach ($cambios as $key => $cambio) {
-                                        //echo '<pre>'.var_export($pedidos, true).'</pre>';exit;
-                                        $detalle = $this->detallePedidoModel->_getDetallePedido($pedido->id);
                                         $modo = 'REPORTE';
                                         
                                         //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
@@ -45,53 +37,11 @@
                                                     <a href="'.site_url().'pedido-edit/'.$pedido->id.'/'.$modo.'" id="link-editar">'.$pedido->cod_pedido.'</a>
                                                 </td>
                                                 <td>'.$pedido->fecha.'</td>
-                                                <td>'.$pedido->fecha_entrega.'</td>
-                                                <td>'.$pedido->sector.'</td>
-                                                <td>'.$pedido->dir_entrega.'</td>
+                                                <td>'.$pedido->idusuario.'</td>
+                                                <td>'.$pedido->fecha.'</td>
+                                                <td>'.$pedido->detalle.'</td>
                                                 <td>'.$pedido->ubicacion.'</td>';
-                                        echo '<td><ul>';
-                                            if (isset($detalle)) {
-                                                foreach ($detalle as $key => $d) {
-                                                    $attrExtArreg = $this->attrExtArregModel->_getAttrArreg($d->iddetalle, $d->idcategoria);
-                                                        
-                                                        if ($attrExtArreg) {
-                                                            echo '<li>
-                                                                <a 
-                                                                    href="#" 
-                                                                    id="link-Arreglo-Pedido" 
-                                                                    data-id="'.$d->iddetalle.'"
-                                                                    data-arreglo="'.$d->producto.'"
-                                                                    data-pedido="'.$d->cod_pedido.'"
-                                                                    data-bs-toggle="modal"
-                                                                    data-category="'.$d->idcategoria.'" 
-                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
-                                                            </li>';
-                                                            echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
-                                                        } else {
-                                                            echo '<li>
-                                                                <a 
-                                                                    href="#" 
-                                                                    id="link-Arreglo-Pedido" 
-                                                                    data-id="'.$d->iddetalle.'"
-                                                                    data-arreglo="'.$d->producto.'"
-                                                                    data-pedido="'.$d->cod_pedido.'"
-                                                                    data-bs-toggle="modal"
-                                                                    data-category="'.$d->idcategoria.'" 
-                                                                    style="color:#c70a0a;"
-                                                                    data-bs-target="#linkArregloPedido">'.$d->producto.'</a>
-                                                            </li>';
-                                                            echo '<div id="observacion-detalle">'.$d->observacion.'</li></div>';
-                                                        }
-                                                    //echo '<li>'.$d->producto.'</li>';
-                                                }
-                                            }
-                                        echo '</ul></td>';
-                                            
-                                        echo '<td id="td-result-right">'.$pedido->total.'</td>
-                                            <td>'.$pedido->nombre.'</td>
-                                            <td>'.$pedido->observaciones.'</td>
-                                            <td>'.$pedido->sucursal.'</td>
-                                        </tr>';
+                                        echo '</td></tr>';
                                     }
                                 }else{
                                      echo '<tr><td colspan="11">No se ha encontrado registros de cambios de este pedido</td></tr>';

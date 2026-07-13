@@ -44,7 +44,7 @@ class PedidoCambiosModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,descripcion,detalle,'
+            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,detalle,'
             .$this->table.'.created_at,'.$this->table.'.updated_at'
         );
         $builder->join('usuarios', $this->table.'.idusuario = usuarios.id');

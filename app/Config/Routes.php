@@ -42,10 +42,6 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('getHorasEntrega', 'Ventas::getHorasEntrega');
     $routes->get('get_valor_sector', 'Ventas::get_valor_sector');
     $routes->get('guarda-orden', 'Ventas::guardaOrden');
-    $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
-    $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
-    $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
-    $routes->get('ventas/get_costo_horario/(:num)', 'Ventas::get_costo_horario/$1');
     $routes->post('pedido-insert', 'Ventas::pedido_insert');
     $routes->post('pedido-update', 'Ventas::pedido_update');
     $routes->get('pedido-edit/(:num)/(:any)', 'Ventas::pedido_edit/$1/$2');
@@ -75,7 +71,11 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('ventas/getEstadosPedido', 'Ventas::getEstadosPedido');
     $routes->get('ventas/getMensajeros', 'Ventas::getMensajeros');
     $routes->get('ver-historial-pedido/(:num)', 'Ventas::verHistorialPedido/$1');
-
+    $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
+    $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
+    $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');
+    $routes->get('ventas/get_costo_horario/(:num)', 'Ventas::get_costo_horario/$1');
+    
     //Administración
     $routes->get('administracion', 'Administracion::index');
     $routes->get('asigna-rol-2', 'Administracion::asigna_rol_2');

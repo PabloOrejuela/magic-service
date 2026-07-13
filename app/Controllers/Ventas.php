@@ -45,8 +45,8 @@ class Ventas extends BaseController {
             $data['pedido'] = $this->pedidoModel->first($idpedido);
 
             //echo '<pre>'.var_export($data['cambios'], true).'</pre>';exit;
-            $data['title']='Clientes';
-            $data['subtitle']='Historial del Cliente';
+            $data['title']='Pedidos';
+            $data['subtitle']='Historial del Pedido';
             $data['main_content']='ventas/grid_historial_pedido';
             return view('dashboard/index', $data);
 
@@ -1366,7 +1366,7 @@ class Ventas extends BaseController {
             $data['detalle'] = $this->detallePedidoModel->select('*')
                 ->join('productos','productos.id = detalle_pedido.idproducto')
                 ->where('idpedido', $idpedido)->findAll();
-            //echo '<pre>'.var_export($data['detalle'], true).'</pre>';exit;
+            
             //Elimino el detalle del pedido en la tabla temporal en caso de que exista
             $this->detallePedidoTempModel->where('idpedido', $idpedido)->delete();
             
