@@ -20,6 +20,27 @@ class MyRules {
         return $okYearOrDate && $okNegocio;
     }
 
+    public function requiredFieldWhenTipo($str = null, ?string $params = null, array $data = []): bool
+    {
+        if ($params === null) {
+            return true;
+        }
 
-    
+        $tipoRequerido = trim($params);
+        $tipoSeleccionado = trim($data['tipo'] ?? '');
+
+        if ($tipoSeleccionado !== $tipoRequerido) {
+            return true;
+        }
+
+        if ($str === null) {
+            return false;
+        }
+
+        if (is_array($str)) {
+            return $str !== [] && ! empty($str);
+        }
+
+        return trim((string) $str) !== '' && (string) $str !== '0';
+    }
 }

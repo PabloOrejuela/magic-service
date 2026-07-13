@@ -273,6 +273,8 @@ class Validation extends BaseConfig
         'sucursal'   => 'greater_than[0]',
         'negocio'   => 'greater_than[0]',
         'tipo'   => 'greater_than[0]',
+        'gastofijo' => 'requiredFieldWhenTipo[3]',
+        'proveedor' => 'requiredFieldWhenTipo[1]',
         //'valor'   => 'required',
     ]; 
 
@@ -285,6 +287,12 @@ class Validation extends BaseConfig
         ],
         'tipo' => [
             'greater_than' => 'El campo "Tipo" es obligatorio',
+        ],
+        'gastofijo' => [
+            'requiredFieldWhenTipo' => 'El campo "Gasto fijo" es obligatorio cuando se selecciona Gasto fijo',
+        ],
+        'proveedor' => [
+            'requiredFieldWhenTipo' => 'El campo "Proveedor" es obligatorio cuando se selecciona Gasto con proveedor',
         ],
         'valor' => [
             'required' => 'El campo "Valor pagado" es obligatorio',

@@ -4,6 +4,7 @@ let divGastoVariable = document.getElementById('div-gastovariable')
 let divGastoFijo = document.getElementById('div-gastofijo')
 let selectNegocio = document.getElementById('negocio')
 let selectProveedores = document.getElementById('proveedor')
+let selectSucursal = document.getElementById('sucursal')
 
 const resetSelect = (select, placeholder) => {
     select.innerHTML = '';
@@ -20,6 +21,26 @@ const populateSelect = (select, items, valueKey, labelKey, placeholder) => {
     });
 
     select.disabled = false;
+}
+
+const loadSucursales = (idNegocio, selectedSucursal = '0') => {
+    if (idNegocio !== '0') {
+        return fetchJson('getSucursalesByNegocio', 'POST', { idNegocio })
+            .then(data => {
+                populateSelect(selectSucursal, data, 'id', 'sucursal', '--Seleccionar sucursal--');
+                if (selectedSucursal && selectedSucursal !== '0') {
+                    selectSucursal.value = selectedSucursal;
+                }
+                alertaMensaje('Sucursales cargadas correctamente', 3000, 'success');
+            })
+            .catch(() => {
+                resetSelect(selectSucursal, '--Seleccionar sucursal--');
+                alertaMensaje('Error al cargar sucursales', 3000, 'error');
+            });
+    }
+
+    resetSelect(selectSucursal, '--Seleccionar sucursal--');
+    return Promise.resolve();
 }
 
 const loadProveedores = (idNegocio) => {
@@ -135,6 +156,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+
+    const selectedSucursal = sucursalSelect.dataset.old || '0';
+    const selectedProveedor = selectProveedores.dataset.old || '0';
+
+    if (negocioSelect.value !== '0') {
+        loadSucursales(negocioSelect.value, selectedSucursal).then(() => {
+            if (selectTipoGasto.selectedIndex == 3) {
+                loadProveedores(negocioSelect.value).then(() => {
+                    if (selectedProveedor && selectedProveedor !== '0') {
+                        selectProveedores.value = selectedProveedor;
+                    }
+                });
+            }
+        });
+    }
+
+    if (selectTipoGasto.selectedIndex !== 0) {
+        selectTipoGasto.dispatchEvent(new Event('change'));
+    }
 })
 
 

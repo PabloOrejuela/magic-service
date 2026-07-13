@@ -33,7 +33,7 @@
 
               <div class="form-group col-md-6">
                 <label for="sucursal">Sucursal *:</label>
-                <select class="form-select form-control-border" id="sucursal" name="sucursal" required disabled>
+                <select class="form-select form-control-border" id="sucursal" name="sucursal" required disabled data-old="<?= old('sucursal') ?? '0'; ?>">
                   <option value="0" selected>--Seleccionar sucursal--</option>
                 </select>
                 <p id="error-message"><?= session('errors.sucursal');?> </p>
@@ -54,7 +54,7 @@
 
               <div class="form-group col-md-6" id="div-proveedores">
                 <label for="proveedor">Proveedor *:</label>
-                <select class="form-select form-control-border" id="proveedor" name="proveedor">
+                <select class="form-select form-control-border" id="proveedor" name="proveedor" data-old="<?= old('proveedor') ?? '0'; ?>">
                   <option value="0" selected>--Seleccionar proveedor--</option>
                 </select>
                 <p id="error-message"><?= session('errors.proveedor');?> </p>
@@ -83,11 +83,24 @@
             <div id="contenedor-datos">
                 <?php
                 // Obtenemos los datos antiguos si hay errores o envíos previos
-                $fechas_old = old('fecha') ?? [''];
-                $documentos_old = old('documento') ?? [''];
-                $valores_old = old('valor') ?? [''];
-                $descripciones_old = old('descripcion') ?? [''];
+                $fechas_old = old('fecha');
+                $documentos_old = old('documento');
+                $valores_old = old('valor');
+                $descripciones_old = old('observaciones');
                 $errores_detalle = session('errors') ?? [];
+
+                if (!is_array($fechas_old) || empty($fechas_old)) {
+                    $fechas_old = [''];
+                }
+                if (!is_array($documentos_old) || empty($documentos_old)) {
+                    $documentos_old = [''];
+                }
+                if (!is_array($valores_old) || empty($valores_old)) {
+                    $valores_old = [''];
+                }
+                if (!is_array($descripciones_old) || empty($descripciones_old)) {
+                    $descripciones_old = [''];
+                }
                 ?>
 
                 <?php for ($i = 0; $i < count($fechas_old); $i++): ?>
@@ -131,7 +144,7 @@
                     <div class="form-group col-md-12">
                       <label for="observaciones">Observaciones:</label>
                       <textarea class="form-control" placeholder="Escriba las observaciones aquí" id="observaciones" 
-                                  name="observaciones[]" cols="7" rows="5"><?= $descripciones_old[$i] ?></textarea>
+                                  name="observaciones[]" cols="7" rows="5"><?= $descripciones_old[$i] ?? '' ?></textarea>
                       <p id="error-message">
                           <?= $errores_detalle[$i]['observaciones'] ?? '' ?>
                       </p>
