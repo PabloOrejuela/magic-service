@@ -11,36 +11,33 @@
                         </div>
                         <!-- /.card-header -->
                         <label for="cliente"></label>
-                        <table class="table table-bordered table-striped px-3" id="table-historial-pedidos">
+                        <table class="table table-bordered table-striped px-3" id="table-historial-pedido">
                             <thead>
+                                <th>ID del cambio</th>
                                 <th>Pedido</th>
                                 <th>Usuario</th>
                                 <th>Fecha del cambio</th>
-                                <th>Detalle</th>
                             </thead>
                             <tbody>
                             <?php
 
-                                use App\Models\DetallePedidoModel;
-                                use App\Models\AttrExtArregModel;
-                                $this->attrExtArregModel = new AttrExtArregModel();
-                                $this->detallePedidoModel = new DetallePedidoModel();
+                                use App\Models\UsuarioModel;
+                                $this->usuarioModel = new UsuarioModel();
 
                                 if ($cambios) {
-                                    echo '<pre>'.var_export($cambios, true).'</pre>';exit;
+                                    //echo '<pre>'.var_export($cambios, true).'</pre>';exit;
                                     foreach ($cambios as $key => $cambio) {
+
                                         $modo = 'REPORTE';
                                         
                                         //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                         echo '<tr>
+                                                <td>'.$cambio->id.'</td>
                                                 <td>
-                                                    <a href="'.site_url().'pedido-edit/'.$pedido->id.'/'.$modo.'" id="link-editar">'.$pedido->cod_pedido.'</a>
+                                                    <a href="'.site_url().'detalle-cambios-pedido/'.$cambio->id.'/'.$pedido->cod_pedido.'" id="link-historial-pedido">'.$pedido->cod_pedido.'</a>
                                                 </td>
-                                                <td>'.$pedido->fecha.'</td>
-                                                <td>'.$pedido->idusuario.'</td>
-                                                <td>'.$pedido->fecha.'</td>
-                                                <td>'.$pedido->detalle.'</td>
-                                                <td>'.$pedido->ubicacion.'</td>';
+                                                <td>'.$cambio->nombre.'</td>
+                                                <td>'.$cambio->fecha.'</td>';
                                         echo '</td></tr>';
                                     }
                                 }else{
@@ -59,42 +56,5 @@
     </div>
 </section> <!-- /.card -->
 
-<!-- Modal Frm Attributos extra Arreglo-->
-<div class="modal fade" id="linkArregloPedido" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="titulo">Campos del arreglo para el tiket</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="actualizaGrid()"></button>
-      </div>
-      <form id="form-modal-attr">
-        <div class="modal-body">
-            <input class="form-control" type="hidden" name="idarreglo" id="idarreglo">
-            <input class="form-control" type="hidden" name="idcategoria" id="idcategoria">
-            <div class="mb-0 row">
-                <label for="lblPedido" class="col-sm-2 col-form-label">Pedido:</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="lblPedido">
-                </div>
-            </div>
-            <div class="mb-1 row">
-                <label for="lblForm" class="col-sm-2 col-form-label">Arreglo:</label>
-                <div class="col-sm-10">
-                    <input type="text" readonly class="form-control-plaintext" id="lblForm">
-                </div>
-            </div>
-            
-            <!-- Desarrollo el cuerpo de cada formulario   -->
-            <div class="formulario" id="formulario">
-                
-            </div>
-        </div>
-        <div class="modal-footer">
-            
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?= site_url(); ?>public/js/rep-hist-cliente.js"></script>

@@ -44,7 +44,7 @@ class PedidoCambiosModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select(
-            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,detalle,'
+            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,fecha,detalle,'
             .$this->table.'.created_at,'.$this->table.'.updated_at'
         );
         $builder->join('usuarios', $this->table.'.idusuario = usuarios.id');
@@ -57,6 +57,34 @@ class PedidoCambiosModel extends Model {
         }
         //echo $this->db->getLastQuery();
         return $result;
+    }
+
+    function _getCambioPedido($idcambio){
+        $builder = $this->db->table($this->table);
+        $builder->select(
+            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,fecha,detalle,'
+            .$this->table.'.created_at,'.$this->table.'.updated_at'
+        );
+        $builder->join('usuarios', $this->table.'.idusuario = usuarios.id');
+        $builder->where($this->table.'.id', $idcambio);
+        return $builder->get()->getRow();
+    }
+
+    function _getCambioAnteriorPedido($idcambio){
+        $detalle = $this->find($idcambio);
+        if (!$detalle) {
+            return null;
+        }
+
+        return $this->select(
+            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,fecha,detalle,'
+            .$this->table.'.created_at,'.$this->table.'.updated_at'
+        )
+            ->join('usuarios', $this->table.'.idusuario = usuarios.id')
+            ->where('idpedido', $detalle->idpedido)
+            ->where($this->table.'.id <', $idcambio)
+            ->orderBy($this->table.'.id', 'DESC')
+            ->first();
     }
 
     function _getCambioAnterior($idcambio){

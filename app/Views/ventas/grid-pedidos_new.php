@@ -236,7 +236,7 @@
 
                                                 <div>
                                                     <!-- historial pedido -->
-                                                    <a href="<?= site_url().'verHistorialPedido/'.$value->id.'/'.$value->cod_pedido ?>"
+                                                    <a href="<?= site_url().'gridHistorialPedido/'.$value->id.'/'.$value->cod_pedido ?>"
                                                     class="btnAction" target="_blank">
                                                         <img src="<?= site_url().'public/images/note-task.png' ?>" width="25"/>
                                                     </a>

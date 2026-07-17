@@ -36,7 +36,7 @@ class Ventas extends BaseController {
      * @return type void view
      * @throws conditon
      **/
-    public function verHistorialPedido($idpedido) {
+    public function gridHistorialPedido($idpedido) {
 
         if ($this->session->clientes == 1) {
             
@@ -44,10 +44,43 @@ class Ventas extends BaseController {
             $data['cambios'] = $this->pedidoCambiosModel->_getCambiosPedido($idpedido);
             $data['pedido'] = $this->pedidoModel->first($idpedido);
 
-            //echo '<pre>'.var_export($data['cambios'], true).'</pre>';exit;
+            
             $data['title']='Pedidos';
             $data['subtitle']='Historial del Pedido';
             $data['main_content']='ventas/grid_historial_pedido';
+            return view('dashboard/index', $data);
+
+        }else{
+            return redirect()->to('logout');
+        }
+    }
+
+    /**
+     * Muestra el detalle de cambios de un pedido
+     *
+     * @param Type $var 
+     * @return type void view
+     * @throws conditon
+     **/
+    public function detalleCambiosPedido($idcambio, $cod_pedido) {
+        
+        if ($this->session->clientes == 1) {
+            
+            $data['session'] = $this->session;
+            $data['detalleCambio'] = $this->pedidoCambiosModel->_getCambioPedido($idcambio);
+            $data['detalleCambioAnterior'] = null;
+            $data['pedido'] = null;
+
+            if ($data['detalleCambio']) {
+                $data['detalleCambioAnterior'] = $this->pedidoCambiosModel->_getCambioAnteriorPedido($idcambio);
+                $data['pedido'] = $this->pedidoModel->_getDatosPedido($data['detalleCambio']->idpedido);
+            }
+
+            $data['title'] = 'Pedidos';
+            $data['codigo'] = $cod_pedido;
+            
+            $data['subtitle'] = $data['pedido'] ? 'Detalle del cambio del pedido: '.$data['pedido']->cod_pedido : 'Detalle del cambio del pedido';
+            $data['main_content'] = 'ventas/cambios_pedido';
             return view('dashboard/index', $data);
 
         }else{
