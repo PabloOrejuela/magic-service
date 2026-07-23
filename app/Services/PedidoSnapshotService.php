@@ -8,52 +8,121 @@ use App\Models\AttrExtArregModel;
 
 class PedidoSnapshotService {
 
-    
+    protected $pedidoModel;
+    protected $detallePedidoModel;
+    protected $attrExtArregModel;
 
-    public function generar($idpedido, $datos, $detalle) {
 
-        //Dependencias
+    public function __construct()
+    {
         $this->pedidoModel = new PedidoModel();
         $this->detallePedidoModel = new DetallePedidoModel();
         $this->attrExtArregModel = new AttrExtArregModel();
+    }
 
-        // 1. Pedido
-        $pedido = $this->pedidoModel->find($idpedido);
-        $pedido->procedencia = $datos['procedencia'];
-        $pedido->horario_extra = $datos['horario_extra'];
-        $pedido->cargo_domingo = $datos['cargo_domingo'];
 
-        // 3. IDs detalle
-        $idsDetalle = array_column($detalle, 'id');
+    /**
+     * Genera snapshot completo del estado actual del pedido
+     */
+    public function generar($idpedido, $datos, $detalle, $clienteActual = null)
+    {
 
-        // 4. Atributos (si hay)
-        $atributosPorDetalle = [];
+        /*
+         * Pedido actual
+         */
+        $pedidoActual = $this->pedidoModel->find($idpedido);
 
-        if (!empty($idsDetalle)) {
-            $atributos = $this->attrExtArregModel
-                ->whereIn('iddetalle', $idsDetalle)
-                ->findAll();
 
-            foreach ($atributos as $attr) {
-                $atributosPorDetalle[$attr->iddetalle] = $attr;
+        if (!$pedidoActual) {
+            return json_encode([]);
+        }
+
+
+        /*
+         * Campos que vienen del formulario y todavía
+         * no están persistidos en el modelo
+         */
+        $pedidoActual->procedencia = $datos['procedencia'] ?? null;
+        $pedidoActual->horario_extra = $datos['horario_extra'] ?? null;
+        $pedidoActual->cargo_domingo = $datos['cargo_domingo'] ?? null;
+
+
+        /*
+         * Detalle actual con atributos
+         */
+        $detalleActual = $this->normalizarDetalle($detalle);
+
+
+        foreach ($detalleActual as &$item) {
+
+            $idDetalle = null;
+
+            if (isset($item->iddetalle)) {
+                $idDetalle = $item->iddetalle;
+            } elseif(isset($item->id)) {
+                $idDetalle = $item->id;
+            }
+
+
+            if ($idDetalle) {
+
+                $atributos = $this->attrExtArregModel
+                    ->where('iddetalle', $idDetalle)
+                    ->findAll();
+
+                $item->atributos = $atributos;
+            } else {
+
+                $item->atributos = [];
+
             }
         }
 
-        // 5. Inyectar atributos en detalle
-        foreach ($detalle as $item) {
-            $item->atributos = $atributosPorDetalle[$item->id] ?? null;
-        }
 
-        // 6. Estructura final
+        /*
+         * Snapshot final
+         */
         $snapshot = [
-            'pedido'  => $pedido,
-            'detalle' => $detalle
+            'pedido' => $pedidoActual,
+            'cliente' => $clienteActual,
+            'detalle' => $detalleActual
         ];
 
-        // 7. JSON
+
         return json_encode(
             $snapshot,
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         );
     }
+
+
+
+    private function normalizarDetalle($detalle)
+    {
+        $resultado = [];
+
+
+        if (empty($detalle)) {
+            return $resultado;
+        }
+
+
+        foreach ($detalle as $item) {
+
+            if (is_array($item)) {
+
+                $resultado[] = (object)$item;
+
+            } elseif(is_object($item)) {
+
+                $resultado[] = $item;
+
+            }
+
+        }
+
+
+        return $resultado;
+    }
+
 }
