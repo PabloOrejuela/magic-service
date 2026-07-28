@@ -6,6 +6,12 @@ use App\Models\PedidoModel;
 use App\Models\DetallePedidoModel;
 use App\Models\AttrExtArregModel;
 use App\Models\ProductoModel;
+use App\Models\EstadoPedidoModel;
+use App\Models\SectoresEntregaModel;
+use App\Models\HorariosEntregaModel;
+use App\Models\FormaPagoModel;
+use App\Models\BancoModel;
+use App\Models\ProcedenciaModel;
 
 class PedidoSnapshotService {
 
@@ -13,6 +19,12 @@ class PedidoSnapshotService {
     protected $detallePedidoModel;
     protected $attrExtArregModel;
     protected $productoModel;
+    protected $estadoPedidoModel;
+    protected $sectoresEntregaModel;
+    protected $horariosEntregaModel;
+    protected $formaPagoModel;
+    protected $bancoModel;
+    protected $procedenciaModel;
 
 
     public function __construct()
@@ -21,6 +33,12 @@ class PedidoSnapshotService {
         $this->detallePedidoModel = new DetallePedidoModel();
         $this->attrExtArregModel = new AttrExtArregModel();
         $this->productoModel = new ProductoModel();
+        $this->estadoPedidoModel = new EstadoPedidoModel();
+        $this->sectoresEntregaModel = new SectoresEntregaModel();
+        $this->horariosEntregaModel = new HorariosEntregaModel();
+        $this->formaPagoModel = new FormaPagoModel();
+        $this->bancoModel = new BancoModel();
+        $this->procedenciaModel = new ProcedenciaModel();
     }
 
 
@@ -48,6 +66,7 @@ class PedidoSnapshotService {
         $pedidoActual->procedencia = $datos['procedencia'] ?? null;
         $pedidoActual->horario_extra = $datos['horario_extra'] ?? null;
         $pedidoActual->cargo_domingo = $datos['cargo_domingo'] ?? null;
+        $this->resolverValoresRelacionadosPedido($pedidoActual);
 
 
         /*
@@ -347,6 +366,56 @@ class PedidoSnapshotService {
 
 
         return $resultado;
+    }
+
+    private function resolverValoresRelacionadosPedido($pedido): void
+    {
+        $pedido->estado = $this->obtenerValorRelacionado(
+            $this->estadoPedidoModel,
+            $pedido->estado ?? null,
+            'estado'
+        );
+        $pedido->sector = $this->obtenerValorRelacionado(
+            $this->sectoresEntregaModel,
+            $pedido->sector ?? null,
+            'sector'
+        );
+        $pedido->horario_entrega = $this->obtenerValorRelacionado(
+            $this->horariosEntregaModel,
+            $pedido->horario_entrega ?? null,
+            'hora'
+        );
+        $pedido->formas_pago = $this->obtenerValorRelacionado(
+            $this->formaPagoModel,
+            $pedido->formas_pago ?? null,
+            'forma_pago'
+        );
+        $pedido->banco = $this->obtenerValorRelacionado(
+            $this->bancoModel,
+            $pedido->banco ?? null,
+            'banco',
+            'NO ASIGNADO'
+        );
+        $pedido->procedencia = $this->obtenerValorRelacionado(
+            $this->procedenciaModel,
+            $pedido->procedencia ?? null,
+            'procedencia'
+        );
+    }
+
+    private function obtenerValorRelacionado($modelo, $id, string $campo, $valorParaCero = null)
+    {
+        if ($id === 0 || $id === '0') {
+            return $valorParaCero ?? $id;
+        }
+
+        if ($id === null || $id === '') {
+            return $id;
+        }
+
+        $registro = $modelo->find($id);
+
+        return $registro && isset($registro->{$campo}) ? $registro->{$campo} : $id;
     }
 
 }
