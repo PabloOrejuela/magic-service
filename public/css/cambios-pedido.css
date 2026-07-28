@@ -20,6 +20,14 @@
     font-weight: 600;
 }
 
+.cambios-pedido-cabecera {
+    padding: 1.25rem;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-left: 0.3rem solid #0d6efd;
+    border-radius: 0.375rem;
+}
+
 .cambios-pedido-seccion {
     margin: 0 0 0.75rem;
     color: #343a40;
@@ -39,4 +47,25 @@
     border-color: #dee2e6;
     color: #212529;
     cursor: default;
+}
+
+.cambios-pedido-detalle {
+    display: grid;
+    gap: 1rem;
+}
+
+.cambio-detalle-item {
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+}
+
+.cambio-detalle-titulo {
+    margin: 0 0 1rem;
+    padding-bottom: 0.75rem;
+    color: #0d6efd;
+    font-size: 1rem;
+    font-weight: 700;
+    border-bottom: 1px solid #e9ecef;
 }

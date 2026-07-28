@@ -25,20 +25,18 @@
         return (string) $valor;
     };
 
-    $renderizarCampos = static function ($datos, $ruta = '', $numerarIndicesDesdeUno = false) use (&$renderizarCampos, $formatearEtiqueta, $formatearValor): string {
+    $renderizarCampos = static function ($datos, $ruta = '', $identificador = '') use (&$renderizarCampos, $formatearEtiqueta, $formatearValor): string {
         $html = '';
-        $indiceVisual = 1;
 
         foreach ($datos as $clave => $valor) {
-            $etiquetaClave = $numerarIndicesDesdeUno ? (string) $indiceVisual++ : $clave;
-            $nombreCampo = $ruta === '' ? $formatearEtiqueta($etiquetaClave) : $ruta . ' / ' . $formatearEtiqueta($etiquetaClave);
+            $nombreCampo = $ruta === '' ? $formatearEtiqueta($clave) : $ruta . ' / ' . $formatearEtiqueta($clave);
 
             if (is_array($valor)) {
-                $html .= $renderizarCampos($valor, $nombreCampo);
+                $html .= $renderizarCampos($valor, $nombreCampo, $identificador);
                 continue;
             }
 
-            $idCampo = 'diff-' . str_replace([' ', '/'], '-', strtolower($nombreCampo));
+            $idCampo = 'diff-' . str_replace([' ', '/'], '-', strtolower(trim($identificador . '-' . $nombreCampo, '-')));
             $html .= '<div class="col-12">';
             $html .= '<div class="row align-items-center">';
             $html .= '<label class="col-md-4 col-form-label" for="' . esc($idCampo) . '">' . esc($nombreCampo) . '</label>';
@@ -66,21 +64,19 @@
 
                         <?php if ($detalleCambio): ?>
                             <h4 class="cambios-pedido-seccion">PEDIDO</h4>
-                            <div class="card bg-light border-0 mb-4">
-                                <div class="card-body py-3">
-                                    <div class="row g-3">
-                                        <div class="col-12 col-md-4">
-                                            <span class="cambio-meta-label">Código del pedido</span>
-                                            <div class="cambio-meta-value"><?= esc($pedido->cod_pedido ?? ''); ?></div>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <span class="cambio-meta-label">Fecha del cambio</span>
-                                            <div class="cambio-meta-value"><?= esc($detalleCambio->fecha ?? ''); ?></div>
-                                        </div>
-                                        <div class="col-12 col-md-4">
-                                            <span class="cambio-meta-label">Usuario</span>
-                                            <div class="cambio-meta-value"><?= esc($detalleCambio->nombre ?? ''); ?></div>
-                                        </div>
+                            <div class="cambios-pedido-cabecera mb-4">
+                                <div class="row g-3">
+                                    <div class="col-12 col-md-4">
+                                        <span class="cambio-meta-label">Código del pedido</span>
+                                        <div class="cambio-meta-value"><?= esc($pedido->cod_pedido ?? ''); ?></div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <span class="cambio-meta-label">Fecha del cambio</span>
+                                        <div class="cambio-meta-value"><?= esc($detalleCambio->fecha ?? ''); ?></div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <span class="cambio-meta-label">Usuario</span>
+                                        <div class="cambio-meta-value"><?= esc($detalleCambio->nombre ?? ''); ?></div>
                                     </div>
                                 </div>
                             </div>
@@ -101,8 +97,17 @@
 
                                 <?php if (!empty($diff['detalle'])): ?>
                                     <h4 class="cambios-pedido-seccion">DETALLE</h4>
-                                    <div class="row g-3 cambios-pedido-formulario">
-                                        <?= $renderizarCampos($diff['detalle'], '', true); ?>
+                                    <div class="cambios-pedido-detalle">
+                                        <?php $indiceDetalle = 1; ?>
+                                        <?php foreach ($diff['detalle'] as $cambioDetalle): ?>
+                                            <article class="cambio-detalle-item">
+                                                <h5 class="cambio-detalle-titulo">Ítem <?= esc($indiceDetalle); ?></h5>
+                                                <div class="row g-3 cambios-pedido-formulario">
+                                                    <?= $renderizarCampos(is_array($cambioDetalle) ? $cambioDetalle : ['valor' => $cambioDetalle], '', 'detalle-'.$indiceDetalle); ?>
+                                                </div>
+                                            </article>
+                                            <?php $indiceDetalle++; ?>
+                                        <?php endforeach; ?>
                                     </div>
                                 <?php endif; ?>
                             <?php else: ?>
