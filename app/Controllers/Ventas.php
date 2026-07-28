@@ -298,12 +298,13 @@ class Ventas extends BaseController {
 
         $id =  strtoupper($this->request->getPostGet('id'));
         $campo = $this->request->getPostGet('campo');
+        $actualizado = false;
 
         //Verfica si tiene datos en la tabla
         $verifica = $this->attrExtArregModel->where('iddetalle', $id)->first();
         if ($verifica) {
             
-            $this->attrExtArregModel
+            $actualizado = $this->attrExtArregModel
                     ->where('iddetalle', $id)
                     ->set([$campo => strtoupper($this->request->getPostGet('valor'))])
                     ->update();
@@ -312,7 +313,11 @@ class Ventas extends BaseController {
                 'iddetalle' => $id,
                 $campo => strtoupper($this->request->getPostGet('valor')),
             ];
-            $this->attrExtArregModel->insert($prod);
+            $actualizado = $this->attrExtArregModel->insert($prod);
+        }
+
+        if ($actualizado) {
+            $this->guardarHistorialCambioAtributo($id);
         }
         
         return true;
@@ -1234,6 +1239,38 @@ class Ventas extends BaseController {
             'detalle' => $datosJson,
             'diff' => $diffJson
         ]);
+    }
+
+    private function guardarHistorialCambioAtributo($iddetalle): void {
+        $detalleModificado = $this->detallePedidoModel->find($iddetalle);
+        if (!$detalleModificado || empty($detalleModificado->idpedido)) {
+            return;
+        }
+
+        $idpedido = $detalleModificado->idpedido;
+        $pedido = $this->pedidoModel->find($idpedido);
+        if (!$pedido) {
+            return;
+        }
+
+        $cliente = !empty($pedido->idcliente)
+            ? $this->clienteModel->find($pedido->idcliente)
+            : null;
+        $detalle = $this->detallePedidoModel->where('idpedido', $idpedido)->findAll();
+        $datosPedido = [];
+        $procedencia = $this->pedidoProcedenciaModel->where('idpedidos', $idpedido)->first();
+
+        if ($procedencia) {
+            $datosPedido['procedencia'] = $procedencia->idprocedencia;
+        }
+
+        $this->guardarHistorialPedido(
+            new \App\Services\PedidoSnapshotService(),
+            $idpedido,
+            $datosPedido,
+            $detalle,
+            $cliente
+        );
     }
 
     function actualizoProcedenciaPedido($pedido){

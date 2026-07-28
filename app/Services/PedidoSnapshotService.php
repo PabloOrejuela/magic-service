@@ -66,9 +66,15 @@ class PedidoSnapshotService {
          * Campos que vienen del formulario y todavía
          * no están persistidos en el modelo
          */
-        $pedidoActual->procedencia = $datos['procedencia'] ?? null;
-        $pedidoActual->horario_extra = $datos['horario_extra'] ?? null;
-        $pedidoActual->cargo_domingo = $datos['cargo_domingo'] ?? null;
+        if (array_key_exists('procedencia', $datos)) {
+            $pedidoActual->procedencia = $datos['procedencia'];
+        }
+        if (array_key_exists('horario_extra', $datos)) {
+            $pedidoActual->horario_extra = $datos['horario_extra'];
+        }
+        if (array_key_exists('cargo_domingo', $datos)) {
+            $pedidoActual->cargo_domingo = $datos['cargo_domingo'];
+        }
         $this->resolverValoresRelacionadosPedido($pedidoActual);
 
 

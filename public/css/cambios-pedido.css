@@ -69,3 +69,18 @@
     font-weight: 700;
     border-bottom: 1px solid #e9ecef;
 }
+
+.cambios-pedido-subseccion{
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: .75rem;
+}
+
+.cambio-atributo {
+    background: #fafafa;
+    border: 1px solid #ececec;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
