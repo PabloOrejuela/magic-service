@@ -63,6 +63,7 @@
                         </div>
 
                         <?php if ($detalleCambio): ?>
+                            <h4 class="cambios-pedido-seccion">PEDIDO</h4>
                             <div class="card bg-light border-0 mb-4">
                                 <div class="card-body py-3">
                                     <div class="row g-3">
@@ -83,9 +84,25 @@
                             </div>
 
                             <?php if ($diff): ?>
-                                <div class="row g-3 cambios-pedido-formulario">
-                                    <?= $renderizarCampos($diff); ?>
-                                </div>
+                                <?php if (!empty($diff['pedido'])): ?>
+                                    <div class="row g-3 cambios-pedido-formulario mb-4">
+                                        <?= $renderizarCampos($diff['pedido']); ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (!empty($diff['cliente'])): ?>
+                                    <h4 class="cambios-pedido-seccion">CLIENTE</h4>
+                                    <div class="row g-3 cambios-pedido-formulario mb-4">
+                                        <?= $renderizarCampos($diff['cliente']); ?>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if (!empty($diff['detalle'])): ?>
+                                    <h4 class="cambios-pedido-seccion">DETALLE</h4>
+                                    <div class="row g-3 cambios-pedido-formulario">
+                                        <?= $renderizarCampos($diff['detalle']); ?>
+                                    </div>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <div class="alert alert-info mb-4" role="alert">
                                     No se registraron diferencias para este cambio.

@@ -112,9 +112,16 @@ class PedidoSnapshotService {
             return json_encode([]);
         }
 
+        $snapshotActual = $this->omitirCamposAuditoria($snapshotActual);
+
         $snapshotAnterior = is_string($snapshotAnteriorJson)
             ? json_decode($snapshotAnteriorJson, true)
             : null;
+
+        if (is_array($snapshotAnterior)) {
+            $snapshotAnterior = $this->omitirCamposAuditoria($snapshotAnterior);
+        }
+
         if (!is_array($snapshotAnterior)) {
             return json_encode(
                 $snapshotActual,
@@ -129,6 +136,22 @@ class PedidoSnapshotService {
             $diff === $sinCambios ? [] : $diff,
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         );
+    }
+
+    private function omitirCamposAuditoria(array $datos): array
+    {
+        foreach ($datos as $clave => $valor) {
+            if (in_array($clave, ['created_at', 'updated_at'], true)) {
+                unset($datos[$clave]);
+                continue;
+            }
+
+            if (is_array($valor)) {
+                $datos[$clave] = $this->omitirCamposAuditoria($valor);
+            }
+        }
+
+        return $datos;
     }
 
     private function obtenerDiferencias($anterior, $actual, $sinCambios)
