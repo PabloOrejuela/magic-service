@@ -26,66 +26,53 @@
     };
 
     $renderizarCampos = static function ($datos, $ruta = '', $identificador = '') use (&$renderizarCampos, $formatearEtiqueta, $formatearValor): string {
-    $html = '';
+        $html = '';
 
-    foreach ($datos as $clave => $valor) {
+        foreach ($datos as $clave => $valor) {
 
-        // Mostrar "Atributos" como subsección
-        if ($clave === 'atributos' && is_array($valor)) {
+            // Mostrar "Atributos" como subsección
+            if ($clave === 'atributos' && is_array($valor)) {
 
-            $html .= '<div class="col-12 mt-3">';
-            $html .= '<h6 class="cambios-pedido-subseccion">Atributos</h6>';
-            $html .= '</div>';
-
-            $indice = 1;
-
-            foreach ($valor as $atributo) {
+                $html .= '<div class="col-12 mt-3">';
+                $html .= '<h6 class="cambios-pedido-subseccion">Atributos</h6>';
+                $html .= '</div>';
 
                 $html .= '<div class="col-12">';
                 $html .= '<div class="cambio-atributo">';
-
-                if (count($valor) > 1) {
-                    $html .= '<strong class="mb-3">Atributo ' . $indice . '</strong>';
-                }
-
                 $html .= '<div class="row g-3 cambios-pedido-formulario">';
                 $html .= $renderizarCampos(
-                    is_array($atributo) ? $atributo : ['valor' => $atributo],
+                    $valor,
                     '',
-                    $identificador . '-atributo-' . $indice
+                    $identificador . '-atributos'
                 );
                 $html .= '</div>';
-
                 $html .= '</div>';
                 $html .= '</div>';
 
-                $indice++;
+                continue;
             }
 
-            continue;
+            $nombreCampo = $ruta === '' ? $formatearEtiqueta($clave) : $ruta . ' / ' . $formatearEtiqueta($clave);
+
+            if (is_array($valor)) {
+                $html .= $renderizarCampos($valor, $nombreCampo, $identificador);
+                continue;
+            }
+
+            $idCampo = 'diff-' . str_replace([' ', '/'], '-', strtolower(trim($identificador . '-' . $nombreCampo, '-')));
+
+            $html .= '<div class="col-12">';
+            $html .= '<div class="row align-items-center">';
+            $html .= '<label class="col-md-4 col-form-label" for="' . esc($idCampo) . '">' . esc($nombreCampo) . '</label>';
+            $html .= '<div class="col-md-8">';
+            $html .= '<input type="text" class="form-control" id="' . esc($idCampo) . '" value="' . esc($formatearValor($valor)) . '" readonly>';
+            $html .= '</div>';
+            $html .= '</div>';
+            $html .= '</div>';
         }
 
-        $nombreCampo = $ruta === '' ? $formatearEtiqueta($clave) : $ruta . ' / ' . $formatearEtiqueta($clave);
-
-        if (is_array($valor)) {
-            $html .= $renderizarCampos($valor, $nombreCampo, $identificador);
-            continue;
-        }
-
-        $idCampo = 'diff-' . str_replace([' ', '/'], '-', strtolower(trim($identificador . '-' . $nombreCampo, '-')));
-
-        $html .= '<div class="col-12">';
-        $html .= '<div class="row align-items-center">';
-        $html .= '<label class="col-md-4 col-form-label" for="' . esc($idCampo) . '">' . esc($nombreCampo) . '</label>';
-        $html .= '<div class="col-md-8">';
-        $html .= '<input type="text" class="form-control" id="' . esc($idCampo) . '" value="' . esc($formatearValor($valor)) . '" readonly>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-    }
-
-    return $html;
-};
+        return $html;
+    };
 ?>
 
 <section class="content">

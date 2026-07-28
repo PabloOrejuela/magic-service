@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -14,7 +14,8 @@ use App\Models\BancoModel;
 use App\Models\ProcedenciaModel;
 use App\Models\UsuarioModel;
 
-class PedidoSnapshotService {
+class PedidoSnapshotService
+{
 
     protected $pedidoModel;
     protected $detallePedidoModel;
@@ -83,29 +84,26 @@ class PedidoSnapshotService {
          */
         $detalleActual = $this->normalizarDetalle($detalle);
 
-
         foreach ($detalleActual as &$item) {
 
             $idDetalle = null;
 
             if (isset($item->iddetalle)) {
                 $idDetalle = $item->iddetalle;
-            } elseif(isset($item->id)) {
+            } elseif (isset($item->id)) {
                 $idDetalle = $item->id;
             }
-
 
             if ($idDetalle) {
 
                 $atributos = $this->attrExtArregModel
                     ->where('iddetalle', $idDetalle)
-                    ->findAll();
+                    ->first();
 
-                $item->atributos = $atributos;
+                $item->atributos = $this->limpiarAtributos($atributos);
             } else {
 
                 $item->atributos = [];
-
             }
 
             $item->producto = $this->obtenerNombreProducto((array) $item);
@@ -126,6 +124,39 @@ class PedidoSnapshotService {
             $snapshot,
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         );
+    }
+
+    private function limpiarAtributos($atributos): array
+    {
+        if (!$atributos) {
+            return [];
+        }
+
+        $datos = (array) $atributos;
+
+        // Campos técnicos que nunca deben formar parte del snapshot
+        unset(
+            $datos['id'],
+            $datos['iddetalle'],
+            $datos['created_at'],
+            $datos['updated_at']
+        );
+
+        // Eliminar atributos sin valor
+        foreach ($datos as $campo => $valor) {
+
+            if ($valor === null) {
+                unset($datos[$campo]);
+                continue;
+            }
+
+            if (is_string($valor) && trim($valor) === '') {
+                unset($datos[$campo]);
+                continue;
+            }
+        }
+
+        return $datos;
     }
 
     /**
@@ -364,13 +395,10 @@ class PedidoSnapshotService {
             if (is_array($item)) {
 
                 $resultado[] = (object)$item;
-
-            } elseif(is_object($item)) {
+            } elseif (is_object($item)) {
 
                 $resultado[] = $item;
-
             }
-
         }
 
 
@@ -436,5 +464,4 @@ class PedidoSnapshotService {
 
         return $registro && isset($registro->{$campo}) ? $registro->{$campo} : $id;
     }
-
 }
