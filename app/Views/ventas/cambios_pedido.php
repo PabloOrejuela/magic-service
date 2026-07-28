@@ -25,11 +25,13 @@
         return (string) $valor;
     };
 
-    $renderizarCampos = static function ($datos, $ruta = '') use (&$renderizarCampos, $formatearEtiqueta, $formatearValor): string {
+    $renderizarCampos = static function ($datos, $ruta = '', $numerarIndicesDesdeUno = false) use (&$renderizarCampos, $formatearEtiqueta, $formatearValor): string {
         $html = '';
+        $indiceVisual = 1;
 
         foreach ($datos as $clave => $valor) {
-            $nombreCampo = $ruta === '' ? $formatearEtiqueta($clave) : $ruta . ' / ' . $formatearEtiqueta($clave);
+            $etiquetaClave = $numerarIndicesDesdeUno ? (string) $indiceVisual++ : $clave;
+            $nombreCampo = $ruta === '' ? $formatearEtiqueta($etiquetaClave) : $ruta . ' / ' . $formatearEtiqueta($etiquetaClave);
 
             if (is_array($valor)) {
                 $html .= $renderizarCampos($valor, $nombreCampo);
@@ -100,7 +102,7 @@
                                 <?php if (!empty($diff['detalle'])): ?>
                                     <h4 class="cambios-pedido-seccion">DETALLE</h4>
                                     <div class="row g-3 cambios-pedido-formulario">
-                                        <?= $renderizarCampos($diff['detalle']); ?>
+                                        <?= $renderizarCampos($diff['detalle'], '', true); ?>
                                     </div>
                                 <?php endif; ?>
                             <?php else: ?>
