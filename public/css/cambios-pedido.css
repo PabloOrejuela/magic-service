@@ -1,0 +1,34 @@
+/* Vista de detalle de cambios de pedido */
+.cambios-pedido-card {
+    border: 0;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.cambio-meta-label {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: #6c757d;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.cambio-meta-value {
+    color: #212529;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.cambios-pedido-formulario .col-form-label {
+    color: #495057;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.cambios-pedido-formulario .form-control[readonly] {
+    background-color: #fff;
+    border-color: #dee2e6;
+    color: #212529;
+    cursor: default;
+}

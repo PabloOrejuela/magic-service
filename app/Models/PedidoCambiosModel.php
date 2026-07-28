@@ -40,6 +40,15 @@ class PedidoCambiosModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    /**
+     * Obtiene el último snapshot registrado para un pedido.
+     */
+    public function _getUltimoCambioPedido($idpedido){
+        return $this->where('idpedido', $idpedido)
+            ->orderBy('id', 'DESC')
+            ->first();
+    }
+
     function _getCambiosPedido($idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
@@ -62,7 +71,7 @@ class PedidoCambiosModel extends Model {
     function _getCambioPedido($idcambio){
         $builder = $this->db->table($this->table);
         $builder->select(
-            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,fecha,detalle,'
+            $this->table.'.id as id,idpedido,pedido_cambios.idusuario as idusuario,nombre,fecha,detalle,diff,'
             .$this->table.'.created_at,'.$this->table.'.updated_at'
         );
         $builder->join('usuarios', $this->table.'.idusuario = usuarios.id');

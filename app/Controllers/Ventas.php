@@ -1224,12 +1224,15 @@ class Ventas extends BaseController {
     
     private function guardarHistorialPedido($service, $idpedido, $pedido, $detalle, $clienteActual = null){
         $datosJson = $service->generar($idpedido, $pedido, $detalle, $clienteActual);
+        $cambioAnterior = $this->pedidoCambiosModel->_getUltimoCambioPedido($idpedido);
+        $diffJson = $service->generarDiff($cambioAnterior->detalle ?? null, $datosJson);
 
         $this->pedidoCambiosModel->insert([
             'idpedido' => $idpedido,
             'idusuario' => $this->session->id,
             'fecha' => date('Y-m-d H:i:s'),
-            'detalle' => $datosJson
+            'detalle' => $datosJson,
+            'diff' => $diffJson
         ]);
     }
 

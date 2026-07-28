@@ -95,6 +95,80 @@ class PedidoSnapshotService {
         );
     }
 
+    /**
+     * Devuelve un JSON con los valores del snapshot actual que cambiaron con
+     * respecto al snapshot anterior. Cuando no existe un snapshot anterior,
+     * el snapshot actual completo representa el estado inicial.
+     */
+    public function generarDiff($snapshotAnteriorJson, $snapshotActualJson)
+    {
+        if (!is_string($snapshotActualJson)) {
+            return json_encode([]);
+        }
+
+        $snapshotActual = json_decode($snapshotActualJson, true);
+
+        if (!is_array($snapshotActual)) {
+            return json_encode([]);
+        }
+
+        $snapshotAnterior = is_string($snapshotAnteriorJson)
+            ? json_decode($snapshotAnteriorJson, true)
+            : null;
+        if (!is_array($snapshotAnterior)) {
+            return json_encode(
+                $snapshotActual,
+                JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            );
+        }
+
+        $sinCambios = new \stdClass();
+        $diff = $this->obtenerDiferencias($snapshotAnterior, $snapshotActual, $sinCambios);
+
+        return json_encode(
+            $diff === $sinCambios ? [] : $diff,
+            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+        );
+    }
+
+    private function obtenerDiferencias($anterior, $actual, $sinCambios)
+    {
+        if (!is_array($anterior) || !is_array($actual)) {
+            return $anterior === $actual ? $sinCambios : $actual;
+        }
+
+        $diferencias = [];
+        $claves = array_unique(array_merge(array_keys($anterior), array_keys($actual)));
+
+        foreach ($claves as $clave) {
+            $existeAnterior = array_key_exists($clave, $anterior);
+            $existeActual = array_key_exists($clave, $actual);
+
+            if (!$existeActual) {
+                // El campo existía antes y fue eliminado del snapshot actual.
+                $diferencias[$clave] = null;
+                continue;
+            }
+
+            if (!$existeAnterior) {
+                $diferencias[$clave] = $actual[$clave];
+                continue;
+            }
+
+            $diferencia = $this->obtenerDiferencias(
+                $anterior[$clave],
+                $actual[$clave],
+                $sinCambios
+            );
+
+            if ($diferencia !== $sinCambios) {
+                $diferencias[$clave] = $diferencia;
+            }
+        }
+
+        return empty($diferencias) ? $sinCambios : $diferencias;
+    }
+
 
 
     private function normalizarDetalle($detalle)
