@@ -12,6 +12,7 @@ use App\Models\HorariosEntregaModel;
 use App\Models\FormaPagoModel;
 use App\Models\BancoModel;
 use App\Models\ProcedenciaModel;
+use App\Models\UsuarioModel;
 
 class PedidoSnapshotService {
 
@@ -25,6 +26,7 @@ class PedidoSnapshotService {
     protected $formaPagoModel;
     protected $bancoModel;
     protected $procedenciaModel;
+    protected $usuarioModel;
 
 
     public function __construct()
@@ -39,6 +41,7 @@ class PedidoSnapshotService {
         $this->formaPagoModel = new FormaPagoModel();
         $this->bancoModel = new BancoModel();
         $this->procedenciaModel = new ProcedenciaModel();
+        $this->usuarioModel = new UsuarioModel();
     }
 
 
@@ -400,6 +403,16 @@ class PedidoSnapshotService {
             $this->procedenciaModel,
             $pedido->procedencia ?? null,
             'procedencia'
+        );
+        $pedido->vendedor = $this->obtenerValorRelacionado(
+            $this->usuarioModel,
+            $pedido->vendedor ?? null,
+            'nombre'
+        );
+        $pedido->mensajero = $this->obtenerValorRelacionado(
+            $this->usuarioModel,
+            $pedido->mensajero ?? null,
+            'nombre'
         );
     }
 
