@@ -5,12 +5,14 @@ namespace App\Services;
 use App\Models\PedidoModel;
 use App\Models\DetallePedidoModel;
 use App\Models\AttrExtArregModel;
+use App\Models\ProductoModel;
 
 class PedidoSnapshotService {
 
     protected $pedidoModel;
     protected $detallePedidoModel;
     protected $attrExtArregModel;
+    protected $productoModel;
 
 
     public function __construct()
@@ -18,6 +20,7 @@ class PedidoSnapshotService {
         $this->pedidoModel = new PedidoModel();
         $this->detallePedidoModel = new DetallePedidoModel();
         $this->attrExtArregModel = new AttrExtArregModel();
+        $this->productoModel = new ProductoModel();
     }
 
 
@@ -76,6 +79,8 @@ class PedidoSnapshotService {
                 $item->atributos = [];
 
             }
+
+            $item->producto = $this->obtenerNombreProducto((array) $item);
         }
 
 
@@ -123,6 +128,8 @@ class PedidoSnapshotService {
         }
 
         if (!is_array($snapshotAnterior)) {
+            $snapshotActual = $this->limpiarDetalleInicial($snapshotActual);
+
             return json_encode(
                 $snapshotActual,
                 JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -154,6 +161,39 @@ class PedidoSnapshotService {
         return $datos;
     }
 
+    private function limpiarDetalleInicial(array $snapshot): array
+    {
+        if (!isset($snapshot['detalle']) || !is_array($snapshot['detalle'])) {
+            return $snapshot;
+        }
+
+        foreach ($snapshot['detalle'] as $indice => $item) {
+            if (is_array($item)) {
+                $snapshot['detalle'][$indice] = $this->limpiarValoresVacios($item);
+            }
+        }
+
+        return $snapshot;
+    }
+
+    private function limpiarValoresVacios(array $datos): array
+    {
+        foreach ($datos as $clave => $valor) {
+            if (is_array($valor)) {
+                $valor = $this->limpiarValoresVacios($valor);
+            }
+
+            if ($valor === null || (is_string($valor) && trim($valor) === '') || $valor === []) {
+                unset($datos[$clave]);
+                continue;
+            }
+
+            $datos[$clave] = $valor;
+        }
+
+        return $datos;
+    }
+
     private function obtenerDiferencias($anterior, $actual, $sinCambios)
     {
         if (!is_array($anterior) || !is_array($actual)) {
@@ -178,11 +218,9 @@ class PedidoSnapshotService {
                 continue;
             }
 
-            $diferencia = $this->obtenerDiferencias(
-                $anterior[$clave],
-                $actual[$clave],
-                $sinCambios
-            );
+            $diferencia = $clave === 'detalle'
+                ? $this->obtenerDiferenciasDetalle($anterior[$clave], $actual[$clave], $sinCambios)
+                : $this->obtenerDiferencias($anterior[$clave], $actual[$clave], $sinCambios);
 
             if ($diferencia !== $sinCambios) {
                 $diferencias[$clave] = $diferencia;
@@ -190,6 +228,95 @@ class PedidoSnapshotService {
         }
 
         return empty($diferencias) ? $sinCambios : $diferencias;
+    }
+
+    private function obtenerDiferenciasDetalle($detalleAnterior, $detalleActual, $sinCambios)
+    {
+        if (!is_array($detalleAnterior) || !is_array($detalleActual)) {
+            return $this->obtenerDiferencias($detalleAnterior, $detalleActual, $sinCambios);
+        }
+
+        $anterioresPorProducto = $this->mapearDetallePorProducto($detalleAnterior);
+        $actualesPorProducto = $this->mapearDetallePorProducto($detalleActual);
+        $diferencias = [];
+
+        foreach (array_unique(array_merge(array_keys($anterioresPorProducto), array_keys($actualesPorProducto))) as $idproducto) {
+            $existeAnterior = array_key_exists($idproducto, $anterioresPorProducto);
+            $existeActual = array_key_exists($idproducto, $actualesPorProducto);
+
+            if (!$existeAnterior) {
+                $diferencias[$idproducto] = array_merge(
+                    ['tipo' => 'Agregado'],
+                    $this->completarNombreProducto($actualesPorProducto[$idproducto])
+                );
+                continue;
+            }
+
+            if (!$existeActual) {
+                $diferencias[$idproducto] = array_merge(
+                    ['tipo' => 'Eliminado'],
+                    $this->completarNombreProducto($anterioresPorProducto[$idproducto])
+                );
+                continue;
+            }
+
+            $diferencia = $this->obtenerDiferencias(
+                $anterioresPorProducto[$idproducto],
+                $actualesPorProducto[$idproducto],
+                $sinCambios
+            );
+
+            if ($diferencia !== $sinCambios) {
+                $diferencias[$idproducto] = array_merge(
+                    [
+                        'tipo' => 'Modificado',
+                        'idproducto' => $actualesPorProducto[$idproducto]['idproducto'] ?? $idproducto,
+                        'producto' => $this->obtenerNombreProducto($actualesPorProducto[$idproducto]),
+                    ],
+                    $diferencia
+                );
+            }
+        }
+
+        return empty($diferencias) ? $sinCambios : $diferencias;
+    }
+
+    private function mapearDetallePorProducto(array $detalle): array
+    {
+        $resultado = [];
+
+        foreach ($detalle as $indice => $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+
+            $clave = isset($item['idproducto']) ? (string) $item['idproducto'] : 'indice-' . $indice;
+            $resultado[$clave] = $item;
+        }
+
+        return $resultado;
+    }
+
+    private function completarNombreProducto(array $detalle): array
+    {
+        $detalle['producto'] = $this->obtenerNombreProducto($detalle);
+
+        return $detalle;
+    }
+
+    private function obtenerNombreProducto(array $detalle): ?string
+    {
+        if (!empty($detalle['producto'])) {
+            return (string) $detalle['producto'];
+        }
+
+        if (empty($detalle['idproducto'])) {
+            return null;
+        }
+
+        $producto = $this->productoModel->find($detalle['idproducto']);
+
+        return $producto->producto ?? null;
     }
 
 
