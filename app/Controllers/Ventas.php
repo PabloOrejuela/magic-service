@@ -260,14 +260,53 @@ class Ventas extends BaseController {
         return true;
     }
 
-    function actualizarHoraSalidaPedido(){
+    private function registrarCambioPedido($idpedido) {
 
-        $hora_salida_pedido =  strtoupper($this->request->getPostGet('horaSalidaPedido'));
-        $cod_pedido =  strtoupper($this->request->getPostGet('codigoPedido'));
+        $pedido = $this->pedidoModel->find($idpedido);
 
-        if ($hora_salida_pedido != 0 && $hora_salida_pedido != '' ) {
-            $this->pedidoModel->_actualizarHoraSalidaPedido($hora_salida_pedido, $cod_pedido);
+        if (!$pedido) {
+            return;
         }
+
+        $cliente = null;
+
+        if (!empty($pedido->idcliente)) {
+            $cliente = $this->clienteModel->find($pedido->idcliente);
+        }
+
+        $detalle = $this->detallePedidoModel
+            ->where('idpedido', $idpedido)
+            ->findAll();
+
+        $service = new \App\Services\PedidoSnapshotService();
+
+        $this->guardarHistorialPedido(
+            $service,
+            $idpedido,
+            (array)$pedido,
+            $detalle,
+            $cliente
+        );
+    }
+
+    public function actualizarHoraSalidaPedido(){ 
+        
+        $idpedido = $this->request->getPostGet('idpedido');
+        $cod_pedido = strtoupper($this->request->getPostGet('codigoPedido'));
+        $hora_salida_pedido = strtoupper($this->request->getPostGet('horaSalidaPedido'));
+
+        if ($hora_salida_pedido != '' && $hora_salida_pedido != '0') {
+
+            // Actualizar la hora de salida
+            $this->pedidoModel->_actualizarHoraSalidaPedido(
+                $hora_salida_pedido,
+                $cod_pedido
+            );
+
+            // Registrar el cambio en el historial
+            $this->registrarCambioPedido($idpedido);
+        }
+
         return true;
     }
 
@@ -1054,7 +1093,8 @@ class Ventas extends BaseController {
         }
     }
 
-    public function pedido_update(){
+    public function pedido_update() {
+
 
         if ($this->session->ventas != 1) {
             return redirect()->to('logout');
@@ -1079,7 +1119,7 @@ class Ventas extends BaseController {
             'dir_entrega' => $this->request->getPostGet('dir_entrega'),
             'ubicacion' => $this->request->getPostGet('ubicacion'),
             'observaciones' => $this->request->getPostGet('observaciones'),
-                      
+
             'vendedor' => $this->request->getPostGet('vendedor'),
             'mensajero' => $this->request->getPostGet('mensajero'),
             'mensajero_extra' => $this->request->getPostGet('mensajero_extra'),
@@ -1089,8 +1129,8 @@ class Ventas extends BaseController {
             'banco' => $this->request->getPostGet('banco'),
             'ref_pago' => $this->request->getPostGet('ref_pago'),
             'observacion_pago' => $this->request->getPostGet('observacion_pago'),
-           
-            //TOTALES
+
+            // TOTALES
             'valor_neto' => $this->request->getPostGet('valor_neto'),
             'descuento' => $this->request->getPostGet('descuento'),
             'transporte' => $this->request->getPostGet('transporte'),
@@ -1109,7 +1149,7 @@ class Ventas extends BaseController {
         $clienteID = $this->request->getPostGet('idcliente');
         $cliente = $this->prepararDatosCliente();
 
-        //VALIDACIONES
+        // VALIDACIONES
         $this->validation->setRuleGroup('pedidoUpdate');
 
         if (!$this->validation->withRequest($this->request)->run()) {
@@ -1117,40 +1157,58 @@ class Ventas extends BaseController {
             return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
         }
 
-        $service = new \App\Services\PedidoSnapshotService();
-        $pedidoAnterior = $this->pedidoModel->find($idpedido);
-        $clienteAnterior = null;
-        if (!empty($pedidoAnterior->idcliente)) {
-            $clienteAnterior = $this->clienteModel->find($pedidoAnterior->idcliente);
-        }
-        $detalleAnterior = $this->detallePedidoModel->where('idpedido', $idpedido)->findAll();
+        $clienteExiste = $this->clienteModel
+            ->where('telefono', $cliente['telefono'])
+            ->find($clienteID);
 
-        $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($clienteID);
         $esClienteNuevo = !$clienteExiste;
 
-        $pedido['idcliente'] = $this->guardarClientePedido($cliente, $clienteID, $clienteExiste);
+        $pedido['idcliente'] = $this->guardarClientePedido(
+            $cliente,
+            $clienteID,
+            $clienteExiste
+        );
 
         if ($pedido) {
+
             $this->pedidoModel->_update($pedido);
 
-            if (isset($pedido['procedencia']) && $pedido['procedencia'] != '' && $pedido['procedencia'] != '0') {
+            if (
+                isset($pedido['procedencia']) &&
+                $pedido['procedencia'] != '' &&
+                $pedido['procedencia'] != '0'
+            ) {
                 $this->actualizoProcedenciaPedido($pedido);
             }
 
             $mensaje = 1;
+
         } else {
+
             $mensaje = 0;
+
         }
 
         if ($detalleTemporal) {
-            $detallePersistido = $this->sincronizarDetallePedido($idpedido, $detalleTemporal, $esClienteNuevo);
-            $this->guardarHistorialPedido($service, $idpedido, $pedido, $detallePersistido, $cliente);
+
+            $this->sincronizarDetallePedido(
+                $idpedido,
+                $detalleTemporal,
+                $esClienteNuevo
+            );
+
+            $this->registrarCambioPedido($idpedido);
+
             $mensaje = 1;
+
         } else {
+
             $mensaje = 0;
+
         }
 
         $this->session->set('mensaje', $mensaje);
+
         return redirect()->to('pedidos');
     }
 

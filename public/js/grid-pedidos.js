@@ -933,8 +933,11 @@ botonesHorariosEntrega.forEach(btn => {
 
 botonesHoraSalidaPedido.forEach(btn => {
     btn.addEventListener('click', function() {
-        let id = this.dataset.id;
-        let horaSalida = this.dataset.hora;
+        let idPedido = this.dataset.idpedido
+        let codPedido = this.dataset.codpedido
+        let horaSalida = this.dataset.hora
+
+        console.log(idPedido);
 
         if (horaSalida != 'REGISTRAR' && horaSalida != null) {
             document.querySelector('#hora_salida_pedido').value = horaSalida;
@@ -942,7 +945,8 @@ botonesHoraSalidaPedido.forEach(btn => {
             document.querySelector('#hora_salida_pedido').placeholder = 'Registrar hora de salida';
         }
         
-        document.querySelector('#codigo_pedido').value = id;
+        document.querySelector('#codigo_pedido').value = codPedido;
+        document.querySelector('#idpedido').value = idPedido;
         
         $('#horaSalidaModal').modal();
     });
@@ -1142,19 +1146,19 @@ function copyDataConfirmaPedido(id){
 }
 
 function actualizarHoraSalidaPedido(){
-
     
     $.ajax({
         type:"POST",
         //dataType:"html",
         data: { 
+            idpedido: document.getElementById('idpedido').value,
             horaSalidaPedido: document.getElementById('hora_salida_pedido').value, 
             codigoPedido: document.getElementById('codigo_pedido').value
         },
         url: "actualizarHoraSalidaPedido",
-        //data:"codigo="+valor,
+        
         beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
+            
         },
         success: function(data){
             

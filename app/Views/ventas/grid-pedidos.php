@@ -140,7 +140,8 @@
                                                             type="button" 
                                                             id="sector_'.$value->id.'" 
                                                             href="#" 
-                                                            data-id="'.$value->cod_pedido.'"
+                                                            data-idpedido="'.$value->id.'"
+                                                            data-codpedido="'.$value->cod_pedido.'"
                                                             data-hora="'.$value->hora_salida_pedido.'" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#horaSalidaModal">'.$value->hora_salida_pedido.'</a>
@@ -151,8 +152,9 @@
                                                             type="button" 
                                                             id="sector_'.$value->id.'" 
                                                             href="#" 
-                                                            data-id="'.$value->cod_pedido.'"
-                                                            data-horaSalida="REGISTRAR" 
+                                                            data-idpedido="'.$value->id.'"
+                                                            data-codpedido="'.$value->cod_pedido.'"
+                                                            data-hora="REGISTRAR" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#horaSalidaModal"
                                                         >
@@ -313,6 +315,7 @@
       </div>
       <div class="modal-body">
       <input class="form-control" type="hidden" name="idpedido" id="idpedido">
+      <input  type="hidden" name="cod_pedido" id="cod_pedido">
       <input class="form-control" type="text" name="hora_salida_pedido" id="hora_salida_pedido">
         
       </div>
