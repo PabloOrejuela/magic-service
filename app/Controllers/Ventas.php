@@ -1221,9 +1221,9 @@ class Ventas extends BaseController {
 
         return $this->detallePedidoModel->where('idpedido', $idpedido)->findAll();
     }
-
-    private function guardarHistorialPedido($service, $idpedido, $pedido, $detalle, $pedidoAnterior = null, $clienteAnterior = null, $clienteActual = null, $detalleAnterior = []){
-        $datosJson = $service->generar($idpedido, $pedido, $detalle, $pedidoAnterior, $clienteAnterior, $clienteActual, $detalleAnterior);
+    
+    private function guardarHistorialPedido($service, $idpedido, $pedido, $detalle, $clienteActual = null){
+        $datosJson = $service->generar($idpedido, $pedido, $detalle, $clienteActual);
 
         $this->pedidoCambiosModel->insert([
             'idpedido' => $idpedido,

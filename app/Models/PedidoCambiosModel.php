@@ -12,7 +12,7 @@ class PedidoCambiosModel extends Model {
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['idusuario', 'idpedido', 'fecha', 'detalle','created_at', 'updated_at'];
+    protected $allowedFields    = ['idusuario', 'idpedido', 'fecha', 'detalle','diff','created_at', 'updated_at'];
 
     protected bool $allowEmptyInserts = false;
 
