@@ -6,5 +6,5 @@
 
 <h5>Fixes</h5>
 <ul>
-    <li>Se corrigió un error en la vista reporte de cambios pues no salían los nombres de los atributos</li>
+    <li>Se corrigió un error que impedía el flujo de ejecución luego de activar ls funcionalidad de guardar historial al registrar la hora de salida</li>
 </ul>

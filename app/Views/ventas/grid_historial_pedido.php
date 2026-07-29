@@ -47,7 +47,7 @@
                             </tbody>
                         </table>
                         <div class="card-footer">
-                            <a href="<?= site_url(); ?>clientes" class="btn btn-light cancelar" id="btn-cancela">Cancelar y regresar a clientes</a>
+                            <a href="<?= site_url(); ?>pedidos" class="btn btn-light" id="btn-cancela">Cancelar y regresar a pedidos</a>
                         </div>
                     </div>
                 </div>

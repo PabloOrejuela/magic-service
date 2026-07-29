@@ -937,15 +937,13 @@ botonesHoraSalidaPedido.forEach(btn => {
         let codPedido = this.dataset.codpedido
         let horaSalida = this.dataset.hora
 
-        console.log(idPedido);
-
         if (horaSalida != 'REGISTRAR' && horaSalida != null) {
             document.querySelector('#hora_salida_pedido').value = horaSalida;
         } else {
             document.querySelector('#hora_salida_pedido').placeholder = 'Registrar hora de salida';
         }
         
-        document.querySelector('#codigo_pedido').value = codPedido;
+        document.querySelector('#cod_pedido').value = codPedido;
         document.querySelector('#idpedido').value = idPedido;
         
         $('#horaSalidaModal').modal();
@@ -1153,7 +1151,7 @@ function actualizarHoraSalidaPedido(){
         data: { 
             idpedido: document.getElementById('idpedido').value,
             horaSalidaPedido: document.getElementById('hora_salida_pedido').value, 
-            codigoPedido: document.getElementById('codigo_pedido').value
+            codigoPedido: document.getElementById('cod_pedido').value
         },
         url: "actualizarHoraSalidaPedido",
         
