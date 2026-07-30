@@ -2,16 +2,17 @@
 
 namespace App\Services;
 
-use App\Models\PedidoModel;
 use App\Models\DetallePedidoModel;
 use App\Models\AttrExtArregModel;
-use App\Models\ProductoModel;
 use App\Models\EstadoPedidoModel;
 use App\Models\SectoresEntregaModel;
 use App\Models\HorariosEntregaModel;
 use App\Models\FormaPagoModel;
 use App\Models\BancoModel;
+use App\Models\PedidoModel;
+use App\Models\PedidoProcedenciaModel;
 use App\Models\ProcedenciaModel;
+use App\Models\ProductoModel;
 use App\Models\UsuarioModel;
 
 class PedidoSnapshotService
@@ -27,6 +28,7 @@ class PedidoSnapshotService
     protected $formaPagoModel;
     protected $bancoModel;
     protected $procedenciaModel;
+    protected $pedidoProcedenciaModel;
     protected $usuarioModel;
 
 
@@ -42,6 +44,7 @@ class PedidoSnapshotService
         $this->formaPagoModel = new FormaPagoModel();
         $this->bancoModel = new BancoModel();
         $this->procedenciaModel = new ProcedenciaModel();
+        $this->pedidoProcedenciaModel = new PedidoProcedenciaModel();
         $this->usuarioModel = new UsuarioModel();
     }
 
@@ -62,6 +65,8 @@ class PedidoSnapshotService
             return json_encode([]);
         }
 
+        log_message('error', '===== SNAPSHOT DEBUG PEDIDO INICIAL =====');
+        log_message('error', print_r($pedidoActual, true));
 
         /*
          * Campos que vienen del formulario y todavía
@@ -76,7 +81,13 @@ class PedidoSnapshotService
         if (array_key_exists('cargo_domingo', $datos)) {
             $pedidoActual->cargo_domingo = $datos['cargo_domingo'];
         }
+
+        //PABLO: habria que borrar estas lineas de LOGS
+        log_message('error', '===== SNAPSHOT DEBUG DESPUES DATOS FORMULARIO =====');
+        log_message('error', print_r($pedidoActual, true));
         $this->resolverValoresRelacionadosPedido($pedidoActual);
+        log_message('error', '===== SNAPSHOT DEBUG DESPUES resolverValoresRelacionadosPedido =====');
+        log_message('error', print_r($pedidoActual, true));
 
 
         /*
@@ -119,11 +130,19 @@ class PedidoSnapshotService
             'detalle' => $detalleActual
         ];
 
+        log_message('error', '===== SNAPSHOT DEBUG FINAL ANTES JSON =====');
+        log_message('error', print_r($snapshot['pedido'], true));
 
-        return json_encode(
+        
+        $json =  json_encode(
             $snapshot,
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         );
+
+        log_message('error', '===== SNAPSHOT DEBUG JSON GENERADO =====');
+        log_message('error', $json);
+
+        return $json; 
     }
 
     private function limpiarAtributos($atributos): array
@@ -433,11 +452,23 @@ class PedidoSnapshotService
             'banco',
             'NO ASIGNADO'
         );
+
+        $pedidoProcedencia = $this->pedidoProcedenciaModel
+            ->where('idpedidos', $pedido->id)
+            ->first();
+
+       
+
+        $idProcedencia = $pedidoProcedencia ? $pedidoProcedencia->idprocedencia : null;
+
+        
+
         $pedido->procedencia = $this->obtenerValorRelacionado(
             $this->procedenciaModel,
-            $pedido->procedencia ?? null,
+            $idProcedencia,
             'procedencia'
         );
+
         $pedido->vendedor = $this->obtenerValorRelacionado(
             $this->usuarioModel,
             $pedido->vendedor ?? null,

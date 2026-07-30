@@ -226,6 +226,8 @@ class Ventas extends BaseController {
 
         if ($mensajero != 0 && $mensajero != NULL) {
             $this->pedidoModel->_actualizaMensajero($mensajero, $idpedido);
+            // Registrar cambio en historial
+            $this->registrarCambioPedido($idpedido);
         }
         
         return true;
@@ -234,15 +236,21 @@ class Ventas extends BaseController {
     function actualizarHorarioEntrega(){
 
         $idpedido = $this->request->getPostGet('idpedido');
-
-        $datos['rango_entrega_desde'] = $this->request->getPostGet('entregaDesde');
-        $datos['rango_entrega_hasta'] = $this->request->getPostGet('entregaHasta');
+        
+        $datos = [
+            'rango_entrega_desde' => $this->request->getPostGet('entregaDesde'),
+            'rango_entrega_hasta' => $this->request->getPostGet('entregaHasta'),
+        ];
         
         $this->pedidoModel->update($idpedido, $datos);
 
-        $data['entrega_desde'] = $datos['rango_entrega_desde'];
-        $data['entrega_hasta'] = $datos['rango_entrega_hasta'];
-        echo json_encode($data);
+        // Registrar cambio en historial
+        $this->registrarCambioPedido($idpedido);
+
+        echo json_encode([
+            'entrega_desde' => $datos['rango_entrega_desde'],
+            'entrega_hasta' => $datos['rango_entrega_hasta'],
+        ]);
     }
 
     function actualizarEstadoPedido(){
@@ -255,6 +263,8 @@ class Ventas extends BaseController {
         
         if ($estado_pedido != 0) {
             $this->pedidoModel->_actualizarEstadoPedido($estado_pedido, $idpedido, $orden);
+            // Registrar cambio en historial
+            $this->registrarCambioPedido($idpedido);
             
         }
         return true;
@@ -291,6 +301,7 @@ class Ventas extends BaseController {
 
     public function actualizarHoraSalidaPedido(){ 
         
+        //Estas variables llegan por AJAX por eso sus nombres
         $idpedido = $this->request->getPostGet('idpedido');
         $cod_pedido = strtoupper($this->request->getPostGet('codigoPedido'));
         $hora_salida_pedido = strtoupper($this->request->getPostGet('horaSalidaPedido'));
@@ -400,6 +411,8 @@ class Ventas extends BaseController {
         $idpedido =  $this->request->getPostGet('idpedido');
 
         $this->pedidoModel->_actualizaObservacionPedido($observacionPedido, $idpedido);
+        // Registrar cambio en historial
+        $this->registrarCambioPedido($idpedido);
 
         return true;
     }

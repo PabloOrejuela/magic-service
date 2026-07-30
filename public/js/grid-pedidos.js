@@ -955,8 +955,6 @@ btnObservacionPedido.forEach(btn => {
         let id = this.dataset.id;
         let observacion = this.dataset.observacion || '';
 
-        console.log(observacion);
-
         document.querySelector('#idpedido').value = id;
         document.querySelector('#observaciones').value = observacion;
         
@@ -1147,7 +1145,6 @@ function actualizarHoraSalidaPedido(){
     
     $.ajax({
         type:"POST",
-        //dataType:"html",
         data: { 
             idpedido: document.getElementById('idpedido').value,
             horaSalidaPedido: document.getElementById('hora_salida_pedido').value, 
@@ -1178,7 +1175,7 @@ function actualizaObservacionPedido(idpedido, observacionPedido){
         },
         url: "actualizaObservacionPedido",
         beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
+           
         },
         success: function(data){
             
@@ -1208,15 +1205,15 @@ function actualizaMensaje(){
     });
 }
 
-function actualizarMensajero(mensajero, codigo_pedido){
+function actualizarMensajero(mensajero, idpedido){
 
     $.ajax({
         type:"GET",
         dataType:"html",
-        url: "ventas/actualizaMensajero/"+mensajero+'/'+codigo_pedido,
-        //data:"codigo="+valor,
+        url: "ventas/actualizaMensajero/"+mensajero+'/'+idpedido,
+        
         beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
+            
         },
         success: function(data){
             alertaMensaje("Se ha cambiado el mensajero", "1000", "success")

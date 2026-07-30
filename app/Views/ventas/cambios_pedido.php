@@ -15,7 +15,7 @@
 
     $formatearValor = static function ($valor): string {
         if ($valor === null) {
-            return 'Eliminado';
+            return 'Ha sido Eliminado';
         }
 
         if (is_bool($valor)) {
