@@ -75,7 +75,7 @@ class Ventas extends BaseController {
                 $data['detalleCambioAnterior'] = $this->pedidoCambiosModel->_getCambioAnteriorPedido($idcambio);
                 $data['pedido'] = $this->pedidoModel->_getDatosPedido($data['detalleCambio']->idpedido);
             }
-            // echo '<pre>'.var_export($data['detalleCambioAnterior'], true).'</pre>';exit;
+            
             $data['title'] = 'Pedidos';
             $data['codigo'] = $cod_pedido;
             

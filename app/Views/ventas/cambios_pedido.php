@@ -13,9 +13,11 @@
         return ucwords(str_replace(['_', '-'], ' ', (string) $clave));
     };
 
-    $formatearValor = static function ($valor): string {
+    $esSnapshotInicial = empty($detalleCambioAnterior);
+
+    $formatearValor = static function ($valor) use ($esSnapshotInicial): string {
         if ($valor === null) {
-            return 'Ha sido Eliminado';
+            return $esSnapshotInicial ? '' : 'Ha sido Eliminado';
         }
 
         if (is_bool($valor)) {

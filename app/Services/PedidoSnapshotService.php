@@ -139,8 +139,11 @@ class PedidoSnapshotService
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         );
 
-        log_message('error', '===== SNAPSHOT DEBUG JSON GENERADO =====');
-        log_message('error', $json);
+        log_message('error', '===== TIPO OBSERVACION DEVOLUCION =====');
+        log_message('error', gettype($snapshot['pedido']->observacion_devolucion));
+
+        log_message('error', '===== VALOR OBSERVACION DEVOLUCION JSON =====');
+        log_message('error', json_encode($snapshot['pedido']->observacion_devolucion));
 
         return $json; 
     }

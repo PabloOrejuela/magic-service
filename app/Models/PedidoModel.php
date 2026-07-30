@@ -648,10 +648,6 @@ class PedidoModel extends Model {
             $builder->set('ubicacion', $data['ubicacion']); 
         }
 
-        if ($data['observaciones'] != 'NULL' && $data['observaciones'] != '') {
-            $builder->set('observaciones', $data['observaciones']); 
-        }
-
         if ($data['mensajero'] != 'NULL' && $data['mensajero'] != '') {
             $builder->set('mensajero', $data['mensajero']); 
         }
@@ -680,6 +676,7 @@ class PedidoModel extends Model {
             $builder->set('valor_mensajero_extra', '0.00'); 
         }
 
+        $builder->set('observaciones', $data['observaciones']); 
         $builder->set('observacion_pago', $data['observacion_pago']); 
         $builder->set('idnegocio', $data['idnegocio']); 
         $builder->set('updated_at', $updated_at); 
