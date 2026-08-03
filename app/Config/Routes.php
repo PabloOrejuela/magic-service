@@ -34,6 +34,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('detalle_pedido_insert_observacion_temp', 'Ventas::detalle_pedido_insert_observacion_temp');
     $routes->get('detalle-prod-insert_temp', 'Ventas::detalle_prod_insert_temp');
     $routes->get('detalle-prodnew-insert-temp', 'Ventas::detalle_prodnew_insert_temp');
+    $routes->get('detalle-cambios-pedido/(:num)/(:num)', 'Ventas::detalleCambiosPedido/$1/$2');
     $routes->get('estadistica-ventas', 'Ventas::estadisticaVentas');
     $routes->get('get_costo_horario', 'Ventas::get_costo_horario');
     $routes->get('getProductosAutocomplete', 'Ventas::getProductosAutocomplete');
@@ -42,17 +43,18 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('getHorasEntrega', 'Ventas::getHorasEntrega');
     $routes->get('get_valor_sector', 'Ventas::get_valor_sector');
     $routes->get('guarda-orden', 'Ventas::guardaOrden');
-    $routes->post('pedido-insert', 'Ventas::pedido_insert');
-    $routes->post('pedido-update', 'Ventas::pedido_update');
+    $routes->get('grid-historial-pedido/(:num)', 'Ventas::gridHistorialPedido/$1');
     $routes->get('pedido-edit/(:num)/(:any)', 'Ventas::pedido_edit/$1/$2');
     $routes->get('insertAttrArreglo', 'Ventas::insertAttrArreglo');
     $routes->get('imprimirTicket/(:num)/(:any)', 'Tickets::imprimirTicket/$1/$2');
-    //$routes->get('imprimirTicket', 'Tickets::imprimirTicket');
+    $routes->get('set-id-register', 'Ventas::setIdRegister');
     $routes->get('getDetallePedido_temp/(:num)', 'Ventas::getDetallePedido_temp/$1');
     $routes->get('product-edit/getItemsAutocomplete', 'Ventas::getItemsAutocomplete');
     $routes->get('getProducto/(:num)', 'Ventas::getProducto/$1');
     $routes->get('pedidos', 'Ventas::pedidos');
     $routes->get('pedidos-ventana', 'Ventas::pedidos_ventana');
+    $routes->post('pedido-insert', 'Ventas::pedido_insert');
+    $routes->post('pedido-update', 'Ventas::pedido_update');
     $routes->get('updateItemsTempProduct', 'Ventas::updateItemsTempProduct');
     $routes->get('updatePvpTempProduct', 'Ventas::updatePvpTempProduct');
     $routes->get('updatePrecioActualTempProduct', 'Ventas::updatePrecioActualTempProduct');
@@ -70,8 +72,6 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('ventas-getItemsProducto/(:num)', 'Ventas::getItemsProducto/$1');
     $routes->get('ventas/getEstadosPedido', 'Ventas::getEstadosPedido');
     $routes->get('ventas/getMensajeros', 'Ventas::getMensajeros');
-    $routes->get('grid-historial-pedido/(:num)', 'Ventas::gridHistorialPedido/$1');
-    $routes->get('detalle-cambios-pedido/(:num)/(:num)', 'Ventas::detalleCambiosPedido/$1/$2');
     $routes->post('ventas/clientes_select', 'Ventas::clientes_select');
     $routes->get('ventas/get_valor_producto/(:num)', 'Ventas::get_valor_producto/$1');
     $routes->get('ventas/get_valor_sector/(:num)', 'Ventas::get_valor_sector/$1');

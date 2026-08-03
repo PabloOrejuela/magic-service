@@ -148,7 +148,7 @@
                         <?php endif; ?>
 
                         <div class="mt-4 pt-3 border-top">
-                            <a href="<?= site_url('grid-historial-pedido/'.($pedido ? $pedido->id : 0)); ?>" class="btn btn-outline-secondary">
+                            <a href="<?= site_url('grid-historial-pedido/'.($pedido ? $pedido->id : 0)); ?>" class="btn btn-secondary">
                                 Volver al historial
                             </a>
                         </div>

@@ -200,7 +200,7 @@
                             </div>
                         </div>
 
-                        <a href="<?= site_url('prod-historial-changes/'.$producto->id); ?>" class="btn btn-light cancelar" id="btn-cancela">Volver al historial</a>
+                        <a href="<?= site_url('prod-historial-changes/'.$producto->id); ?>" class="btn-secondary" id="btn-cancela">Volver al historial2</a>
                     </div><!-- /.card-body -->
                 </div><!-- /.card-->
             </section>

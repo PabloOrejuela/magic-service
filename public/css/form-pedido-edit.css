@@ -91,3 +91,8 @@
 #valor_mensajero_extra{
     margin-top: 5px;
 }
+
+.registered_by{
+    color: #191185;
+    font-weight: bold;
+}

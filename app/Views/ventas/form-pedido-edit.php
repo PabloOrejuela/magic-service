@@ -22,17 +22,24 @@
                                 <form action="<?= site_url().'pedido-update';?>" method="post" data-modo="<?= $modo ?>" id="formUpdate">
                                     <?= form_hidden('idpedido', $pedido->id); ?>
                                     <?= form_hidden('estado', $pedido->estado); ?>
-                                    <div id="div-pedido">
-                                        <label for="cod_pedido">Pedido: </label>
-                                        <input 
-                                            type="text" 
-                                            class="form-control col-4" 
-                                            id="cod_pedido" 
-                                            name="cod_pedido"
-                                            maxlength="5"
-                                            value="<?= $pedido->cod_pedido; ?>"
-                                            readonly
-                                        >
+                                    <div class="col-12 row" id="div-pedido">
+                                        <div class="col-5 me-2">
+                                            <label for="cod_pedido">Pedido: </label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="cod_pedido" 
+                                                name="cod_pedido"
+                                                maxlength="5"
+                                                value="<?= $pedido->cod_pedido; ?>"
+                                                readonly
+                                            >
+                                        </div>
+                                        <div class="col-6">
+                                            <label>Ingresado por: </label>
+                                            <p class="registered_by"><?= $registered_by; ?></p>
+                                        </div>
+                                        
                                     </div>
                                     <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
                                     <div class="form-group row">

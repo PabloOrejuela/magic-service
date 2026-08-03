@@ -154,7 +154,7 @@
                 <?php endfor; ?>
             </div>
 
-            <button type="button" id="btn-agregar" class="btn btn-outline-success mb-3">+ Agregar otro gasto</button>
+            <button type="button" id="btn-agregar" class="btn btn-success mb-3">+ Agregar otro gasto</button>
             </div>
             <!-- /.card-body -->
 

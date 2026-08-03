@@ -42,6 +42,12 @@
               <p>Productos</p>
             </a>
           </li>
+          <li class="nav-item subItem">
+            <a href="'.base_url().'set-id-register" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Inserta id register</p>
+            </a>
+          </li>
         </ul>
       </li>';
     }

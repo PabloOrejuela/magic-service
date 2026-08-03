@@ -6,6 +6,9 @@ let selectNegocio = document.getElementById('negocio')
 let selectProveedores = document.getElementById('proveedor')
 let selectSucursal = document.getElementById('sucursal')
 
+let btnAgregar = document.getElementById('btn-agregar')
+btnAgregar.disabled = true
+
 const resetSelect = (select, placeholder) => {
     select.innerHTML = '';
     select.appendChild(new Option(placeholder, '0'));
@@ -84,11 +87,14 @@ const fetchJson = (url, method, data) => {
 }
 
 selectTipoGasto.addEventListener('change', function() {
+    
     if (selectTipoGasto.selectedIndex !== 0) {
+        
         if (selectTipoGasto.selectedIndex == 3) {
             divProveedores.style.display = 'block'
             divGastoVariable.style.display = 'none'
             divGastoFijo.style.display = 'none'
+            btnAgregar.disabled = false
 
             const idNegocio = selectNegocio.value;
 
@@ -108,15 +114,20 @@ selectTipoGasto.addEventListener('change', function() {
             divProveedores.style.display = 'none'
             divGastoFijo.style.display = 'none'
             divGastoVariable.style.display = 'block'
+            btnAgregar.disabled = false
+
         } else if (selectTipoGasto.selectedIndex == 1) {
+            //Acá debo hacer un arreglo
             divProveedores.style.display = 'none'
             divGastoVariable.style.display = 'none'
             divGastoFijo.style.display = 'block'
+            btnAgregar.disabled = true
         }
     } else {
         divProveedores.style.display = 'none'
         divGastoVariable.style.display = 'none'
         divGastoFijo.style.display = 'none'
+        btnAgregar.disabled = true
     }
 })
 

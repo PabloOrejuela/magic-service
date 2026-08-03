@@ -87,6 +87,25 @@ class Ventas extends BaseController {
             return redirect()->to('logout');
         }
     }
+    // INICIO TODO ESTE CÓDIGO DEBE SER BORRADO LUEGO DEL PROCESO DE SET ID DEL USUARIO QUE REGISTRA EL PEDIDO //
+    public function setIdRegister(){
+        $inicioBuscado = 1;
+        $contador = 0;
+        $iduser = null;
+        $pedidos = $this->pedidoModel->select('id,cod_pedido')->findAll();
+        foreach ($pedidos as $key => $pedido) {
+            if (strpos($pedido->cod_pedido, (string)$inicioBuscado) === 0) {
+                echo $pedido->cod_pedido.'<br>';
+
+                //Proceso
+                $this->pedidoModel->set('registered_by', $inicioBuscado)->where('id', $pedido->id)->update();
+                $contador++;
+            }
+        }
+        echo "El total es: ". $contador;
+    }
+
+    // FIN TODO ESTE CÓDIGO DEBE SER BORRADO LUEGO DEL PROCESO DE SET ID DEL USUARIO QUE REGISTRA EL PEDIDO //
 
     public function getNewCodPedido(){
         $idusuario = $this->session->id;
@@ -107,14 +126,12 @@ class Ventas extends BaseController {
             date_default_timezone_set('America/Guayaquil');
             $date = date('ymdHis');
 
-            //echo '<pre>'.var_export($data['session'], true).'</pre>';exit;
-            //Borramos temporal de pedidos
+            //Borro temporal de pedidos
             //PABLO: LOS PEDIDO QUE SE DEBEN BORRAR SON AQUELLOS QUE TIENEN ESTADO = TEMPORAL, DEBO ELIMINAR TODA INTERACCIÓN CON LA TABLA DETALLE TEMPORAL
             //$this->detallePedidoTempModel->_deleteDetallesTempOld();
 
             //Genero el COD DE PEDIDO
             $cod_pedido = $this->getNewCodPedido();
-            //echo '<pre>'.var_export($cod_pedido, true).'</pre>';exit;
 
             //Actualizo la tabla eliminando los pedidos que tienen estado temporal
             $this->pedidoModel->where('estado', 7)->where('vendedor', $this->session->id)->delete();
@@ -149,6 +166,7 @@ class Ventas extends BaseController {
             $data['cod_pedido'] = $this->session->codigo_pedido;
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
             $data['negocios'] = $this->negocioModel->where('id <=', 2)->findAll();
+            $data['registered_by'] = $this->usuarioModel->select('nombre')->first($this->session->id);
 
             $data['detalle'] = $this->detallePedidoTempModel->where('idpedido', $idPedidoInserted)->findAll();
 
@@ -956,6 +974,7 @@ class Ventas extends BaseController {
                 'valor_mensajero' => $this->request->getPostGet('valor_mensajero'),
                 'total' => $this->request->getPostGet('total'),
                 'idnegocio' => $this->request->getPostGet('negocio'),
+                'registered_by' => $this->session->id, 
 
                 //Data de el form editar
                 'dir_entrega' => '',
@@ -1409,17 +1428,16 @@ class Ventas extends BaseController {
         //recorro el arreglo de pedidos y actualizo la tabla detalle pedido donde coincida el cod_pedido
 
         foreach ($pedidos as $key => $pedido) {
-            //echo '<pre>'.var_export($pedido->cod_pedido, true).'</pre>';
+            
             $this->detallePedidoModel->where('cod_pedido', $pedido->cod_pedido)->set('idpedido', $pedido->id)->update();
-            //echo $this->db->getLastQuery();
+            ;
         }
     }
 
     public function pedidos() {
         
         if ($this->session->ventas == 1) {
-            //$this->insertIdPedido();  // PABLO: Borrar esta línea
-
+        
             //Eliminar los pedidos temporales de el usuario 
             $this->pedidoModel->where('vendedor', $this->session->id)->where('estado', 7)->delete();
 
@@ -1488,6 +1506,7 @@ class Ventas extends BaseController {
             $data['pedidoProcedencia'] = $this->pedidoProcedenciaModel->where('idpedidos', $data['pedido']->id)->first();
 
             $data['datosVendedor'] = $this->usuarioModel->select('id,nombre')->where('id', $data['pedido']->vendedor)->first();
+            $data['registered_by'] = $this->usuarioModel->select('nombre')->where('id', $data['pedido']->registered_by)->first() ?->nombre ?? 'NO ASIGNADO';
             
             $data['modo'] = $modo;
             $data['title']='Ventas';
