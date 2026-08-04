@@ -1445,6 +1445,9 @@ class Ventas extends BaseController {
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
             $data['formas_pago'] = $this->formaPagoModel->where('estado', '1')->findAll();
 
+            $idroles = $this->session->idroles;
+            $data['pedidos'] = $this->pedidoModel->_getPedidos($idroles);
+
             $data['nombresDias'] = $this->nombresDias;
             $data['title']='Pedidos';
             $data['subtitle']='Listado de pedidos';
@@ -1524,10 +1527,12 @@ class Ventas extends BaseController {
             
             $data['session'] = $this->session;
             $data['vendedores'] = $this->usuarioModel->_getUsuariosRol(4);
+            $idroles = $this->session->idroles;
+
             $data['formas_pago'] = $this->formaPagoModel->findAll();
-            $data['pedidos'] = $this->pedidoModel->_getPedidos();
+            $data['pedidos'] = $this->pedidoModel->_getPedidos($idroles);
             $data['mensajeros'] = $this->usuarioModel->where('idroles', 5)->where('estado', 1)->orderBy('nombre', 'asc')->findAll();
-            //echo '<pre>'.var_export($data['mensajeros'], true).'</pre>';exit;
+            
             $data['title']='Ventas';
             $data['subtitle']='Pedidos';
             $data['main_content']='ventas/grid-pedidos';

@@ -676,8 +676,7 @@ class PedidoModel extends Model {
             $builder->set('mensajero_extra', $data['mensajero_extra']); 
             $builder->set('valor_mensajero_extra', '0.00'); 
         }
-
-        $builder->set('registered_by', $data['registered_by']); 
+        
         $builder->set('observaciones', $data['observaciones']); 
         $builder->set('observacion_pago', $data['observacion_pago']); 
         $builder->set('idnegocio', $data['idnegocio']); 

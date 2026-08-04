@@ -49,10 +49,7 @@
                                         use App\Models\AttrExtArregModel;
                                         $this->attrExtArregModel = new AttrExtArregModel();
                                         $this->detallePedidoModel = new DetallePedidoModel();
-
-                                        //verificar si es necesario esta llamada al modelo para traer los pedidos
                                         $this->pedidoModel = new PedidoModel();
-                                        $pedidos = $this->pedidoModel->_getPedidos(session('idroles'));
                                         
                                         $nombresDias = array(
                                             'Sunday'=>"Domingo", 
@@ -100,7 +97,6 @@
                                                     foreach ($detalle as $key => $d) {
                                                         //Tratar de que traiga esta data desde el modelo
                                                         $attrExtArreg = $this->attrExtArregModel->_getAttrArreg($d->iddetalle, $d->idcategoria);
-                                                        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
                                                         
                                                         if ($attrExtArreg) {
                                                             echo '<li>

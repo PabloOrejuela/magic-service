@@ -1,11 +1,12 @@
 <h1>Versión: 1.2.1</h1>
 <h3>Cambios</h3>
 <ul>
-    <li>Se ha implementado la funcionalidad que permite registrar la persona que ingresó o está ingresando un pedido y la muestra en el form de editar pedido</li>
-    <li>Se hizo un cambio en el form de registro de gastos, ahora el boton de agregar gasto inicia inactivo y solo se activa cuando se selecciona un gasto que no sea fijo</li>
+    
 </ul>
 
 <h5>Fixes</h5>
 <ul>
-    <li>se corrigió la clase del botón Volver alñ historial de la vista de detalles del pedido</li>
+    <li>Se ha quitado la llamada a la función que trae los pedidos desde la vista de Grid de pedidos, ahora viene desde el controlador</li>
+    <li>Se ha corregido un error en la funcionalidad que pone el grid de pedidos en una ventana nueva, la función que trae los pedidos desde el modelo pedía el id roles para segmentar la catidad de pedidos que trae</li>
+    <li>Se ha  corregido un error en pedido update, no se estaba enviando el valor de registered_by desde el controlador al modelo, al actualizar el pedido no es necesario actualizar el registered_by</li>
 </ul>
