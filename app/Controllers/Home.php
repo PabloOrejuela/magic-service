@@ -67,7 +67,7 @@ class Home extends BaseController {
     }
 
     public function validate_login(){
-
+        
         $data = array(
             'user' => $this->request->getPostGet('user'),
             'password' => $this->request->getPostGet('password'),
@@ -94,10 +94,12 @@ class Home extends BaseController {
             }else{
 
                 if (isset($usuario) && $usuario != NULL && password_verify($data['password'], $usuario->password)) {
-                    //valido el login y pongo el id en sesion  && $usuario->id != 1 
                     
                     $iduser = $usuario->id;
 
+                    // Crear una nueva identidad de sesión al autenticar, con esto debería solucionar el problema de las sesiones
+                    $this->session->regenerate(true);
+                    
                     $this->session->version = $this->configuracionModel->findAll();
 
                     //CREO LA SESION NUEVA EN LA TABLA DE SESIONES
@@ -159,25 +161,24 @@ class Home extends BaseController {
         $data['main_content']='home/login';
         return view('includes/template_login', $data); 
     }
-    
+
     public function logout(){
-        //destruyo la session y salgo
+
         $session = [
             'is_logged' => 0,
             'status' => 0
         ];
-        //echo '<pre>'.var_export($user, true).'</pre>';exit;
+
         if ($this->session->idsession) {
             $this->sessionModel->update($this->session->idsession, $session);
         }
+
         $this->session->destroy();
-        //return redirect()->to('/')->with('mensaje', 'Su sesión ha expirado o se ha logueado en otro equipo.');
 
         $data['mensaje'] = 'Su sesión ha expirado o se ha cerrado o se ha logueado en otro equipo.';
+        $data['title'] = 'Magic Service';
+        $data['main_content'] = 'home/login';
 
-        // Carga la vista directamente
-        $data['title']='Magic Service';
-        $data['main_content']='home/login';
-        return view('includes/template_login', $data); 
+        return view('includes/template_login', $data);
     }
 }

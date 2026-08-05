@@ -126,16 +126,12 @@ class Ventas extends BaseController {
             date_default_timezone_set('America/Guayaquil');
             $date = date('ymdHis');
 
-            //Borro temporal de pedidos
-            //PABLO: LOS PEDIDO QUE SE DEBEN BORRAR SON AQUELLOS QUE TIENEN ESTADO = TEMPORAL, DEBO ELIMINAR TODA INTERACCIÓN CON LA TABLA DETALLE TEMPORAL
-            //$this->detallePedidoTempModel->_deleteDetallesTempOld();
-
             //Genero el COD DE PEDIDO
             $cod_pedido = $this->getNewCodPedido();
 
             //Actualizo la tabla eliminando los pedidos que tienen estado temporal
             $this->pedidoModel->where('estado', 7)->where('vendedor', $this->session->id)->delete();
-
+            
             //Inserto el nuevo registro de pedido asignado al vendedor y con el estado = temporal, id=7
             $pedido = [
                 'cod_pedido' => $cod_pedido,
@@ -144,7 +140,8 @@ class Ventas extends BaseController {
                 'vendedor' => $this->session->id,
                 'estado' => 7,
                 'sector' => 1,
-                'idnegocio' => 3
+                'idnegocio' => 3,
+                'registered_by' => $this->session->id
             ];
             $idPedidoInserted = $this->pedidoModel->insert($pedido);
             $codPedidoCompleto = $cod_pedido.$idPedidoInserted;
@@ -166,7 +163,7 @@ class Ventas extends BaseController {
             $data['cod_pedido'] = $this->session->codigo_pedido;
             $data['variablesSistema'] = $this->variablesSistemaModel->findAll();
             $data['negocios'] = $this->negocioModel->where('id <=', 2)->findAll();
-            $data['registered_by'] = $this->usuarioModel->select('nombre')->first($this->session->id);
+            $data['registered_by'] = $this->session->nombre;
 
             $data['detalle'] = $this->detallePedidoTempModel->where('idpedido', $idPedidoInserted)->findAll();
 

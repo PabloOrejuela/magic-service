@@ -1,7 +1,6 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="<?= site_url(); ?>public/plugins/jquery-ui/jquery-ui.min.css">
 <link rel="stylesheet" href="<?= site_url(); ?>public/css/form-pedido.css">
-
 <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -45,7 +44,7 @@
                                         </div>
                                         <div class="col-6">
                                             <label>Ingresado por: </label>
-                                            <p class="registered_by"><?= $registered_by->nombre; ?></p>
+                                            <p class="registered_by"><?= $registered_by; ?></p>
                                         </div>
                                     </div>
                                     <h4 id="mensaje-campos-requeridos">Los campos con asterisco * son obligatorios</h4>
