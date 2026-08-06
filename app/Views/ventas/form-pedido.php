@@ -10,7 +10,7 @@
                     <div class="card-header">
                         <h3 class="card-title titulo-form-pedido">
                             <i class="fas fa-table mr-1"></i>
-                            <?= $subtitle . ' Revisando la generación del código de pedido';?>
+                            <?= $subtitle;?>
                         </h3>
                     </div><!-- /.card-header -->
                     <div class="card-body">

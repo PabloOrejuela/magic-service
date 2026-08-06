@@ -31,12 +31,6 @@
             </a>
           </li>
           <li class="nav-item subItem">
-            <a href="'.base_url().'estadistica-ventas" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Estadística de ventas</p>
-            </a>
-          </li>
-          <li class="nav-item subItem">
             <a href="'.base_url().'productos" class="nav-link">
               <i class="far fa-circle nav-icon"></i>
               <p>Productos</p>
