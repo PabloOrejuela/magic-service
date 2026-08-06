@@ -350,7 +350,7 @@
                                             ?>
                                         </select>
                                         
-                                        <div class="col-md-4" style="margin-rigth:0px;">
+                                        <div class="col-md-4" style="margin-right:0px;">
                                             <input 
                                                 type="text" 
                                                 class="form-control inputValor div-cant decimal" 
