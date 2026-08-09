@@ -435,23 +435,24 @@ function devolucion(id){
   let total = document.getElementById("total")
   let totalFinal = document.getElementById("totalFinal")
   
-  if (valorDevuelto != null && valorDevuelto != '') {
+  if (valorDevuelto.value != null && valorDevuelto.value != '') {
       $.ajax({
-          url: "../updateDevolucion",
-          type: "GET",
-          dataType: "html",
+          url: "../../updateDevolucion",
+          method: "GET",
+          dataType: "json",
           data: {
             id: id,
             valor_devuelto: valorDevuelto.value,
             observacionDevolucion: observacionDevolucion.value
           },
           success: function(resultado){
+              console.log(resultado);
               if (resultado == true) {
                 
-                alertaMensaje("El valor de la devolución se ha actualizado", 500, "error")
+                alertaMensaje("El valor de la devolución se ha actualizado", 1500, "success")
               }else{
                 //ERROR
-                alertaMensaje("El valor de la devolución no se pudo actualizar", 500, "success") 
+                alertaMensaje("El valor de la devolución no se pudo actualizar", 1500, "error") 
               }
               totalFinal.value = (total.value - valorDevuelto.value).toFixed(2)
           }
