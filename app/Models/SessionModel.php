@@ -12,7 +12,7 @@ class SessionModel extends Model {
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['is_logged','ip','agent','idusuario','status'];
+    protected $allowedFields    = ['is_logged','ip','agent','idusuario','status','session_id'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -70,6 +70,48 @@ class SessionModel extends Model {
         $builder->set('status', 0);
         $builder->update();
         //echo $this->db->getLastQuery();
+    }
+
+    function _signOff ($id){
+        
+        $builder = $this->db->table($this->table);
+        $this->db->transStart();
+
+        // Buscar la sesión activa del usuario
+        $sesion = $builder
+            ->where('idusuario', $id)
+            ->where('is_logged', 1)
+            ->where('status', 1)
+            ->get()
+            ->getRow();
+
+        if (!$sesion) {
+            $this->db->transRollback();
+            return 0;
+        }
+
+        // Ruta del archivo de sesión de CI4
+        $archivoSesion = WRITEPATH . 'session/ci_session' . $sesion->session_id;
+
+        // Destruir el archivo físico de la sesión
+        if (is_file($archivoSesion)) {
+            unlink($archivoSesion);
+        }
+
+        // Marcar la sesión como cerrada
+        $builder->set('is_logged', 0);
+        $builder->set('status', 0);
+        $builder->set('updated_at', date('Y-m-d H:i:s'));
+        $builder->where('id', $sesion->id);
+        $builder->update();
+
+        $this->db->transComplete();
+
+        if ($this->db->transStatus() === false) {
+            return 0;
+        }
+
+        return 1;
     }
 
 }

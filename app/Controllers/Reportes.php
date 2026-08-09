@@ -555,7 +555,13 @@ class Reportes extends BaseController {
             $data['session'] = $this->session;
             $data['sugest'] = $this->sugest;
             $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
-            $data['vendedores'] = $this->usuarioModel->where('estado', 1)->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
+            $data['vendedores'] = $this->usuarioModel
+                ->where('estado', 1)
+                ->where('idroles', 4)
+                ->orWhere('idrol_2', 4)
+                ->orWhere('es_vendedor', 1)
+                ->orderBy('nombre', 'asc')
+                ->findAll();
             
             $data['title']='Reportes';
             $data['subtitle']='Reporte de estadísticas por vendedor';
@@ -574,7 +580,13 @@ class Reportes extends BaseController {
 
             $data['sugest'] = $this->sugest;
             $data['negocios'] = $this->negocioModel->where('id <', 3)->findAll();
-            $data['vendedores'] = $this->usuarioModel->where('idroles', 4)->orWhere('idrol_2', 4)->orWhere('es_vendedor', 1)->orderBy('nombre', 'asc')->findAll();
+            $data['vendedores'] = $this->usuarioModel
+                ->where('estado', 1)
+                ->where('idroles', 4)
+                ->orWhere('idrol_2', 4)
+                ->orWhere('es_vendedor', 1)
+                ->orderBy('nombre', 'asc')
+                ->findAll();
             
             $datos = [
                 'negocio' => $this->request->getPostGet('negocio'),

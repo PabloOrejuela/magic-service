@@ -1231,6 +1231,7 @@ class Estadisticas extends BaseController {
                     $cod_pedido = $this->primerCodPedidoProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
                     $pvp = $this->pvpProducto($producto->id, $datos['negocio'], $datos['fecha_inicio'], $datos['fecha_final']);
 
+
                     if (isset($cod_pedido) && $cod_pedido != NULL && $cod_pedido != '') {
                         $resultado[] = (object)[
                             'id' => $producto->id,
@@ -1907,7 +1908,7 @@ class Estadisticas extends BaseController {
         $db = \Config\Database::connect();
         $builder = $db->table('detalle_pedido');
         $builder->selectCount('detalle_pedido.id', 'cant')
-            ->join('pedidos', 'detalle_pedido.cod_pedido = pedidos.cod_pedido')
+            ->join('pedidos', 'detalle_pedido.idpedido = pedidos.id')
             ->where('detalle_pedido.idproducto', $id_producto)
             ->where('pedidos.idnegocio', $negocio)
             ->where('pedidos.fecha >=', $fecha_inicio)
@@ -1921,7 +1922,7 @@ class Estadisticas extends BaseController {
         $db = \Config\Database::connect();
         $builder = $db->table('detalle_pedido');
         $builder->select('detalle_pedido.cod_pedido')
-            ->join('pedidos', 'detalle_pedido.cod_pedido = pedidos.cod_pedido')
+            ->join('pedidos', 'detalle_pedido.idpedido = pedidos.id')
             ->where('detalle_pedido.idproducto', $id_producto)
             ->where('pedidos.idnegocio', $negocio)
             ->where('pedidos.fecha >=', $fecha_inicio)
@@ -1937,7 +1938,7 @@ class Estadisticas extends BaseController {
         $db = \Config\Database::connect();
         $builder = $db->table('detalle_pedido');
         $builder->select('pvp')
-            ->join('pedidos', 'detalle_pedido.cod_pedido = pedidos.cod_pedido')
+            ->join('pedidos', 'detalle_pedido.idpedido = pedidos.id')
             ->where('detalle_pedido.idproducto', $id_producto)
             ->where('pedidos.idnegocio', $negocio)
             ->where('pedidos.fecha >=', $fecha_inicio)

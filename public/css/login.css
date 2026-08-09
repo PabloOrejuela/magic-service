@@ -1,3 +1,8 @@
 #verPassword{
     font-size: 0.8em;
 }
+
+.login-box{
+    padding: 5%;
+    width: 100%;
+}
