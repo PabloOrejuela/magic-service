@@ -148,7 +148,7 @@ function buscaTelefono(telefono){
           telefono: telefono.value
       },
       beforeSend: function (f) {
-          //$('#cliente').html('Cargando ...');
+          
       },
       success: function(res){
           
@@ -163,6 +163,10 @@ function buscaTelefono(telefono){
               document.getElementById('documento').value = res.respuesta[0].documento
               document.getElementById('email').value = res.respuesta[0].email
               document.getElementById('idcliente').value = res.respuesta[0].id
+
+              document.getElementById('telefono').readOnly = true
+
+              console.log('readonly después de AJAX:', document.getElementById('telefono').readOnly);
           }else {
               alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor o registre un nuevo cliente', 3000, 'error')
               // document.getElementById('nombre').value = ''
@@ -273,7 +277,7 @@ sectores.addEventListener("change", () => {
           sector: valor
         },
         beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
+            
         },
         success: function(resultado){
             let dato = JSON.parse(resultado);

@@ -80,6 +80,7 @@ function limpiarClienteTelefono() {
   document.getElementById("idcliente").value = "";
   document.getElementById("telefono_2").value = "";
   document.getElementById("telefono").value = "";
+  document.getElementById('telefono').readOnly = false
 }
 
 function limpiarClienteDocumento() {
@@ -88,6 +89,7 @@ function limpiarClienteDocumento() {
   document.getElementById("email").value = "";
   document.getElementById("idcliente").value = "";
   document.getElementById("telefono_2").value = "";
+  document.getElementById('telefono').readOnly = false
 }
 
 function limpiaCamposCliente() {
@@ -97,6 +99,8 @@ function limpiaCamposCliente() {
   document.getElementById("email").value = "";
   document.getElementById("idcliente").value = "";
   document.getElementById("telefono_2").value = "";
+
+  document.getElementById('telefono').readOnly = false
 }
 
 const limpiartelefono = (telf) => {
@@ -136,7 +140,7 @@ function buscaTelefono(telefono){
             telefono: telefono.value
         },
         beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
+        
         },
         success: function(res){
             
@@ -151,6 +155,10 @@ function buscaTelefono(telefono){
                 document.getElementById('documento').value = res.respuesta[0].documento
                 document.getElementById('email').value = res.respuesta[0].email
                 document.getElementById('idcliente').value = res.respuesta[0].id
+
+                document.getElementById('telefono').readOnly = true
+
+            
             }else {
                 alertaMensaje('No se encontró un cliente con ese número de telefono, verifique el número por favor o registre un nuevo cliente', 3000, 'error')
             }
@@ -269,7 +277,7 @@ sectores.addEventListener("change", () => {
           sector: valor
         },
         beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
+            
         },
         success: function(resultado){
             let dato = JSON.parse(resultado);

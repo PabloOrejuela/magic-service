@@ -653,7 +653,7 @@ class Ventas extends BaseController {
             //Inserto todos los items en la tabla temporal 
             $result = $this->itemsProductoTempModel->_insertItems($idproducto, $items, $item, $idNew);
         }
-        //echo '<pre>'.var_export($result, true).'</pre>';exit;
+        
         $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
         $res['error'] = $result;
         echo json_encode($res);
@@ -676,7 +676,7 @@ class Ventas extends BaseController {
             $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
         }
         
-        //echo '<pre>'.var_export($result, true).'</pre>';exit;
+        
         $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
         $res['error'] = $result;
         echo json_encode($res);
@@ -700,7 +700,6 @@ class Ventas extends BaseController {
             $result = $this->itemsProductoTempModel->_insertNewItem($idproducto, $dataItem, $idNew);
         }
         
-        //echo '<pre>'.var_export($result, true).'</pre>';exit;
         $res['datos'] = $this->itemsProductoTempModel->_getItemsNewProducto($idNew);
         $res['error'] = $result;
         $res['verifica'] = $result;
@@ -934,7 +933,7 @@ class Ventas extends BaseController {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $idpedido = $this->session->idpedido;
             $detalleTemporal = $this->detallePedidoTempModel->where('idpedido', $this->session->idpedido)->findAll();
-            //echo '<pre>'.var_export($detalleTemporal, true).'</pre>';exit;
+            
             
             if ($this->request->getPostGet('sin_remitente') != null) {
                 $sin_remitente = $this->request->getPostGet('sin_remitente');
@@ -987,6 +986,7 @@ class Ventas extends BaseController {
             ];
             
             $clienteID = $this->request->getPostGet('idcliente');
+            
             $cliente = [
                 'nombre' => $this->request->getPostGet('nombre'),
                 'telefono' => $this->request->getPostGet('telefono'),
@@ -1006,20 +1006,59 @@ class Ventas extends BaseController {
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
                 
-                //Verifico que exista el cliente, si no existe lo creo y si exiete solo inserto el id
-                $clienteExiste = $this->clienteModel->where('telefono', $cliente['telefono'])->find($clienteID);
-                
+                // Verifico que exista el cliente.
+                // Si el formulario trae idcliente, primero lo busco por ID.
+                // Si no trae ID, vuelvo a comprobar por teléfono, teléfono 2 y documento
+                // antes de permitir crear un cliente nuevo.
+                $clienteExiste = null;
+                if ($clienteID !== null && $clienteID !== '') {
+
+                    // El AJAX encontró un cliente.
+                    $clienteExiste = $this->clienteModel->find($clienteID);
+
+                }
+                // Si no vino ID o el ID no corresponde a un cliente,
+                // verificamos nuevamente los datos identificadores.
+                if (!$clienteExiste) {
+
+                    $builder = $this->clienteModel->groupStart();
+
+                    if (!empty($cliente['telefono'])) {
+                        $builder
+                            ->where('telefono', $cliente['telefono'])
+                            ->orWhere('telefono_2', $cliente['telefono']);
+                    }
+
+                    if (!empty($cliente['telefono_2'])) {
+                        $builder
+                            ->orWhere('telefono', $cliente['telefono_2'])
+                            ->orWhere('telefono_2', $cliente['telefono_2']);
+                    }
+
+                    if (!empty($cliente['documento'])) {
+                        $builder->orWhere('documento', $cliente['documento']);
+                    }
+
+                    $builder->groupEnd();
+
+                    $clienteExiste = $builder->first();
+                }
+
                 if ($clienteExiste) {
 
-                    //Actualizo los datos del cliente
+                    // Uso el ID real del cliente encontrado
+                    $clienteID = $clienteExiste->idcliente;
+                    $pedido['idcliente'] = $clienteID;
+
+                    // Actualizo los datos del cliente
                     $cliente = [
                         'nombre' => $this->request->getPostGet('nombre'),
-                        'telefono' => $this->request->getPostGet('telefono'),
                         'telefono_2' => $this->request->getPostGet('telefono_2'),
                         'documento' => $this->request->getPostGet('documento'),
                         'direccion' => '',
                         'email' => strtolower($this->request->getPostGet('email')),
                     ];
+
                     $this->clienteModel->update($clienteID, $cliente);
 
                     //Inserto el nuevo pedido
@@ -1068,7 +1107,7 @@ class Ventas extends BaseController {
                     $cliente = [
                         'nombre' => $this->request->getPostGet('nombre'),
                         'telefono' => $this->request->getPostGet('telefono'),
-                        'telefono_2' => $this->request->getPostGet('telefono2'),
+                        'telefono_2' => $this->request->getPostGet('telefono_2'),
                         'documento' => $this->request->getPostGet('documento'),
                         'direccion' => '',
                         'email' => strtolower($this->request->getPostGet('email')),
@@ -1117,6 +1156,7 @@ class Ventas extends BaseController {
                     return redirect()->to('pedidos');
                 }
             }
+            
         }else{
 
             return redirect()->to('logout');
@@ -1177,6 +1217,7 @@ class Ventas extends BaseController {
         ];
 
         $clienteID = $this->request->getPostGet('idcliente');
+        
         $cliente = $this->prepararDatosCliente();
 
         // VALIDACIONES
@@ -1244,6 +1285,7 @@ class Ventas extends BaseController {
 
     private function prepararDatosCliente(){
         $telefono2 = $this->request->getPostGet('telefono_2');
+
         if ($telefono2 === null || $telefono2 === '') {
             $telefono2 = $this->request->getPostGet('telefono2');
         }
@@ -1258,7 +1300,8 @@ class Ventas extends BaseController {
         ];
     }
 
-    private function guardarClientePedido($cliente, $clienteID, $clienteExiste){
+    private function guardarClientePedido($cliente, $clienteExiste){
+        
         if ($clienteExiste) {
             $this->clienteModel->update($clienteID, $cliente);
             return $clienteID;
@@ -1551,7 +1594,6 @@ class Ventas extends BaseController {
             //delete de los items de la tabla temporal de hace un día
             $this->itemsProductoTempModel->_deleteItemsTempOld();
 
-            //echo '<pre>'.var_export($data['productos'] , true).'</pre>';exit;
             $data['title']='Ventas';
             $data['subtitle']='Cotizar producto';
             $data['main_content']='ventas/form-cotizador';

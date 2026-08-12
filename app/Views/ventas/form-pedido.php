@@ -15,8 +15,6 @@
                     </div><!-- /.card-header -->
                     <div class="card-body">
                         <div class="tab-content p-0" >
-                            <!-- Morris chart - Sales -->
-                            <h3><?= $session->cliente;?></h3>
                             <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: auto;">
                                 <form action="<?= site_url().'pedido-insert';?>" method="post">
                                     <?php 
@@ -529,7 +527,7 @@ window.addEventListener('load', function() {
             idpedido: idpedido
         },
         beforeSend: function (f) {
-            //$('#cliente').html('Cargando ...');
+            
         },
         success: function(resultado){
             let dato = JSON.parse(resultado);
@@ -566,7 +564,7 @@ $(document).ready(function(){
                 url: "ventas/clientes_select",
                 data:"documento="+valor,
                 beforeSend: function (f) {
-                    //$('#cliente').html('Cargando ...');
+                    
                 },
                 success: function(data){
                     let cliente = JSON.parse(data);
@@ -656,37 +654,6 @@ function descontar(valor) {
     document.getElementById('total').value = total.toFixed(2);
     sumarTotal()
 }
-
-// function getDetalletemporal(idpedido){
-    
-//     return $.ajax({
-//         method:"GET",
-//         dataType:"html",
-//         url: "getDetallePedido_temp/",
-//         data:{
-//             idpedido:idpedido
-//         },
-//         beforeSend: function (f) {
-//             //$('#cliente').html('Cargando ...');
-//         },
-//         success: function(data){
-//             // limpiarClienteDocumento();
-//             let detalle = JSON.parse(data);
-//             let datos = detalle.datos
-//             let cant = 0;
-            
-//             for (const i of datos) {
-//                 cant += parseInt(i.cantidad)
-//             }
-
-//             document.getElementById("cant_arreglos").value = cant
-//         },
-//         error: function(data){
-//             console.log("No hay detalle");
-//         }
-//     });
-    
-// }
 
 
 function getDayOfWeek(fechaEntrega){
