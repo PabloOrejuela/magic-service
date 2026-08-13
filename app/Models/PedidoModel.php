@@ -71,7 +71,8 @@ class PedidoModel extends Model {
         if ($idroles > 3) {
             $builder->where('pedidos.estado <=', 3);
             $builder->limit(250);
-        }else{
+        }else if($idroles == 3){
+            $builder->where('pedidos.estado <=', 6);
             $builder->limit(350);
         }
 
