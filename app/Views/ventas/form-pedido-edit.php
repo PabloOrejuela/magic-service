@@ -133,6 +133,7 @@
                                                 name="telefono" 
                                                 placeholder="Celular" 
                                                 value="<?= $pedido->telefono; ?>"
+                                                readonly
                                             >
                                         </div>
                                         
@@ -152,7 +153,6 @@
                                     <div class="form-group">
                                         <label for="nombre">Nombre y apellido del cliente *:</label>
                                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre cliente" value="<?= $pedido->nombre; ?>">
-                                        <a href="<?= site_url(); ?>/cliente-create" class="nav-link mb-3" id="link-clear-fields" target="_blank">Registrar nuevo cliente</a>
                                     </div>
                                     <p id="error-message"><?= session('errors.nombre');?> </p>
                                     <div class="form-group">
@@ -171,9 +171,7 @@
                                             value="<?= $pedido->email; ?>"
                                         >
                                     </div>
-                                    <div class="form-group mb-5">
-                                        <a href="javascript:limpiaCamposCliente()" class="nav-link mb-3" id="link-clear-fields">Limpiar campos</a>
-                                    </div>
+                                    
                                     <hr class="divider mt-5 mb-3">
                                     <div class="form-group mb-3 mt-5">
                                         <label for="procedencia">Procedencia *:</label>

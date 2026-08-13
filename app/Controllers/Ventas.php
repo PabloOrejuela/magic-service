@@ -1236,6 +1236,7 @@ class Ventas extends BaseController {
 
         $pedido['idcliente'] = $this->guardarClientePedido(
             $cliente,
+            $clienteID,
             $clienteExiste
         );
 
@@ -1299,10 +1300,10 @@ class Ventas extends BaseController {
         ];
     }
 
-    private function guardarClientePedido($cliente, $clienteExiste){
+    private function guardarClientePedido($cliente, $clienteID, $clienteExiste){
         
         if ($clienteExiste) {
-            $clienteID = $clienteExiste->idcliente;
+
             $this->clienteModel->update($clienteID, $cliente);
             return $clienteID;
         }

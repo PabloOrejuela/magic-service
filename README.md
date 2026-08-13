@@ -6,5 +6,5 @@
 
 <h5>Fixes</h5>
 <ul>
-    <li>Se corrigió un error en el pedido update en la funció: guardarClientePedido</li>
+    <li>Se corrigió un error en el pedido update en la funció: guardarClientePedido y en la función pedido_update</li>
 </ul>
