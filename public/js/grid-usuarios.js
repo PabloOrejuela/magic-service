@@ -63,7 +63,7 @@ const sessionClose = (id) => {
                 let resultado = JSON.parse(res)
                 if (resultado == 1) {
                     alertProcesando("La sessión se ha cerrado", 1000, "info")
-                    //PABLO luego hay que hacer que recargue la data por ajax
+                    
                     setTimeout(function(){
                         location.replace('usuarios')
                     }, 1100)

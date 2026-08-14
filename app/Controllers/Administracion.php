@@ -61,7 +61,7 @@ class Administracion extends BaseController {
     public function sign_off() {
 
         $id = $this->request->getPostGet('id');
-        $res = $this->sessionModel->_signOff($this->request->getPostGet('id'));
+        $res = $this->sessionModel->_signOff($id);
         
         echo json_encode($res);
     }

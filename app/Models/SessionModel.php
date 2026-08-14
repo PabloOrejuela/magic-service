@@ -61,15 +61,36 @@ class SessionModel extends Model {
 
     //Pasar esta función al modelo de sesiones
     public function _cierraSesiones() {
+
         $now = date('Y-m-d');
         $fechaCierre = $now.' 00:00:01';
-        //echo '<pre>'.var_export($usuarios, true).'</pre>';exit;
+        
         $builder = $this->db->table($this->table);
 
-        $builder->where('updated_at <=', $fechaCierre);
-        $builder->set('status', 0);
-        $builder->update();
-        //echo $this->db->getLastQuery();
+         // Obtener las sesiones que quedaron abiertas de días anteriores
+        $sesiones = $builder
+            ->where('updated_at <=', $fechaCierre)
+            ->where('is_logged', 1)
+            ->where('status', 1)
+            ->get()
+            ->getResult();
+
+        foreach ($sesiones as $sesion) {
+
+            // Archivo físico de la sesión CI4
+            $archivoSesion = WRITEPATH . 'session/ci_session' . $sesion->session_id;
+
+            if (is_file($archivoSesion)) {
+                unlink($archivoSesion);
+            }
+
+            // Marcar la sesión como cerrada
+            $builder->set('is_logged', 0);
+            $builder->set('status', 0);
+            $builder->set('updated_at', date('Y-m-d H:i:s'));
+            $builder->where('id', $sesion->id);
+            $builder->update();
+        }
     }
 
     function _signOff ($id){
