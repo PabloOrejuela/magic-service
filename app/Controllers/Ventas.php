@@ -1047,8 +1047,7 @@ class Ventas extends BaseController {
                 if ($clienteExiste) {
 
                     // Uso el ID real del cliente encontrado
-                    $clienteID = $clienteExiste->idcliente;
-                    $pedido['idcliente'] = $clienteID;
+                    $pedido['idcliente'] = $clienteExiste->id;
 
                     // Actualizo los datos del cliente
                     $cliente = [
@@ -1059,7 +1058,7 @@ class Ventas extends BaseController {
                         'email' => strtolower($this->request->getPostGet('email')),
                     ];
 
-                    $this->clienteModel->update($clienteID, $cliente);
+                    $this->clienteModel->update($clienteExiste->id, $cliente);
 
                     //Inserto el nuevo pedido
                     if ($pedido) {
