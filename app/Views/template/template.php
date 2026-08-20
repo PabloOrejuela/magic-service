@@ -14,8 +14,13 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color: #00514e;">
     <!-- Brand Logo -->
-    <a href="<?= base_url(); ?>" class="brand-link">
-      <img src="<?= base_url(); ?>public/images/logo-magic-small.png" alt="magic Service Logo" class="brand-image img-circle elevation-3" style="opacity: .8" id="business-logo">
+    <a href="<?= base_url(); ?>pedidos" class="brand-link">
+      <img 
+        src="<?= base_url(); ?>public/images/logo-magic-small.png" 
+        alt="magic Service Logo" class="brand-image img-circle elevation-3" 
+        style="opacity: .8" 
+        id="business-logo"
+      >
       <span class="brand-text font-weight-light">Magic Service</span>
     </a>
 
