@@ -124,14 +124,14 @@
               <p>Variables del sistema</p>
             </a>
           </li>
-          <li class="nav-item subItem">
-            <a href="'.base_url().'estado" class="nav-link">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Estado del sistema</p>
-            </a>
-          </li>
         </ul>
       </li>';
+          // <li class="nav-item subItem">
+          //   <a href="'.base_url().'estado" class="nav-link">
+          //     <i class="far fa-circle nav-icon"></i>
+          //     <p>Estado del sistema</p>
+          //   </a>
+          // </li>
     }
 
     if ($session->proveedores == 1) {
