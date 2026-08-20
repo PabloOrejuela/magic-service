@@ -168,16 +168,8 @@ class Home extends BaseController {
 
     public function logout(){
 
-        $session = [
-            'is_logged' => 0,
-            'status' => 0
-        ];
-
-        if ($this->session->idsession) {
-            $this->sessionModel->update($this->session->idsession, $session);
-        }
-
-        $this->session->destroy();
+        //Uso la función del modelo para actualizar los datos de saseión, salir de la sessión, destruír el archivo de sessión y salir al login
+        $this->sessionModel->_signOff($this->session->id);
 
         $data['mensaje'] = 'Su sesión ha expirado o se ha cerrado o se ha logueado en otro equipo.';
         $data['title'] = 'Magic Service';

@@ -8,8 +8,8 @@ class Login extends BaseController {
 
     public function index(){
 
+        //Destruyo la sesión en caso de salir al login
         $this->sessionModel->_signOff($this->session->id);
-        // echo '<pre>'.var_export($this->session->id, true).'</pre>';exit;
         
         $data['title']='Magic Service';
         $data['main_content']='home/login';
