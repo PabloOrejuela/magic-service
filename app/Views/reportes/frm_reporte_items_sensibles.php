@@ -36,6 +36,27 @@
                                 >
                                 <p id="error-message"><?= session('errors.fecha_final');?> </p>
                             </div>
+                            <div class="form-group col-md-3 mt-3 control-reporte">
+                                <label for="sugest">Opciones:</label>
+                                <select 
+                                    class="form-select form-control-border" 
+                                    id="sugest" 
+                                    name="sugest" 
+                                >
+                                    <option value="0" selected>--Opciones--</option>
+                                    <?php
+                                        if (isset($sugest)) {
+                                            foreach ($sugest as $key => $value) {
+                                                if ($session->idroles > 3 && $key == 2){
+                                                    continue;
+                                                }
+                                                echo '<option value="'.$key.'" >'.$value.'</option>';
+                                                
+                                            }
+                                        }
+                                    ?>
+                                </select>
+                            </div>
                             <div class="form-group col-md-2 mt-3 control-reporte">
                                 <label for="sugest"></label>
                                 <a href="<?= site_url();  ?>reporte-items-sensibles" class="btn btn-light btn-reinicia" id="btn-reinicia" target="_self">Reiniciar reporte</a>
@@ -68,5 +89,6 @@
     </div>
 </section> <!-- /.card -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="<?= site_url(); ?>public/js/cabecera-reportes.js"></script>
 <script src="<?= site_url(); ?>public/js/frm_reporte_items_sensibles.js"></script>
 

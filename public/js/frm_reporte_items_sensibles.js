@@ -24,7 +24,7 @@ btnGeneraReporteItemsSensibles.addEventListener('click', function(e) {
     }else{
         final = dpFechaFinal
     }
-
+    
     $.ajax({
         method:"GET",
         //dataType:"html",
@@ -37,7 +37,9 @@ btnGeneraReporteItemsSensibles.addEventListener('click', function(e) {
             //$('#cliente').html('Cargando ...');
         },
         success: function(data){
+            
             let datos = JSON.parse(data);
+
             document.getElementById('fecha_inicio').value = inicio
             document.getElementById('fecha_final').value = final
 
@@ -88,29 +90,4 @@ btnGeneraReporteItemsSensibles.addEventListener('click', function(e) {
             
     });
 })
-
-const alertaMensaje = (msg, time, icon) => {
-    const toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: time,
-        //timerProgressBar: true,
-        //height: '200rem',
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        },
-        customClass: {
-            // container: '...',
-            popup: 'popup-class',
-        }
-    });
-    toast.fire({
-        position: "top-end",
-        icon: icon,
-        title: msg,
-    });
-}
-
 

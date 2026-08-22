@@ -789,13 +789,14 @@ class Administracion extends BaseController {
         $fechaInicio= $this->request->getPostGet('fechaInicio');
         $fechaFinal= $this->request->getPostGet('fechaFinal');
 
-        $itemsArray = NULL;
-        $consolidadoArray = NULL;
+        $itemsArray = [];
+        $itemSensibleArray = [];
         $data['error'] = '';
 
         //Hago la consulta
         $pedidos = $this->pedidoModel->_getPedidosRangoFechas($fechaInicio, $fechaFinal);
         $itemsSensibles = $this->itemModel->select('id,item')->where('sensible_temporada', 1)->findAll();
+        
         foreach ($itemsSensibles as $its) {
             $itemSensibleArray[] = $its->id;
         }
@@ -804,14 +805,17 @@ class Administracion extends BaseController {
             
             foreach ($pedidos as $key => $pedido) {
                 //extraigo el detalle de cada pedido
-                $detalles = $this->detallePedidoModel->select('id,cod_pedido,idproducto,cantidad')->where('cod_pedido', $pedido->cod_pedido)->findAll();
+                $detalles = $this->detallePedidoModel->select('id,cod_pedido,idproducto,cantidad')->where('idpedido', $pedido->id)->findAll();
+                
                 foreach ($detalles as $key => $detalle) {
                     //echo $detalle->idproducto.'<br>';
                     $itemsProductos = $this->itemsProductoModel->select('items_productos.item as item,items.item as nombre_item, idproducto,porcentaje')
-                                                                ->join('items','items.id=items_productos.item')
-                                                                ->where('idproducto', $detalle->idproducto)->findAll();
-                    //echo '<pre>'.var_export($itemsProductos, true).'</pre>';exit;
+                                                                ->join('items','items.id=items_productos.item','left')
+                                                                ->where('idproducto', $detalle->idproducto)
+                                                                ->findAll(); 
+
                     foreach ($itemsProductos as $key => $item) {
+
                         if (in_array($item->item, $itemSensibleArray)) {
                             $itemsArray[] = [
                                 'idproducto' => $detalle->idproducto,
@@ -827,6 +831,7 @@ class Administracion extends BaseController {
             }
         }else{
             $data['error'] = "ERROR";
+            
         }
         $data['itemsSensibles'] = $itemsSensibles;
         $data['resultado'] = $itemsArray;
