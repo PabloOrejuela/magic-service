@@ -28,8 +28,8 @@ btnAgregar.addEventListener('click', function(e) {
         })
         .then(data => {
             //Hago uso de los valores devueltos por la petición
+            
             //Recargo la tabla de sectores
-
             tbSectores.innerHTML = ''
             //tbSectores.className = 'table table-striped table-bordered table-hover table-sm'
 

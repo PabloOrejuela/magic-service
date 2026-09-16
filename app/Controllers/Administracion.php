@@ -6,7 +6,22 @@ use App\Controllers\BaseController;
 use App\Models\VariablesSistemaModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
+use App\Models\NegocioSucursalModel;
+use App\Models\SucursalSectorModel;
+
 class Administracion extends BaseController {
+
+    protected $negocioSucursalModel;
+    protected $sucursalSectorModel;
+
+    public function initController(...$params) {
+        // Esto ejecuta el initController del BaseController (Carga DB, Sesión, ACL, etc.)
+        parent::initController(...$params);
+
+        // Instancias los modelos
+        $this->negocioSucursalModel = model(NegocioSucursalModel::class);
+        $this->sucursalSectorModel = model(SucursalSectorModel::class);
+    }
 
     public function index() {
 
@@ -269,10 +284,10 @@ class Administracion extends BaseController {
             
             $data['session'] = $this->session;
 
-            $data['sucursales'] = $this->sucursalModel
-                ->select('sucursales.id as id,sucursal,direccion,idnegocio,negocio')
-                ->join('negocios', 'sucursales.idnegocio=negocios.id')
-                ->orderBy('sucursal', 'asc')
+            $data['sucursales'] = $this->negocioSucursalModel
+                ->select('negocios_sucursales.id as id,sucursal,direccion,negocios.id as idnegocio,negocio')
+                ->join('negocios', 'negocios_sucursales.idnegocio=negocios.id')
+                ->join('sucursales', 'negocios_sucursales.idsucursal=sucursales.id')
                 ->findAll();
 
             $data['title']='Administración';
@@ -313,7 +328,7 @@ class Administracion extends BaseController {
             
             $data['session'] = $this->session;
 
-            $data['sectores'] = $this->sectoresEntregaModel->_getSectores();
+            $data['sectores'] = $this->sectoresEntregaModel->findAll();
             $data['sucursales'] = $this->sucursalModel->orderBy('sucursal', 'asc')->findAll();
 
             $data['title']='Administración';
@@ -1704,8 +1719,14 @@ class Administracion extends BaseController {
                 ->join('negocios', 'sucursales.idnegocio=negocios.id')
                 ->where('sucursales.id', $id)
                 ->first();
+                
             $data['sectores'] = $this->sectoresEntregaModel->orderBy('sector', 'ASC')->findAll();
-            $data['sectoresSucursal'] = $this->sectoresEntregaModel->where('idsucursal', $id)->orderBy('sector', 'ASC')->findAll();
+            $data['sectoresSucursal'] = $this->sucursalSectorModel
+                ->select('sucursales_sectores.id as id,sucursales_sectores.idsector as idsector,sucursales_sectores.idsucursal as idsucursal,sector')
+                ->join('sectores_entrega', 'sectores_entrega.id=sucursales_sectores.idsector')
+                ->where('sucursales_sectores.idsucursal', $id)
+                ->orderBy('sector', 'ASC')
+                ->findAll();
 
             $data['title']='Administración';
             $data['subtitle']='Asignar sectores';
@@ -1722,16 +1743,35 @@ class Administracion extends BaseController {
 
     function asignaSectorSucursal(){
         
-        $id = $this->request->getPostGet('idsector');
+        $idsector = $this->request->getPostGet('idsector');
         
         $data = [
+            'idsector' => $idsector,
             'idsucursal' => $this->request->getPostGet('idsucursal')
         ];
 
-        $this->sectoresEntregaModel->update($id, $data);
+        //verifico si existe el registro
+        $registro = $this->sucursalSectorModel
+            ->select('id')
+            ->where('idsector', $idsector)
+            ->where('idsucursal', $data['idsucursal'])
+            ->first();
+        
+
+        if (!$registro) {
+            //Si no existe lo inserto
+            $this->sucursalSectorModel->insert($data);
+        }else{
+            $this->sucursalSectorModel->update($registro->id, $data);
+        }
 
         //traer data de la tabla
-        $sectoresSucursal = $this->sectoresEntregaModel->where('idsucursal', $data['idsucursal'])->orderBy('sector', 'ASC')->findAll();
+        $sectoresSucursal = $this->sucursalSectorModel
+            ->select('sucursales_sectores.id as id,sucursales_sectores.idsector as idsector,sucursales_sectores.idsucursal as idsucursal,sector')
+            ->join('sectores_entrega', 'sectores_entrega.id=sucursales_sectores.idsector')
+            ->where('sucursales_sectores.idsucursal', $data['idsucursal'])
+            ->orderBy('sector', 'ASC')
+            ->findAll();
 
         //header('Content-Type: application/json');
         echo json_encode([
@@ -1764,19 +1804,14 @@ class Administracion extends BaseController {
         exit;
     }
 
-    function eliminaSectorSucursal($idsector, $idsucursal){
+    function eliminaSectorSucursal($id, $idsucursal){
 
-        $data = [
-            'idsucursal' => 4
-        ];
-        $this->sectoresEntregaModel->update($idsector, $data);
+        $this->sucursalSectorModel->where('id', $id)->delete();
 
-        //traer data de la tabla
-        // $sectoresSucursal = $this->sectoresEntregaModel->where('idsucursal', $idsucursal)->orderBy('sector', 'ASC')->findAll();
 
         $data['session'] = $this->session;
 
-        return redirect()->to('sucursal-edit/'.$idsucursal);
+        return redirect()->to('sucursal-add-sectores/'.$idsucursal);
     }
 
     function eliminaSector($idsector, $idsucursal){

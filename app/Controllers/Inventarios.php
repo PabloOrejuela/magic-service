@@ -14,7 +14,12 @@ class Inventarios extends BaseController {
             $data['items'] = $this->itemModel->_getItemsCuantificables();
             $data['movimientos'] = $this->movimientoInventarioModel->findAll();
 
-            //echo '<pre>'.var_export($data['items']->id, true).'</pre>';exit;
+            //Actualizo el kardex y el stock total antes de mostrar el grid
+            $itemsCuantificables = $this->itemModel->select('id')->findAll();
+            foreach ($itemsCuantificables as $key => $item) {
+                $this->_updateStockActual($item->id);
+            }
+
             $data['title']='Inventarios';
             $data['subtitle']='Inventario de Items';
             $data['main_content']='inventarios/grid_inventarios';
@@ -32,7 +37,7 @@ class Inventarios extends BaseController {
             $data['items'] = $this->itemModel->_getItemsCuantificables();
             $data['movimientos'] = $this->movimientoInventarioModel->orderBy('descripcion', 'asc')->findAll();
 
-            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
+            
             $data['title']='Inventarios';
             $data['subtitle']='Gestión de Inventarios';
             $data['main_content']='inventarios/frm_gestion_inventarios';
@@ -50,7 +55,6 @@ class Inventarios extends BaseController {
             $data['kardex'] = $this->kardexModel->_getKardex($item);
             $data['item'] = $this->itemModel->find($item);
 
-            //echo '<pre>'.var_export($data['items'], true).'</pre>';exit;
             $data['title']='Inventarios';
             $data['subtitle']='Kardex del item: '.$data['item']->item;
             $data['main_content']='inventarios/grid_kardex';
@@ -94,8 +98,7 @@ class Inventarios extends BaseController {
         $this->validation->setRuleGroup('gestionInventario');
 
         if (!$this->validation->withRequest($this->request)->run()) {
-            //Depuración
-            //dd($validation->getErrors());
+            
             return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
         }else{
             //Insertar Movimiento en Kardex
@@ -113,6 +116,32 @@ class Inventarios extends BaseController {
                 $this->stockActualModel->_insert($data);
             }
             return redirect()->to('gestion-inventario');
+        }
+    }
+
+    function _updateStockActual($item){
+        //Los movimientos 1 y 5 suman
+        //Los movimientos 2, 3, 4 restan
+        $movimientos = $this->kardexModel->where('item', $item)->findAll();
+        $stockActual = 0;
+
+        if ($movimientos) {
+            //Recorro el arreglo y hago los cálculos
+            foreach ($movimientos as $key => $movimiento) {
+                $stockActual += $movimiento->unidades;
+            }
+        }
+
+        $data = [
+            'item' => $item,
+            'totalUnidades' => $stockActual,
+        ];
+
+        $stockExistente = $this->stockActualModel->_getStock($item);
+        if ($stockExistente) {
+            $this->stockActualModel->_update($data);
+        } else {
+            $this->stockActualModel->_insert($data);
         }
     }
 }

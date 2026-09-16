@@ -66,6 +66,11 @@ writable/debugbar/*
 php_errors.log
 
 #-------------------------
+# Archivos de Testing
+#-------------------------
+
+
+#-------------------------
 # Product Image Files
 #-------------------------
 public/images/productos

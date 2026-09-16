@@ -1,30 +1,5 @@
-<style>
-    .inputValor{
-        text-align: right;
-    }
-
-    #link-editar{
-        color: #00514E;
-        text-decoration: none;
-    }
-
-    #link-editar:hover{
-        color: #000;
-        text-decoration: none;
-    }
-    .input {
-        border-radius: 300px;
-        width: 250px;
-    }
-    .row {
-        margin-bottom: 30px;
-    }
-
-    .form-check-input{
-        margin: 0 auto
-    }
-</style>
 <!-- Main content -->
+<link rel="stylesheet" href="<?= site_url(); ?>public/css/grid-inventarios.css">
 <section class="content mb-3">
       <div class="container-fluid">
         <div class="row">
@@ -50,11 +25,11 @@
                                     $this->kardexModel = new KardexModel();
 
                                     if (isset($items) && $items != NULL) {
-                                        
+                                        $stock = 0;
                                         foreach ($items as $key => $value) {
-                                            $stock = $this->stockActualModel->_getStock($value->id);
+                                            $stock = $this->stockActualModel->select('stock_actual')->where('item', $value->id)->first();
                                             $precio_compra = $this->kardexModel->_getUltimoPrecio($value->id);
-                                            //echo '<pre>'.var_export($precio_compra, true).'</pre>';exit;
+                                            
                                             echo '<tr>
                                                 <td>'.$value->id.'</td>
                                                 <td><a href="'.site_url().'kardex-item/'.$value->id.'" id="link-editar">'.$value->item.'</a></td>

@@ -137,9 +137,6 @@ class Home extends BaseController {
                     ];
                     
                     $this->session->set($sessiondata);
-                    log_message('debug', 'ID usuario: ' . $iduser);
-                    log_message('debug', 'ID registro sessions: ' . $idsession);
-                    log_message('debug', 'ID sesión CI4: ' . session_id());
             
                     return redirect()->to('inicio');
 

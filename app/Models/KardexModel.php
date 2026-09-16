@@ -13,7 +13,7 @@ class KardexModel extends Model {
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['item', 'movimiento','unidades','observacion'];
+    protected $allowedFields    = ['item', 'movimiento','unidades','observacion', 'precio_actual', 'idpedido'];
 
     // Dates
     protected $useTimestamps = true;
@@ -70,8 +70,9 @@ class KardexModel extends Model {
         $result = null;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.precio_actual as precio,'.$this->table.'.id as id,'.$this->table.'.updated_at as fecha,'.$this->table.'.item as codigo,unidades,
-                            items.item as item,mov_inventario.descripcion as tipo_movimiento,observacion');
+                idpedido,cod_pedido,items.item as item,mov_inventario.descripcion as tipo_movimiento,observacion');
         $builder->join('items', ''.$this->table.'.item = items.id','left');
+        $builder->join('pedidos', $this->table.'.idpedido = pedidos.id', 'left');
         $builder->join('mov_inventario', $this->table.'.movimiento = mov_inventario.id', 'left');
         $builder->where($this->table.'.item', $item);
         $builder->orderBy('id', 'asc');

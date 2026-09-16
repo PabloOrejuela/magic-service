@@ -190,32 +190,6 @@
         })
     }
 
-    // btnActualizar.addEventListener('click', function(e) {
-    //     //e.preventDefault()
-    //     let id = document.getElementById("id").value
-    //     let movimiento = document.getElementById("movimiento").selectedIndex
-    //     let unidades = document.getElementById("unidades").value
-    //     let observacion = document.getElementById("observacion").value
-    //     let precio = document.getElementById("precio").value
-
-    //     $.ajax({
-    //         url: 'registraMovimientoStock',
-    //         method: 'GET',
-    //         dataType: 'json',
-    //         data: {
-    //             id: id,
-    //             movimiento: movimiento,
-    //             unidades: unidades,
-    //             observacion: observacion,
-    //             precio: precio,
-    //         },
-    //         success: function(res) {
-                
-    //             limpiarCampos()
-    //         }
-    //     });
-    // })
-
     function limpiarCampos(){
         document.getElementById("id").value = 0
         document.getElementById("item").value = ''

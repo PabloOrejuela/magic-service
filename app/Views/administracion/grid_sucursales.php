@@ -35,12 +35,17 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        use App\Models\SectoresEntregaModel;
-                                        $this->sectoresEntregaModel = new SectoresEntregaModel();
+                                        use App\Models\SucursalSectorModel;
+                                        $this->sucursalSectorModel = new SucursalSectorModel();
 
                                         if (isset($sucursales) && $sucursales != NULL) {
                                             foreach ($sucursales as $key => $value) {
-                                                $sectoresEntrega = $this->sectoresEntregaModel->select('sector')->where('estado', 1)->where('idsucursal', $value->id)->findAll();
+                                                $sectoresEntrega = $this->sucursalSectorModel
+                                                    ->select('sector')
+                                                    ->join('sectores_entrega', 'sectores_entrega.id=sucursales_sectores.idsector')
+                                                    ->where('estado', 1)
+                                                    ->where('sucursales_sectores.idsucursal', $value->id)
+                                                    ->findAll();
                                                 echo '<tr>
                                                     <td>'.$value->id.'</td>
                                                     <td><a href="'.site_url().'sucursal-edit/'.$value->id.'" id="link-editar">'.$value->sucursal.'</a></td>

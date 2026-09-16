@@ -926,14 +926,13 @@ class Ventas extends BaseController {
         return $total;
     }
 
-
     public function pedido_insert(){
 
         if ($this->session->ventas == 1) {
             $cod_pedido = $this->request->getPostGet('cod_pedido'); 
             $idpedido = $this->session->idpedido;
-            $detalleTemporal = $this->detallePedidoTempModel->where('idpedido', $this->session->idpedido)->findAll();
-            
+            $detalleTemporal = $this->detallePedidoTempModel
+                ->where('idpedido', $this->session->idpedido)->findAll();
             
             if ($this->request->getPostGet('sin_remitente') != null) {
                 $sin_remitente = $this->request->getPostGet('sin_remitente');
@@ -1000,16 +999,13 @@ class Ventas extends BaseController {
             $this->validation->setRuleGroup('pedidoInicial');
 
             if (!$this->validation->withRequest($this->request)->run()) {
-                //Depuración
-                //dd($validation->getErrors());
+                
                 $this->session->set('mensaje', 0);
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{
                 
-                // Verifico que exista el cliente.
-                // Si el formulario trae idcliente, primero lo busco por ID.
-                // Si no trae ID, vuelvo a comprobar por teléfono, teléfono 2 y documento
-                // antes de permitir crear un cliente nuevo.
+                // Verifico que exista el cliente. Si el formulario trae idcliente, primero lo busco por ID.
+                // Si no trae ID, vuelvo a comprobar por teléfono, teléfono 2 y documento antes de permitir crear un cliente nuevo.
                 $clienteExiste = null;
                 if ($clienteID !== null && $clienteID !== '') {
 
@@ -1017,8 +1013,7 @@ class Ventas extends BaseController {
                     $clienteExiste = $this->clienteModel->find($clienteID);
 
                 }
-                // Si no vino ID o el ID no corresponde a un cliente,
-                // verificamos nuevamente los datos identificadores.
+                // Si no vino ID o el ID no corresponde a un cliente, verificamos nuevamente los datos identificadores.
                 if (!$clienteExiste) {
 
                     $builder = $this->clienteModel->groupStart();
@@ -1086,6 +1081,8 @@ class Ventas extends BaseController {
                         //Inserto el detalle
                         if ($detalleTemporal) {
                             $this->detallePedidoModel->_insert($detalleTemporal);
+                            $this->procesoKardex($detalleTemporal);
+                            
                             $mensaje = 1;
 
                         }else{
@@ -1141,12 +1138,13 @@ class Ventas extends BaseController {
                         //Inserto el detalle
                         if ($detalleTemporal) {
                             $this->detallePedidoModel->_insert($detalleTemporal);
-                            $this->detallePedidoTempModel->_delete($detalleTemporal);
+                            $this->procesoKardex($detalleTemporal);
 
                             $mensaje = 1;
                         }else{
                             $mensaje = 'SIN DETALLE';
                         }
+                        $this->detallePedidoTempModel->_delete($detalleTemporal);
                     }else{
                         $mensaje = 0;
                     }
@@ -1162,6 +1160,130 @@ class Ventas extends BaseController {
         }
     }
 
+    /**
+     *  Procesa el detalle temporal y hace el proceso de kardex
+    */
+    public function procesoKardex($detalleTemporal){
+        if (empty($detalleTemporal)) {
+            return;
+        }
+
+        $fecha = date('Y-m-d');
+        $idpedido = $detalleTemporal[0]->idpedido;
+        
+        // Busco en kardex los movimientos que fueron generados por este pedido.
+        $hayRegistros = $this->kardexModel
+            ->select('kardex_items.*')
+            ->join('items', 'items.id = kardex_items.item')
+            ->where('kardex_items.idpedido', $idpedido)
+            ->where('items.cuantificable', 1)
+            ->findAll();
+
+        if (empty($hayRegistros)) {
+            // Pedido nuevo: se registra el egreso completo.
+            $unidadesNuevas = [];
+            $preciosNuevos = [];
+
+            foreach ($detalleTemporal as $detalle) {
+                $items = $this->itemsProductoModel
+                    ->select('items_productos.*')
+                    ->join('items', 'items.id = items_productos.item')
+                    ->where('items_productos.idproducto', $detalle->idproducto)
+                    ->where('items.cuantificable', 1)
+                    ->findAll();
+                foreach ($items as $item) {
+                    $unidadesNuevas[$item->item] =
+                        ($unidadesNuevas[$item->item] ?? 0)
+                        - (float) $detalle->cantidad;
+                    $preciosNuevos[$item->item] = $item->precio_actual;
+                }
+            }
+
+            foreach ($unidadesNuevas as $item => $unidades) {
+                $this->kardexModel->insert([
+                    'item' => $item,
+                    'idpedido' => $idpedido,
+                    'movimiento' => 2, // Egreso por venta
+                    'unidades' => $unidades,
+                    'precio_actual' => $preciosNuevos[$item],
+                    'observacion' => 'COMPRA ' . $fecha,
+                ]);
+            }
+        }else{
+            // Pedido editado: se calcula el total final requerido por cada item.
+            $unidadesRequeridas = [];
+            $preciosActuales = [];
+
+            foreach ($detalleTemporal as $detalle) {
+                $items = $this->itemsProductoModel
+                    ->select('items_productos.*')
+                    ->join('items', 'items.id = items_productos.item')
+                    ->where('items_productos.idproducto', $detalle->idproducto)
+                    ->where('items.cuantificable', 1)
+                    ->findAll();
+
+                foreach ($items as $item) {
+                    $unidadesRequeridas[$item->item] =
+                        ($unidadesRequeridas[$item->item] ?? 0)
+                        - (float) $detalle->cantidad;
+
+                    $preciosActuales[$item->item] = $item->precio_actual;
+                }
+            }
+
+            $registrosPorItem = [];
+            foreach ($hayRegistros as $registro) {
+                $registrosPorItem[$registro->item][] = $registro;
+
+                // Para items eliminados del pedido se conserva el último precio.
+                if (!isset($preciosActuales[$registro->item])) {
+                    $preciosActuales[$registro->item] = $registro->precio_actual;
+                }
+            }
+
+            $itemsAjustar = array_unique(array_merge(
+                array_keys($unidadesRequeridas),
+                array_keys($registrosPorItem)
+            ));
+
+            foreach ($itemsAjustar as $item) {
+                $unidades = $unidadesRequeridas[$item] ?? 0;
+                $registrosItem = $registrosPorItem[$item] ?? [];
+
+                if (empty($registrosItem) && abs($unidades) < 0.00001) {
+                    continue;
+                }
+
+                $datosKardex = [
+                    'movimiento' => 2,
+                    'unidades' => $unidades,
+                    'precio_actual' => $preciosActuales[$item] ?? 0,
+                    'observacion' => 'ACTUALIZACION PEDIDO ' . $fecha,
+                ];
+
+                if (empty($registrosItem)) {
+                    // Item nuevo en el pedido: se registra por primera vez.
+                    $this->kardexModel->insert($datosKardex + [
+                        'item' => $item,
+                        'idpedido' => $idpedido,
+                    ]);
+                    continue;
+                }
+
+                // El item ya pertenece al pedido: se actualiza su total final.
+                $registroPrincipal = array_shift($registrosItem);
+                $this->kardexModel->update($registroPrincipal->id, $datosKardex);
+
+                // Corrige registros duplicados creados por actualizaciones previas.
+                foreach ($registrosItem as $registroDuplicado) {
+                    $this->kardexModel->delete($registroDuplicado->id);
+                }
+            }
+        }
+
+        
+    }
+
     public function pedido_update() {
 
 
@@ -1171,7 +1293,8 @@ class Ventas extends BaseController {
 
         $cod_pedido = $this->request->getPostGet('cod_pedido');
         $idpedido = $this->request->getPostGet('idpedido');
-        $detalleTemporal = $this->detallePedidoTempModel->where('idpedido', $idpedido)->findAll();
+        $detalleTemporal = $this->detallePedidoTempModel
+            ->where('idpedido', $idpedido)->findAll();
 
         $pedido = [
             'idpedido' => $idpedido,
@@ -1266,8 +1389,9 @@ class Ventas extends BaseController {
                 $detalleTemporal,
                 $esClienteNuevo
             );
-
+            $this->procesoKardex($detalleTemporal);
             $this->registrarCambioPedido($idpedido);
+            
 
             $mensaje = 1;
 
@@ -1460,6 +1584,7 @@ class Ventas extends BaseController {
         /*
             PABLO: Esta función se debe borrar luego de haberla corrido una vez
             solo está creada para insertar los idpedido en la tabla de detalle_pedido
+            LA HE DESHABILITADO
 
         */
 
@@ -1470,8 +1595,8 @@ class Ventas extends BaseController {
 
         foreach ($pedidos as $key => $pedido) {
             
-            $this->detallePedidoModel->where('cod_pedido', $pedido->cod_pedido)->set('idpedido', $pedido->id)->update();
-            ;
+            //$this->detallePedidoModel->where('cod_pedido', $pedido->cod_pedido)->set('idpedido', $pedido->id)->update();
+            
         }
     }
 

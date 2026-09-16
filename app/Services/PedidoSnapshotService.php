@@ -15,8 +15,7 @@ use App\Models\ProcedenciaModel;
 use App\Models\ProductoModel;
 use App\Models\UsuarioModel;
 
-class PedidoSnapshotService
-{
+class PedidoSnapshotService {
 
     protected $pedidoModel;
     protected $detallePedidoModel;
@@ -32,8 +31,8 @@ class PedidoSnapshotService
     protected $usuarioModel;
 
 
-    public function __construct()
-    {
+    public function __construct() {
+
         $this->pedidoModel = new PedidoModel();
         $this->detallePedidoModel = new DetallePedidoModel();
         $this->attrExtArregModel = new AttrExtArregModel();
@@ -52,8 +51,8 @@ class PedidoSnapshotService
     /**
      * Genera snapshot completo del estado actual del pedido
      */
-    public function generar($idpedido, $datos, $detalle, $clienteActual = null)
-    {
+    public function generar($idpedido, $datos, $detalle, $clienteActual = null) {
+
 
         /*
          * Pedido actual
@@ -64,9 +63,6 @@ class PedidoSnapshotService
         if (!$pedidoActual) {
             return json_encode([]);
         }
-
-        log_message('error', '===== SNAPSHOT DEBUG PEDIDO INICIAL =====');
-        log_message('error', print_r($pedidoActual, true));
 
         /*
          * Campos que vienen del formulario y todavía
@@ -82,12 +78,7 @@ class PedidoSnapshotService
             $pedidoActual->cargo_domingo = $datos['cargo_domingo'];
         }
 
-        //PABLO: habria que borrar estas lineas de LOGS
-        log_message('error', '===== SNAPSHOT DEBUG DESPUES DATOS FORMULARIO =====');
-        log_message('error', print_r($pedidoActual, true));
         $this->resolverValoresRelacionadosPedido($pedidoActual);
-        log_message('error', '===== SNAPSHOT DEBUG DESPUES resolverValoresRelacionadosPedido =====');
-        log_message('error', print_r($pedidoActual, true));
 
 
         /*
@@ -129,27 +120,17 @@ class PedidoSnapshotService
             'cliente' => $clienteActual,
             'detalle' => $detalleActual
         ];
-
-        log_message('error', '===== SNAPSHOT DEBUG FINAL ANTES JSON =====');
-        log_message('error', print_r($snapshot['pedido'], true));
-
         
         $json =  json_encode(
             $snapshot,
             JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
         );
 
-        log_message('error', '===== TIPO OBSERVACION DEVOLUCION =====');
-        log_message('error', gettype($snapshot['pedido']->observacion_devolucion));
-
-        log_message('error', '===== VALOR OBSERVACION DEVOLUCION JSON =====');
-        log_message('error', json_encode($snapshot['pedido']->observacion_devolucion));
-
         return $json; 
     }
 
-    private function limpiarAtributos($atributos): array
-    {
+    private function limpiarAtributos($atributos): array {
+
         if (!$atributos) {
             return [];
         }
@@ -186,8 +167,8 @@ class PedidoSnapshotService
      * respecto al snapshot anterior. Cuando no existe un snapshot anterior,
      * el snapshot actual completo representa el estado inicial.
      */
-    public function generarDiff($snapshotAnteriorJson, $snapshotActualJson)
-    {
+    public function generarDiff($snapshotAnteriorJson, $snapshotActualJson) {
+
         if (!is_string($snapshotActualJson)) {
             return json_encode([]);
         }
@@ -484,8 +465,8 @@ class PedidoSnapshotService
         );
     }
 
-    private function obtenerValorRelacionado($modelo, $id, string $campo, $valorParaCero = null)
-    {
+    private function obtenerValorRelacionado($modelo, $id, string $campo, $valorParaCero = null) {
+        
         if ($id === 0 || $id === '0') {
             return $valorParaCero ?? $id;
         }

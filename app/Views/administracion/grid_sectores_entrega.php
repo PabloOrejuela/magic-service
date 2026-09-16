@@ -19,25 +19,26 @@
                             </thead>
                             <tbody>
                                 <?php
+                                    use App\Models\SucursalSectorModel;
+                                    $this->sucursalSectorModel = new SucursalSectorModel();
+                                    $sucursales = [];
+
                                     if (isset($sectores) && $sectores != NULL) {
                                         foreach ($sectores as $key => $value) {
+                                            $sucursales = $this->sucursalSectorModel
+                                                ->select('idsucursal,sucursal')
+                                                ->join('sucursales','sucursales.id=sucursales_sectores.idsucursal')
+                                                ->where('idsector', $value->id)
+                                                ->findAll();
+                                                
                                             echo '<tr>
-                                                <td>'.$value->idsector.'</td>
-                                                <td>
-                                                    <a 
-                                                        type="button" 
-                                                        id="'.$value->idsector.'" 
-                                                        href="#"  
-                                                        data-id="'.$value->idsector.'" 
-                                                        data-sucursal="'.$value->idsucursal.'" 
-                                                        data-costo_entrega="'.$value->costo_entrega.'" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#sucursalModal">'.$value->sector.
-                                                    '</a>
-                                                </td>
-                                                <td>'.number_format($value->costo_entrega+4, 2).'</td>
-                                                <td>'.$value->sucursal.'</td>
-                                                </tr>';
+                                                <td>'.$value->id.'</td>
+                                                <td>'.$value->sector.'</td>
+                                                <td>'.number_format($value->costo_entrega+4, 2).'</td><td>';
+                                                foreach ($sucursales as $key => $sucursal) {
+                                                    echo $sucursal->sucursal.', ';
+                                                }
+                                            echo '</td></tr>';
                                         }
                                     }
                                 ?>
@@ -52,7 +53,7 @@
     </div>
 </section>
 
-<!-- Modal Hora Entrega-->
+<!-- Modal Sucursal-->
 <div class="modal fade" id="sucursalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

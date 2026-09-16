@@ -39,21 +39,22 @@ class SectoresEntregaModel extends Model {
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    function _getSectores(){
-        $result = NULL;
-        $builder = $this->db->table($this->table);
-        $builder->select(''.$this->table.'.id as idsector, sector, costo_entrega, estado, sucursal, direccion, idsucursal');
-        $builder->join('sucursales', 'sucursales.id='.$this->table.'.idsucursal');
-        $builder->orderBy('sector', 'asc');
-        $query = $builder->get();
-        if ($query->getResult() != null) {
-            foreach ($query->getResult() as $row) {
-                $result[] = $row;
-            }
-        }
-        //echo $this->db->getLastQuery();
-        return $result;
-    }
+    // function _getSectores(){
+    //     $result = NULL;
+    //     $builder = $this->db->table($this->table);
+    //     $builder->select(''.$this->table.'.id as idsector, sector, costo_entrega, estado, sucursal, direccion, idsucursal');
+    //     $builder->join('sucursales_sectores', 'sucursales_sectores.idsector='.$this->table.'.id');
+    //     $builder->join('sucursales', 'sucursales.id=sucursales_sectores.idsucursal');
+    //     $builder->orderBy('sector', 'asc');
+    //     $query = $builder->get();
+    //     if ($query->getResult() != null) {
+    //         foreach ($query->getResult() as $row) {
+    //             $result[] = $row;
+    //         }
+    //     }
+    //     //echo $this->db->getLastQuery();
+    //     return $result;
+    // }
 
     public function _updateSucursalSector($idsector, $sucursal, $costo_entrega) {
 

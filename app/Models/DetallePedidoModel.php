@@ -126,11 +126,9 @@ class DetallePedidoModel extends Model {
     }
 
     public function _insert($detalle) {
-
+        // echo '<pre>'.var_export($detalle, true).'</pre>';exit;
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
-
-        // echo '<pre>'.var_export($detalle, true).'</pre>';exit;
 
         foreach ($detalle as $key => $value) {
             //Inserto el nuevo producto
@@ -153,8 +151,6 @@ class DetallePedidoModel extends Model {
     public function _update($detalle) {
 
         $data['updated_at'] = date('Y-m-d H:i:s');
-
-        //echo '<pre>'.var_export($detalle, true).'</pre>';exit;
 
         foreach ($detalle as $key => $value) {
             //Inserto el nuevo producto
