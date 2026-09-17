@@ -1657,10 +1657,10 @@ class Administracion extends BaseController {
             $data['usuario'] = $this->usuarioModel->find($id);
 
             //verifico si tiene sectores de entrega relacionados
-            $haySectores = $this->sectoresEntregaModel->where('idsucursal', $id)->findAll();
+            $haySectores = $this->sucursalSectorModel->where('idsucursal', $id)->findAll();
 
             if ($haySectores || $id == 4) {
-                //Si tiene sectores relacionados los borro
+                //Si tiene sectores relacionados debo borrarlos primero
                 session()->setFlashdata('mensaje', 'error');
                 
             }else{
