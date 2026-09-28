@@ -24,7 +24,7 @@
                                         <option value="0" selected>-- Opciones --</option>
                                         <?php
 
-                                    use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+                                            use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
                                             if (isset($negocios)) {
                                                 foreach ($negocios as $key => $negocio) {

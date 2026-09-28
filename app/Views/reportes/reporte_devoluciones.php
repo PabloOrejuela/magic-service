@@ -97,8 +97,8 @@
                                                 }
 
                                                 echo '<td>'.$vendedor.'</td>';  
-                                                echo '<td id="resultado-total">'.$result->total.'</td>';
-                                                echo '<td id="resultado-total">'.$result->valor_devuelto.'</td>';
+                                                echo '<td id="resultado-total">'.number_format($result->total, 2).'</td>';
+                                                echo '<td id="resultado-total">'.number_format($result->valor_devuelto, 2).'</td>';
                                                 echo '<td>'.$result->observacion_devolucion.'</td>';
 
                                                 echo '</tr>';
@@ -110,7 +110,7 @@
                                                 <td colspan="5"></td>
                                                 <td id="text-result-bold">TOTAL: </td>
                                                 <td id="text-result-bold">$'.number_format($suma, 2).'</td>
-                                                <td id="text-result-bold">'.($totalKarana + $totalMagicService).'</td>
+                                                <td id="text-result-bold">'.number_format(($totalKarana + $totalMagicService), 2).'</td>
                                                 <td colspan="2"></td>
                                             </tr>
                                         </tbody>

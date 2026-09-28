@@ -279,7 +279,6 @@ class Reportes extends BaseController {
                     
                     //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
                     $res[$i]['res'] = $this->pedidoModel->_getSumatoriaPedidosDia($dia, $datos['negocio']);
-
                     $devolucion[$i]['res'] = $this->pedidoModel->_getSumatoriaDevolucionesDia($dia, $datos['negocio']);
                     $res[$i]['dia'] = date('N', strtotime($dia));
                     $sumaIngreso += $res[$i]['res'];
@@ -2315,7 +2314,7 @@ class Reportes extends BaseController {
             'negocio' => $this->request->getPostGet('negocio'),
             'fecha' => $this->request->getPostGet('mes'),
         ];
-
+        $devolucionesMes = 0;
         $sumaIngreso = 0;
         $fecha = explode('-', $datos['fecha']);
         $mes = $fecha[1];
@@ -2336,8 +2335,10 @@ class Reportes extends BaseController {
             
             //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
             $res[$i]['res'] = $this->pedidoModel->_getSumatoriaPedidosDia($dia, $datos['negocio']);
+            $devolucion[$i]['res'] = $this->pedidoModel->_getSumatoriaDevolucionesDia($dia, $datos['negocio']);
             $res[$i]['dia'] = date('N', strtotime($dia));
             $sumaIngreso += $res[$i]['res'];
+            $devolucionesMes += $devolucion[$i]['res'];
         }
 
         //Obtengo la suma de los gastos del mes
@@ -2568,12 +2569,21 @@ class Reportes extends BaseController {
 
                 $fila+=2;
 
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DEVOLUCIONES');
+
+                $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('B'.$fila, $devolucionesMes);
+
+                $fila+=2;
+
                 $hoja->getStyle('A'.$fila)->applyFromArray($styleFilaResult);
                 $hoja->setCellValue('A'.$fila, 'TOTAL DE UTILIDAD NETA');
 
                 $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
                 $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
-                $hoja->setCellValue('B'.$fila, $sumaIngreso - $sumaEgresos);
+                $hoja->setCellValue('B'.$fila, $sumaIngreso - $sumaEgresos - $devolucionesMes);
 
                 $fila+=2;
 
@@ -2610,13 +2620,22 @@ class Reportes extends BaseController {
                 $hoja->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
                 $hoja->setCellValue('B'.$fila, $sumaEgresos);
 
+                $fila+=2;
+
+                $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
+                $hoja->setCellValue('A'.$fila, 'TOTAL DEVOLUCIONES');
+
+                $hoja->getStyle('B'.$fila)->getNumberFormat()->setFormatCode($currencyMask);
+                $hoja->getStyle('B'.$fila)->applyFromArray($styleFilaResult);
+                $hoja->setCellValue('B'.$fila, $devolucionesMes);
+
                 $fila++;
 
                 $hoja->getStyle('A'.$fila)->applyFromArray($styleFila);
                 $hoja->setCellValue('A'.$fila, 'TOTAL DE UTILIDAD NETA');
 
                 $hoja->getStyle('B'.$fila)->applyFromArray($styleCurrencyBold);
-                $hoja->setCellValue('B'.$fila, $sumaIngreso - $sumaEgresos);
+                $hoja->setCellValue('B'.$fila, $sumaIngreso - $sumaEgresos - $devolucionesMes);
 
                 $fila++;
 
