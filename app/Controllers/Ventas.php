@@ -44,7 +44,6 @@ class Ventas extends BaseController {
             $data['cambios'] = $this->pedidoCambiosModel->_getCambiosPedido($idpedido);
             $data['pedido'] = $this->pedidoModel->first($idpedido);
 
-            
             $data['title']='Pedidos';
             $data['subtitle']='Historial del Pedido';
             $data['main_content']='ventas/grid_historial_pedido';
@@ -88,22 +87,22 @@ class Ventas extends BaseController {
         }
     }
     // INICIO TODO ESTE CÓDIGO DEBE SER BORRADO LUEGO DEL PROCESO DE SET ID DEL USUARIO QUE REGISTRA EL PEDIDO //
-    public function setIdRegister(){
-        $inicioBuscado = 1;
-        $contador = 0;
-        $iduser = null;
-        $pedidos = $this->pedidoModel->select('id,cod_pedido')->findAll();
-        foreach ($pedidos as $key => $pedido) {
-            if (strpos($pedido->cod_pedido, (string)$inicioBuscado) === 0) {
-                echo $pedido->cod_pedido.'<br>';
+    // public function setIdRegister(){
+    //     $inicioBuscado = 1;
+    //     $contador = 0;
+    //     $iduser = null;
+    //     $pedidos = $this->pedidoModel->select('id,cod_pedido')->findAll();
+    //     foreach ($pedidos as $key => $pedido) {
+    //         if (strpos($pedido->cod_pedido, (string)$inicioBuscado) === 0) {
+    //             echo $pedido->cod_pedido.'<br>';
 
-                //Proceso
-                $this->pedidoModel->set('registered_by', $inicioBuscado)->where('id', $pedido->id)->update();
-                $contador++;
-            }
-        }
-        echo "El total es: ". $contador;
-    }
+    //             //Proceso
+    //             $this->pedidoModel->set('registered_by', $inicioBuscado)->where('id', $pedido->id)->update();
+    //             $contador++;
+    //         }
+    //     }
+    //     echo "El total es: ". $contador;
+    // }
 
     // FIN TODO ESTE CÓDIGO DEBE SER BORRADO LUEGO DEL PROCESO DE SET ID DEL USUARIO QUE REGISTRA EL PEDIDO //
 
@@ -949,6 +948,9 @@ class Ventas extends BaseController {
                 'fecha' => date('Y-m-d'),
                 'idcliente' => $this->request->getPostGet('idcliente'),
                 'sin_remitente' => $sin_remitente,
+
+                //Esto se debe cambiar cuando ya se implemente un método o sistema para determinar la sucursal que despacha
+                'idsucursal_despacha' => 1, 
                 
                 'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
                 'horario_entrega' => $this->request->getPostGet('horario_entrega'),
@@ -1304,6 +1306,9 @@ class Ventas extends BaseController {
             'idcliente' => $this->request->getPostGet('idcliente'),
             'sin_remitente' => $this->request->getPostGet('sin_remitente'),
 
+            //Esto se debe cambiar cuando ya se implemente un método o sistema para determinar la sucursal que despacha
+            'idsucursal_despacha' => 1,
+
             'fecha_entrega' => $this->request->getPostGet('fecha_entrega'),
             'horario_entrega' => $this->request->getPostGet('horario_entrega'),
             'sector' => $this->request->getPostGet('sectores'),
@@ -1620,9 +1625,6 @@ class Ventas extends BaseController {
 
             $data['main_content']='ventas/grid-pedidos';
             return view('dashboard/index', $data);
-
-            
-
         }else{
             return redirect()->to('logout');
         }

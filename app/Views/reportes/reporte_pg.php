@@ -23,6 +23,9 @@
                                     >
                                         <option value="0" selected>-- Opciones --</option>
                                         <?php
+
+                                    use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+
                                             if (isset($negocios)) {
                                                 foreach ($negocios as $key => $negocio) {
                                                     echo '<option value="'.$negocio->id.'" '.set_select('negocio', $negocio->id, false).' >'.$negocio->negocio.'</option>';
@@ -65,6 +68,10 @@
                                                         <td>Faltan datos del mes</td>
                                                     </tr>
                                                     <tr>
+                                                        <td>TOTAL DEVOLUCIONES</td>
+                                                        <td>Faltan datos del mes</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td>TOTAL DE UTILIDAD NETA</td>
                                                         <td>Faltan datos del mes</td>
                                                     </tr>
@@ -100,15 +107,19 @@
                                                     <tbody>
                                                         <tr>
                                                             <td id="td-bold-left">TOTAL DE INGRESOS</td>
-                                                            <td id="td-result-right">$ '.$sumaIngreso.'</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaIngreso, 2).'</td>
                                                         </tr>
                                                         <tr>
                                                             <td id="td-bold-left">TOTAL DE EGRESOS</td>
-                                                            <td id="td-result-right">$ '.$sumaEgresos.'</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaEgresos, 2).'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DEVOLUCIONES</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaDevoluciones, 2).'</td>
                                                         </tr>
                                                         <tr>
                                                             <td id="td-bold-left-result">TOTAL DE UTILIDAD NETA</td>
-                                                            <td id="td-result-right">$ '.$sumaIngreso - $sumaEgresos.'</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaIngreso - $sumaEgresos - $sumaDevoluciones, 2).'</td>
                                                         </tr>
                                                         <tr>
                                                             <td id="td-bold-left">TOTAL DE MARGEN BRUTO</td>
@@ -142,15 +153,19 @@
                                                     <tbody>
                                                         <tr>
                                                             <td id="td-bold-left">TOTAL DE INGRESOS</td>
-                                                            <td id="td-result-right">$ '.$sumaIngreso.'</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaIngreso, 2).'</td>
                                                         </tr>
                                                         <tr>
                                                             <td id="td-bold-left">TOTAL DE EGRESOS</td>
-                                                            <td id="td-result-right">$ '.$sumaEgresos.'</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaEgresos, 2).'</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="td-bold-left">TOTAL DEVOLUCIONES</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaDevoluciones, 2).'</td>
                                                         </tr>
                                                         <tr>
                                                             <td id="td-bold-left-result">TOTAL DE UTILIDAD NETA</td>
-                                                            <td id="td-result-right">$ '.$sumaIngreso - $sumaEgresos.'</td>
+                                                            <td id="td-result-right">$ '.number_format($sumaIngreso - $sumaEgresos - $sumaDevoluciones, 2).'</td>
                                                         </tr>
                                                         <tr>
                                                             <td id="td-bold-left">TOTAL DE MARGEN BRUTO</td>

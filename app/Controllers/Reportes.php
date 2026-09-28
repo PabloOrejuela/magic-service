@@ -261,7 +261,7 @@ class Reportes extends BaseController {
                 
                 return redirect()->back()->withInput()->with('errors', $this->validation->getErrors());
             }else{ 
-                
+                $devolucionesMes = 0;
                 $sumaIngreso = 0;
                 $fecha = explode('-', $datos['fecha']);
                 $mes = $fecha[1];
@@ -273,14 +273,17 @@ class Reportes extends BaseController {
                 $data['cadenaInicio'] = $this->cadenaInicio($data['inicioMes']);
                 $data['cadenaFinal'] = $this->cadenaFinal($data['finMes']);
 
-                //Obtengo la suma de los ingresos del mes
+                //Obtengo la suma de los ingresos del mes y las devoluviones
                 for ($i = 1; $i <= $data['numDias']; $i++) { 
                     $dia = $datos['fecha'].'-'.($i > 9 ? $i : '0'.$i);
                     
                     //OBTENDO EL RESULTADO DE VENTAS DE EL DÍA 
                     $res[$i]['res'] = $this->pedidoModel->_getSumatoriaPedidosDia($dia, $datos['negocio']);
+
+                    $devolucion[$i]['res'] = $this->pedidoModel->_getSumatoriaDevolucionesDia($dia, $datos['negocio']);
                     $res[$i]['dia'] = date('N', strtotime($dia));
                     $sumaIngreso += $res[$i]['res'];
+                    $devolucionesMes += $devolucion[$i]['res'];
                 }
 
                 //Obtengo la suma de los gastos del mes
@@ -298,6 +301,7 @@ class Reportes extends BaseController {
                 
                 $data['res'] = $res;
                 $data['sumaIngreso'] = $sumaIngreso;
+                $data['sumaDevoluciones'] = $devolucionesMes;
                 $data['gastoFijo'] = $gastoFijo;
                 $data['gastoVariable'] = $gastoVariable;
                 $data['gastoInsumosProveedores'] = $gastoInsumosProveedores;

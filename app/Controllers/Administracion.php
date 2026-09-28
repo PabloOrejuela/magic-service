@@ -1650,28 +1650,31 @@ class Administracion extends BaseController {
 
     public function sucursal_delete($id){
 
-        if ($this->session->admin == 1) {
-            
-            $data['session'] = $this->session;
-            $data['roles'] = $this->rolModel->findAll();
-            $data['usuario'] = $this->usuarioModel->find($id);
-
-            //verifico si tiene sectores de entrega relacionados
-            $haySectores = $this->sucursalSectorModel->where('idsucursal', $id)->findAll();
-
-            if ($haySectores || $id == 4) {
-                //Si tiene sectores relacionados debo borrarlos primero
-                session()->setFlashdata('mensaje', 'error');
-                
-            }else{
-                $this->sucursalModel->delete($id);
-                session()->setFlashdata('mensaje', 'success');
-            }
-            
-            return redirect()->to('sucursales');
-        }else{
+        if ($this->session->admin != 1) {
             return redirect()->to('logout');
         }
+            
+        $data['session'] = $this->session;
+        $data['roles'] = $this->rolModel->findAll();
+        $data['usuario'] = $this->usuarioModel->find($id);
+
+        //verifico si tiene sectores de entrega relacionados
+        $haySectores = $this->sucursalSectorModel->select('id')->where('idsucursal', $id)->first();
+        $hayGastos = $this->gastoModel->select('id')->where('idsucursal', $id)->first();
+
+        if ($id == 4) { 
+            session()->setFlashdata('mensaje', 'error'); 
+            return redirect()->to('sucursales'); 
+        }
+
+        if ($haySectores || $hayGastos) { 
+            session()->setFlashdata('mensaje', 'error'); 
+            return redirect()->to('sucursales'); 
+        }
+        
+        $this->sucursalModel->delete($id); 
+        session()->setFlashdata('mensaje', 'success'); 
+        return redirect()->to('sucursales');
     }
 
     function updateSucursalSector($sector, $sucursal, $costo_entrega){

@@ -54,26 +54,26 @@ class PedidoModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,'.$this->table.'.estado as estado,hora,clientes.nombre as nombre, 
                 fecha_entrega,horario_entrega,rango_entrega_desde,rango_entrega_hasta,observaciones,hora_salida_pedido,registered_by,
-                formas_pago,banco,fecha,orden,idnegocio,mensajero_extra,valor_devuelto,observacion_devolucion,
-                sin_remitente,sectores_entrega.sector as sector,dir_entrega,
-                estados_pedidos.estado as estado,
-                hora_salida_pedido,ubicacion,
-                usuarios.nombre as mensajero,
-                observacion_pago'
+                formas_pago,banco,fecha,orden,idnegocio,mensajero_extra,valor_devuelto,observacion_devolucion,idsucursal_despacha,
+                sin_remitente,sectores_entrega.sector as sector,dir_entrega,estados_pedidos.estado as estado,hora_salida_pedido,ubicacion,
+                usuarios.nombre as mensajero,observacion_pago'
         );
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
         $builder->join('usuarios', $this->table.'.mensajero = usuarios.id', 'left');
         $builder->join('estados_pedidos', $this->table.'.estado = estados_pedidos.id', 'left');
+
+        //ESTO se debe cambiar cuando se implemente un método para determinar la sucursal que despacha
+        $builder->where('pedidos.idsucursal_despacha', 1);
         
         //Si es vendedor solo salen los pedidos en proceso, no los completados y entregados
         if ($idroles > 3) {
             $builder->where('pedidos.estado <=', 3);
-            $builder->limit(250);
+            $builder->limit(200);
         }else if($idroles == 3){
             $builder->where('pedidos.estado <=', 6);
-            $builder->limit(350);
+            $builder->limit(300);
         }
 
         $builder->orderBy('orden', 'asc');
@@ -91,7 +91,7 @@ class PedidoModel extends Model {
     function _getPedidosRangoFechasProcedencias($fechaInicio, $fechaFinal, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,registered_by');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,procedencia,negocio,registered_by,idsucursal_despacha');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
@@ -118,7 +118,7 @@ class PedidoModel extends Model {
     function _getPedidosRangoFechasNegocio($fechaInicio, $fechaFinal, $negocio){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,registered_by');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,registered_by,idsucursal_despacha');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->where($this->table.'.estado', 1);
@@ -149,7 +149,7 @@ class PedidoModel extends Model {
 
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,vendedor,venta_extra,registered_by');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,negocio,vendedor,venta_extra,registered_by,idsucursal_despacha');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->where($this->table.'.estado', 1);
@@ -182,7 +182,7 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,dir_entrega,nombre as cliente,transporte,registered_by,negocio,mensajero,rango_entrega_desde,rango_entrega_hasta,
-                valor_mensajero,valor_mensajero_edit,valor_mensajero_extra,mensajero_extra,venta_extra,sectores_entrega.sector as sector');
+                idsucursal_despacha,valor_mensajero,valor_mensajero_edit,valor_mensajero_extra,mensajero_extra,venta_extra,sectores_entrega.sector as sector');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id','left');
@@ -216,7 +216,7 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,dir_entrega,nombre as cliente,registered_by,transporte,negocio,mensajero,rango_entrega_desde,rango_entrega_hasta,
-                valor_mensajero,valor_mensajero_edit,valor_mensajero_extra,mensajero_extra,venta_extra,sectores_entrega.sector as sector');
+                idsucursal_despacha,valor_mensajero,valor_mensajero_edit,valor_mensajero_extra,mensajero_extra,venta_extra,sectores_entrega.sector as sector');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->join('sectores_entrega', $this->table.'.sector = sectores_entrega.id','left');
@@ -243,7 +243,8 @@ class PedidoModel extends Model {
     function _getPedidosRangoFechasReportes($fechaInicio, $fechaFinal){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,registered_by,procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,registered_by,procedencia,
+            negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,idsucursal_despacha');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('pedidos_procedencia', $this->table.'.id = pedidos_procedencia.idpedidos','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
@@ -268,7 +269,8 @@ class PedidoModel extends Model {
         $result = NULL;
 
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,registered_by,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,registered_by,negocio,banco,vendedor,
+            venta_extra,observaciones,pedidos.estado as estado,idsucursal_despacha');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->where($this->table.'.estado', 1);
@@ -290,7 +292,8 @@ class PedidoModel extends Model {
         $result = NULL;
 
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,registered_by,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pedidos.idcliente as idcliente');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,registered_by,negocio,banco,vendedor,
+            venta_extra,observaciones,pedidos.estado as estado,pedidos.idcliente as idcliente,idsucursal_despacha');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
         $builder->where($this->table.'.estado', 1);
@@ -320,7 +323,8 @@ class PedidoModel extends Model {
         $result = NULL;
         $builder = $this->db->table($this->table);
         $builder->select($this->table.'.id as id,cod_pedido,fecha_entrega,fecha,nombre as cliente,total,observacion_pago,registered_by,
-                        procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio,forma_pago,clientes.telefono as telefono,clientes.telefono_2 as telefono_2');
+            procedencia,negocio,banco,vendedor,venta_extra,observaciones,pedidos.estado as estado,pagado,idnegocio,forma_pago,clientes.telefono as telefono,
+            clientes.telefono_2 as telefono_2,idsucursal_despacha');
         
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('formas_pago', $this->table.'.formas_pago = formas_pago.id','left');
@@ -365,6 +369,26 @@ class PedidoModel extends Model {
         return $result;
     }
 
+
+    function _getSumatoriaDevolucionesDia($fecha, $negocio){
+        $result = NULL;
+        $builder = $this->db->table($this->table);
+        $builder->select('fecha,sum(valor_devuelto) as devolucion');
+        $builder->where($this->table.'.idnegocio', $negocio);
+        $builder->where($this->table.'.estado', 1);
+        $builder->where('fecha', $fecha);
+        //$builder->groupBy('idnegocio');
+        $query = $builder->get();
+        if ($query->getResult() != null) {
+            foreach ($query->getResult() as $row) {
+                $result = $row->devolucion; 
+            }
+        }
+        //echo $this->db->getLastQuery();
+        return $result;
+    }
+
+
     function _getPedidosRangoFechas($fechaInicio, $fechaFinal){
         $result = NULL;
         $builder = $this->db->table($this->table);
@@ -388,7 +412,7 @@ class PedidoModel extends Model {
         $builder = $this->db->table($this->table);
         $builder->select('pedidos.id as id,pedidos.cod_pedido as cod_pedido,idcliente,registered_by,sin_remitente,pedidos.fecha as fecha,vendedor,pedidos.estado as estado,
            sectores_entrega.sector as sector,pedidos.observaciones as observaciones,venta_extra,pedidos.idnegocio as idnegocio,pedidos.fecha_entrega as fecha_entrega,
-           pedidos.dir_entrega as dir_entrega,ubicacion,total,usuarios.nombre as nombre,sucursal');
+           pedidos.dir_entrega as dir_entrega,ubicacion,total,usuarios.nombre as nombre,sucursal,idsucursal_despacha');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id');
         $builder->Join('sectores_entrega', $this->table.'.sector = sectores_entrega.id', 'left');
         $builder->join('horarios_entrega', $this->table.'.horario_entrega = horarios_entrega.id', 'left');
@@ -435,7 +459,7 @@ class PedidoModel extends Model {
     function _getDatosPedido($idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado,idnegocio,observacion_pago,
+        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,'.$this->table.'.estado as estado,idnegocio,observacion_pago,idsucursal_despacha,
                 nombre,documento,clientes.id as idcliente,direccion,telefono,telefono_2,email,fecha_entrega,sin_remitente,valor_devuelto,registered_by,
                 horario_entrega,venta_extra,hora,fecha,hora_salida_pedido,vendedor,formas_pago,banco,ubicacion,observaciones,observacion_devolucion,
                 pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,mensajero,mensajero_extra,valor_mensajero,valor_mensajero_extra,ref_pago,
@@ -457,7 +481,7 @@ class PedidoModel extends Model {
     function _getDatosPedidoTicket($idpedido){
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,registered_by,
+        $builder->select($this->table.'.id as id,'.$this->table.'.cod_pedido as cod_pedido,registered_by,idsucursal_despacha,
                 nombre as cliente,direccion,telefono,telefono_2,fecha_entrega,rango_entrega_desde,rango_entrega_hasta,
                 hora,fecha,observaciones,pedidos.sector as idsector,sectores_entrega.sector as sector,dir_entrega,sin_remitente');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
@@ -552,7 +576,7 @@ class PedidoModel extends Model {
         if ($data['valor_mensajero_edit'] != 'NULL' && $data['valor_mensajero_edit'] != '') {
             $builder->set('valor_mensajero_edit', $data['valor_mensajero_edit']); 
         }
-
+        $builder->set('idsucursal_despacha', $data['idsucursal_despacha']);
         $builder->set('registered_by', $data['registered_by']);
         $builder->set('orden', 1); 
         $builder->set('idnegocio', $data['idnegocio']); 
@@ -678,6 +702,7 @@ class PedidoModel extends Model {
             $builder->set('valor_mensajero_extra', '0.00'); 
         }
         
+        $builder->set('idsucursal_despacha', $data['idsucursal_despacha']);
         $builder->set('observaciones', $data['observaciones']); 
         $builder->set('observacion_pago', $data['observacion_pago']); 
         $builder->set('idnegocio', $data['idnegocio']); 
@@ -750,7 +775,8 @@ class PedidoModel extends Model {
         
         $result = NULL;
         $builder = $this->db->table($this->table);
-        $builder->select($this->table.'.id as id,cod_pedido,fecha,nombre as cliente,negocio,vendedor,total,pedidos.estado as estado,pagado,valor_devuelto,observacion_devolucion,idnegocio');
+        $builder->select($this->table.'.id as id,cod_pedido,fecha,nombre as cliente,negocio,vendedor,total,pedidos.estado as estado,pagado,
+            valor_devuelto,observacion_devolucion,idnegocio');
         $builder->join('clientes', $this->table.'.idcliente = clientes.id','left');
         $builder->join('negocios', $this->table.'.idnegocio = negocios.id','left');
 
@@ -772,10 +798,6 @@ class PedidoModel extends Model {
         //echo $this->db->getLastQuery();
         return $result;
     }
-
-    /*
-    *   
-    */
 
     function _verificaCampos($id, $detalle){
         //fecha_entrega, nombre, sector, dir_entrega, cod arreglo, horario_entrega
@@ -806,15 +828,11 @@ class PedidoModel extends Model {
             $numCampos--;
         }
         
-        // if ($pedido->hora_salida_pedido != NULL) {
-        //     $numCampos--;
-        // }
 
         if (isset($detalle) && count($detalle) > 0) {
             $numCampos--;
         }
         return $numCampos;
-        //echo '<pre>'.var_export($detalle, true).'</pre>';
-        //echo '<pre>'.var_export($pedido, true).'</pre>';exit;
+
     }
 }
