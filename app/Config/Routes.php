@@ -17,6 +17,7 @@ $routes->group('/', ['filter' => 'auth'], function($routes) {
     $routes->get('inicio', 'Home::index');
 
     //VENTAS
+    //$routes->get('puntos-cliente', 'Ventas::asignaPuntosCliente');  //esto se puede borrar
     $routes->get('actualizaMensajeSession', 'Ventas::actualizaMensajeSession');
     $routes->get('actualizaObservacionPedido', 'Ventas::actualizaObservacionPedido');
     $routes->get('actualizaValorCampoTicket', 'Ventas::actualizaValorCampoTicket');

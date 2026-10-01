@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 
+use App\Models\PuntosClienteModel;
+
 class Ventas extends BaseController {
 
     private $nombresDias = array(
@@ -1095,11 +1097,6 @@ class Ventas extends BaseController {
                         $mensaje = 0;
                     }
 
-                    session()->setFlashdata('mensaje', $mensaje);
-                    //$this->session->set('mensaje', $mensaje);
-
-                    return redirect()->to('pedidos');
-
                 }else{
 
                     $cliente = [
@@ -1150,10 +1147,22 @@ class Ventas extends BaseController {
                     }else{
                         $mensaje = 0;
                     }
-
-                    $this->session->set('mensaje', $mensaje);
-                    return redirect()->to('pedidos');
                 }
+
+                //Asigno los puntos al cliente
+                $puntos = (int)round($pedido['valor_neto']);
+                $puntosCliente = [
+                    'idcliente' => $pedido['idcliente'],
+                    'puntos' => $puntos,
+                    'idpedido' => $idpedido
+                ];
+
+                //guardo en la tabla
+                $this->puntosClienteModel = new PuntosClienteModel();
+                $this->puntosClienteModel->insert($puntosCliente);
+                
+                session()->setFlashdata('mensaje', $mensaje);
+                return redirect()->to('pedidos');
             }
             
         }else{
@@ -1288,7 +1297,6 @@ class Ventas extends BaseController {
 
     public function pedido_update() {
 
-
         if ($this->session->ventas != 1) {
             return redirect()->to('logout');
         }
@@ -1405,11 +1413,54 @@ class Ventas extends BaseController {
             $mensaje = 0;
 
         }
+        //Hago la actualización de los puntos 
+        $puntos = (int)round($pedido['valor_neto']);
+        $puntosCliente = [
+            'idcliente' => $pedido['idcliente'],
+            'puntos' => $puntos,
+        ];
+        $this->puntosClienteModel = new PuntosClienteModel();
+        $this->puntosClienteModel->where('idpedido', $idpedido)->update(null, $puntosCliente);
 
-        $this->session->set('mensaje', $mensaje);
+        //Procedencia (referidos)
+        if ($pedido['procedencia'] == 4) {
+            //Aquí debo implementar asignar puntos (1.5) por refererir al cliente que lo ha referido
+            //Esto no se ha definido, en el form no hay la opción de seleccionar quien lo ha referido
+        }
 
+        session()->setFlashdata('mensaje', $mensaje);
         return redirect()->to('pedidos');
     }
+
+    //BORRAR LUEGO DE IMPLEMENTAR UNA VEZ
+    // public function asignaPuntosCliente(){
+    //     $this->puntosClienteModel = new PuntosClienteModel();
+         //$clientes = $this->clienteModel->findAll();
+    //     $pedidos = $this->pedidoModel
+    //         ->select('pedidos.id as idpedido,idcliente,valor_neto,idprocedencia')
+    //         ->join('pedidos_procedencia','pedidos_procedencia.idpedidos=pedidos.id')
+    //         ->findAll();
+
+    //     foreach ($pedidos as $key => $pedido) {
+            
+             //verifico si hay el registro
+    //         $idpuntoscliente = $this->puntosClienteModel->select('id')->where('idpedido', $pedido->idpedido)->first();
+            
+    //         if (!$idpuntoscliente) {
+                 //Hago el Insert
+    //             $puntos = (int)round($pedido->valor_neto);
+    //             $puntosCliente = [
+    //                 'idcliente' => $pedido->idcliente,
+    //                 'puntos' => $puntos,
+    //                 'idpedido' => $pedido->idpedido
+    //             ];
+
+    //             $this->puntosClienteModel->insert($puntosCliente);
+    //         }
+    //     }
+    //     return redirect()->to('pedidos');
+    // }
+    //FIN
 
     private function prepararDatosCliente(){
         $telefono2 = $this->request->getPostGet('telefono_2');

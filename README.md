@@ -1,10 +1,13 @@
 <h1>Versión: 1.2.3</h1>
 <h3>Cambios</h3>
 <ul>
-    <li>Se puso el total de devoluciones en el reporte de Pérdidas y ganancias EXCEL</li>
+    <li>Se entregó el sistema</li>
+    <li>Se implementó la funcionalidad de asignar puntos con la compra en Pedido Insert</li>
+    <li>Se implementó la funcionalidad de actualizar los puntos con la edición en Pedido Update</li>
+    <li>Se recorrió los pedidos y se hizo un insert de los puntos ganados por el cliente en cada pedido</li>
 </ul>
 
 <h5>Fixes</h5>
 <ul>
-    <li>Se ha hecho un par de correcciones en el reporte de Devoluciones y perdidas y ganancias</li>
+    <li></li>
 </ul>
